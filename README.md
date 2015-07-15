@@ -12,9 +12,9 @@ WebUI automation testing framework based on Selenium
 * 集成了HTMLTestRunner 测试报告，使生成报告变得很简单。
 
 安装及前提条件：
-Python2.7 :https://www.python.org/
-selenium  :https://pypi.python.org/pypi/selenium
-安装pyse ,将其克隆到本地，将pyse目录放到..\Python27\Lib\site-packages\目录下
+* Python2.7 :https://www.python.org/
+* selenium  :https://pypi.python.org/pypi/selenium
+* 安装pyse ,将其克隆到本地，将pyse目录放到..\Python27\Lib\site-packages\目录下
 
-例子：
+
 
