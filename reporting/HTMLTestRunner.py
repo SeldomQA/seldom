@@ -575,7 +575,7 @@ class _TestResult(TestResult):
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
-            sys.stderr.write('.')
+            sys.stderr.write(str(self.success_count)+str("."))   #run test case counter ++
 
     def addError(self, test, err):
         self.error_count += 1
@@ -588,7 +588,7 @@ class _TestResult(TestResult):
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
-            sys.stderr.write('E')
+            sys.stderr.write('Error.')
 
     def addFailure(self, test, err):
         self.failure_count += 1
@@ -601,7 +601,7 @@ class _TestResult(TestResult):
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
-            sys.stderr.write('F')
+            sys.stderr.write('Fail.')
 
 
 class HTMLTestRunner(Template_mixin):
