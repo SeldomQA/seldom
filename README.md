@@ -20,10 +20,9 @@ WebUI automation testing framework based on Selenium
    请查看demo目录
 
 =====================================================
-   # coding=utf-8
-   from pyse import Pyse, TestRunner, myunit
-   from time import sleep
-
+    # coding=utf-8
+    from pyse import Pyse, TestRunner, myunit
+    from time import sleep
 
     class BaiduTest(myunit.MyTest):
       ''' baidu test    '''
