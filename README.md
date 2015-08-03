@@ -19,6 +19,33 @@ WebUI automation testing framework based on Selenium
 例子：
 请查看demo目录
 
+=====================================================
+# coding=utf-8
+from pyse import Pyse, TestRunner, myunit
+from time import sleep
+
+
+class BaiduTest(myunit.MyTest):
+    ''' baidu test
+    '''
+
+    def test_case(self):
+        ''' test key : pyse '''
+        self.driver = Pyse("chrome")
+        driver = self.driver
+        driver.open("http://www.baidu.com")
+        driver.type("//*[@id='kw']","pyse")
+        driver.click("//*[@id='su']")
+        sleep(1)
+
+
+if __name__ == '__main__':
+    test_pro = TestRunner(r"C:\Python27\Lib\site-packages\pyse\demo")
+    test_pro.run()
+==========================================================
+* TestRunner()类，需要指定测试用例的目录，如：D:\test_pro\test_case ,匹配测试文件的规则为*_case.py ，如：baidu_case.py。
+* run() 可定义测试报告的标题和表述，如：run(u"xx项目测试报告",u"运行环境：win7,chrome")
+
 
 
 
