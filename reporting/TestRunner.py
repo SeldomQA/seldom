@@ -1,30 +1,43 @@
-#coding=utf-8
-from selenium import webdriver
-import unittest,HTMLTestRunner
-import time,os
+# coding=utf-8
+from TestReport import HTMLTestRunner
+import unittest
+import time
+import os
+
 
 class TestRunner(object):
 
-    def __init__(self,testcase):
-        self.testcase = testcase
+    def __init__(self, cases=None):
+        if cases is not None:
+            self.cases = cases
+        else:
+            raise NameError("""Specify the contents of test cases.
+            For example:
+            cases = D://test_pro//test_case
+            """)
 
-    def run(self):
+    def run(self, title_text='Pyse Test Report', description_text=''):
 
-        now = time.strftime("%Y-%m-%d %H_%M_%S")
-
-        for filename in os.listdir(self.testcase):
+        for filename in os.listdir(self.cases):
             if filename == "report":
                 break
         else:
-            os.mkdir(self.testcase+'\\report')
+            os.mkdir(self.cases+'\\report')
+            os.mkdir(self.cases+'\\report'+'\\image')
+        
+        base_dir = os.path.dirname(os.path.dirname(__file__))
+        f = open(base_dir+"\\reporting\\report.txt", "w")
+        f.write(self.cases+'\\report'+'\\image')
 
-        filename = self.testcase+'\\report\\'+now+'result.html'
+        now = time.strftime("%Y-%m-%d_%H_%M_%S")
+        filename = self.cases+'\\report\\'+now+'result.html'
         fp = file(filename, 'wb')
-        runner =HTMLTestRunner.HTMLTestRunner(stream=fp,title='Automated test report',description='Test case execution results')
-        discover=unittest.defaultTestLoader.discover(self.testcase,pattern='*_case.py',top_level_dir=None)
+        runner = HTMLTestRunner(stream=fp, title=title_text, description=description_text)
+        discover = unittest.defaultTestLoader.discover(self.cases, pattern='*_case.py', top_level_dir=None)
         runner.run(discover)
         fp.close()
 
+
 if __name__ == '__main__':
-    test = TestRunner("D:\\mz_test\\mztestpro\\test")
+    test = TestRunner(r"C:\Python27\Lib\site-packages\pyse\demo")
     test.run()

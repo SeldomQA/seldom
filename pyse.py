@@ -1,4 +1,4 @@
-#coding=utf-8
+# coding=utf-8
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
@@ -7,6 +7,7 @@ import os,sys,time
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+
 class Pyse(object):
     '''
         Pyse framework for the main class, the original 
@@ -14,7 +15,7 @@ class Pyse(object):
     making it easier to use.
     '''
 
-    def __init__(self,browser='ff'):
+    def __init__(self, browser='ff'):
         '''
         Run class initialization method, the default is proper
         to drive the Firefox browser. Of course, you can also
@@ -28,12 +29,11 @@ class Pyse(object):
         elif browser == "internet explorer" or browser=="ie":
             driver = webdriver.Ie()
         try:
-        	self.driver = driver
-        except Exception, e:
-        	print "Not found %s browser,You can enter 'ie', 'ff' or 'chrome'." %browser
+            self.driver = driver
+        except Exception:
+            print "Not found %s browser,You can enter 'ie', 'ff' or 'chrome'." %browser
 
-
-    def open(self,url):
+    def open(self, url):
         '''
         open url.
 
@@ -41,7 +41,6 @@ class Pyse(object):
         driver.open("https://www.baidu.com")
         '''
         self.driver.get(url)
-        #self.driver.maximize_window()
 
     def max_window(self):
         '''
@@ -52,16 +51,16 @@ class Pyse(object):
         '''
         self.driver.maximize_window()
 
-    def set_window(self,wide,high):
+    def set_window(self, wide, high):
         '''
         Set browser window wide and high.
 
         Usage:
         driver.set_window(wide,high)
         '''
-        self.driver.set_window_size(wide,high)
+        self.driver.set_window_size(wide, high)
 
-    def type(self,xpath,text):
+    def type(self, xpath, text):
         '''
         Operation input box.
 
@@ -71,7 +70,7 @@ class Pyse(object):
         self.driver.find_element_by_xpath(xpath).clear()
         self.driver.find_element_by_xpath(xpath).send_keys(text)
 
-    def click(self,xpath):
+    def click(self, xpath):
         '''
         It can click any text / image can be clicked
         Connection, check box, radio buttons, and even drop-down box etc..
@@ -81,7 +80,7 @@ class Pyse(object):
         '''
         self.driver.find_element_by_xpath(xpath).click()
 
-    def right_click(self,xpath):
+    def right_click(self, xpath):
         '''
         Right click element.
 
@@ -91,7 +90,7 @@ class Pyse(object):
         element = self.driver.find_element_by_xpath(xpath)
         ActionChains(self.driver).context_click(element).perform()
 
-    def move_to_element(self,xpath):
+    def move_to_element(self, xpath):
         '''
         Mouse over the element.
 
@@ -101,7 +100,7 @@ class Pyse(object):
         element = self.driver.find_element_by_xpath(xpath)
         ActionChains(self.driver).move_to_element(element).perform()
 
-    def double_click(self,xpath):
+    def double_click(self, xpath):
         '''
         double click element.
 
@@ -111,7 +110,7 @@ class Pyse(object):
         element = self.driver.find_element_by_xpath(xpath)
         ActionChains(self.driver).double_click(element).perform()
 
-    def drag_and_drop(self,el_xpath,ta_xpath):
+    def drag_and_drop(self, el_xpath, ta_xpath):
         '''
         Drags an element a certain distance and then drops it.
 
@@ -120,9 +119,9 @@ class Pyse(object):
         '''
         element = self.driver.find_element_by_xpath(el_xpath)
         target = self.driver.find_element_by_xpath(ta_xpath)
-        ActionChains(driver).drag_and_drop(element,target).perform()
+        ActionChains(driver).drag_and_drop(element, target).perform()
 
-    def click_text(self,text):
+    def click_text(self, text):
         '''
         Drags an element a certain distance and then drops it.
 
@@ -134,7 +133,7 @@ class Pyse(object):
             try:
                 if str(a.text) == text:
                     a.click()
-            except StaleElementReferenceException, e:
+            except StaleElementReferenceException:
                 pass
 
     def close(self):
@@ -156,7 +155,7 @@ class Pyse(object):
         '''
         self.driver.quit()
 
-    def submit(self,xpath):
+    def submit(self, xpath):
         '''
         Submit the specified form.
 
@@ -174,7 +173,7 @@ class Pyse(object):
         '''
         self.driver.refresh()
 
-    def js(self,script):
+    def js(self, script):
         '''
         Execute JavaScript scripts.
 
@@ -183,8 +182,8 @@ class Pyse(object):
         '''
         self.driver.execute_script(script)
 
-    def get_attribute(self,xpath,attribute):
-    	'''
+    def get_attribute(self, xpath, attribute):
+        '''
         Gets the value of an element attribute.
 
         Usage:
@@ -192,7 +191,7 @@ class Pyse(object):
         '''
         return self.driver.find_element_by_xpath(xpath).get_attribute(attribute)
 
-    def get_text(self,xpath):
+    def get_text(self, xpath):
         '''
         Get element text information.
 
@@ -201,7 +200,7 @@ class Pyse(object):
         '''
         return self.driver.find_element_by_xpath(xpath).text
 
-    def get_display(self,xpath):
+    def get_display(self, xpath):
         '''
         Gets the element to display,The return result is true or false.
 
@@ -228,10 +227,16 @@ class Pyse(object):
         '''
         return self.driver.current_url
 
-    def get_windows_img(self,file_path):
+    def get_windows_img(self, file_path):
+        '''
+        Get the current window screenshot.
+
+        Usage:
+        driver.get_windows_img()
+        '''
         self.driver.get_screenshot_as_file(file_path)
 
-    def wait(self,secs):
+    def wait(self, secs):
         '''
         implicitly wait.All elements on the page.
 
@@ -240,7 +245,7 @@ class Pyse(object):
         '''
         self.driver.implicitly_wait(secs)
 
-    def element_wait(self,xpath,secs):
+    def element_wait(self, xpath, secs):
         '''
         Waiting for an element to display.
         
@@ -266,7 +271,7 @@ class Pyse(object):
         Usage:
         driver.accept_alert()
         '''
-        self.driver.switch_to_alert().accept()
+        self.driver.switch_to.alert.accept()
 
     def dismiss_alert(self):
         '''
@@ -275,42 +280,34 @@ class Pyse(object):
         Usage:
         driver.dismiss_alert()
         '''
-        self.driver.switch_to_alert().dismiss()
+        self.driver.switch_to.alert.dismiss()
 
-    def switch_to_frame(self,xpath):
+    def switch_to_frame(self, xpath):
         '''
         Dismisses the alert available.
         
         Usage:
         driver.switch_to_frame("//*[@id='el']")
         '''
-        xf = self.driver.find_element_by_xpath('//*[@class="if"]')
-        self.driver.switch_to_frame(xf)
+        xf = self.driver.find_element_by_xpath(xpath)
+        self.driver._switch_to.frame(xf)
 
     def switch_to_frame_out(self):
         '''
         Returns the current form machine form at the next higher level.
         Corresponding relationship with switch_to_frame () method.
+        
         Usage:
         driver.switch_to_frame_out()
         '''
-        self.driver.switch_to_default_content()
+        self.driver._switch_to.default_content()
 
-    def switch_to_frame_out(self):
-        '''
-        Returns the current form machine form at the next higher level.
-        Corresponding relationship with switch_to_frame () method.
-        Usage:
-        driver.switch_to_frame_out()
-        '''
-        self.driver.switch_to_default_content()
-
-    def open_new_window(self,xpath):
+    def open_new_window(self, xpath):
         '''
         Open the new window and switch the handle to the newly opened window.
 
         Usage:
-        driver.switch_to_frame_out()
+        driver.open_new_window()
         '''
         driver = self.driver
         original_windows = driver.current_window_handle
@@ -318,7 +315,7 @@ class Pyse(object):
         all_handles = driver.window_handles
         for handle in all_handles:
             if handle != original_windows:
-                driver.switch_to_window(handle)
+                driver._switch_to.window(handle)
 
 
 if __name__ == '__main__':

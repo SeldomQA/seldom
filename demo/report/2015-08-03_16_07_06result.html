@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Automated test report</title>
+    <title>Pyse Test Report</title>
     <meta name="generator" content="HTMLTestRunner 0.8.2"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     
@@ -188,12 +188,12 @@ function showOutput(id, name) {
 --></script>
 
 <div class='heading'>
-<h1>Automated test report</h1>
-<p class='attribute'><strong>Start Time:</strong> 2015-07-20 20:47:53</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:09.776000</p>
+<h1>Pyse Test Report</h1>
+<p class='attribute'><strong>Start Time:</strong> 2015-08-03 16:07:06</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:14.408000</p>
 <p class='attribute'><strong>Status:</strong> Pass 1</p>
 
-<p class='description'>Test case execution results</p>
+<p class='description'></p>
 </div>
 
 
@@ -213,26 +213,59 @@ function showOutput(id, name) {
 <col align='right' />
 </colgroup>
 <tr id='header_row'>
-    <td>Test Group/Test case</td>
+    <td colspan='2'>Test Group/Test case</td>
     <td>Count</td>
     <td>Pass</td>
     <td>Fail</td>
     <td>Error</td>
     <td>View</td>
+    <td>Screenshot</td>
 </tr>
 
 <tr class='passClass'>
+    <td>Test id</td>
     <td>unittest_case.baiduTest</td>
     <td>1</td>
     <td>1</td>
     <td>0</td>
     <td>0</td>
     <td><a href="javascript:showClassDetail('c1',1)">Detail</a></td>
+    <td>image</td>
 </tr>
 
+
 <tr id='pt1.1' class='hiddenRow'>
+    <td  align='center'>case 001</td>
     <td class='none'><div class='testcase'>test_case</div></td>
-    <td colspan='5' align='center'>pass</td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.1')" >
+        pass</a>
+
+    <div id='div_pt1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.1: case 001
+image/001.jpg
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+    </td>
+        <td align='center'>
+        <a href="image/001.jpg" title="image/001.jpg">link
+        <!--
+            <img src="C:\Python27\Lib\site-packages\pyse\reporting\logo\img.jpg" height=20 width=40 border=0 />
+        -->
+        </a>
+
+    </td>
 </tr>
 
 <tr id='total_row'>
@@ -241,6 +274,8 @@ function showOutput(id, name) {
     <td>1</td>
     <td>0</td>
     <td>0</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
     <td>&nbsp;</td>
 </tr>
 </table>

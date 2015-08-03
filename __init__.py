@@ -18,6 +18,9 @@
 # under the License.
 
 from .reporting.TestRunner import TestRunner
+from .reporting import myunit
 from .pyse import Pyse
+
+__author__ = "bugmaster"
 
 __version__ = "0.0.1"

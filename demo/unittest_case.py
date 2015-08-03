@@ -1,27 +1,22 @@
-#coding=utf-8
-from pyse import Pyse,TestRunner
+# coding=utf-8
+from pyse import Pyse, TestRunner, myunit
 from time import sleep
-import unittest
 
-class baiduTest(unittest.TestCase):
 
-    def setUp(self):
-        self.driver = Pyse("chrome")
-        self.driver.wait(10)
-        self.base_url = "http://www.baidu.com"
+class BaiduTest(myunit.MyTest):
+    ''' baidu test
+    '''
 
     def test_case(self):
+        ''' test key : pyse '''
+        self.driver = Pyse("chrome")
         driver = self.driver
-        driver.open(self.base_url)
-        driver.click_text("设置")
-        driver.click_text("搜索设置")
-        sleep(2)
-        driver.click("//a[@class='prefpanelgo']")
+        driver.open("http://www.baidu.com")
+        driver.type("//*[@id='kw']","pyse")
+        driver.click("//*[@id='su']")
         sleep(1)
-        driver.accept_alert()
 
-    def tearDown(self):
-        self.driver.quit()
 
 if __name__ == '__main__':
-	TestRunner(r"C:\Python27\Lib\site-packages\pyse\demo").run()
+    test_pro = TestRunner(r"C:\Python27\Lib\site-packages\pyse\demo")
+    test_pro.run()

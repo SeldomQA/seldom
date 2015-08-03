@@ -429,12 +429,13 @@ a.popup_link:hover {
 <col align='right' />
 </colgroup>
 <tr id='header_row'>
-    <td>Test Group/Test case</td>
+    <td colspan='2'>Test Group/Test case</td>
     <td>Count</td>
     <td>Pass</td>
     <td>Fail</td>
     <td>Error</td>
     <td>View</td>
+    <td>Screenshot</td>
 </tr>
 %(test_list)s
 <tr id='total_row'>
@@ -444,24 +445,30 @@ a.popup_link:hover {
     <td>%(fail)s</td>
     <td>%(error)s</td>
     <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
 </tr>
 </table>
 """ # variables: (test_list, count, Pass, fail, error)
 
     REPORT_CLASS_TMPL = r"""
 <tr class='%(style)s'>
+    <td>Test id</td>
     <td>%(desc)s</td>
     <td>%(count)s</td>
     <td>%(Pass)s</td>
     <td>%(fail)s</td>
     <td>%(error)s</td>
     <td><a href="javascript:showClassDetail('%(cid)s',%(count)s)">Detail</a></td>
+    <td>image</td>
 </tr>
+
 """ # variables: (style, desc, count, Pass, fail, error, cid)
 
 
     REPORT_TEST_WITH_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
+    <td  align='center'>%(caseid)s</td>
     <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
     <td colspan='5' align='center'>
 
@@ -479,6 +486,13 @@ a.popup_link:hover {
         </pre>
     </div>
     <!--css div popup end-->
+    </td>
+        <td align='center'>
+        <a href="%(image)s" title="%(image)s">link
+        <!--
+            <img src="C:\Python27\Lib\site-packages\pyse\reporting\logo\img.jpg" height=20 width=40 border=0 />
+        -->
+        </a>
 
     </td>
 </tr>
@@ -497,7 +511,18 @@ a.popup_link:hover {
 %(id)s: %(output)s
 """ # variables: (id, output)
 
+ 
+    REPORT_TEST_OUTPUT_IMAGE = r"""
 
+%(screenshot)s
+
+"""
+
+    REPORT_TEST_OUTPUT_CASEID = r"""
+
+%(case_id)s
+
+"""
 
     # ------------------------------------------------------------------------
     # ENDING
@@ -773,6 +798,10 @@ class HTMLTestRunner(Template_mixin):
         else:
             ue = e
 
+        caseid = self.REPORT_TEST_OUTPUT_CASEID % dict(case_id = saxutils.escape(uo+ue)) 
+        image = self.REPORT_TEST_OUTPUT_IMAGE % dict(screenshot = saxutils.escape(uo+ue))
+
+
         script = self.REPORT_TEST_OUTPUT_TMPL % dict(
             id = tid,
             output = saxutils.escape(uo+ue),
@@ -784,6 +813,8 @@ class HTMLTestRunner(Template_mixin):
             style = n == 2 and 'errorCase' or (n == 1 and 'failCase' or 'none'),
             desc = desc,
             script = script,
+            caseid = caseid[caseid.find("case"):(int(caseid.find("case"))+8)],
+            image = image[image.find("image"):(int(image.find("jpg"))+3)],
             status = self.STATUS[n],
         )
         rows.append(row)
