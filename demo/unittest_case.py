@@ -7,7 +7,7 @@ from time import sleep
 TestRunner() 默认匹配当前目录下"*_case.py"的文件并执行。当然也可以指定路径，例如：
 TestRunner(r"D:/test_project/test_case")
 
-执行run()方法运行测试用例，默认的生成的报告标题为：Pyse Test Report ，可以自定位报告标题。例如：
+执行run()方法运行测试用例，默认的生成的报告标题为：Pyse Test Report ，可以自定义报告标题。例如：
 run(title_text = u'xx项目测试报告', description_text = u'环境：window 7  Chrome')
 
 '''
