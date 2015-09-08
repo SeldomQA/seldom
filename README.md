@@ -35,6 +35,8 @@ WebUI automation testing framework based on Selenium
         driver.type("//*[@id='kw']","pyse")
         driver.click("//*[@id='su']")
         sleep(1)
+        title = driver.get_title()
+        self.assertEqual("pyse_百度搜索",title)
 
 
     if __name__ == '__main__':
