@@ -62,7 +62,7 @@ def main():
         test_user_login(driver, username, password)
         sleep(3)
         text = driver.get_text("//span[@id='spnUid']")
-        assert(text == 'testingwtb@126.com'),u"用户名称不匹配，登录失败!"
+        assert(text == 'username@126.com'),u"用户名称不匹配，登录失败!"
     finally:
         # 关闭浏览器窗口
         driver.close()

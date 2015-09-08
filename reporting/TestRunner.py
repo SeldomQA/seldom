@@ -7,14 +7,8 @@ import os
 
 class TestRunner(object):
 
-    def __init__(self, cases=None):
-        if cases is not None:
-            self.cases = cases
-        else:
-            raise NameError("""Specify the contents of test cases.
-            For example:
-            cases = D://test_pro//test_case
-            """)
+    def __init__(self, cases="./"):
+        self.cases = cases
 
     def run(self, title_text='Pyse Test Report', description_text=''):
 
@@ -39,5 +33,5 @@ class TestRunner(object):
 
 
 if __name__ == '__main__':
-    test = TestRunner(r"C:\Python27\Lib\site-packages\pyse\demo")
+    test = TestRunner()
     test.run()

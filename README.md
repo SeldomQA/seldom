@@ -11,7 +11,7 @@ WebUI automation testing framework based on Selenium
 * 集成了HTMLTestRunner 测试报告，并对测试报告做了增加，使每一个用例都能产生截图。
 
 安装及前提条件：
-* Python2.7 :https://www.python.org/
+* Python2.7+ :https://www.python.org/
 * selenium  :https://pypi.python.org/pypi/selenium
 * 安装pyse ,将其克隆到本地，将pyse目录放到..\Python27\Lib\site-packages\目录下即可
 
@@ -25,7 +25,7 @@ WebUI automation testing framework based on Selenium
     from time import sleep
 
     class BaiduTest(myunit.MyTest):
-      ''' baidu test    '''
+      ''' baidu test '''
 
     def test_case(self):
         ''' test key : pyse '''
@@ -38,11 +38,11 @@ WebUI automation testing framework based on Selenium
 
 
     if __name__ == '__main__':
-      test_pro = TestRunner(r"C:\Python27\Lib\site-packages\pyse\demo")
+      test_pro = TestRunner()
       test_pro.run()
 ==========================================================
 * TestRunner()类，需要指定测试用例的目录，如：D:\test_pro\test_case ,匹配测试文件的规则为*_case.py ，如：baidu_case.py。
-* run() 可定义测试报告的标题和表述，如：run(u"xx项目测试报告",u"运行环境：win7,chrome")
+* run() 可定义测试报告的标题和表述，如：run(u"xx项目测试报告",u"运行环境：windows 7,chrome")
 
 
 
