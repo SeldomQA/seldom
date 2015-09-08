@@ -23,4 +23,11 @@ from .pyse import Pyse
 
 __author__ = "bugmaster"
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
+
+'''
+0.0.2 version update:
+* all the elements of the operation selector xpath replaced by css, css syntax because more concise.
+* when you run the test case no longer need to specify the directory, the default directory for the current test.
+* modify the examples under demo.
+'''

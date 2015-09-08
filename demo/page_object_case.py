@@ -34,13 +34,13 @@ class LoginPage(Page):
     url = '/'
 
     def type_username(self,username):
-        self.driver.type("//*[@id='idInput']",username)
+        self.driver.type("#idInput",username)
 
     def type_password(self,password):
-        self.driver.type("//*[@id='pwdInput']",password)
+        self.driver.type("#pwdInput",password)
 
     def submit(self):
-        self.driver.click("//*[@id='loginBtn']")
+        self.driver.click("#loginBtn")
 
 
 def test_user_login(driver, username, password):
@@ -61,7 +61,7 @@ def main():
         password = 'password'
         test_user_login(driver, username, password)
         sleep(3)
-        text = driver.get_text("//span[@id='spnUid']")
+        text = driver.get_text("#spnUid")
         assert(text == 'username@126.com'),u"用户名称不匹配，登录失败!"
     finally:
         # 关闭浏览器窗口

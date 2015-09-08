@@ -5,7 +5,7 @@ from time import sleep
 driver = Pyse("chrome")
 
 driver.open("https://www.baidu.com")
-driver.type("//*[@id='kw']", u"pyse自动化测试")
-driver.click("//*[@id='su']")
+driver.type("[name='wd']", u"pyse自动化测试")
+driver.click("#kw")
 sleep(2)
 driver.quit()

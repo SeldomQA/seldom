@@ -16,12 +16,12 @@ class BaiduTest(myunit.MyTest):
     ''' baidu test '''
 
     def test_case(self):
-        ''' test key : pyse '''
+        ''' test search key : pyse '''
         self.driver = Pyse("chrome")
         driver = self.driver
         driver.open("http://www.baidu.com")
-        driver.type("//*[@id='kw']","pyse")
-        driver.click("//*[@id='su']")
+        driver.type("#kw","pyse")
+        driver.click("#su")
         sleep(1)
         title = driver.get_title()
         self.assertEqual(title,"pyse_百度搜索")
