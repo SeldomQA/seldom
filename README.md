@@ -53,9 +53,8 @@ run(u'xx项目测试报告', u'环境：window 7  Chrome')
 
 
 元素定位：
-    关于元素的定位，经过权衡，抛弃了之前采用的xpath，而选择css，主要是因为css的语法写起来更简洁。
-   例子：
-==========================================================
+  关于元素的定位，经过权衡，抛弃了之前采用的xpath，而选择css，主要是因为css的语法写起来更简洁。
+
     <form id="form" class="fm" action="/s" name="f">
       <span class="bg s_ipt_wr quickdelete-wrap">
         <input id="kw" class="s_ipt" autocomplete="off" maxlength="255" value="" name="wd">
