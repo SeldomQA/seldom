@@ -51,49 +51,50 @@ run(title_text = u'xx项目测试报告', description_text = u'环境：window 7
 run(u'xx项目测试报告', u'环境：window 7  Chrome')
 
 
+
 元素定位：
     关于元素的定位，经过权衡，抛弃了之前采用的xpath，而选择css，主要是因为css的语法写起来更简洁。
-    例子：
+   例子：
 ==========================================================
     <form id="form" class="fm" action="/s" name="f">
       <span class="bg s_ipt_wr quickdelete-wrap">
         <input id="kw" class="s_ipt" autocomplete="off" maxlength="255" value="" name="wd">
 ==========================================================
     
-    id定位:
-==========================================================
+  id定位:
+
     driver.type("#kw", "pyse")
 ==========================================================
     
-    class定位:
-==========================================================
+  class定位:
+
     driver.type(".s_ipt", u"pyse")
 ==========================================================
     
-    name定位:
-==========================================================
+  name定位:
+
     driver.type("[name=wd]", "pyse")
     driver.type("[name='wd']", "pyse")
 ==========================================================
 
-    tag name定位:
-==========================================================
+  tag name定位:
+
     driver.type("input", "pyse")
     driver.type("span>input", "pyse")
     driver.type("from>span>input", "pyse")
 ==========================================================
 
-    link text定位：
+  link text定位：
     click_text()方法可以做到这一点，例如，点击百度首页上的"新闻"链接。
-==========================================================
+
     driver.click_text("新闻")
 ==========================================================
     
-    css更封复杂的更定写法：
-==========================================================
+  css更封复杂的更定写法：
+
     driver.type("span.bg s_ipt_wr>input.s_ipt","pyse")
     driver.type("span.bg s_btn_wr>input#su","pyse")
 ==========================================================
     
-    css选择器参考手册：
-    http://www.w3school.com.cn/cssref/css_selectors.asp
+  css选择器参考手册：
+  http://www.w3school.com.cn/cssref/css_selectors.asp
