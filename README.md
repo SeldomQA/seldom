@@ -43,7 +43,7 @@ WebUI automation testing framework based on Selenium
       test_pro = TestRunner()
       test_pro.run()
 ==========================================================
-* TestRunner()类，需要指定测试用例的目录，如：D:\test_pro\test_case ,匹配测试文件的规则为*_case.py ，如：baidu_case.py。
+* TestRunner()类默认匹配"*_case.py"文件，如：baidu_case.py。当然也可以指定测试用例的目录，如：TestRunner("D:/test_pro/test_case")
 * run() 可定义测试报告的标题和表述，如：run(u"xx项目测试报告",u"运行环境：windows 7,chrome")
 
 
