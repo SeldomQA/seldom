@@ -81,7 +81,7 @@ run(u'xx项目测试报告', u'环境：window 7  Chrome')
 
     driver.type("input", "pyse")
     driver.type("span>input", "pyse")
-    driver.type("from>span>input", "pyse")
+    driver.type("form>span>input", "pyse")
 ==========================================================
 
   link text定位：
