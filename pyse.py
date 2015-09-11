@@ -28,6 +28,10 @@ class Pyse(object):
             driver = webdriver.Chrome()
         elif browser == "internet explorer" or browser=="ie":
             driver = webdriver.Ie()
+        elif browser == "opera":
+            driver = webdriver.Opera()
+        elif browser == "phantomjs":
+            driver = webdriver.PhantomJS()
         try:
             self.driver = driver
         except Exception:
@@ -102,7 +106,7 @@ class Pyse(object):
 
     def double_click(self, css):
         '''
-        double click element.
+        Double click element.
 
         Usage:
         driver.double_click("#el")
@@ -123,7 +127,7 @@ class Pyse(object):
 
     def click_text(self, text):
         '''
-        Drags an element a certain distance and then drops it.
+        Click the element by the link text
 
         Usage:
         driver.click_text("新闻")
@@ -148,8 +152,8 @@ class Pyse(object):
 
     def quit(self):
         '''
-        Closes the browser and shuts down the.
-
+        Quit the driver and close all the windows.
+        
         Usage:
         driver.quit()
         '''
@@ -238,7 +242,7 @@ class Pyse(object):
 
     def wait(self, secs):
         '''
-        implicitly wait.All elements on the page.
+        Implicitly wait.All elements on the page.
 
         Usage:
         driver.wait(10)
@@ -266,7 +270,7 @@ class Pyse(object):
 
     def accept_alert(self):
         '''
-        accept warning box.
+        Accept warning box.
 
         Usage:
         driver.accept_alert()
@@ -284,7 +288,7 @@ class Pyse(object):
 
     def switch_to_frame(self, css):
         '''
-        Dismisses the alert available.
+        Switch to the specified frame.
         
         Usage:
         driver.switch_to_frame("#el")
