@@ -50,7 +50,42 @@ run(title_text = u'xx项目测试报告', description_text = u'环境：window 7
 或：
 run(u'xx项目测试报告', u'环境：window 7  Chrome')
 
+支持的浏览器：
+==========================================================
+  Firefox:
+  
+    driver = Pyse("firefox")  
+  或：
+    driver = Pyse("ff")
+  
+  Chrome:
+  
+    driver = Pyse("chrome")  
+  
+  IE:
+  
+    driver = Pyse("internet explorer")
+  或：
+    driver = Pyse("ie")
+  
+  Opera:
+  
+    driver = Pyse("opere")
+  
+  PhantomJS:
+  
+    driver = Pyse("phantomjs")
 
+
+Chromedriver:https://sites.google.com/a/chromium.org/chromedriver/home
+
+IEDriverServer:http://selenium-release.storage.googleapis.com/index.html
+
+operadriver:https://github.com/operasoftware/operachromiumdriver/releases
+
+phantomjs:http://phantomjs.org
+
+==========================================================
 
 元素定位：
 ==========================================================
