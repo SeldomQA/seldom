@@ -56,6 +56,7 @@ run(u'xx项目测试报告', u'环境：window 7  Chrome')
   
     driver = Pyse("firefox")  
   或：
+  
     driver = Pyse("ff")
   
   Chrome:
@@ -66,6 +67,7 @@ run(u'xx项目测试报告', u'环境：window 7  Chrome')
   
     driver = Pyse("internet explorer")
   或：
+  
     driver = Pyse("ie")
   
   Opera:
