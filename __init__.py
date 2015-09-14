@@ -17,17 +17,21 @@
 # specific language governing permissions and limitations
 # under the License.
 
-from .reporting.TestRunner import TestRunner
-from .reporting import myunit
+from .html_reporting.TestRunner import TestRunner
 from .pyse import Pyse
 
 __author__ = "bugmaster"
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 '''
 0.0.2 version update:
 * all the elements of the operation selector xpath replaced by css, css syntax because more concise.
 * when you run the test case no longer need to specify the directory, the default directory for the current test.
+* modify the examples under demo.
+
+0.0.3 version update:
+* With the nose instead of unittest.
+* Discard HTMLTestRunner,Integrated nose-html-reporting.
 * modify the examples under demo.
 '''

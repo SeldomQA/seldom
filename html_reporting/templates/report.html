@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unit Test Report</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+<style>
+body {
+    font-family: Calibri, "Trebuchet MS", sans-serif;
+}
+* {
+    word-break: break-all;
+}
+table, td, th, .dataid {
+    border: 1px solid #aaa;
+    border-collapse: collapse;
+    background: #fff;
+}
+section {
+    background: rgba(0, 0, 0, 0.05);
+    margin: 2ex;
+    padding: 1ex;
+    border: 1px solid #999;
+    border-radius: 5px;
+}
+h1 {
+    font-size: 130%;
+}
+h2 {
+    font-size: 120%;
+}
+h3 {
+    font-size: 100%;
+}
+h4 {
+    font-size: 85%;
+}
+h1, h2, h3, h4, a[href] {
+    cursor: pointer;
+    color: #0074d9;
+    text-decoration: none;
+}
+h3 strong, a.failed {
+    color: #ff4136;
+}
+a.success {
+    color: #3d9970;
+}
+pre {
+    font-family: 'Consolas', 'Deja Vu Sans Mono',
+                 'Bitstream Vera Sans Mono', 'Monaco',
+                 'Courier New', monospace;
+}
+
+.test-details,
+.traceback {
+    display: none;
+}
+section:target .test-details {
+    display: block;
+}
+
+</style>
+</head>
+<body>
+    <h1>Overview</h1>
+    <section>
+        <table>
+            <tr>
+                <th>Class</th>
+                <th>Fail</th>
+                <th>Skip</th>
+                <th>Success</th>
+                <th>Total</th>
+            </tr>
+            {% for class, group in report.items() %}
+                <tr>
+                    <td>{{ class }}</td>
+                    <td>{{ group.stats.failures }}</td>
+                    <td>{{ group.stats.skipped  }}</td>
+                    <td>{{ group.stats.passes   }}</td>
+                    <td>{{ group.stats.total    }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td><strong>Total</strong></td>
+                <td>{{ stats.failures }}</td>
+                <td>{{ stats.skipped  }}</td>
+                <td>{{ stats.passes   }}</td>
+                <td>{{ stats.total    }}</td>
+            </tr>
+        </table>
+    </section>
+    <h1>Failure details</h1>
+    {% for class, group in report.items() %}
+        {% if group.stats.failures or group.stats.errors %}
+            <section>
+                <h2>{{ class }} ({{ group.stats.failures }} failures, {{ group.stats.errors }} errors)</h2>
+                <div>
+                    {% for test in group.tests %}
+                        {% if test.failed and test.type != 'skipped' %}
+                        <section id="{{ class }}:{{ test.name }}">
+                            <h3>{{ test.name }}: <strong>{{ test.errtype }}</strong></h3>
+                            <div class="test-details">
+                                <h4>Traceback</h4>
+                                <pre class="traceback">{{ test.tb }}</pre>
+                                <h4>Details</h4>
+                                <pre>{{ test.message }}</pre>
+                            </div>
+                        </section>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+    {% endfor %}
+
+    <h1>All tests</h1>
+    {% for class, group in report.items() %}
+    <section>
+        <h2>{{ class }} ({{ group.stats.failures }} failures, {{ group.stats.errors }} errors)</h2>
+        <ul>
+            {% for test in group.tests %}
+                <li><a class="{% if test.failed %}failed" href="#{{ class }}:{{ test.name }}"{% else %}success"{% endif %}>{{ test.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endfor %}
+</body>
+<script>
+    Array.prototype.forEach.call(document.querySelectorAll('h1, h2, h3, h4'), function(el) {
+        el.addEventListener('click', function() {
+            el.nextElementSibling.style.display = document.defaultView.getComputedStyle(el.nextElementSibling).display == 'none' ? 'block' : 'none';
+        })
+    })
+</script>
+</html>
