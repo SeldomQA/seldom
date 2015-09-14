@@ -21,12 +21,11 @@ WebUI automation testing framework based on Selenium
    请查看demo目录
 
 =====================================================
-  # coding=utf-8
-  import pyse
-  from time import sleep
+    # coding=utf-8
+    import pyse
+    from time import sleep
 
-
-  def test_baidu():
+    def test_baidu():
       ''' baidu search key : pyse '''
       driver = pyse.Pyse("chrome")
       driver.open("http://www.baidu.com")
@@ -37,7 +36,7 @@ WebUI automation testing framework based on Selenium
       assert title=="pyse_百度搜索"
       driver.quit()
 
-  if __name__ == '__main__':
+    if __name__ == '__main__':
       test_pro = pyse.TestRunner()
       test_pro.run()
 
