@@ -14,6 +14,7 @@ WebUI automation testing framework based on Selenium
 * Python2.7+ :https://www.python.org/
 * selenium  :https://pypi.python.org/pypi/selenium
 * nose  :https://pypi.python.org/pypi/nose
+* nose-html-reporting:https://pypi.python.org/pypi/nose-html-reporting
 * 安装pyse ,将其克隆到本地，将pyse目录放到..\Python27\Lib\site-packages\目录下即可
 
 
