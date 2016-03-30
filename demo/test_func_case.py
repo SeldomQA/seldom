@@ -14,7 +14,7 @@ def my_teardown_function():
 def test_baidu():
     ''' baidu search key : pyse '''
     driver = pyse.Pyse("chrome")
-    driver.open("http://www.baidu.com")
+    driver.open("https://www.baidu.com")
     driver.type("#kw","pyse")
     driver.click("#su")
     sleep(1)
@@ -25,7 +25,7 @@ def test_baidu():
 @with_setup(my_setup_function, my_teardown_function)
 def test_youdao():
     ''' youdao search key : pyse '''
-    driver = pyse.Pyse()   #默认为firefox浏览器
+    driver = pyse.Pyse()   # default firefox browser
     driver.open("http://www.youdao.com")
     driver.type("[name=q]","pyse")
     driver.click("#qb")

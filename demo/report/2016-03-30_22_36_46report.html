@@ -1,0 +1,598 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <p>Pyse Test Report</p>
+    <title>Test Report</title>
+    <meta name="author" content="Oleksii Skliarov, Ivan Lysenko"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css" media="screen">
+        body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
+        table       { font-size: 100%; }
+        pre         { }
+
+        /* -- heading ---------------------------------------------------------------------- */
+        h1 {
+            font-size: 16pt;
+            color: gray;
+        }
+        .heading {
+            margin-top: 0ex;
+            margin-bottom: 1ex;
+        }
+
+        .heading .attribute {
+            margin-top: 1ex;
+            margin-bottom: 0;
+        }
+
+        .heading .description {
+            margin-top: 4ex;
+            margin-bottom: 6ex;
+        }
+
+        /* -- css div popup ------------------------------------------------------------------------ */
+        a.popup_link {
+        }
+
+        a.popup_link:hover {
+            color: red;
+        }
+
+        .popup_window {
+            display: none;
+            position: relative;
+            left: 0px;
+            top: 0px;
+            /*border: solid #627173 1px; */
+            padding: 8px;
+            background-color: #E6E6D6;
+            font-family: "Lucida Console", "Courier New", Courier, monospace;
+            text-align: left;
+            font-size: 8pt;
+            width: 570px;
+        }
+
+        }
+        /* -- report ------------------------------------------------------------------------ */
+        #show_detail_line {
+            margin-top: 3ex;
+            margin-bottom: 1ex;
+        }
+        .result_table {
+            width: 80%;
+            border-collapse: collapse;
+            border: 1px solid #777;
+        }
+        #header_row {
+            font-weight: bold;
+            color: white;
+            background-color: #777;
+        }
+        .result_table td {
+            border: 1px solid #777;
+            padding: 2px;
+        }
+        .shortDescription {
+            font-style: italic;
+            font-weight: normal;
+        }
+        #total_row  { font-weight: bold; }
+        .passClass  { background-color: #6c6; }
+        .failClass  { background-color: #c60; }
+        .errorClass { background-color: #c00; }
+        .passCase   { color: #6c6; }
+        .failCase   { color: #c60; font-weight: bold; }
+        .errorCase  { color: #c00; font-weight: bold; }
+        .hiddenRow  { display: none; }
+        
+        .testcase   { display: none; }
+		.testclass.active ~ .testcase { display: table-row; }
+
+        /* -- ending ---------------------------------------------------------------------- */
+        #ending {
+        }
+
+    </style>
+</head>
+<body>
+<script language="javascript" type="text/javascript">
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByClassName("testclass");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        if(0==level && tr.className.indexOf("active") != -1){
+			tr.className = tr.className.replace("active", "").replace("  ", " ").trim();
+		}else if (2 == level && tr.className.indexOf("active") == -1){
+			tr.className+=" active";
+		}else if (1 == level){
+			if(tr.className.indexOf("passClass") != -1){
+				if(tr.className.indexOf("active") != -1){
+					tr.className = tr.className.replace("active", "").replace("  ", " ").trim();
+				}
+			}else if (tr.className.indexOf("active") == -1){
+				tr.className+=" active";
+			}
+        }
+    }
+}
+
+function showClassDetail(element) {
+    var currentClassValue = element.className || "";
+      
+    if (currentClassValue.indexOf("active") == -1) {
+		currentClassValue += " active";
+    } else {
+		currentClassValue = currentClassValue.replace("active", "").replace("  ", " ");
+	}
+	element.className = currentClassValue.trim();
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+function togleClass(element, clas){
+        var currentClassValue = element.className || "";
+
+        if (currentClassValue.indexOf(clas) == -1) {
+            currentClassValue += " "+clas;
+        } else {
+            currentClassValue = currentClassValue.replace(clas, "").replace("  ", " ");
+        }
+        element.className = currentClassValue.trim()
+    }
+
+function showRawLog(element){
+        togleClass(element, "popup_window")
+    }
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+</script>
+
+<table>
+    <tr id="header_row">
+        <th>Class</th>
+        <th>Fail</th>
+        <th>Error</th>
+        <th>Skip</th>
+        <th>Success</th>
+        <th>Total</th>
+    </tr>
+        <tr>
+            <td>test_class_case.TestLogin</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>test_func_case</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>2</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>test_case</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+    <tr>
+        <td><strong>Total</strong></td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>3</td>
+        <td>4</td>
+    </tr>
+</table>
+
+<!-- test list -->
+<!-- header -->
+<p id='show_detail_line'>Show
+<a href='javascript:showCase(0)'>Summary</a>
+<a href='javascript:showCase(1)'>Failed</a>
+<a href='javascript:showCase(2)'>All</a>
+</p>
+<table class='result_table'>
+    <colgroup>
+        <col align='left' width="50%" />
+        <col align='right' width="10%"/>
+        <col align='right' width="10%"/>
+        <col align='right' width="10%"/>
+        <col align='right' width="10%"/>
+        <col align='right' width="10%"/>
+    </colgroup>
+    <tr id='header_row'>
+        <td>Test Group/Test case</td>
+        <td>Count</td>
+        <td>Pass</td>
+        <td>Fail</td>
+        <td>Error</td>
+        <td>View</td>
+    </tr>
+</table>    
+<!-- for every test suite -->
+    <table class='result_table'>
+	    <colgroup>
+            <col align='left' width="50%" />
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+        </colgroup>
+        <tr class='testclass errorClass'>
+            <td>test_class_case.TestLogin</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td><a href="javascript:void(0)" onclick="showClassDetail(this.parentNode.parentNode)">Detail</a></td>
+        </tr>    
+        <!-- for every test -->
+
+<tr id='test_class_case.TestLogintest_login' class='testcase'>
+            <td class="failCase">
+                test_login
+                    <div class="shortDescription">
+                        test mail login : admin ,123456
+                    </div>
+            </td>
+            <td>0:00:22.791000</td>
+            <td colspan='4' align='center'>
+            <!--css div popup start-->
+            <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_test_class_case.TestLogintest_login')" >
+                Fail
+            </a>
+
+            <div id='div_test_class_case.TestLogintest_login' class="popup_window">
+                <div style='text-align: right; color:red; cursor:pointer;'>
+                <a onfocus='this.blur();' onclick="document.getElementById('div_test_class_case.TestLogintest_login').style.display = 'none' " >
+                   [x]</a>
+                </div>
+                <pre>
+'NoneType' object has no attribute 'text'
+-------------------- >> begin captured logging << --------------------
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session {"desiredCapabilities": {"platform": "ANY", "browserName": "chrome", "version": "", "javascriptEnabled": true, "chromeOptions": {"args": [], "extensions": []}}}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/timeouts/implicit_wait {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "ms": 30000.0}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/url {"url": "http://www.126.com", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#loginDiv > iframe"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/frame {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": {"element-6066-11e4-a52e-4f735466cecf": "0.404327480122447-1", "ELEMENT": "0.404327480122447-1"}}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='email']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-1/clear {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-1"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='email']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-1/value {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-1", "value": ["a", "d", "m", "i", "n"]}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='password']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-2/clear {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-2"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='password']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-2/value {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-2", "value": ["1", "2", "3", "4", "5", "6"]}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#dologin"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-3/click {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-3"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#spnUid"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+--------------------- >> end captured logging << ---------------------
+Traceback (most recent call last):
+  File "c:\python27\lib\unittest\case.py", line 329, in run
+    testMethod()
+  File "c:\python27\lib\site-packages\nose\case.py", line 197, in runTest
+    self.test(*self.arg)
+  File "C:\Python27\Lib\site-packages\pyse\demo\test_class_case.py", line 26, in test_login
+    user_name = driver.get_text("#spnUid")
+  File "c:\python27\lib\site-packages\pyse\pyse.py", line 205, in get_text
+    return self.driver.find_element_by_css_selector(css).text
+AttributeError: 'NoneType' object has no attribute 'text'
+-------------------- >> begin captured logging << --------------------
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session {"desiredCapabilities": {"platform": "ANY", "browserName": "chrome", "version": "", "javascriptEnabled": true, "chromeOptions": {"args": [], "extensions": []}}}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/timeouts/implicit_wait {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "ms": 30000.0}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/url {"url": "http://www.126.com", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#loginDiv > iframe"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/frame {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": {"element-6066-11e4-a52e-4f735466cecf": "0.404327480122447-1", "ELEMENT": "0.404327480122447-1"}}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='email']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-1/clear {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-1"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='email']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-1/value {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-1", "value": ["a", "d", "m", "i", "n"]}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='password']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-2/clear {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-2"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='password']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-2/value {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-2", "value": ["1", "2", "3", "4", "5", "6"]}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#dologin"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-3/click {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-3"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#spnUid"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+--------------------- >> end captured logging << ---------------------
+
+                </pre>
+            </div>
+            <!--css div popup end-->
+
+            </td>
+        </tr>    <table class='result_table'>
+	    <colgroup>
+            <col align='left' width="50%" />
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+        </colgroup>
+        <tr class='testclass passClass'>
+            <td>test_func_case</td>
+            <td>2</td>
+            <td>2</td>
+            <td>0</td>
+            <td>0</td>
+            <td><a href="javascript:void(0)" onclick="showClassDetail(this.parentNode.parentNode)">Detail</a></td>
+        </tr>    
+        <!-- for every test -->
+
+<tr id='test_func_casetest_baidu' class='testcase'>
+            <td class="passCase">
+                test_baidu
+                    <div class="shortDescription">
+                        baidu search key : pyse
+                    </div>
+            </td>
+            <td>0:00:06.639000</td>
+            <td colspan='4' align='center'>
+            <!--css div popup start-->
+            <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_test_func_casetest_baidu')" >
+                Pass
+            </a>
+
+            <div id='div_test_func_casetest_baidu' class="popup_window">
+                <div style='text-align: right; color:red; cursor:pointer;'>
+                <a onfocus='this.blur();' onclick="document.getElementById('div_test_func_casetest_baidu').style.display = 'none' " >
+                   [x]</a>
+                </div>
+                <pre>test case start:
+test case end.
+
+
+
+                </pre>
+            </div>
+            <!--css div popup end-->
+
+            </td>
+        </tr>
+<tr id='test_func_casetest_youdao' class='testcase'>
+            <td class="passCase">
+                test_youdao
+                    <div class="shortDescription">
+                        youdao search key : pyse
+                    </div>
+            </td>
+            <td>0:00:06.423000</td>
+            <td colspan='4' align='center'>
+            <!--css div popup start-->
+            <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_test_func_casetest_youdao')" >
+                Pass
+            </a>
+
+            <div id='div_test_func_casetest_youdao' class="popup_window">
+                <div style='text-align: right; color:red; cursor:pointer;'>
+                <a onfocus='this.blur();' onclick="document.getElementById('div_test_func_casetest_youdao').style.display = 'none' " >
+                   [x]</a>
+                </div>
+                <pre>test case start:
+pyse - 有道搜索
+test case end.
+
+
+
+                </pre>
+            </div>
+            <!--css div popup end-->
+
+            </td>
+        </tr>    <table class='result_table'>
+	    <colgroup>
+            <col align='left' width="50%" />
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+            <col align='right' width="10%"/>
+        </colgroup>
+        <tr class='testclass passClass'>
+            <td>test_case</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td><a href="javascript:void(0)" onclick="showClassDetail(this.parentNode.parentNode)">Detail</a></td>
+        </tr>    
+        <!-- for every test -->
+
+<tr id='test_casetest_baidu' class='testcase'>
+            <td class="passCase">
+                test_baidu
+                    <div class="shortDescription">
+                        baidu search key : pyse
+                    </div>
+            </td>
+            <td>0:00:06.281000</td>
+            <td colspan='4' align='center'>
+            <!--css div popup start-->
+            <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_test_casetest_baidu')" >
+                Pass
+            </a>
+
+            <div id='div_test_casetest_baidu' class="popup_window">
+                <div style='text-align: right; color:red; cursor:pointer;'>
+                <a onfocus='this.blur();' onclick="document.getElementById('div_test_casetest_baidu').style.display = 'none' " >
+                   [x]</a>
+                </div>
+                <pre>
+
+
+                </pre>
+            </div>
+            <!--css div popup end-->
+
+            </td>
+        </tr></table>
+    <table class='result_table'>
+        <colgroup>
+            <col align='left' width="50%"/>
+            <col align='right' width="10%" id="results_count"/>
+            <col align='right' width="10%" id="results_passed"/>
+            <col align='right' width="10%" id="results_failed"/>
+            <col align='right' width="10%" id="results_errors"/>
+            <col align='right' width="10%"/>
+        </colgroup>
+        <!-- test list end -->
+        <tr id='total_row'>
+            <td>Total</td>
+            <td>4</td>
+            <td>3</td>
+            <td>0</td>
+            <td>1</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    <br/>
+    <a href="javascript:void(0)" onclick="showRawLog(document.getElementById('rawoutput'))">Full log raw output</a>
+    <div id='rawoutput' class='popup_window'>
+        <pre>'NoneType' object has no attribute 'text'
+-------------------- >> begin captured logging << --------------------
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session {"desiredCapabilities": {"platform": "ANY", "browserName": "chrome", "version": "", "javascriptEnabled": true, "chromeOptions": {"args": [], "extensions": []}}}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/timeouts/implicit_wait {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "ms": 30000.0}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/url {"url": "http://www.126.com", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#loginDiv > iframe"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/frame {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": {"element-6066-11e4-a52e-4f735466cecf": "0.404327480122447-1", "ELEMENT": "0.404327480122447-1"}}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='email']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-1/clear {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-1"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='email']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-1/value {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-1", "value": ["a", "d", "m", "i", "n"]}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='password']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-2/clear {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-2"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='password']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-2/value {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-2", "value": ["1", "2", "3", "4", "5", "6"]}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#dologin"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-3/click {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-3"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#spnUid"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+--------------------- >> end captured logging << ---------------------Traceback (most recent call last):
+  File "c:\python27\lib\unittest\case.py", line 329, in run
+    testMethod()
+  File "c:\python27\lib\site-packages\nose\case.py", line 197, in runTest
+    self.test(*self.arg)
+  File "C:\Python27\Lib\site-packages\pyse\demo\test_class_case.py", line 26, in test_login
+    user_name = driver.get_text("#spnUid")
+  File "c:\python27\lib\site-packages\pyse\pyse.py", line 205, in get_text
+    return self.driver.find_element_by_css_selector(css).text
+AttributeError: 'NoneType' object has no attribute 'text'
+-------------------- >> begin captured logging << --------------------
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session {"desiredCapabilities": {"platform": "ANY", "browserName": "chrome", "version": "", "javascriptEnabled": true, "chromeOptions": {"args": [], "extensions": []}}}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/timeouts/implicit_wait {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "ms": 30000.0}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/url {"url": "http://www.126.com", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#loginDiv > iframe"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/frame {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": {"element-6066-11e4-a52e-4f735466cecf": "0.404327480122447-1", "ELEMENT": "0.404327480122447-1"}}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='email']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-1/clear {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-1"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='email']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-1/value {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-1", "value": ["a", "d", "m", "i", "n"]}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='password']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-2/clear {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-2"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "input[name='password']"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-2/value {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-2", "value": ["1", "2", "3", "4", "5", "6"]}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#dologin"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element/0.950182389235124-3/click {"sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "id": "0.950182389235124-3"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+selenium.webdriver.remote.remote_connection: DEBUG: POST http://127.0.0.1:51770/session/a5cc0e6b9372754b188c79e29f7f6560/element {"using": "css selector", "sessionId": "a5cc0e6b9372754b188c79e29f7f6560", "value": "#spnUid"}
+selenium.webdriver.remote.remote_connection: DEBUG: Finished Request
+--------------------- >> end captured logging << ---------------------
+test case start:
+test case end.
+test case start:
+pyse - 有道搜索
+test case end.
+</pre>
+    </div>
+</body>
+</html>

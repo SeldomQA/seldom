@@ -22,7 +22,7 @@ from .pyse import Pyse
 
 __author__ = "bugmaster"
 
-__version__ = "0.0.3"
+__version__ = "0.0.3.1"
 
 '''
 0.0.2 version update:
@@ -34,4 +34,7 @@ __version__ = "0.0.3"
 * With the nose instead of unittest.
 * Discard HTMLTestRunner,Integrated nose-html-reporting.
 * modify the examples under demo.
+
+0.0.3.1 version update:
+* Repair part bug.
 '''

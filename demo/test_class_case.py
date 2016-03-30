@@ -18,9 +18,10 @@ class TestLogin:
         ''' test mail login : admin ,123456 '''
         driver = self.driver
         driver.open(self.base_url)
-        driver.type("#idInput","admin")
-        driver.type("#pwdInput","123456")
-        driver.click("#loginBtn")
+        driver.switch_to_frame("#loginDiv > iframe")
+        driver.type("input[name='email']","admin")
+        driver.type("input[name='password']","123456")
+        driver.click("#dologin")
         sleep(3)
         user_name = driver.get_text("#spnUid")
         assert user_name=="admin@126.com"

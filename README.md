@@ -29,7 +29,7 @@ WebUI automation testing framework based on Selenium
     def test_baidu():
       ''' baidu search key : pyse '''
       driver = pyse.Pyse("chrome")
-      driver.open("http://www.baidu.com")
+      driver.open("https://www.baidu.com")
       driver.type("#kw","pyse")
       driver.click("#su")
       sleep(1)

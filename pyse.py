@@ -35,7 +35,7 @@ class Pyse(object):
         try:
             self.driver = driver
         except Exception:
-            print "Not found %s browser,You can enter 'ie', 'ff' or 'chrome'." %browser
+            raise NameError("Not found %s browser,You can enter 'ie', 'ff' or 'chrome'." %browser)
 
     def open(self, url):
         '''
@@ -293,8 +293,8 @@ class Pyse(object):
         Usage:
         driver.switch_to_frame("#el")
         '''
-        xf = self.driver.find_element_by_css_selector(css)
-        self.driver._switch_to.frame(xf)
+        iframe = self.driver.find_element_by_css_selector(css)
+        self.driver._switch_to.frame(iframe)
 
     def switch_to_frame_out(self):
         '''
