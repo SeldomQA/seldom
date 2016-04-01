@@ -2,7 +2,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 import os,sys,time
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -71,6 +73,7 @@ class Pyse(object):
         Usage:
         driver.type("#el","selenium")
         '''
+        self.element_wait(css)
         self.driver.find_element_by_css_selector(css).clear()
         self.driver.find_element_by_css_selector(css).send_keys(text)
 
@@ -82,6 +85,7 @@ class Pyse(object):
         Usage:
         driver.click("#el")
         '''
+        self.element_wait(css)
         self.driver.find_element_by_css_selector(css).click()
 
     def right_click(self, css):
@@ -91,6 +95,7 @@ class Pyse(object):
         Usage:
         driver.right_click("#el")
         '''
+        self.element_wait(css)
         element = self.driver.find_element_by_css_selector(css)
         ActionChains(self.driver).context_click(element).perform()
 
@@ -101,6 +106,7 @@ class Pyse(object):
         Usage:
         driver.move_to_element("#el")
         '''
+        self.element_wait(css)
         element = self.driver.find_element_by_css_selector(css)
         ActionChains(self.driver).move_to_element(element).perform()
 
@@ -111,6 +117,7 @@ class Pyse(object):
         Usage:
         driver.double_click("#el")
         '''
+        self.element_wait(css)
         element = self.driver.find_element_by_css_selector(css)
         ActionChains(self.driver).double_click(element).perform()
 
@@ -121,7 +128,9 @@ class Pyse(object):
         Usage:
         driver.drag_and_drop("#el","#ta")
         '''
+        self.element_wait(el_css)
         element = self.driver.find_element_by_css_selector(el_css)
+        self.element_wait(ta_css)
         target = self.driver.find_element_by_css_selector(ta_css)
         ActionChains(driver).drag_and_drop(element, target).perform()
 
@@ -132,13 +141,7 @@ class Pyse(object):
         Usage:
         driver.click_text("新闻")
         '''
-        aa = self.driver.find_elements_by_tag_name("a")
-        for a in aa:
-            try:
-                if str(a.text) == text:
-                    a.click()
-            except StaleElementReferenceException:
-                pass
+        self.driver.find_element_by_partial_link_text(text).click()
 
     def close(self):
         '''
@@ -166,6 +169,7 @@ class Pyse(object):
         Usage:
         driver.submit("#el") 
         '''
+        self.element_wait(css)
         self.driver.find_element_by_css_selector(css).submit()
 
     def F5(self):
@@ -202,6 +206,7 @@ class Pyse(object):
         Usage:
         driver.get_text("#el")
         '''
+        self.element_wait(css)
         return self.driver.find_element_by_css_selector(css).text
 
     def get_display(self, css):
@@ -211,6 +216,7 @@ class Pyse(object):
         Usage:
         driver.get_display("#el")
         '''
+        self.element_wait(css)
         return self.driver.find_element_by_css_selector(css).is_displayed()
 
     def get_title(self):
@@ -249,24 +255,15 @@ class Pyse(object):
         '''
         self.driver.implicitly_wait(secs)
 
-    def element_wait(self, css, secs):
+    def element_wait(self, css, secs=3):
         '''
         Waiting for an element to display.
         
         Usage:
         driver.element_wait("#el",10)
         '''
-        for i in range(secs):
-            try:
-                el = self.driver.find_element_by_css_selector(css).is_displayed()
-                print el
-                print type(el)
-                print type(True)
-                if el:
-                    break
-            except: pass
-            time.sleep(1)
-        else: print "time out"
+        WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CSS_SELECTOR,css)))
+
 
     def accept_alert(self):
         '''
@@ -293,6 +290,7 @@ class Pyse(object):
         Usage:
         driver.switch_to_frame("#el")
         '''
+        self.element_wait(css)
         iframe = self.driver.find_element_by_css_selector(css)
         self.driver._switch_to.frame(iframe)
 

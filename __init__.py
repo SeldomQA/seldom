@@ -22,7 +22,7 @@ from .pyse import Pyse
 
 __author__ = "bugmaster"
 
-__version__ = "0.0.3.1"
+__version__ = "0.0.4"
 
 '''
 0.0.2 version update:
@@ -37,4 +37,8 @@ __version__ = "0.0.3.1"
 
 0.0.3.1 version update:
 * Repair part bug.
+
+0.0.4
+Method to add default to wait.
+Modify the realization of the individual methods
 '''
