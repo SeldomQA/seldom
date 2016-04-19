@@ -18,12 +18,12 @@ class TestLogin:
         ''' test mail login : admin ,123456 '''
         driver = self.driver
         driver.open(self.base_url)
-        driver.switch_to_frame("#loginDiv > iframe")
-        driver.type("input[name='email']","admin")
-        driver.type("input[name='password']","123456")
-        driver.click("#dologin")
+        driver.switch_to_frame("xpaht=>//*[@id='loginDiv']/iframe")
+        driver.type("name=>email","admin")
+        driver.type("name=>password","123456")
+        driver.click("id=>dologin")
         sleep(3)
-        user_name = driver.get_text("#spnUid")
+        user_name = driver.get_text("id=>spnUid")
         assert user_name=="admin@126.com"
 
 

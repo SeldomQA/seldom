@@ -39,6 +39,62 @@ class Pyse(object):
         except Exception:
             raise NameError("Not found %s browser,You can enter 'ie', 'ff' or 'chrome'." %browser)
 
+    def element_wait(self, css, secs=5):
+        '''
+        Waiting for an element to display.
+        
+        Usage:
+        driver.element_wait("#el",10)
+        '''
+        if "=>" not in css:
+            raise NameError("Positioning syntax errors, lack of '=>'.")
+
+        by = css.split("=>")[0]
+        value = css.split("=>")[1]
+
+        if by == "id":
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.ID,value)))
+        elif by == "name":
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.NAME,value)))
+        elif by == "class":
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CLASS_NAME,value)))
+        elif by == "link_text":
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.LINK_TEXT,value)))
+        elif by == "xpath":
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.XPATH,value)))
+        elif by == "css":
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CSS_SELECTOR,value)))
+        else:
+            raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpaht','css'.")
+        
+
+    def get_element(self,css):
+        '''
+        Judge element positioning way, and returns the element.
+        '''
+        if "=>" not in css:
+            raise NameError("Positioning syntax errors, lack of '=>'.")
+
+        by = css.split("=>")[0]
+        value = css.split("=>")[1]
+
+        if by == "id":
+            element = self.driver.find_element_by_id(value)
+        elif by == "name":
+            element = self.driver.find_element_by_name(value)
+        elif by == "class":
+            element = self.driver.find_element_by_class_name(value)
+        elif by == "link_text":
+            element = self.driver.find_element_by_link_text(value)
+        elif by == "xpath":
+            element = self.driver.find_element_by_xpath(vlaue)
+        elif by == "css":
+            element = self.driver.find_element_by_css_selector(value)
+        else:
+            raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpaht','css'.")
+        return element
+
+
     def open(self, url):
         '''
         open url.
@@ -74,8 +130,9 @@ class Pyse(object):
         driver.type("#el","selenium")
         '''
         self.element_wait(css)
-        self.driver.find_element_by_css_selector(css).clear()
-        self.driver.find_element_by_css_selector(css).send_keys(text)
+        el = self.get_element(css)
+        el.clear()
+        el.send_keys(text)
 
     def click(self, css):
         '''
@@ -86,7 +143,8 @@ class Pyse(object):
         driver.click("#el")
         '''
         self.element_wait(css)
-        self.driver.find_element_by_css_selector(css).click()
+        el = self.get_element(css)
+        el.click()
 
     def right_click(self, css):
         '''
@@ -96,8 +154,8 @@ class Pyse(object):
         driver.right_click("#el")
         '''
         self.element_wait(css)
-        element = self.driver.find_element_by_css_selector(css)
-        ActionChains(self.driver).context_click(element).perform()
+        el = self.get_element(css)
+        ActionChains(self.driver).context_click(el).perform()
 
     def move_to_element(self, css):
         '''
@@ -107,8 +165,8 @@ class Pyse(object):
         driver.move_to_element("#el")
         '''
         self.element_wait(css)
-        element = self.driver.find_element_by_css_selector(css)
-        ActionChains(self.driver).move_to_element(element).perform()
+        el = self.get_element(css)
+        ActionChains(self.driver).move_to_element(el).perform()
 
     def double_click(self, css):
         '''
@@ -118,8 +176,8 @@ class Pyse(object):
         driver.double_click("#el")
         '''
         self.element_wait(css)
-        element = self.driver.find_element_by_css_selector(css)
-        ActionChains(self.driver).double_click(element).perform()
+        el = self.get_element(css)
+        ActionChains(self.driver).double_click(el).perform()
 
     def drag_and_drop(self, el_css, ta_css):
         '''
@@ -129,9 +187,9 @@ class Pyse(object):
         driver.drag_and_drop("#el","#ta")
         '''
         self.element_wait(el_css)
-        element = self.driver.find_element_by_css_selector(el_css)
+        element = self.get_element(el_css)
         self.element_wait(ta_css)
-        target = self.driver.find_element_by_css_selector(ta_css)
+        target = self.get_element(ta_css)
         ActionChains(driver).drag_and_drop(element, target).perform()
 
     def click_text(self, text):
@@ -170,7 +228,8 @@ class Pyse(object):
         driver.submit("#el") 
         '''
         self.element_wait(css)
-        self.driver.find_element_by_css_selector(css).submit()
+        el = self.get_element(css)
+        el.submit()
 
     def F5(self):
         '''
@@ -197,7 +256,8 @@ class Pyse(object):
         Usage:
         driver.get_attribute("#el","type")
         '''
-        return self.driver.find_element_by_css_selector(css).get_attribute(attribute)
+        el = self.get_element(css)
+        return el.get_attribute(attribute)
 
     def get_text(self, css):
         '''
@@ -207,7 +267,8 @@ class Pyse(object):
         driver.get_text("#el")
         '''
         self.element_wait(css)
-        return self.driver.find_element_by_css_selector(css).text
+        el = self.get_element(css)
+        return el.text
 
     def get_display(self, css):
         '''
@@ -217,7 +278,8 @@ class Pyse(object):
         driver.get_display("#el")
         '''
         self.element_wait(css)
-        return self.driver.find_element_by_css_selector(css).is_displayed()
+        el = self.get_element(css)
+        return el.is_displayed()
 
     def get_title(self):
         '''
@@ -254,16 +316,6 @@ class Pyse(object):
         driver.wait(10)
         '''
         self.driver.implicitly_wait(secs)
-
-    def element_wait(self, css, secs=3):
-        '''
-        Waiting for an element to display.
-        
-        Usage:
-        driver.element_wait("#el",10)
-        '''
-        WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CSS_SELECTOR,css)))
-
 
     def accept_alert(self):
         '''
@@ -313,7 +365,8 @@ class Pyse(object):
         '''
         driver = self.driver
         original_windows = driver.current_window_handle
-        driver.find_element_by_css_selector(css).click()
+        el = self.get_element(css)
+        el.click()
         all_handles = driver.window_handles
         for handle in all_handles:
             if handle != original_windows:

@@ -22,7 +22,7 @@ class TestRunner(object):
 
         now = time.strftime("%Y-%m-%d_%H_%M_%S")
         test_report = "nosetests "+self.cases+" --with-html --html-report="+self.cases+"\\report\\"+now+"report.html --html-report-template="+base_dir+"\\html_reporting\\templates\\report2.jinja2"
-        print test_report
+        # print test_report
         os.system(test_report)
 
 

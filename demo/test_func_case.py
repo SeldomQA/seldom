@@ -15,8 +15,8 @@ def test_baidu():
     ''' baidu search key : pyse '''
     driver = pyse.Pyse("chrome")
     driver.open("https://www.baidu.com")
-    driver.type("#kw","pyse")
-    driver.click("#su")
+    driver.type("id=>kw","pyse")
+    driver.click("id=>su")
     sleep(1)
     title = driver.get_title()
     assert title=="pyse_百度搜索"
@@ -27,8 +27,8 @@ def test_youdao():
     ''' youdao search key : pyse '''
     driver = pyse.Pyse()   # default firefox browser
     driver.open("http://www.youdao.com")
-    driver.type("[name=q]","pyse")
-    driver.click("#qb")
+    driver.type("name=>q","pyse")
+    driver.click("id=>qb")
     sleep(1)
     title = driver.get_title()
     print title

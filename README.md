@@ -5,10 +5,10 @@ WebUI automation testing framework based on Selenium
   pyse基于selenium（webdriver）进行了简单的二次封装，比selenium所提供的方法操作更简洁。
   
 特点：
-* 所有方法只提供css定位，webdriver提供了8种定位方法（id\name\class name\tag name\link text\partial link text\xpath\css selector）但其实，我们使用xpath或css完全可以替代id\name\class name\tag name 等方法，本框架所提供的click_text()方法可以替代link text方法，在最版本中用css替换掉了xpath，原因是css语法更简洁。统一元素定位方法使代码看起来更具有一致性，当看到一个元素时不用再犹豫选择哪种定位方法，直接使用css就好了。
-* 本框架只是对selenium（webdriver）原方法的简单封装，精简为30个方法，这些方法基本能够胜任于我们的web自动化测试。
+* 支持多种定位方方法（id\name\class\link_text\xpath\css）。
+* 本框架只是对selenium（webdriver）原生方法进行了简单的封装，精简为30大约个方法，这些方法基本能够胜任于我们的web自动化测试。
 * 基于nose单元测试框架，所以测试文件与测试方法遵循nose的命名规范。
-* 集成了html测试报告生成。
+* 集成了HTML测试报告生成。
 
 安装及前提条件：
 * Python2.7+ :https://www.python.org/
@@ -30,8 +30,8 @@ WebUI automation testing framework based on Selenium
       ''' baidu search key : pyse '''
       driver = pyse.Pyse("chrome")
       driver.open("https://www.baidu.com")
-      driver.type("#kw","pyse")
-      driver.click("#su")
+      driver.type("id=>kw","pyse")
+      driver.click("css=>#su")
       sleep(1)
       title = driver.get_title()
       assert title=="pyse_百度搜索"
@@ -97,37 +97,35 @@ phantomjs:http://phantomjs.org
     
   id定位:
 
-    driver.type("#kw", "pyse")
+    driver.type("id=>kw", "pyse")
 ==========================================================
     
   class定位:
 
-    driver.type(".s_ipt", u"pyse")
+    driver.type("class=>s_ipt", "pyse")
 ==========================================================
     
   name定位:
 
-    driver.type("[name=wd]", "pyse")
-    driver.type("[name='wd']", "pyse")
-==========================================================
-
-  tag name定位:
-
-    driver.type("input", "pyse")
-    driver.type("span>input", "pyse")
-    driver.type("form>span>input", "pyse")
+    driver.type("name=>wd", "pyse")
 ==========================================================
 
   link text定位：
-    click_text()方法可以做到这一点，例如，点击百度首页上的"新闻"链接。
+    点击百度首页上的"新闻"链接。
 
-    driver.click_text("新闻")
+    driver.click_text(u"link_text=>新闻")
 ==========================================================
-    
-  css更封复杂的更定写法：
 
-    driver.type("span.bg s_ipt_wr>input.s_ipt","pyse")
-    driver.type("span.bg s_btn_wr>input#su","pyse")
+  xpath定位：
+
+    driver.type("xpath=>//*[@class='s_ipt']","pyse")
+    driver.type("xpath=>//*[@id='kw']","pyse")
+==========================================================
+     
+  css定位：
+
+    driver.type("css=>.s_ipt","pyse")
+    driver.type("css=>#su","pyse")
 ==========================================================
     
   css选择器参考手册：

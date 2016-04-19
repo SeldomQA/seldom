@@ -6,8 +6,8 @@ def test_baidu():
     ''' baidu search key : pyse '''
     driver = pyse.Pyse("chrome")
     driver.open("https://www.baidu.com")
-    driver.type("#kw","pyse")
-    driver.click("#su")
+    driver.type("id=>kw","pyse")
+    driver.click("css=#su")
     sleep(1)
     title = driver.get_title()
     assert title=="pyse_百度搜索"
