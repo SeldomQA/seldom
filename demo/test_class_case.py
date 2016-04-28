@@ -19,12 +19,12 @@ class TestLogin:
         driver = self.driver
         driver.open(self.base_url)
         driver.switch_to_frame("xpaht=>//*[@id='loginDiv']/iframe")
-        driver.type("name=>email","admin")
-        driver.type("name=>password","123456")
+        driver.type("name=>email", "admin")
+        driver.type("name=>password", "123456")
         driver.click("id=>dologin")
         sleep(3)
         user_name = driver.get_text("id=>spnUid")
-        assert user_name=="admin@126.com"
+        assert user_name == "admin@126.com"
 
 
 if __name__ == '__main__':
