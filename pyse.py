@@ -24,11 +24,11 @@ class Pyse(object):
         pass parameter for other browser, Chrome browser for the "Chrome", 
         the Internet Explorer browser for "internet explorer" or "ie".
         '''
-        if browser == "firefox" or browser=="ff":
+        if browser == "firefox" or browser == "ff":
             driver = webdriver.Firefox()
         elif browser == "chrome":
             driver = webdriver.Chrome()
-        elif browser == "internet explorer" or browser=="ie":
+        elif browser == "internet explorer" or browser == "ie":
             driver = webdriver.Ie()
         elif browser == "opera":
             driver = webdriver.Opera()
@@ -37,7 +37,7 @@ class Pyse(object):
         try:
             self.driver = driver
         except Exception:
-            raise NameError("Not found %s browser,You can enter 'ie', 'ff' or 'chrome'." %browser)
+            raise NameError("Not found %s browser,You can enter 'ie', 'ff' or 'chrome'." % browser)
 
     def element_wait(self, css, secs=5):
         '''
@@ -53,20 +53,19 @@ class Pyse(object):
         value = css.split("=>")[1]
 
         if by == "id":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.ID,value)))
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.ID, value)))
         elif by == "name":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.NAME,value)))
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.NAME, value)))
         elif by == "class":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CLASS_NAME,value)))
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CLASS_NAME, value)))
         elif by == "link_text":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.LINK_TEXT,value)))
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.LINK_TEXT, value)))
         elif by == "xpath":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.XPATH,value)))
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.XPATH, value)))
         elif by == "css":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CSS_SELECTOR,value)))
+            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CSS_SELECTOR, value)))
         else:
             raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpaht','css'.")
-        
 
     def get_element(self,css):
         '''
@@ -87,13 +86,12 @@ class Pyse(object):
         elif by == "link_text":
             element = self.driver.find_element_by_link_text(value)
         elif by == "xpath":
-            element = self.driver.find_element_by_xpath(vlaue)
+            element = self.driver.find_element_by_xpath(value)
         elif by == "css":
             element = self.driver.find_element_by_css_selector(value)
         else:
             raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpaht','css'.")
         return element
-
 
     def open(self, url):
         '''
@@ -343,8 +341,8 @@ class Pyse(object):
         driver.switch_to_frame("#el")
         '''
         self.element_wait(css)
-        iframe = self.driver.find_element_by_css_selector(css)
-        self.driver._switch_to.frame(iframe)
+        iframe_el = self.get_element(css)
+        self.driver._switch_to.frame(iframe_el)
 
     def switch_to_frame_out(self):
         '''
@@ -363,14 +361,13 @@ class Pyse(object):
         Usage:
         driver.open_new_window()
         '''
-        driver = self.driver
-        original_windows = driver.current_window_handle
+        original_windows = self.driver.current_window_handle
         el = self.get_element(css)
         el.click()
-        all_handles = driver.window_handles
+        all_handles = self.driver.window_handles
         for handle in all_handles:
             if handle != original_windows:
-                driver._switch_to.window(handle)
+                self.driver._switch_to.window(handle)
 
 
 if __name__ == '__main__':
