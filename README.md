@@ -20,7 +20,7 @@ WebUI automation testing framework based on Selenium and Nose.
 
 =====================================================
     # coding=utf-8
-    import pyse
+    from pyse import Pyse, TestRunner
     from time import sleep
 
     def test_baidu():
@@ -30,12 +30,11 @@ WebUI automation testing framework based on Selenium and Nose.
       driver.type("id=>kw","pyse")
       driver.click("css=>#su")
       sleep(1)
-      title = driver.get_title()
-      assert title=="pyse_百度搜索"
+      assert "pyse" in driver.get_title()
       driver.quit()
 
     if __name__ == '__main__':
-      test_pro = pyse.TestRunner()
+      test_pro = TestRunner()
       test_pro.run()
 
 ==========================================================

@@ -1,15 +1,14 @@
 # coding=utf-8
-import pyse,nose
+from pyse import Pyse,TestRunner
 from time import sleep
 
 
 class TestLogin:
     '''test login '''
-    
+
     def setup(self):
-        self.driver = pyse.Pyse("chrome")
+        self.driver = Pyse("chrome")
         self.base_url = "http://www.126.com"
-        self.driver.wait(30)
 
     def teardown(self):
         self.driver.quit()
@@ -18,7 +17,7 @@ class TestLogin:
         ''' test mail login : admin ,123456 '''
         driver = self.driver
         driver.open(self.base_url)
-        driver.switch_to_frame("xpaht=>//*[@id='loginDiv']/iframe")
+        driver.switch_to_frame("xpath=>//*[@id='loginDiv']/iframe")
         driver.type("name=>email", "admin")
         driver.type("name=>password", "123456")
         driver.click("id=>dologin")
@@ -28,7 +27,7 @@ class TestLogin:
 
 
 if __name__ == '__main__':
-    test_pro = pyse.TestRunner()
+    test_pro = TestRunner()
     test_pro.run()
 
 '''
