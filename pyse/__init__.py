@@ -17,12 +17,12 @@
 # specific language governing permissions and limitations
 # under the License.
 
-from .html_reporting.TestRunner import TestRunner
+from .running.TestRunner import TestRunner
 from .pyse import Pyse
 
 __author__ = "bugmaster"
 
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 
 '''
 0.0.2 version update:
@@ -44,4 +44,8 @@ Modify the realization of the individual methods
 
 0.0.5
 Increase the support of multiple positioning methods
+
+0.0.6
+add setup.py file, Specification of the installation process, a time to install all dependencies.
+Delete unnecessary files
 '''

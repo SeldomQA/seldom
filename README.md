@@ -1,5 +1,5 @@
 # pyse
-WebUI automation testing framework based on Selenium
+WebUI automation testing framework based on Selenium and Nose.
 
 介绍：
   pyse基于selenium（webdriver）进行了简单的二次封装，比selenium所提供的方法操作更简洁。
@@ -8,14 +8,11 @@ WebUI automation testing framework based on Selenium
 * 支持多种定位方方法（id\name\class\link_text\xpath\css）。
 * 本框架只是对selenium（webdriver）原生方法进行了简单的封装，精简为30大约个方法，这些方法基本能够胜任于我们的web自动化测试。
 * 基于nose单元测试框架，所以测试文件与测试方法遵循nose的命名规范。
-* 集成了HTML测试报告生成。
+* 自动生成HTML测试报告生成。
 
-安装及前提条件：
+安装说明：
 * Python2.7+ :https://www.python.org/
-* selenium  :https://pypi.python.org/pypi/selenium
-* nose  :https://pypi.python.org/pypi/nose
-* nose-html-reporting:https://pypi.python.org/pypi/nose-html-reporting
-* 安装pyse ,将其克隆到本地，将pyse目录放到..\Python27\Lib\site-packages\目录下即可
+* 执行 >python setup.py install ,自动安装所有依赖：selenium、nose、nose-html-reporting。
 
 
 例子：
