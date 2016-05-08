@@ -29,12 +29,3 @@ class TestLogin:
 if __name__ == '__main__':
     test_pro = TestRunner()
     test_pro.run()
-
-'''
-============运行测试用例说明========
-TestRunner() 默认匹配当前目录下"test*.py"的文件并执行。当然也可以指定路径，例如：
-TestRunner(r"D:/test_project/test_case")
-
-执行run()方法运行测试用例.
-
-'''

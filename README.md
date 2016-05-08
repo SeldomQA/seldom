@@ -25,7 +25,7 @@ WebUI automation testing framework based on Selenium and Nose.
 
     def test_baidu():
       ''' baidu search key : pyse '''
-      driver = pyse.Pyse("chrome")
+      driver = Pyse("chrome")
       driver.open("https://www.baidu.com")
       driver.type("id=>kw","pyse")
       driver.click("css=>#su")
@@ -40,7 +40,7 @@ WebUI automation testing framework based on Selenium and Nose.
 ==========================================================
 运行测试用例说明：
 * TestRunner() 默认匹配当前目录下"test*.py"的文件并执行。当然也可以指定测试目录，例如：
-TestRunner(r"D:/test_project/test_case")
+TestRunner("D:/you/project/test_case/")  # 注意用反斜线"/"表示路径。
 * 执行run()方法运行测试用例
 
 支持的浏览器及驱动：
