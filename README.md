@@ -84,7 +84,7 @@ phantomjs:http://phantomjs.org
 
 元素定位：
 ==========================================================
-  关于元素的定位，经过权衡，抛弃了之前采用的xpath，而选择css，主要是因为css的语法写起来更简洁。
+  pyse支持多种定位方式，id、name、class、link text、xpath和css。把定位方法与定位内容一体，写起更加简洁。
 
     <form id="form" class="fm" action="/s" name="f">
       <span class="bg s_ipt_wr quickdelete-wrap">
