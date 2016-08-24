@@ -12,7 +12,7 @@ WebUI automation testing framework based on Selenium and Nose.
 
 安装说明：
 * Python2.7+ :https://www.python.org/
-* 执行 >python setup.py install ,自动安装所有依赖：selenium、nose、nose-html-reporting。
+* 进入pyse/目录，执行 >python setup.py install ,自动安装所有依赖：selenium、nose、nose-html-reporting。
 
 
 例子：

@@ -1,11 +1,10 @@
 # coding=utf-8
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-import os,sys,time
+import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -44,7 +43,7 @@ class Pyse(object):
         Waiting for an element to display.
         
         Usage:
-        driver.element_wait("#el",10)
+        driver.element_wait("css=>#el",10)
         '''
         if "=>" not in css:
             raise NameError("Positioning syntax errors, lack of '=>'.")
@@ -125,12 +124,22 @@ class Pyse(object):
         Operation input box.
 
         Usage:
-        driver.type("#el","selenium")
+        driver.type("css=>#el","selenium")
+        '''
+        self.element_wait(css)
+        el = self.get_element(css)
+        el.send_keys(text)
+
+    def clear(self, css):
+        '''
+        Clear the contents of the input box.
+
+        Usage:
+        driver.clear("css=>#el")
         '''
         self.element_wait(css)
         el = self.get_element(css)
         el.clear()
-        el.send_keys(text)
 
     def click(self, css):
         '''
@@ -138,7 +147,7 @@ class Pyse(object):
         Connection, check box, radio buttons, and even drop-down box etc..
         
         Usage:
-        driver.click("#el")
+        driver.click("css=>#el")
         '''
         self.element_wait(css)
         el = self.get_element(css)
@@ -149,7 +158,7 @@ class Pyse(object):
         Right click element.
 
         Usage:
-        driver.right_click("#el")
+        driver.right_click("css=>#el")
         '''
         self.element_wait(css)
         el = self.get_element(css)
@@ -160,7 +169,7 @@ class Pyse(object):
         Mouse over the element.
 
         Usage:
-        driver.move_to_element("#el")
+        driver.move_to_element("css=>#el")
         '''
         self.element_wait(css)
         el = self.get_element(css)
@@ -171,7 +180,7 @@ class Pyse(object):
         Double click element.
 
         Usage:
-        driver.double_click("#el")
+        driver.double_click("css=>#el")
         '''
         self.element_wait(css)
         el = self.get_element(css)
@@ -182,7 +191,7 @@ class Pyse(object):
         Drags an element a certain distance and then drops it.
 
         Usage:
-        driver.drag_and_drop("#el","#ta")
+        driver.drag_and_drop("css=>#el","css=>#ta")
         '''
         self.element_wait(el_css)
         element = self.get_element(el_css)
@@ -223,7 +232,7 @@ class Pyse(object):
         Submit the specified form.
 
         Usage:
-        driver.submit("#el") 
+        driver.submit("css=>#el")
         '''
         self.element_wait(css)
         el = self.get_element(css)
@@ -252,7 +261,7 @@ class Pyse(object):
         Gets the value of an element attribute.
 
         Usage:
-        driver.get_attribute("#el","type")
+        driver.get_attribute("css=>#el","type")
         '''
         el = self.get_element(css)
         return el.get_attribute(attribute)
@@ -262,7 +271,7 @@ class Pyse(object):
         Get element text information.
 
         Usage:
-        driver.get_text("#el")
+        driver.get_text("css=>#el")
         '''
         self.element_wait(css)
         el = self.get_element(css)
@@ -273,7 +282,7 @@ class Pyse(object):
         Gets the element to display,The return result is true or false.
 
         Usage:
-        driver.get_display("#el")
+        driver.get_display("css=>#el")
         '''
         self.element_wait(css)
         el = self.get_element(css)
@@ -338,7 +347,7 @@ class Pyse(object):
         Switch to the specified frame.
         
         Usage:
-        driver.switch_to_frame("#el")
+        driver.switch_to_frame("css=>#el")
         '''
         self.element_wait(css)
         iframe_el = self.get_element(css)
