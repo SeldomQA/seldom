@@ -1,5 +1,5 @@
 # pyse
-WebUI automation testing framework based on Selenium and Nose.
+WebUI automation testing framework based on Selenium and unittest.
 
 介绍：
   pyse基于selenium（webdriver）进行了简单的二次封装，比selenium所提供的方法操作更简洁。
