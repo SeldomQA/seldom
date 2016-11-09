@@ -7,40 +7,44 @@ WebUI automation testing framework based on Selenium and Nose.
 特点：
 * 支持多种定位方法（id\name\class\link_text\xpath\css）。
 * 本框架只是对selenium（webdriver）原生方法进行了简单的封装，精简为大约30个方法，这些方法基本能够胜任于我们的web自动化测试。
-* 基于nose单元测试框架，所以测试文件与测试方法遵循nose的命名规范。
+* 基于unittest单元测试框架，所以测试文件与测试方法遵循unittest开发。
 * 自动生成HTML测试报告生成。
 
 安装说明：
-* Python2.7+ :https://www.python.org/
-* 进入pyse/目录，执行 >python setup.py install ,自动安装所有依赖：selenium、nose、nose-html-reporting。
+* Python3.5+ :https://www.python.org/
+* Selenium3.0.0+ :https://pypi.python.org/pypi/selenium
+* 进入pyse/目录，执行 >python setup.py install。
 
 
 例子：
    请查看demo目录
 
 =====================================================
-    # coding=utf-8
     from pyse import Pyse, TestRunner
     from time import sleep
+    import unittest
 
-    def test_baidu():
-      ''' baidu search key : pyse '''
-      driver = Pyse("chrome")
-      driver.open("https://www.baidu.com")
-      driver.type("id=>kw","pyse")
-      driver.click("css=>#su")
-      sleep(1)
-      assert "pyse" in driver.get_title()
-      driver.quit()
+    class BaiduTest(unittest.TestCase):
+
+        def test_baidu(self):
+            ''' baidu search key : pyse '''
+            driver = Pyse("chrome")
+            driver.open("https://www.baidu.com")
+            driver.clear("id=>kw")
+            driver.type("id=>kw", "pyse")
+            driver.click("css=>#su")
+            sleep(1)
+            self.assertTrue("pyse",driver.get_title())
+            driver.quit()
 
     if __name__ == '__main__':
-      test_pro = TestRunner()
-      test_pro.run()
+        runner = TestRunner()
+        runner.run()
 
 ==========================================================
 运行测试用例说明：
 * TestRunner() 默认匹配当前目录下"test*.py"的文件并执行。当然也可以指定测试目录，例如：
-TestRunner("D:/you/project/test_case/")  # 注意用斜线"/"表示路径。
+TestRunner("path/you/project/test_case/")  # 注意用斜线"/"表示路径。
 * 执行run()方法运行测试用例
 
 支持的浏览器及驱动：

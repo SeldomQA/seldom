@@ -4,14 +4,11 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 
 class Pyse(object):
     '''
-        Pyse framework for the main class, the original 
+        Pyse framework for the main class, the original
     selenium provided by the method of the two packaging,
     making it easier to use.
     '''
@@ -20,7 +17,7 @@ class Pyse(object):
         '''
         Run class initialization method, the default is proper
         to drive the Firefox browser. Of course, you can also
-        pass parameter for other browser, Chrome browser for the "Chrome", 
+        pass parameter for other browser, Chrome browser for the "Chrome",
         the Internet Explorer browser for "internet explorer" or "ie".
         '''
         if browser == "firefox" or browser == "ff":
@@ -41,7 +38,7 @@ class Pyse(object):
     def element_wait(self, css, secs=5):
         '''
         Waiting for an element to display.
-        
+
         Usage:
         driver.element_wait("css=>#el",10)
         '''
@@ -145,7 +142,7 @@ class Pyse(object):
         '''
         It can click any text / image can be clicked
         Connection, check box, radio buttons, and even drop-down box etc..
-        
+
         Usage:
         driver.click("css=>#el")
         '''
@@ -221,7 +218,7 @@ class Pyse(object):
     def quit(self):
         '''
         Quit the driver and close all the windows.
-        
+
         Usage:
         driver.quit()
         '''
@@ -336,7 +333,7 @@ class Pyse(object):
     def dismiss_alert(self):
         '''
         Dismisses the alert available.
-        
+
         Usage:
         driver.dismiss_alert()
         '''
@@ -345,7 +342,7 @@ class Pyse(object):
     def switch_to_frame(self, css):
         '''
         Switch to the specified frame.
-        
+
         Usage:
         driver.switch_to_frame("css=>#el")
         '''
@@ -357,7 +354,7 @@ class Pyse(object):
         '''
         Returns the current form machine form at the next higher level.
         Corresponding relationship with switch_to_frame () method.
-        
+
         Usage:
         driver.switch_to_frame_out()
         '''

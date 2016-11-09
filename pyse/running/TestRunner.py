@@ -1,12 +1,17 @@
 # coding=utf-8
 import time
 import os
+from .HTMLTestRunner import HTMLTestRunner
+import unittest
 
 
 class TestRunner(object):
+    ''' Run test '''
 
-    def __init__(self, cases="./"):
+    def __init__(self, cases="./",title="Auto Test Report",description="Test case execution"):
         self.cases = cases
+        self.title = title
+        self.des = description
 
     def run(self):
 
@@ -16,11 +21,11 @@ class TestRunner(object):
         else:
             os.mkdir(self.cases+'/report')
 
-        # base_dir = os.path.dirname(os.path.dirname(__file__))
         now = time.strftime("%Y-%m-%d_%H_%M_%S")
-        test_report = "nosetests "+self.cases+" --with-html --html-report="+self.cases+"report/"+now+"report.html"
-        # print test_report
-        os.system(test_report)
+        fp = open("./report/"+ now +"result.html", 'wb')
+        tests = unittest.defaultTestLoader.discover(self.cases,pattern='test*.py',top_level_dir=None)
+        runner = HTMLTestRunner(stream=fp, title=self.title, description=self.des)
+        runner.run(tests)
 
 
 if __name__ == '__main__':

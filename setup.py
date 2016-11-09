@@ -22,16 +22,14 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'Selenium>=2.53.0',
-        'nose>=1.3.7',
-        'nose-html-reporting>=0.2.3',
+        'Selenium>=3.0.1',
     ],
     classifiers=[
         'Intended Audience :: Developers',
         'Operating System :: Ubuntu',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries ::Testing'
     ],

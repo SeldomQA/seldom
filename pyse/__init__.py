@@ -22,7 +22,7 @@ from .pyse import Pyse
 
 __author__ = "bugmaster"
 
-__version__ = "0.0.6"
+__version__ = "0.0.7"
 
 '''
 0.0.2 version update:
@@ -48,4 +48,7 @@ Increase the support of multiple positioning methods
 0.0.6
 add setup.py file, Specification of the installation process, a time to install all dependencies.
 Delete unnecessary files
+
+0.0.7
+Re based on unittest.
 '''
