@@ -75,14 +75,15 @@ TestRunner("path/you/project/test_case/")  # 注意用斜线"/"表示路径。
 
     driver = Pyse("phantomjs")
 
+geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
 
-Chromedriver:https://sites.google.com/a/chromium.org/chromedriver/home
+Chromedriver(Chrome):https://sites.google.com/a/chromium.org/chromedriver/home
 
-IEDriverServer:http://selenium-release.storage.googleapis.com/index.html
+IEDriverServer(IE):http://selenium-release.storage.googleapis.com/index.html
 
-operadriver:https://github.com/operasoftware/operachromiumdriver/releases
+operadriver(Opera):https://github.com/operasoftware/operachromiumdriver/releases
 
-phantomjs:http://phantomjs.org
+phantomjs(PhantomJS):http://phantomjs.org
 
 ==========================================================
 
