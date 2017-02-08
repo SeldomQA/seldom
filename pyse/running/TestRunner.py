@@ -26,7 +26,7 @@ class TestRunner(object):
         tests = unittest.defaultTestLoader.discover(self.cases,pattern='test*.py',top_level_dir=None)
         runner = HTMLTestRunner(stream=fp, title=self.title, description=self.des)
         runner.run(tests)
-		fp.close()
+	fp.close()
 
 
 if __name__ == '__main__':
