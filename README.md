@@ -75,6 +75,10 @@ TestRunner("path/you/project/test_case/")  # 注意用斜线"/"表示路径。
 
     driver = Pyse("phantomjs")
 
+    Edge:
+
+      driver = Pyse("edge")
+
 geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
 
 Chromedriver(Chrome):https://sites.google.com/a/chromium.org/chromedriver/home
@@ -84,6 +88,8 @@ IEDriverServer(IE):http://selenium-release.storage.googleapis.com/index.html
 operadriver(Opera):https://github.com/operasoftware/operachromiumdriver/releases
 
 phantomjs(PhantomJS):http://phantomjs.org
+
+MicrosoftWebDriver(Edge):https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver
 
 ==========================================================
 

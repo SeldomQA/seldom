@@ -30,10 +30,12 @@ class Pyse(object):
             driver = webdriver.Opera()
         elif browser == "phantomjs":
             driver = webdriver.PhantomJS()
+        elif browser == 'edge':
+            driver = webdriver.Edge()
         try:
             self.driver = driver
         except Exception:
-            raise NameError("Not found %s browser,You can enter 'ie', 'ff' or 'chrome'." % browser)
+            raise NameError("Not found %s browser,You can enter 'ie', 'ff', 'opera', 'phantomjs',edge or 'chrome'." % browser)
 
     def element_wait(self, css, secs=5):
         '''
