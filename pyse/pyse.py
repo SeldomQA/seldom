@@ -35,7 +35,7 @@ class Pyse(object):
         try:
             self.driver = driver
         except Exception:
-            raise NameError("Not found %s browser,You can enter 'ie', 'ff', 'opera', 'phantomjs',edge or 'chrome'." % browser)
+            raise NameError("Not found %s browser,You can enter 'ie', 'ff', 'opera', 'phantomjs', 'edge' or 'chrome'." % browser)
 
     def element_wait(self, css, secs=5):
         '''
