@@ -75,9 +75,9 @@ TestRunner("path/you/project/test_case/")  # 注意用斜线"/"表示路径。
 
     driver = Pyse("phantomjs")
 
-    Edge:
-
-      driver = Pyse("edge")
+  Edge:
+  
+    driver = Pyse("edge")
 
 geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
 
