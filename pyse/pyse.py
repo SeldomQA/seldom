@@ -63,7 +63,7 @@ class Pyse(object):
         elif by == "css":
             WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CSS_SELECTOR, value)))
         else:
-            raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpaht','css'.")
+            raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")
 
     def get_element(self,css):
         '''
@@ -88,7 +88,7 @@ class Pyse(object):
         elif by == "css":
             element = self.driver.find_element_by_css_selector(value)
         else:
-            raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpaht','css'.")
+            raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")
         return element
 
     def open(self, url):

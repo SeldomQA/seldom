@@ -16,7 +16,7 @@ setup(
     license='BSD',
     author='bugmaster',
     author_email='fnngj@126.com',
-    description='WebUI automation testing framework based on Selenium and Nose ',
+    description='WebUI automation testing framework based on Selenium and unittest ',
     long_description=__doc__,
     packages=find_packages(),
     include_package_data=True,
