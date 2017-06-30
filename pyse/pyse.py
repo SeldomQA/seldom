@@ -350,7 +350,7 @@ class Pyse(object):
         '''
         self.element_wait(css)
         iframe_el = self.get_element(css)
-        self.driver._switch_to.frame(iframe_el)
+        self.driver.switch_to.frame(iframe_el)
 
     def switch_to_frame_out(self):
         '''
@@ -360,7 +360,7 @@ class Pyse(object):
         Usage:
         driver.switch_to_frame_out()
         '''
-        self.driver._switch_to.default_content()
+        self.driver.switch_to.default_content()
 
     def open_new_window(self, css):
         '''
@@ -375,7 +375,7 @@ class Pyse(object):
         all_handles = self.driver.window_handles
         for handle in all_handles:
             if handle != original_windows:
-                self.driver._switch_to.window(handle)
+                self.driver.switch_to.window(handle)
 
 
 if __name__ == '__main__':
