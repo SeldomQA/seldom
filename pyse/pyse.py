@@ -4,7 +4,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-
+from selenium.webdriver.chrome.options import Options
 
 class Pyse(object):
     '''
@@ -28,8 +28,10 @@ class Pyse(object):
             driver = webdriver.Ie()
         elif browser == "opera":
             driver = webdriver.Opera()
-        elif browser == "phantomjs":
-            driver = webdriver.PhantomJS()
+        elif browser == "chrome_headless":
+            chrome_options = Options()
+            chrome_options.add_argument('--headless')
+            driver = webdriver.Chrome(chrome_options=chrome_options)
         elif browser == 'edge':
             driver = webdriver.Edge()
         try:

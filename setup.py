@@ -22,7 +22,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'Selenium>=3.0.1',
+        'Selenium>=3.6.0',
     ],
     classifiers=[
         'Intended Audience :: Developers',
