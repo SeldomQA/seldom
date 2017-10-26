@@ -60,9 +60,9 @@ driver = Pyse("ff")        #Firefox
 driver = Pyse("chrome")    # Chrome
 driver = Pyse("internet explorer")  #IE
 driver = Pyse("ie")        #IE
-driver = Pyse("opera")  #Opera
+driver = Pyse("opera")     #Opera
 driver = Pyse("chrome_headless")  #Chrome headless模式
-driver = Pyse("edge")  #Edge
+driver = Pyse("edge")      #Edge
 ```
 
 geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
@@ -72,8 +72,6 @@ Chromedriver(Chrome):https://sites.google.com/a/chromium.org/chromedriver/home
 IEDriverServer(IE):http://selenium-release.storage.googleapis.com/index.html
 
 operadriver(Opera):https://github.com/operasoftware/operachromiumdriver/releases
-
-phantomjs(PhantomJS):http://phantomjs.org
 
 MicrosoftWebDriver(Edge):https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver
 
