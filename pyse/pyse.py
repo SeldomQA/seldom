@@ -150,13 +150,11 @@ class Pyse(object):
         Usage:
         driver.click("css=>#el")
         '''
+        self.element_wait(css)
+        el = self.get_element(css)
         try:
-            self.element_wait(css)
-            el = self.get_element(css)
             el.click()
         except Exception as e:
-            self.element_wait(css)
-            el = self.get_element(css)
             self.move_to_element(el)
             ActionChains(self.driver).click().perform()
 
