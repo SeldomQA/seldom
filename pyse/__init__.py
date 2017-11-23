@@ -22,7 +22,7 @@ from .pyse import Pyse
 
 __author__ = "bugmaster"
 
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 
 '''
 0.0.2 version update:
@@ -51,4 +51,8 @@ Delete unnecessary files
 
 0.0.7
 Re based on unittest.
+
+0.0.8
+add parameterized
+Beautification test report
 '''

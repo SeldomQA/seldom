@@ -310,7 +310,7 @@ function showOutput(id, name) {
 <style type="text/css" media="screen">
 body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
 table       { font-size: 100%; }
-pre         { }
+pre         {  }
 
 /* -- heading ---------------------------------------------------------------------- */
 h1 {
@@ -320,6 +320,7 @@ h1 {
 .heading {
     margin-top: 0ex;
     margin-bottom: 1ex;
+	margin-left: 10px;
 }
 
 .heading .attribute {
@@ -346,8 +347,6 @@ a.popup_link:hover {
     left: 0px;
     top: 0px;
     /*border: solid #627173 1px; */
-    padding: 10px;
-    background-color: #E6E6D6;
     font-family: "Lucida Console", "Courier New", Courier, monospace;
     text-align: left;
     font-size: 8pt;
@@ -359,25 +358,30 @@ a.popup_link:hover {
 #show_detail_line {
     margin-top: 3ex;
     margin-bottom: 1ex;
+	margin-left: 10px;
 }
 #result_table {
     width: 80%;
     border-collapse: collapse;
     border: 1px solid #777;
+	margin-left: 10px;
 }
 #header_row {
     font-weight: bold;
-    color: white;
-    background-color: #777;
+    color: #606060;
+    background-color: #f5f5f5;
+	border-top-width: 10px;
+    border-color: #d6e9c6;
 }
 #result_table td {
-    border: 1px solid #777;
+    border: 1px solid #f5f5f5;
     padding: 2px;
+
 }
 #total_row  { font-weight: bold; }
-.passClass  { background-color: #6c6; }
-.failClass  { background-color: #c60; }
-.errorClass { background-color: #c00; }
+.passClass  { background-color: #d6e9c6; }
+.failClass  { background-color: #faebcc; }
+.errorClass { background-color: #ebccd1; }
 .passCase   { color: #6c6; }
 .failCase   { color: #c60; font-weight: bold; }
 .errorCase  { color: #c00; font-weight: bold; }
@@ -416,7 +420,7 @@ a.popup_link:hover {
     #
 
     REPORT_TMPL = """
-<p id='show_detail_line'>Show
+<p id='show_detail_line' style="margin-left: 10px;">Show
 <a href='javascript:showCase(0)' class="btn btn-xs btn-primary">Summary</a>
 <a href='javascript:showCase(1)' class="btn btn-xs btn-danger">Failed</a>
 <a href='javascript:showCase(2)' class="btn btn-xs btn-info">All</a>
@@ -430,7 +434,7 @@ a.popup_link:hover {
 <col align='right' />
 <col align='right' />
 </colgroup>
-<tr id='header_row'>
+<tr id='header_row' class="panel-title">
     <td>Test Group/Test case</td>
     <td>Count</td>
     <td>Pass</td>

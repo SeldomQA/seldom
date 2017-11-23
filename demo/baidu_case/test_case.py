@@ -2,34 +2,30 @@
 from pyse import Pyse, TestRunner
 from time import sleep
 import unittest
-
+from parameterized import parameterized
 
 class BaiduTest(unittest.TestCase):
     ''' Baidu serach test case '''
 
     def setUp(self):
         self.driver = Pyse("chrome")
+        self.base_url = "https://www.baidu.com"
 
     def tearDown(self):
         self.driver.quit()
-    
-    def baidu_search(self,search_key):
-        self.driver.open("https://www.baidu.com")
+
+    @parameterized.expand([
+        (1, 'pyse'),
+        (2, 'selenium'),
+        (3, 'unittest'),
+    ])
+    def test_baidu(self,name,search_key):
+        ''' baidu search key : pyse '''
+        self.driver.open(self.base_url)
         self.driver.clear("id=>kw")
         self.driver.type("id=>kw", search_key)
         self.driver.click("css=>#su")
         sleep(1)
-
-    def test_baidu1(self):
-        ''' baidu search key : pyse '''
-        search_key = "pyse"
-        self.baidu_search(search_key)
-        self.assertTrue(search_key,self.driver.get_title())
-
-    def test_baidu2(self):
-        ''' baidu search key : selenium '''
-        search_key = "selenium"
-        self.baidu_search(search_key)
         self.assertTrue(search_key,self.driver.get_title())
 
 

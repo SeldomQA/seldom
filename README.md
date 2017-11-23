@@ -109,5 +109,7 @@ driver.type("css=>#su","pyse")        #css
 
   css选择器参考手册：
   http://www.w3school.com.cn/cssref/css_selectors.asp
-  nose基本用法：
-  http://pythontesting.net/framework/nose/nose-introduction/
+
+#### 测试报告
+
+![](./test_report.png)

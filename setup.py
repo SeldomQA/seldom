@@ -21,9 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        'Selenium>=3.6.0',
-    ],
+    install_requires=['selenium>=3.6.0', 'parameterized>=0.6.1'],
     classifiers=[
         'Intended Audience :: Developers',
         'Operating System :: Ubuntu',
