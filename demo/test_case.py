@@ -6,7 +6,7 @@ class BaiduTest(unittest.TestCase):
 
     def test_baidu(self):
         ''' baidu search key : pyse '''
-        driver = Pyse("chrome")
+        driver = Pyse("chrome_headless")
         driver.open("https://www.baidu.com/")
         driver.clear("id=>kw")
         driver.type("id=>kw", "pyse")
