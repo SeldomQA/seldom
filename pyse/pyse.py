@@ -5,6 +5,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from time import sleep
+
 
 class Pyse(object):
     '''
@@ -37,7 +39,8 @@ class Pyse(object):
         try:
             self.driver = driver
         except Exception:
-            raise NameError("Not found %s browser,You can enter 'ie', 'ff', 'opera', 'phantomjs', 'edge' or 'chrome'." % browser)
+            raise NameError(
+                "Not found %s browser,You can enter 'ie', 'ff', 'opera', 'phantomjs', 'edge' or 'chrome'." % browser)
 
     def element_wait(self, css, secs=5):
         '''
@@ -53,21 +56,22 @@ class Pyse(object):
         value = css.split("=>")[1]
 
         if by == "id":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.ID, value)))
+            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.ID, value)))
         elif by == "name":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.NAME, value)))
+            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.NAME, value)))
         elif by == "class":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CLASS_NAME, value)))
+            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.CLASS_NAME, value)))
         elif by == "link_text":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.LINK_TEXT, value)))
+            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.LINK_TEXT, value)))
         elif by == "xpath":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.XPATH, value)))
+            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.XPATH, value)))
         elif by == "css":
-            WebDriverWait(self.driver,secs,1).until(EC.presence_of_element_located((By.CSS_SELECTOR, value)))
+            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.CSS_SELECTOR, value)))
         else:
-            raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")
+            raise NameError(
+                "Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")
 
-    def get_element(self,css):
+    def get_element(self, css):
         '''
         Judge element positioning way, and returns the element.
         '''
@@ -90,7 +94,8 @@ class Pyse(object):
         elif by == "css":
             element = self.driver.find_element_by_css_selector(value)
         else:
-            raise NameError("Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")
+            raise NameError(
+                "Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")
         return element
 
     def open(self, url):
@@ -378,6 +383,57 @@ class Pyse(object):
         for handle in all_handles:
             if handle != original_windows:
                 self.driver.switch_to.window(handle)
+
+    def assertTitle(self, title, second=3):
+        '''
+        Asserts whether the current title is in line with expectations.
+        The default is 3 seconds.
+
+        Usage:
+        driver.assertTitle("title")
+        '''
+        if title == None:
+            raise NameError("'title' can't be empty.")
+        for s in range(second):
+            if title in self.driver.title:
+                break
+            else:
+                sleep(1)
+        else:
+            raise AssertionError("'%s' not found in '%s'" % (title, self.driver.title))
+
+    def assertUrl(self, url, second=3):
+        '''
+        Asserts whether the current URL is in line with expectations.
+        The default is 3 seconds.
+
+        Usage:
+        driver.assertUrl("url")
+        '''
+        if url == None:
+            raise NameError("'URL' can't be empty.")
+        for s in range(second):
+            if url == self.driver.current_url:
+                break
+            else:
+                sleep(1)
+        else:
+            raise AssertionError("'%s' != '%s'" % (url, self.driver.current_url))
+
+    def assertText(self, actual_el, expect_result):
+        '''
+        Asserts whether the text of the current page conforms to expectations.
+        - actual_el: The actual element text.
+        - expect_result :expected results.
+
+        Usage:
+        driver.assertText("#el","text")
+        '''
+        if actual_el == None or expect_result == None:
+            raise NameError("'actual' or 'exect' can't be empty.")
+        actual_result = self.get_text(actual_el)
+        if actual_result != expect_result:
+            raise AssertionError("'%s' != '%s'" % (actual_result, expect_result))
 
 
 if __name__ == '__main__':

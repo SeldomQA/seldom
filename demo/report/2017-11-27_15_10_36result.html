@@ -11,7 +11,7 @@
 <style type="text/css" media="screen">
 body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
 table       { font-size: 100%; }
-pre         { }
+pre         {  }
 
 /* -- heading ---------------------------------------------------------------------- */
 h1 {
@@ -21,6 +21,7 @@ h1 {
 .heading {
     margin-top: 0ex;
     margin-bottom: 1ex;
+	margin-left: 10px;
 }
 
 .heading .attribute {
@@ -47,8 +48,6 @@ a.popup_link:hover {
     left: 0px;
     top: 0px;
     /*border: solid #627173 1px; */
-    padding: 10px;
-    background-color: #E6E6D6;
     font-family: "Lucida Console", "Courier New", Courier, monospace;
     text-align: left;
     font-size: 8pt;
@@ -60,25 +59,30 @@ a.popup_link:hover {
 #show_detail_line {
     margin-top: 3ex;
     margin-bottom: 1ex;
+	margin-left: 10px;
 }
 #result_table {
     width: 80%;
     border-collapse: collapse;
     border: 1px solid #777;
+	margin-left: 10px;
 }
 #header_row {
     font-weight: bold;
-    color: white;
-    background-color: #777;
+    color: #606060;
+    background-color: #f5f5f5;
+	border-top-width: 10px;
+    border-color: #d6e9c6;
 }
 #result_table td {
-    border: 1px solid #777;
+    border: 1px solid #f5f5f5;
     padding: 2px;
+
 }
 #total_row  { font-weight: bold; }
-.passClass  { background-color: #6c6; }
-.failClass  { background-color: #c60; }
-.errorClass { background-color: #c00; }
+.passClass  { background-color: #d6e9c6; }
+.failClass  { background-color: #faebcc; }
+.errorClass { background-color: #ebccd1; }
 .passCase   { color: #6c6; }
 .failCase   { color: #c60; font-weight: bold; }
 .errorCase  { color: #c00; font-weight: bold; }
@@ -191,16 +195,16 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>百度自动化测试报告</h1>
-<p class='attribute'><strong>Start Time:</strong> 2016-11-09 16:00:41</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:17.344992</p>
-<p class='attribute'><strong>Status:</strong> Pass 2</p>
+<p class='attribute'><strong>Start Time:</strong> 2017-11-27 15:10:36</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:25.404781</p>
+<p class='attribute'><strong>Status:</strong> Pass 3</p>
 
 <p class='description'>测试环境：Chrome</p>
 </div>
 
 
 
-<p id='show_detail_line'>Show
+<p id='show_detail_line' style="margin-left: 10px;">Show
 <a href='javascript:showCase(0)' class="btn btn-xs btn-primary">Summary</a>
 <a href='javascript:showCase(1)' class="btn btn-xs btn-danger">Failed</a>
 <a href='javascript:showCase(2)' class="btn btn-xs btn-info">All</a>
@@ -214,7 +218,7 @@ function showOutput(id, name) {
 <col align='right' />
 <col align='right' />
 </colgroup>
-<tr id='header_row'>
+<tr id='header_row' class="panel-title">
     <td>Test Group/Test case</td>
     <td>Count</td>
     <td>Pass</td>
@@ -225,27 +229,32 @@ function showOutput(id, name) {
 
 <tr class='passClass'>
     <td>test_case.BaiduTest:  Baidu serach test case </td>
-    <td>2</td>
-    <td>2</td>
+    <td>3</td>
+    <td>3</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c1',2)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c1',3)">Detail</a></td>
 </tr>
 
 <tr id='pt1.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_baidu1: baidu search key : pyse</div></td>
+    <td class='none'><div class='testcase'>test_baidu_0: baidu search key : pyse [with name=1, search_key='pyse']</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt1.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_baidu2: baidu search key : selenium</div></td>
+    <td class='none'><div class='testcase'>test_baidu_1: baidu search key : pyse [with name=2, search_key='selenium']</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_baidu_2: baidu search key : pyse [with name=3, search_key='unittest']</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='total_row'>
     <td>Total</td>
-    <td>2</td>
-    <td class="text text-success">2</td>
+    <td>3</td>
+    <td class="text text-success">3</td>
     <td class="text text-danger">0</td>
     <td class="text text-warning">0</td>
     <td>&nbsp;</td>

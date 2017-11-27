@@ -4,6 +4,7 @@ from time import sleep
 import unittest
 from parameterized import parameterized
 
+
 class BaiduTest(unittest.TestCase):
     ''' Baidu serach test case '''
 
@@ -25,8 +26,7 @@ class BaiduTest(unittest.TestCase):
         self.driver.clear("id=>kw")
         self.driver.type("id=>kw", search_key)
         self.driver.click("css=>#su")
-        sleep(1)
-        self.assertTrue(search_key,self.driver.get_title())
+        self.driver.assertTitle(search_key)
 
 
 if __name__ == '__main__':

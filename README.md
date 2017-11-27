@@ -16,7 +16,7 @@ WebUI automation testing framework based on Selenium and unittest.
 * 进入pyse/目录，执行:
 
 ```
-python setup.py install。
+> python setup.py install
 ```
 
 #### 例子：
@@ -33,13 +33,14 @@ class BaiduTest(unittest.TestCase):
     def test_baidu(self):
         ''' baidu search key : pyse '''
         driver = Pyse("chrome")
-        driver.open("https://www.baidu.com")
+        driver.open("https://www.baidu.com/")
         driver.clear("id=>kw")
         driver.type("id=>kw", "pyse")
         driver.click("css=>#su")
-        sleep(1)
-        self.assertTrue("pyse",driver.get_title())
+        driver.assertTitle("pyse")
+        driver.assertText("xpath=>//div/h3/a", "基于selenium的pyse自动化测试框架 - 虫师 - 博客园")
         driver.quit()
+
 
 if __name__ == '__main__':
     runner = TestRunner()
