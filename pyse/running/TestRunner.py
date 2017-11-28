@@ -8,7 +8,7 @@ import unittest
 class TestRunner(object):
     ''' Run test '''
 
-    def __init__(self, cases="./",title="Auto Test Report",description="Test case execution"):
+    def __init__(self, cases="./",title="pyse Test Report",description="Test case execution"):
         self.cases = cases
         self.title = title
         self.des = description

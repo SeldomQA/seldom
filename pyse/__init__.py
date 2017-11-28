@@ -19,6 +19,7 @@
 
 from .running.TestRunner import TestRunner
 from .pyse import Pyse
+from .case import TestCase
 
 __author__ = "bugmaster"
 

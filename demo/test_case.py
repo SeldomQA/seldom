@@ -1,21 +1,43 @@
-from pyse import Pyse, TestRunner
-from time import sleep
-import unittest
+from pyse import TestCase, TestRunner
+from parameterized import parameterized
 
-class BaiduTest(unittest.TestCase):
 
-    def test_baidu(self):
+class BaiduTest(TestCase):
+    ''' Baidu serach test case parameterized'''
+
+    def test_case(self):
         ''' baidu search key : pyse '''
-        driver = Pyse("chrome")
-        driver.open("https://www.baidu.com/")
-        driver.clear("id=>kw")
-        driver.type("id=>kw", "pyse")
-        driver.click("css=>#su")
-        driver.assertTitle("pyse")
-        driver.assertText("xpath=>//div/h3/a", "基于selenium的pyse自动化测试框架 - 虫师 - 博客园")
-        driver.quit()
+        self.driver.open("https://www.baidu.com/")
+        self.driver.type("id=>kw", "pyse")
+        self.driver.click("css=>#su")
+        self.assertTitle("pyse_百度搜索")
+
+
+class BaiduTest2(TestCase):
+    ''' Baidu serach test case parameterized'''
+
+    @parameterized.expand([
+        (1, 'pyse'),
+        (2, 'selenium'),
+        (3, 'unittest'),
+    ])
+    def test_baidu(self,name,search_key):
+        ''' baidu search key : pyse '''
+        self.driver.open("https://www.baidu.com")
+        self.driver.clear("id=>kw")
+        self.driver.type("id=>kw", search_key)
+        self.driver.click("css=>#su")
+        self.assertTitle(search_key)
 
 
 if __name__ == '__main__':
-    runner = TestRunner()
+    runner = TestRunner('./','百度测试用例','测试环境：Chrome')
     runner.run()
+
+'''
+说明：
+'./' ： 指定测试目录。
+'百度测试用例' ： 指定测试项目标题。
+'测试环境：Chrome' ： 指定测试环境描述。
+'''
+

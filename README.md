@@ -7,8 +7,9 @@ WebUI automation testing framework based on Selenium and unittest.
 #### 特点：
 * 支持多种定位方法（id\name\class\link_text\xpath\css）。
 * 本框架只是对selenium（webdriver）原生方法进行了简单的封装，精简为大约30个方法，这些方法基本能够胜任于我们的web自动化测试。
-* 基于unittest单元测试框架，所以测试文件与测试方法遵循unittest开发。
-* 自动生成HTML测试报告生成。
+* 以测试类为单位，自动打开和关闭浏览器，减少浏览器的打开/关闭次数，节省时间。
+* 自动生成/report/目录，以及HTML测试报告生成。
+* 自带断言方法，断言title、URL 和 text。
 
 #### 安装说明：
 * Python3.5+ : https://www.python.org/
@@ -21,33 +22,27 @@ WebUI automation testing framework based on Selenium and unittest.
 
 #### 例子：
 
-请查看demo/目录
+请查看demo/test_case.py目录
 
 ```python
-from pyse import Pyse, TestRunner
-from time import sleep
-import unittest
+import pyse
 
-class BaiduTest(unittest.TestCase):
+class BaiduTest(pyse.TestCase):
 
     def test_baidu(self):
         ''' baidu search key : pyse '''
-        driver = Pyse("chrome")
-        driver.open("https://www.baidu.com/")
-        driver.clear("id=>kw")
-        driver.type("id=>kw", "pyse")
-        driver.click("css=>#su")
-        driver.assertTitle("pyse")
-        driver.assertText("xpath=>//div/h3/a", "基于selenium的pyse自动化测试框架 - 虫师 - 博客园")
-        driver.quit()
-
+        self.driver.open("https://www.baidu.com/")
+        self.driver.type("id=>kw", "pyse")
+        self.driver.click("css=>#su")
+        self.assertTitle("pyse_百度搜索")
 
 if __name__ == '__main__':
-    runner = TestRunner()
+    runner = pyse.TestRunner()
     runner.run()
 ```
 
 运行测试用例说明：
+* 测试用例文件命名必须以“test”开头。
 * TestRunner() 默认匹配当前目录下"test*.py"的文件并执行。当然也可以指定测试目录，例如：
 TestRunner("path/you/project/test_case/")  # 注意用斜线"/"表示路径。
 * 执行run()方法运行测试用例

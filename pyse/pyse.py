@@ -23,24 +23,22 @@ class Pyse(object):
         the Internet Explorer browser for "internet explorer" or "ie".
         '''
         if browser == "firefox" or browser == "ff":
-            driver = webdriver.Firefox()
+            self.driver = webdriver.Firefox()
         elif browser == "chrome":
-            driver = webdriver.Chrome()
+            self.driver = webdriver.Chrome()
         elif browser == "internet explorer" or browser == "ie":
-            driver = webdriver.Ie()
+            self.driver = webdriver.Ie()
         elif browser == "opera":
-            driver = webdriver.Opera()
+            self.driver = webdriver.Opera()
         elif browser == "chrome_headless":
             chrome_options = Options()
             chrome_options.add_argument('--headless')
-            driver = webdriver.Chrome(chrome_options=chrome_options)
+            self.driver = webdriver.Chrome(chrome_options=chrome_options)
         elif browser == 'edge':
-            driver = webdriver.Edge()
-        try:
-            self.driver = driver
-        except Exception:
+            self.driver = webdriver.Edge()
+        else:
             raise NameError(
-                "Not found %s browser,You can enter 'ie', 'ff', 'opera', 'phantomjs', 'edge' or 'chrome'." % browser)
+                "Not found %s browser,You can enter 'ie', 'ff', 'opera', 'edge', 'chrome' or 'chrome_headless'." % browser)
 
     def element_wait(self, css, secs=5):
         '''
@@ -384,57 +382,13 @@ class Pyse(object):
             if handle != original_windows:
                 self.driver.switch_to.window(handle)
 
-    def assertTitle(self, title, second=3):
-        '''
-        Asserts whether the current title is in line with expectations.
-        The default is 3 seconds.
+    def get_screenshot(self,file_path):
+        '''Saves a screenshot of the current window to a PNG image file.
 
         Usage:
-        driver.assertTitle("title")
+        driver.get_screenshot('/Screenshots/foo.png')
         '''
-        if title == None:
-            raise NameError("'title' can't be empty.")
-        for s in range(second):
-            if title in self.driver.title:
-                break
-            else:
-                sleep(1)
-        else:
-            raise AssertionError("'%s' not found in '%s'" % (title, self.driver.title))
-
-    def assertUrl(self, url, second=3):
-        '''
-        Asserts whether the current URL is in line with expectations.
-        The default is 3 seconds.
-
-        Usage:
-        driver.assertUrl("url")
-        '''
-        if url == None:
-            raise NameError("'URL' can't be empty.")
-        for s in range(second):
-            if url == self.driver.current_url:
-                break
-            else:
-                sleep(1)
-        else:
-            raise AssertionError("'%s' != '%s'" % (url, self.driver.current_url))
-
-    def assertText(self, actual_el, expect_result):
-        '''
-        Asserts whether the text of the current page conforms to expectations.
-        - actual_el: The actual element text.
-        - expect_result :expected results.
-
-        Usage:
-        driver.assertText("#el","text")
-        '''
-        if actual_el == None or expect_result == None:
-            raise NameError("'actual' or 'exect' can't be empty.")
-        actual_result = self.get_text(actual_el)
-        if actual_result != expect_result:
-            raise AssertionError("'%s' != '%s'" % (actual_result, expect_result))
-
+        self.driver.get_screenshot_as_file(file_path)
 
 if __name__ == '__main__':
     driver = Pyse("chrome")
