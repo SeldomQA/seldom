@@ -1,9 +1,11 @@
 from pyse import TestCase, TestRunner
 from parameterized import parameterized
 
-
+'''
+A simple test
+'''
 class BaiduTest(TestCase):
-    ''' Baidu serach test case parameterized'''
+    ''' Baidu serach test case'''
 
     def test_case(self):
         ''' baidu search key : pyse '''
@@ -12,9 +14,12 @@ class BaiduTest(TestCase):
         self.driver.click("css=>#su")
         self.assertTitle("pyse_百度搜索")
 
+'''
+used parameterized test
+'''
 
 class BaiduTest2(TestCase):
-    ''' Baidu serach test case parameterized'''
+    ''' Baidu serach test case'''
 
     @parameterized.expand([
         (1, 'pyse'),
