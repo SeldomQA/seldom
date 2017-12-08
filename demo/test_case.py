@@ -1,4 +1,4 @@
-from pyse import TestCase, TestRunner
+from pyse import Pyse, TestCase, TestRunner
 from parameterized import parameterized
 
 '''
@@ -6,6 +6,10 @@ A simple test
 '''
 class BaiduTest(TestCase):
     ''' Baidu serach test case'''
+
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = Pyse("firefox")
 
     def test_case(self):
         ''' baidu search key : pyse '''
@@ -20,6 +24,10 @@ used parameterized test
 
 class BaiduTest2(TestCase):
     ''' Baidu serach test case'''
+
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = Pyse("firefox")
 
     @parameterized.expand([
         (1, 'pyse'),
