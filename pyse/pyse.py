@@ -5,7 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from time import sleep
 
 
 class Pyse(object):
@@ -40,19 +39,10 @@ class Pyse(object):
             raise NameError(
                 "Not found %s browser,You can enter 'ie', 'ff', 'opera', 'edge', 'chrome' or 'chrome_headless'." % browser)
 
-    def element_wait(self, css, secs=5):
+    def element_wait(self, by, value, secs=5):
         '''
         Waiting for an element to display.
-
-        Usage:
-        driver.element_wait("css=>#el",10)
         '''
-        if "=>" not in css:
-            raise NameError("Positioning syntax errors, lack of '=>'.")
-
-        by = css.split("=>")[0]
-        value = css.split("=>")[1]
-
         if by == "id":
             WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.ID, value)))
         elif by == "name":
@@ -78,6 +68,8 @@ class Pyse(object):
 
         by = css.split("=>")[0]
         value = css.split("=>")[1]
+        # wait element.
+        self.element_wait(by, value)
 
         if by == "id":
             element = self.driver.find_element_by_id(value)
@@ -130,7 +122,6 @@ class Pyse(object):
         Usage:
         driver.type("css=>#el","selenium")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         el.send_keys(text)
 
@@ -141,7 +132,6 @@ class Pyse(object):
         Usage:
         driver.clear("css=>#el")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         el.clear()
 
@@ -153,7 +143,6 @@ class Pyse(object):
         Usage:
         driver.click("css=>#el")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         el.click()
 
@@ -164,7 +153,6 @@ class Pyse(object):
         Usage:
         driver.right_click("css=>#el")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         ActionChains(self.driver).context_click(el).perform()
 
@@ -175,7 +163,6 @@ class Pyse(object):
         Usage:
         driver.move_to_element("css=>#el")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         ActionChains(self.driver).move_to_element(el).perform()
 
@@ -186,7 +173,6 @@ class Pyse(object):
         Usage:
         driver.double_click("css=>#el")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         ActionChains(self.driver).double_click(el).perform()
 
@@ -197,9 +183,7 @@ class Pyse(object):
         Usage:
         driver.drag_and_drop("css=>#el","css=>#ta")
         '''
-        self.element_wait(el_css)
         element = self.get_element(el_css)
-        self.element_wait(ta_css)
         target = self.get_element(ta_css)
         ActionChains(driver).drag_and_drop(element, target).perform()
 
@@ -238,7 +222,6 @@ class Pyse(object):
         Usage:
         driver.submit("css=>#el")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         el.submit()
 
@@ -277,7 +260,6 @@ class Pyse(object):
         Usage:
         driver.get_text("css=>#el")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         return el.text
 
@@ -288,7 +270,6 @@ class Pyse(object):
         Usage:
         driver.get_display("css=>#el")
         '''
-        self.element_wait(css)
         el = self.get_element(css)
         return el.is_displayed()
 
@@ -353,7 +334,6 @@ class Pyse(object):
         Usage:
         driver.switch_to_frame("css=>#el")
         '''
-        self.element_wait(css)
         iframe_el = self.get_element(css)
         self.driver.switch_to.frame(iframe_el)
 
