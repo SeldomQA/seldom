@@ -1,10 +1,10 @@
-from pyse import TestCase, TestRunner
+from pyse import Pyse, TestCase, TestRunner
 
 '''
 used Page Object Model.
 '''
 
-class BasePge:
+class BasePage:
 
     def __init__(self, driver, base_url="https://www.baidu.com"):
         self.driver = driver
@@ -19,7 +19,7 @@ class BasePge:
         self._open(self.url)
 
 
-class BaiduPage(BasePge):
+class BaiduPage(BasePage):
     
     url = "/"
 
@@ -32,6 +32,10 @@ class BaiduPage(BasePge):
 
 class BaiduTest(TestCase):
     ''' Baidu serach test case'''
+
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = Pyse("firefox")
 
     def test_case(self):
         ''' baidu search key : pyse '''

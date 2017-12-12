@@ -14,6 +14,8 @@ class Pyse(object):
     making it easier to use.
     '''
 
+    original_window = None
+
     def __init__(self, browser='ff'):
         '''
         Run class initialization method, the default is proper
@@ -205,6 +207,9 @@ class Pyse(object):
         driver.close()
         '''
         self.driver.close()
+        if(self.original_window):
+            print("close current window and return to window of handle " + str(self.original_window))
+            self.driver.switch_to.window(self.original_window)
 
     def quit(self):
         '''
@@ -291,12 +296,12 @@ class Pyse(object):
         '''
         return self.driver.current_url
 
-    def get_windows_img(self, file_path):
+    def get_window_img(self, file_path):
         '''
         Get the current window screenshot.
 
         Usage:
-        driver.get_windows_img()
+        driver.get_window_img()
         '''
         self.driver.get_screenshot_as_file(file_path)
 
@@ -354,12 +359,15 @@ class Pyse(object):
         Usage:
         driver.open_new_window()
         '''
-        original_windows = self.driver.current_window_handle
+        self.original_window = self.driver.current_window_handle
+        print("original window handle: " + str(self.original_window))
         el = self.get_element(css)
         el.click()
         all_handles = self.driver.window_handles
         for handle in all_handles:
-            if handle != original_windows:
+            print("window handle: " + str(handle))
+            if handle != self.original_window:
+                print("switch to new window handle: " + str(handle))
                 self.driver.switch_to.window(handle)
 
     def get_screenshot(self,file_path):
