@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import NoSuchElementException
 
 
 class Pyse(object):
@@ -58,20 +59,25 @@ class Pyse(object):
         elif by == "css":
             WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.CSS_SELECTOR, value)))
         else:
-            raise NameError(
-                "Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")
+            raise NoSuchElementException(
+                "Not find element, Please check the syntax error.")
 
     def get_element(self, css):
         '''
         Judge element positioning way, and returns the element.
         '''
         if "=>" not in css:
-            raise NameError("Positioning syntax errors, lack of '=>'.")
-
-        by = css.split("=>")[0]
-        value = css.split("=>")[1]
-        # wait element.
-        self.element_wait(by, value)
+            by = "css"
+            value = css
+            # wait element.
+            self.element_wait(by, css)
+        else:
+            by = css.split("=>")[0]
+            value = css.split("=>")[1]
+            if by == "" or value == "":
+                raise NameError(
+                    "Grammatical errors,reference: 'id=>useranme'.")
+            self.element_wait(by, value)
 
         if by == "id":
             element = self.driver.find_element_by_id(value)
@@ -207,9 +213,6 @@ class Pyse(object):
         driver.close()
         '''
         self.driver.close()
-        if(self.original_window):
-            print("close current window and return to window of handle " + str(self.original_window))
-            self.driver.switch_to.window(self.original_window)
 
     def quit(self):
         '''
@@ -357,26 +360,24 @@ class Pyse(object):
         Open the new window and switch the handle to the newly opened window.
 
         Usage:
-        driver.open_new_window()
+        driver.open_new_window("link_text=>注册")
         '''
-        self.original_window = self.driver.current_window_handle
-        print("original window handle: " + str(self.original_window))
+        original_window = self.driver.current_window_handle
         el = self.get_element(css)
         el.click()
         all_handles = self.driver.window_handles
         for handle in all_handles:
-            print("window handle: " + str(handle))
-            if handle != self.original_window:
-                print("switch to new window handle: " + str(handle))
+            if handle != original_window:
                 self.driver.switch_to.window(handle)
 
-    def get_screenshot(self,file_path):
+    def get_screenshot(self, file_path):
         '''Saves a screenshot of the current window to a PNG image file.
 
         Usage:
         driver.get_screenshot('/Screenshots/foo.png')
         '''
         self.driver.get_screenshot_as_file(file_path)
+
 
 if __name__ == '__main__':
     driver = Pyse("chrome")

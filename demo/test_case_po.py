@@ -15,7 +15,6 @@ class BasePage:
         self.driver.open(url)
     
     def open(self):
-        print(self.url)
         self._open(self.url)
 
 
@@ -47,7 +46,7 @@ class BaiduTest(TestCase):
 
 
 if __name__ == '__main__':
-    runner = TestRunner('./','百度测试用例','测试环境：Chrome')
+    runner = TestRunner('./','百度测试用例','测试环境：Firefox')
     runner.run()
 
 '''

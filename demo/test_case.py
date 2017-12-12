@@ -9,13 +9,14 @@ class BaiduTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
+        ''' Setting browser driver, Using chrome by default.'''
         cls.driver = Pyse("firefox")
 
     def test_case(self):
         ''' baidu search key : pyse '''
         self.driver.open("https://www.baidu.com/")
-        self.driver.type("id=>kw", "pyse")
-        self.driver.click("css=>#su")
+        self.driver.type("#kw", "pyse")
+        self.driver.click("#su")
         self.assertTitle("pyse_百度搜索")
 
 '''
@@ -44,7 +45,7 @@ class BaiduTest2(TestCase):
 
 
 if __name__ == '__main__':
-    runner = TestRunner('./','百度测试用例','测试环境：Chrome')
+    runner = TestRunner('./','百度测试用例','测试环境：Firefox')
     runner.run()
 
 '''
