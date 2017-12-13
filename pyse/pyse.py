@@ -116,14 +116,14 @@ class Pyse(object):
         '''
         self.driver.maximize_window()
 
-    def set_window(self, wide, high):
+    def set_window(self, width, height):
         '''
         Set browser window wide and high.
 
         Usage:
         driver.set_window(wide,high)
         '''
-        self.driver.set_window_size(wide, high)
+        self.driver.set_window_size(width, height)
 
     def type(self, css, text):
         '''
@@ -288,7 +288,7 @@ class Pyse(object):
 
     def get_display(self, css):
         '''
-        Gets the element to display,The return result is true or false.
+        Gets the element to display, The return result is true or false.
 
         Usage:
         driver.get_display("css=>#el")
