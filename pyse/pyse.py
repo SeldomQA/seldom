@@ -235,7 +235,7 @@ class Pyse(object):
         driver.quit()
         '''
         self.driver.quit()
-
+    
     def submit(self, css):
         '''
         Submit the specified form.
@@ -247,6 +247,15 @@ class Pyse(object):
         el = self.get_element(css)
         el.submit()
 
+    def refresh(self):
+        '''
+        Refresh the current page.
+
+        Usage:
+        driver.refresh()
+        '''
+        self.driver.refresh()
+
     def F5(self):
         '''
         Refresh the current page.
@@ -255,6 +264,24 @@ class Pyse(object):
         driver.F5()
         '''
         self.driver.refresh()
+
+    def back(self):
+        '''
+        Back to previous page.
+
+        Usage:
+        driver.back()
+        '''    
+        self.driver.back()
+
+    def forward(self):
+        '''
+        Forward to previous page.
+
+        Usage:
+        driver.forward()
+        '''
+        self.driver.forward()
 
     def js(self, script):
         '''
@@ -323,7 +350,7 @@ class Pyse(object):
         driver.get_window_img()
         '''
         self.driver.get_screenshot_as_file(file_path)
-
+    
     def wait(self, secs):
         '''
         Implicitly wait.All elements on the page.
