@@ -198,7 +198,7 @@ class Template_mixin(object):
 <script language="javascript" type="text/javascript"><!--
 output_list = Array();
 
-/* level - 0:Summary; 1:Failed; 2:All */
+/* level - 0:Overview; 1:Failed; 2:All */
 function showCase(level) {
     trs = document.getElementsByTagName("tr");
     for (var i = 0; i < trs.length; i++) {
@@ -308,19 +308,18 @@ function showOutput(id, name) {
 
     STYLESHEET_TMPL = """
 <style type="text/css" media="screen">
-body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
 table       { font-size: 100%; }
 pre         {  }
 
 /* -- heading ---------------------------------------------------------------------- */
 h1 {
-	font-size: 16pt;
 	color: gray;
 }
 .heading {
     margin-top: 0ex;
     margin-bottom: 1ex;
 	margin-left: 10px;
+    font-size: 12pt;
 }
 
 .heading .attribute {
@@ -329,8 +328,8 @@ h1 {
 }
 
 .heading .description {
-    margin-top: 4ex;
-    margin-bottom: 6ex;
+    margin-top: 2ex;
+    margin-bottom: 3ex;
 }
 
 /* -- css div popup ------------------------------------------------------------------------ */
@@ -350,7 +349,7 @@ a.popup_link:hover {
     font-family: "Lucida Console", "Courier New", Courier, monospace;
     text-align: left;
     font-size: 8pt;
-    width: 500px;
+    width: 99%;
 }
 
 }
@@ -361,7 +360,7 @@ a.popup_link:hover {
 	margin-left: 10px;
 }
 #result_table {
-    width: 80%;
+    width: 99%;
     border-collapse: collapse;
     border: 1px solid #777;
 	margin-left: 10px;
@@ -376,7 +375,6 @@ a.popup_link:hover {
 #result_table td {
     border: 1px solid #f5f5f5;
     padding: 2px;
-
 }
 #total_row  { font-weight: bold; }
 .passClass  { background-color: #d6e9c6; }
@@ -420,10 +418,10 @@ a.popup_link:hover {
     #
 
     REPORT_TMPL = """
-<p id='show_detail_line' style="margin-left: 10px;">Show
-<a href='javascript:showCase(0)' class="btn btn-xs btn-primary">Summary</a>
-<a href='javascript:showCase(1)' class="btn btn-xs btn-danger">Failed</a>
-<a href='javascript:showCase(2)' class="btn btn-xs btn-info">All</a>
+<p id='show_detail_line' style="margin-left: 10px;">
+<a href='javascript:showCase(0)' class="btn btn-primary">Overview</a>
+<a href='javascript:showCase(1)' class="btn btn-danger">Expand Failed</a>
+<a href='javascript:showCase(2)' class="btn btn-info">Expand All</a>
 </p>
 <table id='result_table'>
 <colgroup>
