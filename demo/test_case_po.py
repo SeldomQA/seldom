@@ -46,13 +46,7 @@ class BaiduTest(TestCase):
 
 
 if __name__ == '__main__':
-    runner = TestRunner('./','百度测试用例','测试环境：Firefox')
-    runner.run()
+    runner = TestRunner()
+    runner.debug()  # debug 模拟不会生成测试报告
 
-'''
-说明：
-'./' ： 指定测试目录。
-'百度测试用例' ： 指定测试项目标题。
-'测试环境：Chrome' ： 指定测试环境描述。
-'''
 

@@ -45,9 +45,9 @@ if __name__ == '__main__':
 * 测试用例文件命名必须以“test”开头。
 * 元素定位方式默认使用 CSS 语法 `#kw`, 也可以显示的使用 `css=>#kw`。
 * pyse的TestCase类中默认封装了`assertTitle`、`assertUrl` 和 `assertText`等断言。
-* TestRunner() 默认匹配当前目录下"test*.py"的文件并执行。当然也可以指定测试目录，例如：
+* `TestRunner()` 默认匹配当前目录下"test*.py"的文件并执行。当然也可以指定测试目录，例如：
 TestRunner("path/you/project/test_case/")  # 注意用斜线"/"表示路径。
-* 执行run()方法运行测试用例
+* 执行`run()`方法运行测试用例并生成测试报告，在调试测试用例过程中可以使用 `debug()` 方法替换。
 
 #### 支持的浏览器及驱动：
 

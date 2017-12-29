@@ -28,6 +28,11 @@ class TestRunner(object):
         runner.run(tests)
         fp.close()
 
+    def debug(self):
+        tests = unittest.defaultTestLoader.discover(self.cases, pattern='test*.py', top_level_dir=None)
+        runner = unittest.TextTestRunner()
+        runner.run(tests)
+
 
 if __name__ == '__main__':
     test = TestRunner()
