@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.select import Select
 
 
 class Pyse(object):
@@ -299,6 +300,15 @@ class Pyse(object):
         '''
         return self.driver.current_url
 
+    def get_alert_text(self):
+        '''
+        Gets the text of the Alert.
+
+        Usage:
+        driver.get_alert_text()
+        '''
+        return self.driver.switch_to.alert.text
+
     def get_window_img(self, file_path):
         '''
         Get the current window screenshot.
@@ -377,6 +387,28 @@ class Pyse(object):
         driver.get_screenshot('/Screenshots/foo.png')
         '''
         self.driver.get_screenshot_as_file(file_path)
+
+    def select(self, css, value):
+        '''
+        Constructor. A check is made that the given element is, indeed, a SELECT tag. If it is not,
+        then an UnexpectedTagNameException is thrown.
+
+        :Args:
+         - css - element SELECT element to wrap
+         - value - The value to match against
+
+        Usage:
+            <select name="NR" id="nr">
+                <option value="10" selected="">每页显示10条</option>
+                <option value="20">每页显示20条</option>
+                <option value="50">每页显示50条</option>
+            </select>
+
+            driver.select("#nr", '20')
+            driver.select("xpath=>//[@name='NR']", '20')
+        '''
+        el = self.get_element(css)
+        Select(el).select_by_value(value)
 
 
 if __name__ == '__main__':

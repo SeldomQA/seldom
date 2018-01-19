@@ -59,7 +59,22 @@ class TestCase(unittest.TestCase):
         Usage:
         driver.assertText("#el","text")
         '''
-        if actual_el == None or expect_result == None:
+        if actual_el is None or expect_result is None:
             raise NameError("'actual' or 'exect' can't be empty.")
         actual_result = self.driver.get_text(actual_el)
-        self.assertEqual(actual_result,expect_result)
+        self.assertEqual(actual_result, expect_result)
+
+    def assertAlert(self, expect_text):
+        '''
+        Asserts whether the text of the current page conforms to expectations.
+        - actual_el: The actual element text.
+        - expect_result :expected results.
+
+        Usage:
+        driver.assertText("#el","text")
+        '''
+
+        if expect_text is None:
+            raise NameError("'expect_text' can't be empty.")
+        alert_text = self.driver.get_alert_text()
+        self.assertEqual(alert_text, expect_text)
