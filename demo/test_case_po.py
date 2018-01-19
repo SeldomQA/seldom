@@ -4,6 +4,7 @@ from pyse import Pyse, TestCase, TestRunner
 used Page Object Model.
 '''
 
+
 class BasePage:
 
     def __init__(self, driver, base_url="https://www.baidu.com"):
@@ -34,7 +35,7 @@ class BaiduTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = Pyse("firefox")
+        cls.driver = Pyse("chrome")
 
     def test_case(self):
         ''' baidu search key : pyse '''
