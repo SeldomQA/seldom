@@ -194,7 +194,7 @@ class Pyse(object):
         '''
         element = self.get_element(el_css)
         target = self.get_element(ta_css)
-        ActionChains(driver).drag_and_drop(element, target).perform()
+        ActionChains(self.driver).drag_and_drop(element, target).perform()
 
     def click_text(self, text):
         '''
