@@ -309,15 +309,6 @@ class Pyse(object):
         '''
         return self.driver.switch_to.alert.text
 
-    def get_window_img(self, file_path):
-        '''
-        Get the current window screenshot.
-
-        Usage:
-        driver.get_window_img()
-        '''
-        self.driver.get_screenshot_as_file(file_path)
-
     def wait(self, secs):
         '''
         Implicitly wait.All elements on the page.
