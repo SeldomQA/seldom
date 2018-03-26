@@ -42,26 +42,45 @@ if __name__ == '__main__':
 ```
 
 运行测试用例说明：
-* 测试用例文件命名必须以“test”开头。
+* 测试用例文件命名必须以“__test__”开头。
+* 默认情况下使用 __Chrome__ 浏览器运行测试用例。
 * 元素定位方式默认使用 CSS 语法 `#kw`, 也可以显示的使用 `css=>#kw`。
 * pyse的TestCase类中默认封装了`assertTitle`、`assertUrl` 和 `assertText`等断言。
 * `TestRunner()` 默认匹配当前目录下"test*.py"的文件并执行。当然也可以指定测试目录，例如：
 TestRunner("path/you/project/test_case/")  # 注意用斜线"/"表示路径。
-* 执行`run()`方法运行测试用例并生成测试报告，在调试测试用例过程中可以使用 `debug()` 方法替换。
+* 执行`run()`方法运行测试用例并生成测试报告，在调试测试用例过程中可以使用 `debug()` 方法将不会生成HTML测试报告。
+
 
 #### 支持的浏览器及驱动：
 
-```python
+指定运行的浏览器：
 
-driver = Pyse("firefox")   #Firefox
-driver = Pyse("ff")        #Firefox
-driver = Pyse("chrome")    # Chrome
-driver = Pyse("internet explorer")  #IE
-driver = Pyse("ie")        #IE
-driver = Pyse("opera")     #Opera
-driver = Pyse("chrome_headless")  #Chrome headless模式
-driver = Pyse("edge")      #Edge
+```python
+import pyse
+
+class YouTest(pyse.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = Pyse("chrome")
+    
+    def test_case(self):
+        #……
+
 ```
+
+支持的浏览器:
+
+```python
+cls.driver = Pyse("firefox")   #Firefox
+cls.driver = Pyse("chrome")    # Chrome
+cls.driver = Pyse("ie")        #IE
+cls.driver = Pyse("opera")     #Opera
+cls.driver = Pyse("edge")      #Edge
+cls.driver = Pyse("chrome_headless")  #Chrome headless模式
+```
+
+浏览器驱动下载地址：
 
 geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
 
@@ -84,22 +103,23 @@ pyse支持多种定位方式，id、name、class、link text、xpath和css。把
         <input id="kw" class="s_ipt" autocomplete="off" maxlength="255" value="" name="wd">
 ```
 
-定位方式：
+定位方式（推荐使用 CSS）：
 
 ```python
+# 默认支持CSS语法
+driver.type(".s_ipt","pyse")     #css
+driver.type("#su","pyse")        #css
+
 driver.type("id=>kw", "pyse")  #id
 
 driver.type("class=>s_ipt", "pyse")  #class定位
 
 driver.type("name=>wd", "pyse")  #name
 
-driver.click_text("link_text=>新闻") #link text (点击百度首页上的"新闻"链接。)
-
 driver.type("xpath=>//*[@class='s_ipt']","pyse")  #xpath
 driver.type("xpath=>//*[@id='kw']","pyse")        #xpath
 
-driver.type("css=>.s_ipt","pyse")     #css
-driver.type("css=>#su","pyse")        #css
+driver.click_text("link_text=>新闻") #link text (点击百度首页上的"新闻"链接)
 
 ```
 
