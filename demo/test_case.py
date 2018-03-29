@@ -8,21 +8,21 @@ class BaiduTest(TestCase):
     @classmethod
     def setUpClass(cls):
         ''' Setting browser driver, Using chrome by default.'''
-        cls.driver = Pyse("chrome")
+        cls.driver = Pyse("chrome_headless")
 
     '''
     A simple test
     '''
     def test_case(self):
         ''' baidu search key : pyse '''
-        self.driver.open("https://www.baidu.com/")
-        self.driver.move_to_element("link_text=>设置")
-        self.driver.click("link_text=>搜索设置")
-        self.driver.select("#nr", '20')
-        self.driver.click("class=>prefpanelgo")
-        alert_text = self.driver.get_alert_text()
+        self.open("https://www.baidu.com/")
+        self.move_to_element("link_text=>设置")
+        self.click("link_text=>搜索设置")
+        self.select("#nr", '20')
+        self.click("class=>prefpanelgo")
+        alert_text = self.get_alert_text()
         self.assertAlert("已经记录下您的使用偏好")
-        self.driver.accept_alert()
+        self.accept_alert()
 
     """
     used parameterized test
@@ -34,10 +34,10 @@ class BaiduTest(TestCase):
     ])
     def test_baidu(self,name,search_key):
         ''' baidu search key : pyse '''
-        self.driver.open("https://www.baidu.com")
-        self.driver.clear("id=>kw")
-        self.driver.type("id=>kw", search_key)
-        self.driver.click("css=>#su")
+        self.open("https://www.baidu.com")
+        self.clear("id=>kw")
+        self.type("id=>kw", search_key)
+        self.click("css=>#su")
         self.assertTitle(search_key)
 
 

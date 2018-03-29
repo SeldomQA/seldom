@@ -1,7 +1,7 @@
 # coding=utf-8
 import time
 import os
-from .HTMLTestRunner import HTMLTestRunner
+from .HTML_test_runner import HTMLTestRunner
 import unittest
 
 
@@ -30,8 +30,10 @@ class TestRunner(object):
 
     def debug(self):
         tests = unittest.defaultTestLoader.discover(self.cases, pattern='test*.py', top_level_dir=None)
-        runner = unittest.TextTestRunner()
+        runner = unittest.TextTestRunner(verbosity=2)
+        print("pyse test start:")
         runner.run(tests)
+        print("test end!!!")
 
 
 if __name__ == '__main__':

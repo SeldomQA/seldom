@@ -9,7 +9,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
 
 
-class Pyse(object):
+class WebDriver(object):
     '''
         Pyse framework for the main class, the original
     selenium provided by the method of the two packaging,
@@ -17,7 +17,7 @@ class Pyse(object):
     '''
 
     original_window = None
-
+    """
     def __init__(self, browser='ff'):
         '''
         Run class initialization method, the default is proper
@@ -42,7 +42,7 @@ class Pyse(object):
         else:
             raise NameError(
                 "Not found %s browser,You can enter 'ie', 'ff', 'opera', 'edge', 'chrome' or 'chrome_headless'." % browser)
-
+    """
     def element_wait(self, by, value, secs=5):
         '''
         Waiting for an element to display.

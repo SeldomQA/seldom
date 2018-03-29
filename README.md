@@ -31,9 +31,9 @@ class BaiduTest(pyse.TestCase):
 
     def test_baidu(self):
         ''' baidu search key : pyse '''
-        self.driver.open("https://www.baidu.com/")
-        self.driver.type("#kw", "pyse")
-        self.driver.click("#su")
+        self.open("https://www.baidu.com/")
+        self.type("#kw", "pyse")
+        self.click("#su")
         self.assertTitle("pyse_百度搜索")
 
 if __name__ == '__main__':

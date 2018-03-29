@@ -17,13 +17,14 @@
 # specific language governing permissions and limitations
 # under the License.
 
-from .running.TestRunner import TestRunner
-from .pyse import Pyse
+from .running.test_runner import TestRunner
+from .pyse_api import WebDriver
 from .case import TestCase
+from .driver import Pyse 
 
 __author__ = "bugmaster"
 
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 
 '''
 0.0.2 version update:
@@ -56,4 +57,7 @@ Re based on unittest.
 0.0.8
 add parameterized
 Beautification test report
+
+0.0.9
+Simplifying API calls
 '''
