@@ -3,12 +3,12 @@ from selenium.webdriver.chrome.options import Options
 
 
 def Pyse(browser):
-    '''
+    """
     Run class initialization method, the default is proper
     to drive the Firefox browser. Of course, you can also
     pass parameter for other browser, Chrome browser for the "Chrome",
     the Internet Explorer browser for "internet explorer" or "ie".
-    '''
+    """
     if browser == "firefox" or browser == "ff":
         return webdriver.Firefox()
     elif browser == "chrome":

@@ -12,8 +12,8 @@ WebUI automation testing framework based on Selenium and unittest.
 * 自带断言方法，断言title、URL 和 text。
 
 #### 安装说明：
-* Python3.5+ : https://www.python.org/
-* Selenium3.6.0+ : https://pypi.python.org/pypi/selenium
+* Python 3.5+ : https://www.python.org/
+* Selenium 3.12.0 : https://pypi.python.org/pypi/selenium
 * 进入pyse/目录，执行:
 
 ```

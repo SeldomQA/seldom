@@ -3,24 +3,24 @@ from parameterized import parameterized
 
 
 class BaiduTest(TestCase):
-    ''' Baidu serach test case'''
+    """Baidu serach test case"""
 
     @classmethod
     def setUpClass(cls):
-        ''' Setting browser driver, Using chrome by default.'''
-        cls.driver = Pyse("chrome_headless")
+        """ Setting browser driver, Using chrome by default."""
+        cls.driver = Pyse("chrome")
 
-    '''
+    """
     A simple test
-    '''
+    """
     def test_case(self):
-        ''' baidu search key : pyse '''
+        """ baidu search key : pyse """
         self.open("https://www.baidu.com/")
         self.move_to_element("link_text=>设置")
         self.click("link_text=>搜索设置")
         self.select("#nr", '20')
         self.click("class=>prefpanelgo")
-        alert_text = self.get_alert_text()
+        self.sleep(2)
         self.assertAlert("已经记录下您的使用偏好")
         self.accept_alert()
 
