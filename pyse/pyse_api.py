@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.select import Select
 from time import sleep
 
@@ -18,25 +19,18 @@ class WebDriver(object):
 
     original_window = None
 
-    def element_wait(self, by, value, secs=5):
+    def wait_element(self, el):
         """
         Waiting for an element to display.
         """
-        if by == "id":
-            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.ID, value)))
-        elif by == "name":
-            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.NAME, value)))
-        elif by == "class":
-            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.CLASS_NAME, value)))
-        elif by == "link_text":
-            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.LINK_TEXT, value)))
-        elif by == "xpath":
-            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.XPATH, value)))
-        elif by == "css":
-            WebDriverWait(self.driver, secs, 1).until(EC.presence_of_element_located((By.CSS_SELECTOR, value)))
+        try:
+            WebDriverWait(self.driver, self.timeout).until(
+                EC.presence_of_element_located(el)
+            )
+        except TimeoutException:
+            return False
         else:
-            raise NoSuchElementException(
-                "Not find element, Please check the syntax error.")
+            return True
 
     def get_element(self, css):
         """
@@ -45,28 +39,56 @@ class WebDriver(object):
         if "=>" not in css:
             by = "css"
             value = css
-            # wait element.
-            self.element_wait(by, css)
         else:
             by = css.split("=>")[0]
             value = css.split("=>")[1]
             if by == "" or value == "":
                 raise NameError(
-                    "Grammatical errors,reference: 'id=>useranme'.")
-            self.element_wait(by, value)
+                    "Grammatical errors, reference: 'id=>useranme'.")
 
+        time_out_error = "定位元素超时，请尝试其他定位方式"
         if by == "id":
-            element = self.driver.find_element_by_id(value)
+            req = self.wait_element((By.ID, value))
+            if req is True:
+                element = self.driver.find_element_by_id(value)
+            else:
+                self.driver.close()
+                raise TimeoutException(time_out_error)
         elif by == "name":
-            element = self.driver.find_element_by_name(value)
+            req = self.wait_element((By.NAME, value))
+            if req is True:
+                element = self.driver.find_element_by_name(value)
+            else:
+                self.driver.close()
+                raise TimeoutException(time_out_error)
         elif by == "class":
-            element = self.driver.find_element_by_class_name(value)
+            req = self.wait_element((By.CLASS_NAME, value))
+            if req is True:
+                element = self.driver.find_element_by_class_name(value)
+            else:
+                self.driver.close()
+                raise TimeoutException(time_out_error)
         elif by == "link_text":
-            element = self.driver.find_element_by_link_text(value)
+            req = self.wait_element((By.LINK_TEXT, value))
+            if req is True:
+                element = self.driver.find_element_by_link_text(value)
+            else:
+                self.driver.close()
+                raise TimeoutException(time_out_error)
         elif by == "xpath":
-            element = self.driver.find_element_by_xpath(value)
+            req = self.wait_element((By.XPATH, value))
+            if req is True:
+                element = self.driver.find_element_by_xpath(value)
+            else:
+                self.driver.close()
+                raise TimeoutException(time_out_error)
         elif by == "css":
-            element = self.driver.find_element_by_css_selector(value)
+            req = self.wait_element((By.CSS_SELECTOR, value))
+            if req is True:
+                element = self.driver.find_element_by_css_selector(value)
+            else:
+                self.driver.close()
+                raise TimeoutException(time_out_error)
         else:
             raise NameError(
                 "Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")

@@ -9,6 +9,7 @@ class BaiduTest(TestCase):
     def setUpClass(cls):
         """ Setting browser driver, Using chrome by default."""
         cls.driver = Pyse("chrome")
+        cls.timeout = 15  # You can customize timeout time
 
     """
     A simple test

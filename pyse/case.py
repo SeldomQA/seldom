@@ -9,6 +9,7 @@ class TestCase(unittest.TestCase, WebDriver):
     @classmethod
     def setUpClass(cls):
         cls.driver = Pyse("chrome")
+        cls.timeout = 10
 
     @classmethod
     def tearDownClass(cls):
