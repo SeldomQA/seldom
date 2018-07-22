@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.select import Select
-from time import sleep
+import time
 
 
 class WebDriver(object):
@@ -391,8 +391,8 @@ class WebDriver(object):
         el = self.get_element(css)
         Select(el).select_by_value(value)
 
-    def wait(self, sec):
+    def sleep(self, sec):
         """
         sleep(seconds)
         """
-        sleep(sec)
+        time.sleep(sec)
