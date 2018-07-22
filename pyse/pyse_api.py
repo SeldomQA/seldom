@@ -1,10 +1,8 @@
 # coding=utf-8
-from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.select import Select
 from time import sleep
@@ -52,42 +50,36 @@ class WebDriver(object):
             if req is True:
                 element = self.driver.find_element_by_id(value)
             else:
-                self.driver.close()
                 raise TimeoutException(time_out_error)
         elif by == "name":
             req = self.wait_element((By.NAME, value))
             if req is True:
                 element = self.driver.find_element_by_name(value)
             else:
-                self.driver.close()
                 raise TimeoutException(time_out_error)
         elif by == "class":
             req = self.wait_element((By.CLASS_NAME, value))
             if req is True:
                 element = self.driver.find_element_by_class_name(value)
             else:
-                self.driver.close()
                 raise TimeoutException(time_out_error)
         elif by == "link_text":
             req = self.wait_element((By.LINK_TEXT, value))
             if req is True:
                 element = self.driver.find_element_by_link_text(value)
             else:
-                self.driver.close()
                 raise TimeoutException(time_out_error)
         elif by == "xpath":
             req = self.wait_element((By.XPATH, value))
             if req is True:
                 element = self.driver.find_element_by_xpath(value)
             else:
-                self.driver.close()
                 raise TimeoutException(time_out_error)
         elif by == "css":
             req = self.wait_element((By.CSS_SELECTOR, value))
             if req is True:
                 element = self.driver.find_element_by_css_selector(value)
             else:
-                self.driver.close()
                 raise TimeoutException(time_out_error)
         else:
             raise NameError(
@@ -399,7 +391,7 @@ class WebDriver(object):
         el = self.get_element(css)
         Select(el).select_by_value(value)
 
-    def sleep(self, sec):
+    def wait(self, sec):
         """
         sleep(seconds)
         """
