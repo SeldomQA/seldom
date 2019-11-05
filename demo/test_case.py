@@ -1,14 +1,14 @@
-from pyse import Pyse, TestCase, TestRunner
+import pyse
 from parameterized import parameterized
 
 
-class BaiduTest(TestCase):
+class BaiduTest(pyse.TestCase):
     """Baidu serach test case"""
 
     @classmethod
     def setUpClass(cls):
         """ Setting browser driver, Using chrome by default."""
-        cls.driver = Pyse("chrome")
+        cls.driver = pyse.Pyse("chrome")
         cls.timeout = 15  # You can customize timeout time
 
     """
@@ -43,16 +43,12 @@ class BaiduTest(TestCase):
 
 
 if __name__ == '__main__':
-    runner = TestRunner('./', '百度测试用例', '测试环境：Firefox')
-    runner.debug()
+    pyse.main(path="./", title="百度测试用例", description="测试环境：Firefox")
 
 '''
 说明：
-'./' ： 指定测试目录。
-'百度测试用例' ： 指定测试项目标题。
-'测试环境：Chrome' ： 指定测试环境描述。
-
-debug() # debug模式不生成测试报告
-run()   # run模式生成测试报告
+path ： 指定测试目录。
+title ： 指定测试项目标题。
+description ： 指定测试环境描述。
 '''
 

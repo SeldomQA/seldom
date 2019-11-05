@@ -37,12 +37,11 @@ class BaiduTest(pyse.TestCase):
         self.assertTitle("pyse_百度搜索")
 
 if __name__ == '__main__':
-    runner = pyse.TestRunner()
-    runner.run()
+    pyse.main()
 ```
 
 运行测试用例说明：
-* 测试用例文件命名必须以“__test__”开头。
+* 测试用例文件命名必须以 __test__ 开头。
 * 默认情况下使用 __Chrome__ 浏览器运行测试用例。
 * 元素定位方式默认使用 CSS 语法 `#kw`, 也可以显示的使用 `css=>#kw`。
 * pyse的TestCase类中默认封装了`assertTitle`、`assertUrl` 和 `assertText`等断言。
