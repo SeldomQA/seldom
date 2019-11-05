@@ -61,22 +61,24 @@ class YouTest(pyse.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = Pyse("chrome")
+        cls.driver = pyse.Pyse("chrome")
     
     def test_case(self):
-        #……
+        # ……
 
 ```
 
 支持的浏览器:
 
 ```python
-cls.driver = Pyse("firefox")   #Firefox
-cls.driver = Pyse("chrome")    # Chrome
-cls.driver = Pyse("ie")        #IE
-cls.driver = Pyse("opera")     #Opera
-cls.driver = Pyse("edge")      #Edge
-cls.driver = Pyse("chrome_headless")  #Chrome headless模式
+import pyse
+
+pyse.Pyse("firefox")   #Firefox
+pyse.Pyse("chrome")    # Chrome
+pyse.Pyse("ie")        #IE
+pyse.Pyse("opera")     #Opera
+pyse.Pyse("edge")      #Edge
+pyse.Pyse("chrome_headless")  #Chrome headless模式
 ```
 
 浏览器驱动下载地址：
@@ -109,15 +111,20 @@ pyse支持多种定位方式，id、name、class、link text、xpath和css。把
 driver.type(".s_ipt","pyse")     #css
 driver.type("#su","pyse")        #css
 
+# id
 driver.type("id=>kw", "pyse")  #id
 
+# class name
 driver.type("class=>s_ipt", "pyse")  #class定位
 
+# name
 driver.type("name=>wd", "pyse")  #name
 
+# xpath
 driver.type("xpath=>//*[@class='s_ipt']","pyse")  #xpath
 driver.type("xpath=>//*[@id='kw']","pyse")        #xpath
 
+# link text
 driver.click_text("link_text=>新闻") #link text (点击百度首页上的"新闻"链接)
 
 ```
