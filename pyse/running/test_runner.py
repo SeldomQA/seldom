@@ -5,6 +5,33 @@ from .HTML_test_runner import HTMLTestRunner
 import unittest
 
 
+def main(path=None,
+         title="pyse Test Report",
+         description="Test case execution"):
+    """
+    runner test case
+    :param path:
+    :param title:
+    :param description:
+    :return:
+    """
+    if path is None:
+        path = "./"
+
+    for filename in os.listdir(path):
+        if filename == "report":
+            break
+    else:
+        os.mkdir(path + '/report')
+
+    now = time.strftime("%Y_%m_%d_%H_%M_%S")
+    fp = open("./report/" + now + "result.html", 'wb')
+    tests = unittest.defaultTestLoader.discover(path, pattern='test*.py', top_level_dir=None)
+    runner = HTMLTestRunner(stream=fp, title=title, description=description)
+    runner.run(tests)
+    fp.close()
+
+
 class TestRunner(object):
     ''' Run test '''
 
@@ -23,7 +50,7 @@ class TestRunner(object):
 
         now = time.strftime("%Y-%m-%d_%H_%M_%S")
         fp = open("./report/" + now + "result.html", 'wb')
-        tests = unittest.defaultTestLoader.discover(self.cases,pattern='test*.py',top_level_dir=None)
+        tests = unittest.defaultTestLoader.discover(self.cases, pattern='test*.py',top_level_dir=None)
         runner = HTMLTestRunner(stream=fp, title=self.title, description=self.des)
         runner.run(tests)
         fp.close()

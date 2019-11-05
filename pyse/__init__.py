@@ -18,6 +18,7 @@
 # under the License.
 
 from .running.test_runner import TestRunner
+from .running.test_runner import main
 from .pyse_api import WebDriver
 from .case import TestCase
 from .driver import Pyse 
