@@ -14,10 +14,10 @@ WebUI automation testing framework based on Selenium and unittest.
 #### 安装说明：
 * Python 3.5+ : https://www.python.org/
 * Selenium 3.12.0 : https://pypi.python.org/pypi/selenium
-* 进入pyse/目录，执行:
+
 
 ```
-> python setup.py install
+> pip install -U git+https://github.com/defnngj/pyse.git@master
 ```
 
 #### 例子：
