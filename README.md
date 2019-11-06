@@ -61,7 +61,7 @@ class YouTest(pyse.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = pyse.Pyse("chrome")
+        cls.driver = pyse.browser("firefox")
     
     def test_case(self):
         # ……
@@ -73,12 +73,13 @@ class YouTest(pyse.TestCase):
 ```python
 import pyse
 
-pyse.Pyse("firefox")   #Firefox
-pyse.Pyse("chrome")    # Chrome
-pyse.Pyse("ie")        #IE
-pyse.Pyse("opera")     #Opera
-pyse.Pyse("edge")      #Edge
-pyse.Pyse("chrome_headless")  #Chrome headless模式
+pyse.browser()            # 默认Chrome
+pyse.browser("chrome")    # Chrome
+pyse.browser("firefox")   # Firefox
+pyse.browser("ie")        # IE
+pyse.browser("opera")     # Opera
+pyse.browser("edge")      # Edge
+pyse.browser("chrome_headless")  # Chrome headless模式
 ```
 
 浏览器驱动下载地址：

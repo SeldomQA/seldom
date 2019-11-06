@@ -2,26 +2,31 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-def Pyse(browser):
+def browser(name=None):
     """
     Run class initialization method, the default is proper
     to drive the Firefox browser. Of course, you can also
     pass parameter for other browser, Chrome browser for the "Chrome",
     the Internet Explorer browser for "internet explorer" or "ie".
+    :param name: Browser name
+    :return:
     """
-    if browser == "firefox" or browser == "ff":
+    if name is None:
+        name = "chrome"
+
+    if name == "firefox" or name == "ff":
         return webdriver.Firefox()
-    elif browser == "chrome":
+    elif name == "chrome":
         return webdriver.Chrome()
-    elif browser == "internet explorer" or browser == "ie":
+    elif name == "internet explorer" or name == "ie":
         return webdriver.Ie()
-    elif browser == "opera":
+    elif name == "opera":
         return webdriver.Opera()
-    elif browser == "chrome_headless":
+    elif name == "chrome_headless":
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         return webdriver.Chrome(chrome_options=chrome_options)
-    elif browser == 'edge':
+    elif name == 'edge':
         return webdriver.Edge()
     else:
         raise NameError(

@@ -14,7 +14,7 @@ class WebDriver(object):
     selenium provided by the method of the two packaging,
     making it easier to use.
     """
-
+    driver = None
     original_window = None
 
     def wait_element(self, el):

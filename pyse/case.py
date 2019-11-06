@@ -1,14 +1,14 @@
 import unittest
-from .pyse_api import WebDriver
+from .pyse import WebDriver
 from time import sleep
-from .driver import Pyse
+from .driver import browser
 
 
 class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = Pyse("chrome")
+        cls.driver = browser()
         cls.timeout = 10
 
     @classmethod
@@ -23,7 +23,7 @@ class TestCase(unittest.TestCase, WebDriver):
         Usage:
         self.assertTitle("title")
         """
-        if title == None:
+        if title is None:
             raise NameError("'title' can't be empty.")
         for s in range(second):
             try:
@@ -42,7 +42,7 @@ class TestCase(unittest.TestCase, WebDriver):
         Usage:
         self.assertUrl("url")
         """
-        if url == None:
+        if url is None:
             raise NameError("'URL' can't be empty.")
         for s in range(second):
             try:
