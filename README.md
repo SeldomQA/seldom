@@ -17,10 +17,50 @@ WebUI automation testing framework based on Selenium and unittest.
 > pip install -U git+https://github.com/defnngj/pyse.git@master
 ```
 
+#### 创建项目：
 
-#### 例子：
+查看帮助：
 
-请查看demo/test_case.py目录
+```shell
+pyse -h
+usage: pyse [-h] [-V] [--startproject STARTPROJECT] [-r R]
+
+WebUI automation testing framework based on Selenium.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -V, --version         show version
+  --startproject STARTPROJECT
+                        Specify new project name.
+  -r R                  run test case
+```
+
+创建项目：
+
+```shell
+pyse --startproject mypro
+2019-11-07 00:24:57,783 - INFO - Start to create new test project: mypro
+
+2019-11-07 00:24:57,784 - INFO - CWD: D:\
+
+2019-11-07 00:24:57,785 - INFO - created folder: mypro
+2019-11-07 00:24:57,786 - INFO - created folder: mypro\test_dir
+2019-11-07 00:24:57,787 - INFO - created folder: mypro\reports
+2019-11-07 00:24:57,788 - INFO - created file: mypro\test_dir\test_sample.py
+2019-11-07 00:24:57,789 - INFO - created file: mypro\run.py
+```
+
+运行项目：
+
+```shell
+> cd mypro\
+> pyse -r run.py
+```
+你可以到 `mypro\reports\` 目录查看测试报告。
+
+#### 编写pyse测试：
+
+请查看 test_sample.py目录
 
 ```python
 import pyse
@@ -35,7 +75,7 @@ class BaiduTest(pyse.TestCase):
         self.assertTitle("pyse_百度搜索")
 
 if __name__ == '__main__':
-    pyse.main()
+    pyse.main(debug=True)
 ```
 
 运行测试用例说明：

@@ -44,12 +44,13 @@ class BaiduTest(pyse.TestCase):
 
 
 if __name__ == '__main__':
-    pyse.main(path="./", title="百度测试用例", description="测试环境：Firefox")
+    pyse.main(path="./", title="百度测试用例", description="测试环境：Firefox", debug=True)
 
 '''
 说明：
 path ： 指定测试目录。
 title ： 指定测试项目标题。
 description ： 指定测试环境描述。
+debug ： debug模式，设置为True不生成测试用例
 '''
 
