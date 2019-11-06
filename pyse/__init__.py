@@ -27,6 +27,8 @@ __author__ = "bugmaster"
 
 __version__ = "0.1.0"
 
+__description__ = "WebUI automation testing framework based on Selenium."
+
 '''
 0.0.2 version update:
 * all the elements of the operation selector xpath replaced by css, css syntax because more concise.

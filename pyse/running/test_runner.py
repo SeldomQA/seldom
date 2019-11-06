@@ -26,17 +26,17 @@ def main(path=None,
 
     if debug is False:
         for filename in os.listdir(path):
-            if filename == "report":
+            if filename == "reports":
                 break
         else:
-            os.mkdir(path + '/report')
+            os.mkdir(path + '/reports')
 
         now = time.strftime("%Y_%m_%d_%H_%M_%S")
-        fp = open("./report/" + now + "result.html", 'wb')
-        tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
-        runner = HTMLTestRunner(stream=fp, title=title, description=description)
-        runner.run(tests)
-        fp.close()
+
+        with(open("./reports/" + now + "result.html", 'wb')) as fp:
+            tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
+            runner = HTMLTestRunner(stream=fp, title=title, description=description)
+            runner.run(tests)
     else:
         tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
         runner = unittest.TextTestRunner(verbosity=2)

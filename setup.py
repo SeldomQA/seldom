@@ -35,6 +35,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        pyse=pyse.Pyse:main
+        pyse=pyse.cli:main
     '''
 )
