@@ -11,14 +11,12 @@ WebUI automation testing framework based on Selenium and unittest.
 * 自动生成/report/目录，以及HTML测试报告生成。
 * 自带断言方法，断言title、URL 和 text。
 
-#### 安装说明：
-* Python 3.5+ : https://www.python.org/
-* Selenium 3.12.0 : https://pypi.python.org/pypi/selenium
-
+#### 安装：
 
 ```
 > pip install -U git+https://github.com/defnngj/pyse.git@master
 ```
+
 
 #### 例子：
 
@@ -41,13 +39,11 @@ if __name__ == '__main__':
 ```
 
 运行测试用例说明：
-* 测试用例文件命名必须以 __test__ 开头。
+* 测试用例文件命名必须以 `test` 开头。
 * 默认情况下使用 __Chrome__ 浏览器运行测试用例。
 * 元素定位方式默认使用 CSS 语法 `#kw`, 也可以显示的使用 `css=>#kw`。
 * pyse的TestCase类中默认封装了`assertTitle`、`assertUrl` 和 `assertText`等断言。
-* `TestRunner()` 默认匹配当前目录下"test*.py"的文件并执行。当然也可以指定测试目录，例如：
-TestRunner("path/you/project/test_case/")  # 注意用斜线"/"表示路径。
-* 执行`run()`方法运行测试用例并生成测试报告，在调试测试用例过程中可以使用 `debug()` 方法将不会生成HTML测试报告。
+* 执行`main()`方法运行测试用例并生成HTML测试报告
 
 
 #### 支持的浏览器及驱动：
