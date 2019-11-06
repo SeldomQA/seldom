@@ -35,8 +35,10 @@ def main():
         create_scaffold(project_name)
         return 0
 
-    if args.r:
-        os.system("python run.py")
+    run_file = args.r
+    if run_file:
+        command = "python " + run_file
+        os.system(command)
         return 0
 
 
