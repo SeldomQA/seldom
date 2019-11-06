@@ -17,7 +17,6 @@
 # specific language governing permissions and limitations
 # under the License.
 
-from .running.test_runner import TestRunner
 from .running.test_runner import main
 from .pyse import WebDriver
 from .case import TestCase
