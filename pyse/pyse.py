@@ -1,11 +1,11 @@
 # coding=utf-8
+import time
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.select import Select
-import time
 
 
 class WebDriver(object):
@@ -113,13 +113,15 @@ class WebDriver(object):
         """
         self.driver.set_window_size(wide, high)
 
-    def type(self, css, text):
+    def type(self, css, text, clear=True):
         """
         Operation input box.
 
         Usage:
         driver.type("css=>#el","selenium")
         """
+        if clear is True:
+            self.clear(css)
         el = self.get_element(css)
         el.send_keys(text)
 
@@ -223,12 +225,12 @@ class WebDriver(object):
         el = self.get_element(css)
         el.submit()
 
-    def F5(self):
+    def refresh(self):
         """
         Refresh the current page.
 
         Usage:
-        driver.F5()
+        driver.refresh()
         """
         self.driver.refresh()
 
@@ -332,8 +334,8 @@ class WebDriver(object):
         Usage:
         driver.switch_to_frame("css=>#el")
         """
-        iframe_el = self.get_element(css)
-        self.driver.switch_to.frame(iframe_el)
+        frame_elem = self.get_element(css)
+        self.driver.switch_to.frame(frame_elem)
 
     def switch_to_frame_out(self):
         """
@@ -360,14 +362,14 @@ class WebDriver(object):
             if handle != original_window:
                 self.driver.switch_to.window(handle)
 
-    def get_screenshot(self, file_path):
+    def screenshots(self, file_path):
         """
-        Saves a screenshot of the current window to a PNG image file.
+        Saves a screenshots of the current window to a PNG image file.
 
         Usage:
-        driver.get_screenshot('/Screenshots/foo.png')
+        driver.screenshots('/Screenshots/foo.png')
         """
-        self.driver.get_screenshot_as_file(file_path)
+        self.driver.save_screenshot(file_path)
 
     def select(self, css, value):
         """
@@ -391,8 +393,10 @@ class WebDriver(object):
         el = self.get_element(css)
         Select(el).select_by_value(value)
 
-    def sleep(self, sec):
+    @staticmethod
+    def sleep(sec):
         """
-        sleep(seconds)
+        Usage:
+            self.sleep(seconds)
         """
         time.sleep(sec)
