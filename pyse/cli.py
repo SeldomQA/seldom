@@ -73,6 +73,9 @@ class YouTest(pyse.TestCase):
         self.click("#su")
         self.assertTitle("pyse")
 
+
+if __name__ == '__main__':
+    pyse.main(debug=True)
 """
     run_test = """
 import pyse
