@@ -9,6 +9,16 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 
+pyse_str = """                            
+ ______  __   __  _______  _______ 
+|   _  ||  | |  ||  _____||   ____|
+|  |_| ||  |_|  || |_____ |  |____ 
+|   ___||_     _||_____  ||   ____|
+|  |      |   |   _____| ||  |____ 
+|__|      |___|  |_______||_______|
+"""
+
+
 def main(path=None,
          title="pyse Test Report",
          description="Test case execution",
@@ -37,11 +47,13 @@ def main(path=None,
         with(open(report, 'wb')) as fp:
             tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
+            print(pyse_str)
             runner.run(tests)
     else:
         tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
         runner = unittest.TextTestRunner(verbosity=2)
         logger.info("pyse run test 🛫🛫!")
+        print(pyse_str)
         runner.run(tests)
         logger.info("End of the test 🔚!")
 
