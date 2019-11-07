@@ -166,6 +166,35 @@ driver.click_text("link_text=>新闻") #link text (点击百度首页上的"新�
 
 ```
 
+#### 参数化测试用例
+pyse 支持参数化测试用例，集成了[parameterized](https://github.com/wolever/parameterized)。
+
+```python
+
+import pyse
+from pyse import testdata
+
+
+class BaiduTest(pyse.TestCase):
+
+    @testdata.expand([
+        (1, 'pyse'),
+        (2, 'selenium'),
+        (3, 'unittest'),
+    ])
+    def test_baidu(self, name, keyword):
+        """
+         used parameterized test
+        :param name: case name
+        :param search_key: search keyword
+        """
+        self.open("https://www.baidu.com")
+        self.clear("id=>kw")
+        self.type("id=>kw", keyword)
+        self.click("css=>#su")
+        self.assertTitle(keyword)
+
+```
 ==========================================================
 
   css选择器参考手册：

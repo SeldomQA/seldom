@@ -1,5 +1,5 @@
 import pyse
-from parameterized import parameterized
+from pyse import testdata
 
 
 class BaiduTest(pyse.TestCase):
@@ -24,7 +24,7 @@ class BaiduTest(pyse.TestCase):
         self.assertAlert("已经记录下您的使用偏好")
         self.accept_alert()
 
-    @parameterized.expand([
+    @testdata.expand([
         (1, 'pyse'),
         (2, 'selenium'),
         (3, 'unittest'),
