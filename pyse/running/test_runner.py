@@ -22,18 +22,19 @@ def main(path=None,
     :return:
     """
     if path is None:
-        path = "./"
+        path = os.getcwd()
 
     if debug is False:
         for filename in os.listdir(path):
             if filename == "reports":
                 break
         else:
-            os.mkdir(path + '/reports')
+            os.mkdir(os.path.join(path, "reports"))
 
         now = time.strftime("%Y_%m_%d_%H_%M_%S")
+        report = os.path.join(path, "reports", now + "_result.html")
 
-        with(open("./reports/" + now + "result.html", 'wb')) as fp:
+        with(open(report, 'wb')) as fp:
             tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
             runner.run(tests)
