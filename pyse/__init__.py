@@ -21,11 +21,11 @@ from .running.test_runner import main
 from .pyse import WebDriver
 from .case import TestCase
 from .driver import browser
-
+from .testdata import testdata
 
 __author__ = "bugmaster"
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __description__ = "WebUI automation testing framework based on Selenium."
 
