@@ -35,4 +35,4 @@ def browser(name=None):
         return webdriver.Edge()
     else:
         raise NameError(
-                "Not found {} browser, You can enter 'ie', 'ff', 'opera', 'edge', 'chrome'.".format(browser))
+                "Not found {} browser, You can enter 'ie', 'ff', 'opera', 'edge', 'chrome'.".format(name))
