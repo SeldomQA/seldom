@@ -1,0 +1,38 @@
+### 0.1.2
+...
+
+#### 0.0.9
+Simplifying API calls
+
+#### 0.0.8
+add parameterized
+Beautification test report
+
+#### 0.0.7
+Re based on unittest.
+
+#### 0.0.6
+add setup.py file, Specification of the installation process, a time to install all dependencies.
+Delete unnecessary files
+
+#### 0.0.5
+Increase the support of multiple positioning methods
+
+#### 0.0.4
+Method to add default to wait.
+Modify the realization of the individual methods
+
+#### 0.0.3.1 version update:
+* Repair part bug.
+
+#### 0.0.3 version update:
+* With the nose instead of unittest.
+* Discard HTMLTestRunner,Integrated nose-html-reporting.
+* modify the examples under demo.
+
+#### 0.0.2 version update:
+* all the elements of the operation selector xpath replaced by css, css syntax because more concise.
+* when you run the test case no longer need to specify the directory, the default directory for the current test.
+* modify the examples under demo.
+
+
