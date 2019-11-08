@@ -1,14 +1,15 @@
 import unittest
-from .pyse import WebDriver
 from time import sleep
+from .pyse import WebDriver
 from .driver import browser
+from .running.test_runner import Browser
 
 
 class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = browser()
+        cls.driver = browser(Browser.name)
         cls.timeout = 10
 
     @classmethod

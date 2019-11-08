@@ -19,20 +19,35 @@ pyse_str = """
 """
 
 
+class Browser:
+    """
+    Define run browser name
+    """
+    name = None
+
+
 def main(path=None,
+         browser=None,
          title="pyse Test Report",
          description="Test case execution",
          debug=False):
     """
     runner test case
     :param path:
+    :param browser:
     :param title:
     :param description:
     :param debug:
     :return:
     """
+
     if path is None:
         path = os.getcwd()
+
+    if browser is None:
+        Browser.name = "chrome"
+    else:
+        Browser.name = browser
 
     if debug is False:
         for filename in os.listdir(path):
