@@ -37,7 +37,9 @@ def main():
 
     run_file = args.r
     if run_file:
-        command = "python " + run_file
+        py_version = "python -V"
+        os.system(py_version)
+        command = "python3 " + run_file
         os.system(command)
         return 0
 
