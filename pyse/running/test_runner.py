@@ -50,20 +50,21 @@ def main(path=None,
         Browser.name = browser
 
     if debug is False:
-        for filename in os.listdir(path):
+        for filename in os.listdir(os.getcwd()):
             if filename == "reports":
                 break
         else:
-            os.mkdir(os.path.join(path, "reports"))
+            os.mkdir(os.path.join(os.getcwd(), "reports"))
 
         now = time.strftime("%Y_%m_%d_%H_%M_%S")
-        report = os.path.join(path, "reports", now + "_result.html")
+        report = os.path.join(os.getcwd(), "reports", now + "_result.html")
 
         with(open(report, 'wb')) as fp:
             tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
             print(pyse_str)
             runner.run(tests)
+        print("generated html file: file:///{}".format(report))
     else:
         tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
         runner = unittest.TextTestRunner(verbosity=2)
