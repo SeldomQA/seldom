@@ -1,5 +1,6 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as CH_Options
+from selenium.webdriver.firefox.options import Options as FF_Options
 
 
 def browser(name=None):
@@ -23,11 +24,15 @@ def browser(name=None):
     elif name == "opera":
         return webdriver.Opera()
     elif name == "chrome_headless":
-        chrome_options = Options()
+        chrome_options = CH_Options()
         chrome_options.add_argument('--headless')
         return webdriver.Chrome(chrome_options=chrome_options)
+    elif name == "firefox_headless":
+        firefox_options = FF_Options()
+        firefox_options.headless = True
+        return webdriver.Firefox(firefox_options=firefox_options)
     elif name == 'edge':
         return webdriver.Edge()
     else:
         raise NameError(
-                "Not found %s browser,You can enter 'ie', 'ff', 'opera', 'edge', 'chrome' or 'chrome_headless'." % browser)
+                "Not found {} browser, You can enter 'ie', 'ff', 'opera', 'edge', 'chrome'.".format(browser))
