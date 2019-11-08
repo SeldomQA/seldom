@@ -78,47 +78,43 @@ if __name__ == '__main__':
     pyse.main(debug=True)
 ```
 
-运行测试用例说明：
+代码说明：
 * 测试用例文件命名必须以 `test` 开头。
-* 默认情况下使用 __Chrome__ 浏览器运行测试用例。
 * 元素定位方式默认使用 CSS 语法 `#kw`, 也可以显示的使用 `css=>#kw`。
-* pyse的TestCase类中默认封装了`assertTitle`、`assertUrl` 和 `assertText`等断言。
-* 执行`main()`方法运行测试用例并生成HTML测试报告
+* pyse的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
+* 通过`main()`方法运行测试用例。
 
+**main()方法参数**
+```shell
+pyse.main(path="./",
+          browser="chrome",
+          title="百度测试用例", 
+          description="测试环境：Firefox", 
+          debug=True
+)
+```
+
+说明：
+* path ： 指定测试目录。
+* browser: 指定测试浏览器，默认Chrome。
+* title ： 指定测试项目标题。
+* description ： 指定测试环境描述。
+* debug ： debug模式，设置为True不生成测试HTML测试。
 
 ### 支持的浏览器及驱动：
 
-指定运行的浏览器：
+如果你想指定测试用例在不同的浏览器中运行，非常简单，只需要在`pyse.main()`方法中通过`browser`设置。
 
 ```python
-import pyse
 
-class YouTest(pyse.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.driver = pyse.browser("firefox")
-    
-    def test_case(self):
-        # ……
+if __name__ == '__main__':
+    pyse.main(browser="firefox")
 
 ```
 
-支持的浏览器:
+支持的浏览器包括："chrome"、"firefox"、"ie"、"opera"、"edge"、"chrome_headless" 等。
 
-```python
-import pyse
-
-pyse.browser()            # 默认Chrome
-pyse.browser("chrome")    # Chrome
-pyse.browser("firefox")   # Firefox
-pyse.browser("ie")        # IE
-pyse.browser("opera")     # Opera
-pyse.browser("edge")      # Edge
-pyse.browser("chrome_headless")  # Chrome headless模式
-```
-
-浏览器驱动下载地址：
+不同浏览器驱动下载地址：
 
 geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
 
