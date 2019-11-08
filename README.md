@@ -1,25 +1,25 @@
 # pyse
 WebUI automation testing framework based on Selenium and unittest.
 
-#### 介绍：
+### 介绍：
   pyse基于selenium（webdriver）进行了简单的二次封装，比selenium所提供的方法操作更简洁。
 
-#### 特点：
+### 特点：
 * 默认使用CSS定位，同时支持多种定位方法（id\name\class\link_text\xpath\css）。
 * 本框架只是对selenium（webdriver）原生方法进行了简单的封装，精简为大约30个方法，这些方法基本能够胜任于我们的web自动化测试。
 * 以测试类为单位，自动打开和关闭浏览器，减少浏览器的打开/关闭次数，节省时间。
 * 自动生成/report/目录，以及HTML测试报告生成。
 * 自带断言方法，断言title、URL 和 text。
 
-#### 安装：
+### 安装：
 
 ```
 > pip install -U git+https://github.com/defnngj/pyse.git@master
 ```
 
-#### 创建项目：
+### pyse命令：
 
-查看帮助：
+1、查看帮助：
 
 ```shell
 pyse -h
@@ -35,7 +35,7 @@ optional arguments:
   -r R                  run test case
 ```
 
-创建项目：
+2、创建项目：
 
 ```shell
 pyse --startproject mypro
@@ -50,7 +50,7 @@ pyse --startproject mypro
 2019-11-07 00:24:57,789 - INFO - created file: mypro\run.py
 ```
 
-运行项目：
+3、运行项目：
 
 ```shell
 > cd mypro\
@@ -58,9 +58,9 @@ pyse --startproject mypro
 ```
 你可以到 `mypro\reports\` 目录查看测试报告。
 
-#### 编写pyse测试：
+### 编写测试：
 
-请查看 test_sample.py目录
+请查看 `test_sample.py` 文件
 
 ```python
 import pyse
@@ -86,7 +86,7 @@ if __name__ == '__main__':
 * 执行`main()`方法运行测试用例并生成HTML测试报告
 
 
-#### 支持的浏览器及驱动：
+### 支持的浏览器及驱动：
 
 指定运行的浏览器：
 
@@ -132,7 +132,7 @@ MicrosoftWebDriver(Edge):https://developer.microsoft.com/en-us/microsoft-edge/to
 
 ==========================================================
 
-#### 元素定位:
+### 元素定位:
 
 pyse支持多种定位方式，id、name、class、link text、xpath和css。把定位方法与定位内容一体，写起更加简洁。
 ```html
@@ -166,7 +166,10 @@ driver.click_text("link_text=>新闻") #link text (点击百度首页上的"新�
 
 ```
 
-#### 参数化测试用例
+css选择器参考手册：
+http://www.w3school.com.cn/cssref/css_selectors.asp
+
+### 参数化测试用例
 pyse 支持参数化测试用例，集成了[parameterized](https://github.com/wolever/parameterized)。
 
 ```python
@@ -195,11 +198,7 @@ class BaiduTest(pyse.TestCase):
         self.assertTitle(keyword)
 
 ```
-==========================================================
 
-  css选择器参考手册：
-  http://www.w3school.com.cn/cssref/css_selectors.asp
-
-#### 测试报告
+### 测试报告
 
 ![](./test_report.png)
