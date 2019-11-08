@@ -145,24 +145,24 @@ pyse支持多种定位方式，id、name、class、link text、xpath和css。把
 
 ```python
 # 默认支持CSS语法
-driver.type(".s_ipt","pyse")     #css
-driver.type("#su","pyse")        #css
+self.type(".s_ipt","pyse")     #css
+self.type("#su","pyse")        #css
 
 # id
-driver.type("id=>kw", "pyse")  #id
+self.type("id=>kw", "pyse")  #id
 
 # class name
-driver.type("class=>s_ipt", "pyse")  #class定位
+self.type("class=>s_ipt", "pyse")  #class定位
 
 # name
-driver.type("name=>wd", "pyse")  #name
+self.type("name=>wd", "pyse")  #name
 
 # xpath
-driver.type("xpath=>//*[@class='s_ipt']","pyse")  #xpath
-driver.type("xpath=>//*[@id='kw']","pyse")        #xpath
+self.type("xpath=>//*[@class='s_ipt']","pyse")  #xpath
+self.type("xpath=>//*[@id='kw']","pyse")        #xpath
 
 # link text
-driver.click_text("link_text=>新闻") #link text (点击百度首页上的"新闻"链接)
+self.click_text("link_text=>新闻") #link text (点击百度首页上的"新闻"链接)
 
 ```
 
