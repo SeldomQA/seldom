@@ -171,12 +171,12 @@ pyse 支持参数化测试用例，集成了[parameterized](https://github.com/w
 ```python
 
 import pyse
-from pyse import testdata
+from pyse import ddt
 
 
 class BaiduTest(pyse.TestCase):
 
-    @testdata.expand([
+    @ddt.data([
         (1, 'pyse'),
         (2, 'selenium'),
         (3, 'unittest'),
