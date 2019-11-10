@@ -1,10 +1,13 @@
 import os
+import sys
 import argparse
 import logging
 from pyse import __description__, __version__
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+PY3 = sys.version_info[0] == 3
 
 
 def main():
@@ -37,9 +40,14 @@ def main():
 
     run_file = args.r
     if run_file:
-        py_version = "python3 -V"
-        os.system(py_version)
-        command = "python3 " + run_file
+        if PY3:
+            py_version = "python3 -V"
+            os.system(py_version)
+            command = "python3 " + run_file
+        else:
+            py_version = "python -V"
+            os.system(py_version)
+            command = "python " + run_file
         os.system(command)
         return 0
 
