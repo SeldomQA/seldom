@@ -2,11 +2,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>百度自动化测试报告</title>
+    <title>百度测试用例</title>
     <meta name="generator" content="HTMLTestRunner 0.8.2"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-	<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
+    
     
 <style type="text/css" media="screen">
 body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
@@ -59,20 +61,21 @@ a.popup_link:hover {
 #show_detail_line {
     margin-top: 3ex;
     margin-bottom: 1ex;
-	margin-left: 10px;
+    margin-left: 10px;
 }
 #result_table {
     width: 80%;
     border-collapse: collapse;
     border: 1px solid #777;
-	margin-left: 10px;
+    margin-left: 10px;
 }
 #header_row {
     font-weight: bold;
     color: #606060;
     background-color: #f5f5f5;
-	border-top-width: 10px;
+    border-top-width: 10px;
     border-color: #d6e9c6;
+	font-size: 12px;
 }
 #result_table td {
     border: 1px solid #f5f5f5;
@@ -94,6 +97,26 @@ a.popup_link:hover {
 #ending {
 }
 
+/* -- chars ---------------------------------------------------------------------- */
+.testChars {margin-left: 150px;}
+
+.btn-info1 {
+    color: #fff;
+    background-color: #d6e9c6;
+    border-color: #d6e9c6;
+}
+
+.btn-info2 {
+    color: #fff;
+    background-color: #faebcc;
+    border-color: #faebcc;
+}
+
+.btn-info3 {
+    color: #fff;
+    background-color: #ebccd1;
+    border-color: #ebccd1;
+}
 </style>
 
 </head>
@@ -194,12 +217,23 @@ function showOutput(id, name) {
 --></script>
 
 <div class='heading'>
-<h1>百度自动化测试报告</h1>
-<p class='attribute'><strong>Start Time:</strong> 2017-11-27 15:10:36</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:25.404781</p>
-<p class='attribute'><strong>Status:</strong> Pass 3</p>
+<h1>百度测试用例</h1>
+<p class='attribute'><strong>Start Time:</strong> 2019-11-10 22:47:46</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:22.532999</p>
+<p class='attribute'><strong>Status:</strong> Pass 5</p>
 
-<p class='description'>测试环境：Chrome</p>
+<p class='description'>测试环境：Firefox</p>
+</div>
+
+<div style="float:left; margin-left: 10px;">
+	<p> Test Case Pie charts </p>
+	<a class="btn btn-xs btn-info1">-Pass-</a><br>
+	<a class="btn btn-xs btn-info2">-Faild-</a><br>
+	<a class="btn btn-xs btn-info3">-Error-</a><br>
+</div>
+
+<div class="testChars">
+	<canvas id="myChart" width="250" height="250"></canvas>
 </div>
 
 
@@ -228,33 +262,52 @@ function showOutput(id, name) {
 </tr>
 
 <tr class='passClass'>
-    <td>test_case.BaiduTest:  Baidu serach test case </td>
-    <td>3</td>
-    <td>3</td>
+    <td>test_first_demo.BaiduTest: Baidu serach test case</td>
+    <td>4</td>
+    <td>4</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c1',3)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c1',4)">Detail</a></td>
 </tr>
 
 <tr id='pt1.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_baidu_0: baidu search key : pyse [with name=1, search_key='pyse']</div></td>
+    <td class='none'><div class='testcase'>test_baidu_0: used parameterized test [with name=1, search_key='pyse']</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt1.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_baidu_1: baidu search key : pyse [with name=2, search_key='selenium']</div></td>
+    <td class='none'><div class='testcase'>test_baidu_1: used parameterized test [with name=2, search_key='selenium']</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt1.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_baidu_2: baidu search key : pyse [with name=3, search_key='unittest']</div></td>
+    <td class='none'><div class='testcase'>test_baidu_2: used parameterized test [with name=3, search_key='unittest']</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_case</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>test_po_demo.BaiduTest: Baidu serach test case</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c2',1)">Detail</a></td>
+</tr>
+
+<tr id='pt2.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_case</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='total_row'>
     <td>Total</td>
-    <td>3</td>
-    <td class="text text-success">3</td>
+    <td>5</td>
+    <td class="text text-success">5</td>
     <td class="text text-danger">0</td>
     <td class="text text-warning">0</td>
     <td>&nbsp;</td>
@@ -263,5 +316,42 @@ function showOutput(id, name) {
 
 <div id='ending'>&nbsp;</div>
 
+    <script type="text/javascript">
+var data = [
+	{
+		value: 0,
+		color: "#ebccd1",
+		label: "Error",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 0,
+		color : "#faebcc",
+		label: "Fail",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 5,
+		color : "#d6e9c6",
+		label : "Pass",
+		labelColor: 'white',
+		labelFontSize: '16'
+	}			
+]
+
+var newopts = {
+     animationSteps: 100,
+ 		animationEasing: 'easeInOutQuart',
+}
+
+//Get the context of the canvas element we want to select
+var ctx = document.getElementById("myChart").getContext("2d");
+
+var myNewChart = new Chart(ctx).Pie(data,newopts);
+
+</script>
+	
 </body>
 </html>
