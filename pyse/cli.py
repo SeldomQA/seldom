@@ -87,7 +87,7 @@ class YouTest(pyse.TestCase):
 
 
 if __name__ == '__main__':
-    pyse.main(debug=True)
+    pyse.main("test_sample.py", debug=True)
 """
     run_test = """
 import pyse

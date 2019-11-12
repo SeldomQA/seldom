@@ -42,7 +42,20 @@ def main(path=None,
     """
 
     if path is None:
-        path = os.getcwd()
+        suits = unittest.defaultTestLoader.discover(os.getcwd())
+    else:
+        if len(path) > 3:
+            if path[-3:] == ".py":
+                if "/" in path:
+                    path_list = path.split("/")
+                    path_dir = path.replace(path_list[-1], "")
+                    suits = unittest.defaultTestLoader.discover(path_dir, pattern=path_list[-1])
+                else:
+                    suits = unittest.defaultTestLoader.discover(os.getcwd(), pattern=path)
+            else:
+                suits = unittest.defaultTestLoader.discover(path)
+        else:
+            suits = unittest.defaultTestLoader.discover(path)
 
     if browser is None:
         Browser.name = "chrome"
@@ -60,17 +73,15 @@ def main(path=None,
         report = os.path.join(os.getcwd(), "reports", now + "_result.html")
 
         with(open(report, 'wb')) as fp:
-            tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
             print(pyse_str)
-            runner.run(tests)
+            runner.run(suits)
         print("generated html file: file:///{}".format(report))
     else:
-        tests = unittest.defaultTestLoader.discover(path, pattern='test*.py')
         runner = unittest.TextTestRunner(verbosity=2)
         logger.info("pyse run test 🛫🛫!")
         print(pyse_str)
-        runner.run(tests)
+        runner.run(suits)
         logger.info("End of the test 🔚!")
 
 
