@@ -294,9 +294,11 @@ h1 {
 	color: gray;
 }
 .heading {
-    margin-top: 0ex;
+    margin-top: 20px;
     margin-bottom: 1ex;
 	margin-left: 10px;
+	width: 30%;
+    float: left;
 }
 .heading .attribute {
     margin-top: 1ex;
@@ -342,7 +344,7 @@ a.popup_link:hover {
     background-color: #f5f5f5;
     border-top-width: 10px;
     border-color: #d6e9c6;
-	font-size: 12px;
+	font-size: 15px;
 }
 #result_table td {
     border: 1px solid #f5f5f5;
@@ -356,12 +358,13 @@ a.popup_link:hover {
 .failCase   { color: #c60; font-weight: bold; }
 .errorCase  { color: #c00; font-weight: bold; }
 .hiddenRow  { display: none; }
+.none {color: #009900 }
 .testcase   { margin-left: 2em; }
 /* -- ending ---------------------------------------------------------------------- */
 #ending {
 }
 /* -- chars ---------------------------------------------------------------------- */
-.testChars {margin-left: 150px;}
+.testChars {width: 900px;margin-left: 0px;}
 .btn-info1 {
     color: #fff;
     background-color: #d6e9c6;
@@ -389,11 +392,11 @@ a.popup_link:hover {
 %(parameters)s
 <p class='description'>%(description)s</p>
 </div>
-<div style="float:left; margin-left: 10px;">
+<div style="float:left; margin-left: 10px; margin-top: 20px;">
 	<p> Test Case Pie charts </p>
-	<a class="btn btn-xs btn-info1">-Pass-</a><br>
-	<a class="btn btn-xs btn-info2">-Faild-</a><br>
-	<a class="btn btn-xs btn-info3">-Error-</a><br>
+	<a class="badge text-wrap btn-info1">-Pass-</a><br>
+	<a class="badge text-wrap btn-info2">-Faild-</a><br>
+	<a class="badge text-wrap btn-info3">-Error-</a><br>
 </div>
 <div class="testChars">
 	<canvas id="myChart" width="250" height="250"></canvas>
@@ -447,10 +450,10 @@ var myNewChart = new Chart(ctx).Pie(data,newopts);
     #
 
     REPORT_TMPL = """
-<p id='show_detail_line' style="margin-left: 10px;">Show
-<a href='javascript:showCase(0)' class="btn btn-outline-primary btn-sm">Summary</a>
-<a href='javascript:showCase(1)' class="btn btn-outline-warning btn-sm">Failed</a>
-<a href='javascript:showCase(2)' class="btn btn-outline-info btn-sm">All</a>
+<p id='show_detail_line' style="margin-left: 10px;">Result
+<a href='javascript:showCase(0)' class="btn btn-secondary btn-sm">Summary</a>
+<a href='javascript:showCase(1)' class="btn btn-danger btn-sm">Failed</a>
+<a href='javascript:showCase(2)' class="btn btn-info btn-sm">All</a>
 </p>
 <table id='result_table'>
 <colgroup>
