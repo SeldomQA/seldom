@@ -30,7 +30,8 @@ def main(path=None,
          browser=None,
          title="pyse Test Report",
          description="Test case execution",
-         debug=False):
+         debug=False,
+         rerun=0):
     """
     runner test case
     :param path:
@@ -38,6 +39,7 @@ def main(path=None,
     :param title:
     :param description:
     :param debug:
+    :param rerun:
     :return:
     """
 
@@ -75,7 +77,7 @@ def main(path=None,
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
             print(pyse_str)
-            runner.run(suits)
+            runner.run(suits, rerun=rerun)
         print("generated html file: file:///{}".format(report))
     else:
         runner = unittest.TextTestRunner(verbosity=2)

@@ -181,7 +181,8 @@ pyse.main(path="./",
           browser="chrome",
           title="百度测试用例", 
           description="测试环境：Firefox", 
-          debug=True
+          debug=True,
+          rerun=0
 )
 ```
 
@@ -192,6 +193,7 @@ pyse.main(path="./",
 * title ： 指定测试项目标题。
 * description ： 指定测试描述。
 * debug ： debug模式，设置为True不生成测试HTML测试。
+* rerun : 设置失败重新运行次数，默认为 0。
 
 ### Run the test
 
