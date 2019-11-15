@@ -3,7 +3,7 @@ import os
 import time
 import logging
 import unittest
-from .HTML_test_runner import HTMLTestRunner
+from .HTMLTestRunner import HTMLTestRunner
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
