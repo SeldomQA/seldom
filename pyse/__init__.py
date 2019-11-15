@@ -25,7 +25,7 @@ from .testdata import ddt
 
 __author__ = "bugmaster"
 
-__version__ = "0.1.2"
+__version__ = "0.1.5"
 
 __description__ = "WebUI automation testing framework based on Selenium."
 

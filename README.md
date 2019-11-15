@@ -12,6 +12,8 @@ WebUI automation testing framework based on Selenium and unittest.
 * 自动生成/reports/目录，以及HTML测试报告生成。
 * 自带断言方法，断言title、URL 和 text。
 * 支持用例参数化。
+* 只用用例失败重跑。
+* 支持用例失败/错误截图。
 
 ### 安装
 
@@ -295,7 +297,7 @@ class BaiduTest(pyse.TestCase):
         """
          used parameterized test
         :param name: case name
-        :param search_key: search keyword
+        :param keyword: search keyword
         """
         self.open("https://www.baidu.com")
         self.clear("id=>kw")

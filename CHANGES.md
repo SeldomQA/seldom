@@ -1,5 +1,9 @@
+### 0.1.5
+* Increased test case failure rerun
+* Add use case failure screenshots
+
 ### 0.1.2
-...
+new framework
 
 #### 0.0.9
 Simplifying API calls
