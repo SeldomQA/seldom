@@ -139,7 +139,8 @@ self.get_title()
 
 self.get_url()
 
-self.js("window.scrollTo(200,1000);")
+# 设置浏览器滚动条
+self.window_scroll(width=300, height=500)
 
 self.max_window()
 
@@ -159,8 +160,10 @@ self.right_click("css=>#el")
 
 self.screenshots('/Screenshots/foo.png')
 
-self.select("#nr", '20')
-self.select("xpath=>//[@name='NR']", '20')
+# 选择下拉框
+self.select("#nr", value='20')
+self.select("#nr", text='每页显示20条')
+self.select("#nr", index=2)
 
 self.set_window(wide, high)
 
@@ -311,5 +314,6 @@ class BaiduTest(pyse.TestCase):
 
 感谢从以下项目中得到思路和帮助。
 
-[HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
-[parameterized](https://github.com/wolever/parameterized)
+* [HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
+
+* [parameterized](https://github.com/wolever/parameterized)

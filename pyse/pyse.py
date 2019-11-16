@@ -91,7 +91,7 @@ class WebDriver(object):
         open url.
 
         Usage:
-        driver.open("https://www.baidu.com")
+        self.open("https://www.baidu.com")
         """
         self.driver.get(url)
 
@@ -100,7 +100,7 @@ class WebDriver(object):
         Set browser window maximized.
 
         Usage:
-        driver.max_window()
+        self.max_window()
         """
         self.driver.maximize_window()
 
@@ -109,7 +109,7 @@ class WebDriver(object):
         Set browser window wide and high.
 
         Usage:
-        driver.set_window(wide,high)
+        self.set_window(wide,high)
         """
         self.driver.set_window_size(wide, high)
 
@@ -118,7 +118,7 @@ class WebDriver(object):
         Operation input box.
 
         Usage:
-        driver.type("css=>#el","selenium")
+        self.type("css=>#el","selenium")
         """
         if clear is True:
             self.clear(css)
@@ -130,7 +130,7 @@ class WebDriver(object):
         Clear the contents of the input box.
 
         Usage:
-        driver.clear("css=>#el")
+        self.clear("css=>#el")
         """
         el = self.get_element(css)
         el.clear()
@@ -141,7 +141,7 @@ class WebDriver(object):
         Connection, check box, radio buttons, and even drop-down box etc..
 
         Usage:
-        driver.click("css=>#el")
+        self.click("css=>#el")
         """
         el = self.get_element(css)
         el.click()
@@ -151,7 +151,7 @@ class WebDriver(object):
         Right click element.
 
         Usage:
-        driver.right_click("css=>#el")
+        self.right_click("css=>#el")
         """
         el = self.get_element(css)
         ActionChains(self.driver).context_click(el).perform()
@@ -161,7 +161,7 @@ class WebDriver(object):
         Mouse over the element.
 
         Usage:
-        driver.move_to_element("css=>#el")
+        self.move_to_element("css=>#el")
         """
         el = self.get_element(css)
         ActionChains(self.driver).move_to_element(el).perform()
@@ -171,7 +171,7 @@ class WebDriver(object):
         Double click element.
 
         Usage:
-        driver.double_click("css=>#el")
+        self.double_click("css=>#el")
         """
         el = self.get_element(css)
         ActionChains(self.driver).double_click(el).perform()
@@ -181,7 +181,7 @@ class WebDriver(object):
         Drags an element a certain distance and then drops it.
 
         Usage:
-        driver.drag_and_drop("css=>#el","css=>#ta")
+        self.drag_and_drop("css=>#el","css=>#ta")
         """
         element = self.get_element(el_css)
         target = self.get_element(ta_css)
@@ -192,7 +192,7 @@ class WebDriver(object):
         Click the element by the link text
 
         Usage:
-        driver.click_text("新闻")
+        self.click_text("新闻")
         """
         self.driver.find_element_by_partial_link_text(text).click()
 
@@ -202,7 +202,7 @@ class WebDriver(object):
         window or tab.
 
         Usage:
-        driver.close()
+        self.close()
         """
         self.driver.close()
 
@@ -211,7 +211,7 @@ class WebDriver(object):
         Quit the driver and close all the windows.
 
         Usage:
-        driver.quit()
+        self.quit()
         """
         self.driver.quit()
 
@@ -230,25 +230,38 @@ class WebDriver(object):
         Refresh the current page.
 
         Usage:
-        driver.refresh()
+        self.refresh()
         """
         self.driver.refresh()
 
-    def js(self, script):
+    def execute_script(self, script):
         """
         Execute JavaScript scripts.
 
         Usage:
-        driver.js("window.scrollTo(200,1000);")
+        self.execute_script("window.scrollTo(200,1000);")
         """
         self.driver.execute_script(script)
+
+    def window_scroll(self, width=None, height=None):
+        """
+        Setting width and height of window scroll bar.
+        Usage:
+        self.window_scroll(width=300, height=500)
+        """
+        if width is None:
+            width = "0"
+        if height is None:
+            height = "0"
+        js = "window.scrollTo({w},{h});".format(w=str(width), h=str(height))
+        self.execute_script(js)
 
     def get_attribute(self, css, attribute):
         """
         Gets the value of an element attribute.
 
         Usage:
-        driver.get_attribute("css=>#el","type")
+        self.get_attribute("css=>#el","type")
         """
         el = self.get_element(css)
         return el.get_attribute(attribute)
@@ -258,7 +271,7 @@ class WebDriver(object):
         Get element text information.
 
         Usage:
-        driver.get_text("css=>#el")
+        self.get_text("css=>#el")
         """
         el = self.get_element(css)
         return el.text
@@ -268,7 +281,7 @@ class WebDriver(object):
         Gets the element to display,The return result is true or false.
 
         Usage:
-        driver.get_display("css=>#el")
+        self.get_display("css=>#el")
         """
         el = self.get_element(css)
         return el.is_displayed()
@@ -278,7 +291,7 @@ class WebDriver(object):
         Get window title.
 
         Usage:
-        driver.get_title()
+        self.get_title()
         """
         return self.driver.title
 
@@ -287,7 +300,7 @@ class WebDriver(object):
         Get the URL address of the current page.
 
         Usage:
-        driver.get_url()
+        self.get_url()
         """
         return self.driver.current_url
 
@@ -296,7 +309,7 @@ class WebDriver(object):
         Gets the text of the Alert.
 
         Usage:
-        driver.get_alert_text()
+        self.get_alert_text()
         """
         return self.driver.switch_to.alert.text
 
@@ -305,7 +318,7 @@ class WebDriver(object):
         Implicitly wait.All elements on the page.
 
         Usage:
-        driver.wait(10)
+        self.wait(10)
         """
         self.driver.implicitly_wait(secs)
 
@@ -314,7 +327,7 @@ class WebDriver(object):
         Accept warning box.
 
         Usage:
-        driver.accept_alert()
+        self.accept_alert()
         """
         self.driver.switch_to.alert.accept()
 
@@ -323,7 +336,7 @@ class WebDriver(object):
         Dismisses the alert available.
 
         Usage:
-        driver.dismiss_alert()
+        self.dismiss_alert()
         """
         self.driver.switch_to.alert.dismiss()
 
@@ -332,7 +345,7 @@ class WebDriver(object):
         Switch to the specified frame.
 
         Usage:
-        driver.switch_to_frame("css=>#el")
+        self.switch_to_frame("css=>#el")
         """
         frame_elem = self.get_element(css)
         self.driver.switch_to.frame(frame_elem)
@@ -343,7 +356,7 @@ class WebDriver(object):
         Corresponding relationship with switch_to_frame () method.
 
         Usage:
-        driver.switch_to_frame_out()
+        self.switch_to_frame_out()
         """
         self.driver.switch_to.default_content()
 
@@ -352,7 +365,7 @@ class WebDriver(object):
         Open the new window and switch the handle to the newly opened window.
 
         Usage:
-        driver.open_new_window("link_text=>注册")
+        self.open_new_window("link_text=>注册")
         """
         original_window = self.driver.current_window_handle
         el = self.get_element(css)
@@ -367,11 +380,11 @@ class WebDriver(object):
         Saves a screenshots of the current window to a PNG image file.
 
         Usage:
-        driver.screenshots('/Screenshots/foo.png')
+        self.screenshots('/Screenshots/foo.png')
         """
         self.driver.save_screenshot(file_path)
 
-    def select(self, css, value):
+    def select(self, css, value=None, text=None, index=None):
         """
         Constructor. A check is made that the given element is, indeed, a SELECT tag. If it is not,
         then an UnexpectedTagNameException is thrown.
@@ -387,11 +400,20 @@ class WebDriver(object):
                 <option value="50">每页显示50条</option>
             </select>
 
-            driver.select("#nr", '20')
-            driver.select("xpath=>//[@name='NR']", '20')
+            self.select("#nr", value='20')
+            self.select("#nr", text='每页显示20条')
+            self.select("#nr", index=2)
         """
         el = self.get_element(css)
-        Select(el).select_by_value(value)
+        if value is not None:
+            Select(el).select_by_value(value)
+        elif text is not None:
+            Select(el).select_by_visible_text(text)
+        elif index is not None:
+            Select(el).select_by_index(index)
+        else:
+            raise PageSelectException(
+                '"value" or "text" or "index" options can not be all empty.')
 
     @staticmethod
     def sleep(sec):
