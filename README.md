@@ -306,3 +306,10 @@ class BaiduTest(pyse.TestCase):
         self.assertTitle(keyword)
 
 ```
+
+## 感谢
+
+感谢从以下项目中得到思路和帮助。
+
+[HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
+[parameterized](https://github.com/wolever/parameterized)
