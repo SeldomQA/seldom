@@ -314,6 +314,6 @@ class BaiduTest(pyse.TestCase):
 
 感谢从以下项目中得到思路和帮助。
 
-* [HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
+* [HTMLTestRunner_Chart](https://github.com/githublitao/HTMLTestRunner_Chart)
 
 * [parameterized](https://github.com/wolever/parameterized)
