@@ -6,9 +6,7 @@ class BaiduTest(pyse.TestCase):
     """Baidu serach test case"""
 
     def test_case(self):
-        """
-        A simple test
-        """
+        """A simple test"""
         self.open("https://www.baidu.com/")
         self.move_to_element("link_text=>设置")
         self.click("link_text=>搜索设置")
@@ -37,5 +35,5 @@ class BaiduTest(pyse.TestCase):
 
 
 if __name__ == '__main__':
-    pyse.main(debug=True)
+    pyse.main("test_first_demo.py", debug=True)
 

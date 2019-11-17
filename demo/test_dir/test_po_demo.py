@@ -2,12 +2,13 @@
 page object model
 """
 import pyse
+from poium import Page, PageElement
 
 
-class BaiduPage:
+class BaiduPage(Page):
     """baidu page"""
-    search_input = "#kw"
-    search_button = "#su"
+    search_input = PageElement(id_="kw")
+    search_button = PageElement(id_="su")
 
 
 class BaiduTest(pyse.TestCase):
@@ -17,12 +18,12 @@ class BaiduTest(pyse.TestCase):
         """
         A simple test
         """
-        self.open("https://www.baidu.com/")
-        self.type(BaiduPage.search_input, "pyse")
-        self.click(BaiduPage.search_button)
-        self.sleep(2)
+        page = BaiduPage(self.driver)
+        page.get("https://www.baidu.com")
+        page.search_input = "pyse"
+        page.search_button.click()
         self.assertTitle("pyse_百度搜索")
 
 
 if __name__ == '__main__':
-    pyse.main(debug=True)
+    pyse.main("test_po_demo.py", debug=True)
