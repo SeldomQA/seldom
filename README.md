@@ -18,10 +18,17 @@ WebUI automation testing framework based on Selenium and unittest.
 ### 安装
 
 ```shell
-> pip install -U git+https://github.com/defnngj/pyse.git@master
+> pip install -U git+https://github.com/defnngj/seldom.git@master
 ```
 
-### pyse命令
+依赖库：
+```
+selenium>=3.12.0
+parameterized==0.7.0
+poium==0.5.1
+```
+
+### Quick Start
 
 1、查看帮助：
 
@@ -44,21 +51,78 @@ optional arguments:
 ```shell
 >pyse --startproject mypro
 
-2019-11-07 00:24:57,783 - INFO - Start to create new test project: mypro
+2019-11-17 20:27:12,466 - INFO - Start to create new test project: mypro
+2019-11-17 20:27:12,467 - INFO - CWD: D:\
 
-2019-11-07 00:24:57,784 - INFO - CWD: D:\
-
-2019-11-07 00:24:57,785 - INFO - created folder: mypro
-2019-11-07 00:24:57,786 - INFO - created folder: mypro\test_dir
-2019-11-07 00:24:57,787 - INFO - created folder: mypro\reports
-2019-11-07 00:24:57,788 - INFO - created file: mypro\test_dir\test_sample.py
-2019-11-07 00:24:57,789 - INFO - created file: mypro\run.py
+2019-11-17 20:27:12,468 - INFO - created folder: mypro
+2019-11-17 20:27:12,469 - INFO - created folder: mypro\page
+2019-11-17 20:27:12,469 - INFO - created folder: mypro\test_dir
+2019-11-17 20:27:12,470 - INFO - created folder: mypro\reports
+2019-11-17 20:27:12,471 - INFO - created file: mypro\page\sample_page.py
+2019-11-17 20:27:12,471 - INFO - created file: mypro\test_dir\test_sample.py
+2019-11-17 20:27:12,472 - INFO - created file: mypro\run.py
 ```
 
+3、目录结构：
+```
+mypro/
+├── page/
+│   ├── sample_page.py
+├── test_dir/
+│   ├── test_sample.py
+├── report/
+└── run.py
+```
+
+* `page/`目录封装元素定位，使用 [poium](https://github.com/defnngj/poium) 实现元素定位。
+
+```python
+# sample_page.py
+from poium import Page, PageElement
+
+
+class BaiduPage(Page):
+    """baidu page element"""
+    search_input = PageElement(id_="kw")
+    search_button = PageElement(id_="su")
+```
+
+* `test_dir/`目录实现用例编写。
+
+```python
+#test_sample.py
+import pyse
+from page.sample_page import BaiduPage
+
+
+class YouTest(pyse.TestCase):
+
+    def test_case(self):
+        """a simple test case """
+        page = BaiduPage(self.driver)
+        page.get("https://www.baidu.com")
+        page.search_input = "pyse"
+        page.search_button.click()
+        self.assertTitle("pyse")
+
+```
+* `report/` 目录存放生成的测试报告。
+
+* `run.py` 文件运行测试用例
+
+```python
+import pyse
+
+
+if __name__ == '__main__':
+    # run test
+    # pyse.main("./test_dir/")
+    pyse.main("./test_dir/test_sample.py")
+
+```
 3、运行项目：
 
 ```shell
-> cd mypro\
 > pyse -r run.py
 Python 3.7.1                                                                    
 
@@ -82,113 +146,58 @@ generated html file: file:///D:\mypro\reports\2019_11_12_22_28_53_result.html
 
 ### simple demo
 
-请查看 `test_sample.py` 文件
+请查看 `demo/test_po_demo.py` 文件
 
 ```python
 import pyse
+from poium import Page, PageElement
+
+
+class BaiduPage(Page):
+    """baidu page"""
+    search_input = PageElement(id_="kw")
+    search_button = PageElement(id_="su")
+
 
 class BaiduTest(pyse.TestCase):
+    """Baidu serach test case"""
 
-    def test_baidu(self):
-        ''' baidu search key : pyse '''
-        self.open("https://www.baidu.com/")
-        self.type("#kw", "pyse")
-        self.click("#su")
+    def test_case(self):
+        """
+        A simple test
+        """
+        page = BaiduPage(self.driver)
+        page.get("https://www.baidu.com")
+        page.search_input = "pyse"
+        page.search_button.click()
         self.assertTitle("pyse_百度搜索")
-
-if __name__ == '__main__':
-    pyse.main("test_sample.py", debug=True)
 ```
 
 __说明：__
 
 * 创建测试类必须继承 `pyse.TestCase`。
 * 测试用例文件命名必须以 `test` 开头。
-* 元素定位方式默认使用 CSS 语法 `#kw`, 也可以显示的使用 `css=>#kw`。
+* 通过`poium`封装元素定位，在测试用例当中使用。
+* 在使用`BaiduPage`的时必须将`self.driver` 传给他。
 * pyse的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
-* 通过`main()`方法运行测试用例。
 
-### API
-
-pyse 提供的API
-
-```py
-self.accept_alert()
-
-self.clear("css=>#el")
-
-self.click("css=>#el")
-
-self.click_text("新闻")
-
-self.dismiss_alert()
-
-self.double_click("css=>#el")
-
-self.drag_and_drop("css=>#el","css=>#ta")
-
-self.get_alert_text()
-
-self.get_attribute("css=>#el","type")
-
-self.get_display("css=>#el")
-
-self.get_text("css=>#el")
-
-self.get_title()
-
-self.get_url()
-
-# 设置浏览器滚动条
-self.window_scroll(width=300, height=500)
-
-self.max_window()
-
-self.move_to_element("css=>#el")
-
-self.open("https://www.baidu.com")
-
-self.open_new_window("link_text=>注册")
-
-self.close()
-
-self.quit()
-
-self.refresh()
-
-self.right_click("css=>#el")
-
-self.screenshots('/Screenshots/foo.png')
-
-# 选择下拉框
-self.select("#nr", value='20')
-self.select("#nr", text='每页显示20条')
-self.select("#nr", index=2)
-
-self.set_window(wide, high)
-
-self.submit("css=>#el")
-
-self.switch_to_frame("css=>#el")
-
-self.switch_to_frame_out()
-
-self.type("css=>#el","selenium")
-
-self.wait(10)
-
-```
 
 ### main() 方法
 
 ```python
-pyse.main(path="./",
-          browser="chrome",
-          title="百度测试用例", 
-          description="测试环境：Firefox", 
-          debug=True,
-          rerun=0
-)
+import pyse
+
+# ...
+
+if __name__ == '__main__':
+    
+    pyse.main(path="./",
+              browser="chrome",
+              title="百度测试用例", 
+              description="测试环境：Firefox", 
+              debug=True,
+              rerun=0
+    )
 ```
 
 说明：
@@ -203,6 +212,8 @@ pyse.main(path="./",
 ### Run the test
 
 ```python
+import pyse
+
 pyse.main(path="./")  # 当前目录下的所有测试文件
 pyse.main(path="./test_dir/")  # 指定目录下的所有测试文件
 pyse.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
@@ -216,16 +227,20 @@ pyse.main(path="test_sample.py")  # 指定当前目录下的测试文件
 
 ### 支持的浏览器及驱动
 
-如果你想指定测试用例在不同的浏览器中运行，非常简单，只需要在`pyse.main()`方法中通过`browser`设置。
+如果你想指定测试用例在不同的浏览器中运行，非常简单，只需要在`pyse.main()`方法中通过`browser` 参数设置。
 
 ```python
+import pyse
 
 if __name__ == '__main__':
-    pyse.main(browser="firefox")
+    pyse.main(browser="chrome") # chrome浏览器,默认值
+    pyse.main(browser="firefox") # firefox浏览器
+    pyse.main(browser="ie")  # IE浏览器
+    pyse.main(browser="opera") # opera浏览器
+    pyse.main(browser="edge") # edge浏览器
+    pyse.main(browser="chrome_headless") # chrome浏览器headless模式
 
 ```
-
-支持的浏览器包括：`"chrome"`、`"firefox"`、`"ie"`、`"opera"`、`"edge"`、`"chrome_headless"` 等。
 
 不同浏览器驱动下载地址：
 
@@ -243,7 +258,7 @@ MicrosoftWebDriver(Edge):https://developer.microsoft.com/en-us/microsoft-edge/to
 
 ### 元素定位
 
-pyse支持多种定位方式，id、name、class、link text、xpath和css。把定位方法与定位内容一体，写起更加简洁。
+请参考 [poium](https://github.com/defnngj/poium/wiki) wiki
 
 ```html
 <form id="form" class="fm" action="/s" name="f">
@@ -254,30 +269,19 @@ pyse支持多种定位方式，id、name、class、link text、xpath和css。把
 定位方式（推荐使用 CSS）：
 
 ```python
-# 默认支持CSS语法
-self.type(".s_ipt","pyse")     #css
-self.type("#su","pyse")        #css
+from poium import Page, PageElement
 
-# id
-self.type("id=>kw", "pyse")  #id
-
-# class name
-self.type("class=>s_ipt", "pyse")  #class定位
-
-# name
-self.type("name=>wd", "pyse")  #name
-
-# xpath
-self.type("xpath=>//*[@class='s_ipt']","pyse")  #xpath
-self.type("xpath=>//*[@id='kw']","pyse")        #xpath
-
-# link text
-self.click_text("新闻") #link text (点击百度首页上的"新闻"链接)
+class xxPage(Page):
+    elem_id = PageElement(id_='id')
+    elem_name = PageElement(name='name')
+    elem_class = PageElement(class_name='class')
+    elem_tag = PageElement(tag='input')
+    elem_link_text = PageElement(link_text='this_is_link')
+    elem_partial_link_text = PageElement(partial_link_text='is_link')
+    elem_xpath = PageElement(xpath='//*[@id="kk"]')
+    elem_css = PageElement(css='#id')
 
 ```
-
-css选择器参考手册：
-http://www.w3school.com.cn/cssref/css_selectors.asp
 
 ### 参数化测试用例
 
@@ -288,6 +292,7 @@ pyse 支持参数化测试用例，集成了[parameterized](https://github.com/w
 import pyse
 from pyse import ddt
 
+# ...
 
 class BaiduTest(pyse.TestCase):
 
@@ -302,12 +307,11 @@ class BaiduTest(pyse.TestCase):
         :param name: case name
         :param keyword: search keyword
         """
-        self.open("https://www.baidu.com")
-        self.clear("id=>kw")
-        self.type("id=>kw", keyword)
-        self.click("css=>#su")
-        self.assertTitle(keyword)
-
+        page = BaiduPage(self.driver)
+        page.get("https://www.baidu.com")
+        page.search_input = "pyse"
+        page.search_button.click()
+        self.assertTitle("pyse_百度搜索")
 ```
 
 ## 感谢
