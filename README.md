@@ -1,4 +1,4 @@
-# pyse
+# seldom
 
 WebUI automation testing framework based on Selenium and unittest.
 
