@@ -73,34 +73,44 @@ def create_scaffold(project_name):
         msg = "created file: {}".format(path)
         logger.info(msg)
 
-    test_sample = """
-import pyse
+    sample_page = '''from poium import Page, PageElement
+
+
+class BaiduPage(Page):
+    """baidu page element"""
+    search_input = PageElement(id_="kw")
+    search_button = PageElement(id_="su")
+
+'''
+    test_sample = '''import pyse
+from page.sample_page import BaiduPage
+
 
 class YouTest(pyse.TestCase):
 
     def test_case(self):
-        ''' a simple test case '''
-        self.open("https://www.baidu.com/")
-        self.type("#kw", "pyse")
-        self.click("#su")
+        """a simple test case """
+        page = BaiduPage(self.driver)
+        page.get("https://www.baidu.com")
+        page.search_input = "pyse"
+        page.search_button.click()
         self.assertTitle("pyse")
 
-
-if __name__ == '__main__':
-    pyse.main("test_sample.py", debug=True)
-"""
-    run_test = """
-import pyse
+'''
+    run_test = """import pyse
 
 
 if __name__ == '__main__':
     # run test
-    pyse.main("./test_dir/")
+    # pyse.main("./test_dir/")
+    pyse.main("./test_dir/test_sample.py")
 
 """
     create_folder(project_name)
+    create_folder(os.path.join(project_name, "page"))
     create_folder(os.path.join(project_name, "test_dir"))
     create_folder(os.path.join(project_name, "reports"))
+    create_file(os.path.join(project_name, "page", "sample_page.py"), sample_page)
     create_file(os.path.join(project_name, "test_dir", "test_sample.py"), test_sample)
     create_file(os.path.join(project_name, "run.py"), run_test)
 

@@ -21,7 +21,11 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['selenium>=3.12.0', 'parameterized==0.7.0'],
+    install_requires=[
+        'selenium>=3.12.0',
+        'parameterized==0.7.0',
+        'poium==0.5.1'
+    ],
     classifiers=[
         'Intended Audience :: Developers',
         'Operating System :: Ubuntu',
