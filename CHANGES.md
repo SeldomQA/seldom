@@ -1,3 +1,7 @@
+### 0.2.0
+Change the project name to seldom
+Introducing the poium test library,
+
 ### 0.1.5
 * Increased test case failure rerun
 * Add use case failure screenshots

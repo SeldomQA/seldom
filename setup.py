@@ -10,9 +10,9 @@ with open('pyse/__init__.py', 'rb') as f:
         f.read().decode('utf-8')).group(1)))
 
 setup(
-    name='pyse',
+    name='sledom',
     version=version,
-    url='https://github.com/defnngj/pyse/',
+    url='https://github.com/defnngj/sledom/',
     license='BSD',
     author='bugmaster',
     author_email='fnngj@126.com',
