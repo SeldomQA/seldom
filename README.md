@@ -50,17 +50,6 @@ optional arguments:
 
 ```shell
 >pyse --startproject mypro
-
-2019-11-17 20:27:12,466 - INFO - Start to create new test project: mypro
-2019-11-17 20:27:12,467 - INFO - CWD: D:\
-
-2019-11-17 20:27:12,468 - INFO - created folder: mypro
-2019-11-17 20:27:12,469 - INFO - created folder: mypro\page
-2019-11-17 20:27:12,469 - INFO - created folder: mypro\test_dir
-2019-11-17 20:27:12,470 - INFO - created folder: mypro\reports
-2019-11-17 20:27:12,471 - INFO - created file: mypro\page\sample_page.py
-2019-11-17 20:27:12,471 - INFO - created file: mypro\test_dir\test_sample.py
-2019-11-17 20:27:12,472 - INFO - created file: mypro\run.py
 ```
 
 3、目录结构：
@@ -75,51 +64,10 @@ mypro/
 ```
 
 * `page/`目录封装元素定位，使用 [poium](https://github.com/defnngj/poium) 实现元素定位。
-
-```python
-# sample_page.py
-from poium import Page, PageElement
-
-
-class BaiduPage(Page):
-    """baidu page element"""
-    search_input = PageElement(id_="kw")
-    search_button = PageElement(id_="su")
-```
-
 * `test_dir/`目录实现用例编写。
-
-```python
-#test_sample.py
-import pyse
-from page.sample_page import BaiduPage
-
-
-class YouTest(pyse.TestCase):
-
-    def test_case(self):
-        """a simple test case """
-        page = BaiduPage(self.driver)
-        page.get("https://www.baidu.com")
-        page.search_input = "pyse"
-        page.search_button.click()
-        self.assertTitle("pyse")
-
-```
 * `report/` 目录存放生成的测试报告。
-
 * `run.py` 文件运行测试用例
 
-```python
-import pyse
-
-
-if __name__ == '__main__':
-    # run test
-    # pyse.main("./test_dir/")
-    pyse.main("./test_dir/test_sample.py")
-
-```
 3、运行项目：
 
 ```shell
