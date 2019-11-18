@@ -1,8 +1,8 @@
-import pyse
-from pyse import ddt
+import seldom
+from seldom import ddt
 
 
-class BaiduTest(pyse.TestCase):
+class BaiduTest(seldom.TestCase):
     """Baidu serach test case"""
 
     def test_case(self):
@@ -17,7 +17,7 @@ class BaiduTest(pyse.TestCase):
         self.accept_alert()
 
     @ddt.data([
-        (1, 'pyse'),
+        (1, 'seldom'),
         (2, 'selenium'),
         (3, 'unittest'),
     ])
@@ -35,5 +35,5 @@ class BaiduTest(pyse.TestCase):
 
 
 if __name__ == '__main__':
-    pyse.main("test_first_demo.py", debug=True)
+    seldom.main("test_first_demo.py", debug=True)
 

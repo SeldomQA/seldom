@@ -1,7 +1,7 @@
 """
 page object model
 """
-import pyse
+import seldom
 from poium import Page, PageElement
 
 
@@ -11,7 +11,7 @@ class BaiduPage(Page):
     search_button = PageElement(id_="su")
 
 
-class BaiduTest(pyse.TestCase):
+class BaiduTest(seldom.TestCase):
     """Baidu serach test case"""
 
     def test_case(self):
@@ -20,10 +20,10 @@ class BaiduTest(pyse.TestCase):
         """
         page = BaiduPage(self.driver)
         page.get("https://www.baidu.com")
-        page.search_input = "pyse"
+        page.search_input = "seldom"
         page.search_button.click()
-        self.assertTitle("pyse_百度搜索")
+        self.assertTitle("seldom_百度搜索")
 
 
 if __name__ == '__main__':
-    pyse.main("test_po_demo.py", debug=True)
+    seldom.main("test_po_demo.py", debug=True)

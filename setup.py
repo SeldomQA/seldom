@@ -5,14 +5,14 @@ from setuptools import setup, find_packages
 
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 
-with open('pyse/__init__.py', 'rb') as f:
+with open('seldom/__init__.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
 setup(
-    name='sledom',
+    name='seldom',
     version=version,
-    url='https://github.com/defnngj/sledom/',
+    url='https://github.com/defnngj/seldom/',
     license='BSD',
     author='bugmaster',
     author_email='fnngj@126.com',
@@ -39,6 +39,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        pyse=pyse.cli:main
+        seldom=seldom.cli:main
     '''
 )

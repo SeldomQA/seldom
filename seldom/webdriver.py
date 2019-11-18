@@ -10,7 +10,7 @@ from selenium.webdriver.support.select import Select
 
 class WebDriver(object):
     """
-        Pyse framework for the main class, the original
+        Seldom framework for the main class, the original
     selenium provided by the method of the two packaging,
     making it easier to use.
     """

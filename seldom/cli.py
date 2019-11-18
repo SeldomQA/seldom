@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 import logging
-from pyse import __description__, __version__
+from seldom import __description__, __version__
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -82,28 +82,28 @@ class BaiduPage(Page):
     search_button = PageElement(id_="su")
 
 '''
-    test_sample = '''import pyse
+    test_sample = '''import seldom
 from page.sample_page import BaiduPage
 
 
-class YouTest(pyse.TestCase):
+class YouTest(seldom.TestCase):
 
     def test_case(self):
         """a simple test case """
         page = BaiduPage(self.driver)
         page.get("https://www.baidu.com")
-        page.search_input = "pyse"
+        page.search_input = "seldom"
         page.search_button.click()
-        self.assertTitle("pyse")
+        self.assertTitle("seldom")
 
 '''
-    run_test = """import pyse
+    run_test = """import seldom
 
 
 if __name__ == '__main__':
     # run test
-    # pyse.main("./test_dir/")
-    pyse.main("./test_dir/test_sample.py")
+    # seldom.main("./test_dir/")
+    seldom.main("./test_dir/test_sample.py")
 
 """
     create_folder(project_name)

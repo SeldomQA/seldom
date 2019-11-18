@@ -9,13 +9,15 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 
-pyse_str = """                            
- ______  __   __  _______  _______ 
-|   _  ||  | |  ||  _____||   ____|
-|  |_| ||  |_|  || |_____ |  |____ 
-|   ___||_     _||_____  ||   ____|
-|  |      |   |   _____| ||  |____ 
-|__|      |___|  |_______||_______|
+seldom_str = """
+            _      _                   
+           | |    | |                  
+ ___   ___ | |  __| |  ___   _ __ ___  
+/ __| / _ \| | / _` | / _ \ | '_ ` _ \ 
+\__ \|  __/| || (_| || (_) || | | | | |
+|___/ \___||_| \__,_| \___/ |_| |_| |_| 
+-----------------------------------------
+                             @itest.info
 """
 
 
@@ -28,7 +30,7 @@ class Browser:
 
 def main(path=None,
          browser=None,
-         title="pyse Test Report",
+         title="seldom Test Report",
          description="Test case execution",
          debug=False,
          rerun=0):
@@ -76,13 +78,13 @@ def main(path=None,
 
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
-            print(pyse_str)
+            print(seldom_str)
             runner.run(suits, rerun=rerun)
         print("generated html file: file:///{}".format(report))
     else:
         runner = unittest.TextTestRunner(verbosity=2)
-        logger.info("pyse run test 🛫🛫!")
-        print(pyse_str)
+        logger.info("seldom run test 🛫🛫!")
+        print(seldom_str)
         runner.run(suits)
         logger.info("End of the test 🔚!")
 

@@ -18,7 +18,7 @@
 # under the License.
 
 from .running.test_runner import main
-from .pyse import WebDriver
+from .webdriver import WebDriver
 from .case import TestCase
 from .driver import browser
 from .testdata import ddt

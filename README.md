@@ -33,8 +33,8 @@ poium==0.5.1
 1、查看帮助：
 
 ```shell
-> pyse -h
-usage: pyse [-h] [-V] [--startproject STARTPROJECT] [-r R]
+> seldom -h
+usage: seldom [-h] [-V] [--startproject STARTPROJECT] [-r R]
 
 WebUI automation testing framework based on Selenium.
 
@@ -49,7 +49,7 @@ optional arguments:
 2、创建项目：
 
 ```shell
->pyse --startproject mypro
+>seldom --startproject mypro
 ```
 
 3、目录结构：
@@ -71,7 +71,7 @@ mypro/
 3、运行项目：
 
 ```shell
-> pyse -r run.py
+> seldom -r run.py
 Python 3.7.1                                                                    
 
  ______  __   __  _______  _______                                              
@@ -97,7 +97,7 @@ generated html file: file:///D:\mypro\reports\2019_11_12_22_28_53_result.html
 请查看 `demo/test_po_demo.py` 文件
 
 ```python
-import pyse
+import seldom
 from poium import Page, PageElement
 
 
@@ -107,7 +107,7 @@ class BaiduPage(Page):
     search_button = PageElement(id_="su")
 
 
-class BaiduTest(pyse.TestCase):
+class BaiduTest(seldom.TestCase):
     """Baidu serach test case"""
 
     def test_case(self):
@@ -116,30 +116,30 @@ class BaiduTest(pyse.TestCase):
         """
         page = BaiduPage(self.driver)
         page.get("https://www.baidu.com")
-        page.search_input = "pyse"
+        page.search_input = "seldom"
         page.search_button.click()
-        self.assertTitle("pyse_百度搜索")
+        self.assertTitle("seldom_百度搜索")
 ```
 
 __说明：__
 
-* 创建测试类必须继承 `pyse.TestCase`。
+* 创建测试类必须继承 `seldom.TestCase`。
 * 测试用例文件命名必须以 `test` 开头。
 * 通过`poium`封装元素定位，在测试用例当中使用。
 * 在使用`BaiduPage`的时必须将`self.driver` 传给他。
-* pyse的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
+* seldom的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
 
 
 ### main() 方法
 
 ```python
-import pyse
+import seldom
 
 # ...
 
 if __name__ == '__main__':
     
-    pyse.main(path="./",
+    seldom.main(path="./",
               browser="chrome",
               title="百度测试用例", 
               description="测试环境：Firefox", 
@@ -160,12 +160,12 @@ if __name__ == '__main__':
 ### Run the test
 
 ```python
-import pyse
+import seldom
 
-pyse.main(path="./")  # 当前目录下的所有测试文件
-pyse.main(path="./test_dir/")  # 指定目录下的所有测试文件
-pyse.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
-pyse.main(path="test_sample.py")  # 指定当前目录下的测试文件
+seldom.main(path="./")  # 当前目录下的所有测试文件
+seldom.main(path="./test_dir/")  # 指定目录下的所有测试文件
+seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
+seldom.main(path="test_sample.py")  # 指定当前目录下的测试文件
 ```
 
 说明：
@@ -175,18 +175,18 @@ pyse.main(path="test_sample.py")  # 指定当前目录下的测试文件
 
 ### 支持的浏览器及驱动
 
-如果你想指定测试用例在不同的浏览器中运行，非常简单，只需要在`pyse.main()`方法中通过`browser` 参数设置。
+如果你想指定测试用例在不同的浏览器中运行，非常简单，只需要在`seldom.main()`方法中通过`browser` 参数设置。
 
 ```python
-import pyse
+import seldom
 
 if __name__ == '__main__':
-    pyse.main(browser="chrome") # chrome浏览器,默认值
-    pyse.main(browser="firefox") # firefox浏览器
-    pyse.main(browser="ie")  # IE浏览器
-    pyse.main(browser="opera") # opera浏览器
-    pyse.main(browser="edge") # edge浏览器
-    pyse.main(browser="chrome_headless") # chrome浏览器headless模式
+    seldom.main(browser="chrome") # chrome浏览器,默认值
+    seldom.main(browser="firefox") # firefox浏览器
+    seldom.main(browser="ie")  # IE浏览器
+    seldom.main(browser="opera") # opera浏览器
+    seldom.main(browser="edge") # edge浏览器
+    seldom.main(browser="chrome_headless") # chrome浏览器headless模式
 
 ```
 
@@ -233,19 +233,19 @@ class xxPage(Page):
 
 ### 参数化测试用例
 
-pyse 支持参数化测试用例，集成了[parameterized](https://github.com/wolever/parameterized)。
+seldom 支持参数化测试用例，集成了[parameterized](https://github.com/wolever/parameterized)。
 
 ```python
 
-import pyse
-from pyse import ddt
+import seldom
+from seldom import ddt
 
 # ...
 
-class BaiduTest(pyse.TestCase):
+class BaiduTest(seldom.TestCase):
 
     @ddt.data([
-        (1, 'pyse'),
+        (1, 'seldom'),
         (2, 'selenium'),
         (3, 'unittest'),
     ])
@@ -257,9 +257,9 @@ class BaiduTest(pyse.TestCase):
         """
         page = BaiduPage(self.driver)
         page.get("https://www.baidu.com")
-        page.search_input = "pyse"
+        page.search_input = "seldom"
         page.search_button.click()
-        self.assertTitle("pyse_百度搜索")
+        self.assertTitle("seldom_百度搜索")
 ```
 
 ## 感谢

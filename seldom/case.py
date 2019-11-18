@@ -1,6 +1,6 @@
 import unittest
 from time import sleep
-from .pyse import WebDriver
+from .webdriver import WebDriver
 from .driver import browser
 from .running.test_runner import Browser
 
