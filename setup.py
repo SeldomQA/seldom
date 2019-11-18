@@ -9,6 +9,9 @@ with open('seldom/__init__.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
+with open("description.rst", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
     name='seldom',
     version=version,
@@ -17,7 +20,7 @@ setup(
     author='bugmaster',
     author_email='fnngj@126.com',
     description='WebUI automation testing framework based on Selenium and unittest ',
-    long_description=__doc__,
+    long_description=long_description,
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
@@ -28,14 +31,14 @@ setup(
     ],
     classifiers=[
         'Intended Audience :: Developers',
-        'Operating System :: Ubuntu',
+        'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Software Development :: Libraries ::Testing'
+        "Topic :: Software Development :: Testing",
     ],
     entry_points='''
         [console_scripts]
