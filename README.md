@@ -278,3 +278,6 @@ class BaiduTest(seldom.TestCase):
 * [HTMLTestRunner_Chart](https://github.com/githublitao/HTMLTestRunner_Chart)
 
 * [parameterized](https://github.com/wolever/parameterized)
+
+## 交流
+QQ群：948994709
