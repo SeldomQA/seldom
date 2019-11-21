@@ -26,8 +26,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'selenium>=3.12.0',
-        'parameterized==0.7.0',
-        'poium==0.5.1'
+        'parameterized==0.7.0'
     ],
     classifiers=[
         'Intended Audience :: Developers',

@@ -27,13 +27,6 @@ If you want to keep up with the latest version, you can install with github repo
 > pip install -U git+https://github.com/defnngj/seldom.git@master
 ```
 
-依赖库：
-```
-selenium>=3.12.0
-parameterized==0.7.0
-poium==0.5.1
-```
-
 ### Quick Start
 
 1、查看帮助：
@@ -61,18 +54,15 @@ optional arguments:
 3、目录结构：
 ```
 mypro/
-├── page/
-│   ├── sample_page.py
 ├── test_dir/
 │   ├── test_sample.py
 ├── report/
 └── run.py
 ```
 
-* `page/`目录封装元素定位，使用 [poium](https://github.com/defnngj/poium) 实现元素定位。
 * `test_dir/`目录实现用例编写。
 * `report/` 目录存放生成的测试报告。
-* `run.py` 文件运行测试用例
+* `run.py` 文件运行测试用例。
 
 3、运行项目：
 
@@ -103,39 +93,31 @@ generated html file: file:///D:\mypro\reports\2019_11_12_22_28_53_result.html
 
 ### simple demo
 
-请查看 `demo/test_po_demo.py` 文件
+请查看 `demo/test_sample.py` 文件
 
 ```python
 import seldom
-from poium import Page, PageElement
 
 
-class BaiduPage(Page):
-    """baidu page"""
-    search_input = PageElement(id_="kw")
-    search_button = PageElement(id_="su")
-
-
-class BaiduTest(seldom.TestCase):
-    """Baidu serach test case"""
+class YouTest(seldom.TestCase):
 
     def test_case(self):
-        """
-        A simple test
-        """
-        page = BaiduPage(self.driver)
-        page.get("https://www.baidu.com")
-        page.search_input = "seldom"
-        page.search_button.click()
-        self.assertTitle("seldom_百度搜索")
+        """a simple test case """
+        self.open("https://www.baidu.com")
+        self.type(id_="kw", text="seldom")
+        self.click(css="#su")
+        self.assertTitle("seldom")
+
+
+if __name__ == '__main__':
+    seldom.main("test_sample.py")
+
 ```
 
 __说明：__
 
 * 创建测试类必须继承 `seldom.TestCase`。
 * 测试用例文件命名必须以 `test` 开头。
-* 通过`poium`封装元素定位，在测试用例当中使用。
-* 在使用`BaiduPage`的时必须将`self.driver` 传给他。
 * seldom的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
 
 
@@ -159,7 +141,7 @@ if __name__ == '__main__':
 
 说明：
 
-* path ： 指定测试目录。
+* path ： 指定测试目录或文件。
 * browser: 指定测试浏览器，默认Chrome。
 * title ： 指定测试项目标题。
 * description ： 指定测试描述。
@@ -215,28 +197,23 @@ MicrosoftWebDriver(Edge):https://developer.microsoft.com/en-us/microsoft-edge/to
 
 ### 元素定位
 
-请参考 [poium](https://github.com/defnngj/poium/wiki) wiki
-
 ```html
 <form id="form" class="fm" action="/s" name="f">
     <span class="bg s_ipt_wr quickdelete-wrap">
         <input id="kw" class="s_ipt" name="wd">
 ```
 
-定位方式（推荐使用 CSS）：
+定位方式：
 
 ```python
-from poium import Page, PageElement
-
-class xxPage(Page):
-    elem_id = PageElement(id_='id')
-    elem_name = PageElement(name='name')
-    elem_class = PageElement(class_name='class')
-    elem_tag = PageElement(tag='input')
-    elem_link_text = PageElement(link_text='this_is_link')
-    elem_partial_link_text = PageElement(partial_link_text='is_link')
-    elem_xpath = PageElement(xpath='//*[@id="kk"]')
-    elem_css = PageElement(css='#id')
+self.type(id_="kw", text="seldom")
+self.type(name="wd", text="seldom")
+self.type(class_name="s_ipt", text="seldom")
+self.type(tag="input", text="seldom")
+self.type(link_text="hao123", text="seldom")
+self.type(partial_link_text="hao", text="seldom")
+self.type(xpath="//input[@id='kw']", text="seldom")
+self.type(css="#kw", text="seldom")
 
 ```
 
@@ -264,12 +241,47 @@ class BaiduTest(seldom.TestCase):
         :param name: case name
         :param keyword: search keyword
         """
+        self.open("https://www.baidu.com")
+        self.type(id_="kw", text=search_key)
+        self.click(css="#su")
+        self.assertTitle(search_key+"_百度搜索")
+```
+
+### page objects 设计模式
+
+seldom 支持Page objects设计模式，可以配合[poium](https://github.com/wolever/parameterized) 使用。
+
+```python
+import seldom
+from poium import Page, PageElement
+
+
+class BaiduPage(Page):
+    """baidu page"""
+    search_input = PageElement(id_="kw")
+    search_button = PageElement(id_="su")
+
+
+class BaiduTest(seldom.TestCase):
+    """Baidu serach test case"""
+
+    def test_case(self):
+        """
+        A simple test
+        """
         page = BaiduPage(self.driver)
         page.get("https://www.baidu.com")
         page.search_input = "seldom"
         page.search_button.click()
         self.assertTitle("seldom_百度搜索")
+
+
+if __name__ == '__main__':
+    seldom.main("test_po_demo.py")
+
 ```
+poium提供了更多好用的功能，使Page层的创建更加简单。
+
 
 ## 感谢
 

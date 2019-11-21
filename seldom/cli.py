@@ -11,7 +11,8 @@ PY3 = sys.version_info[0] == 3
 
 
 def main():
-    """ API test: parse command line options and run commands.
+    """
+    API test: parse command line options and run commands.
     """
 
     parser = argparse.ArgumentParser(description=__description__)
@@ -53,7 +54,8 @@ def main():
 
 
 def create_scaffold(project_name):
-    """ create scaffold with specified project name.
+    """
+    create scaffold with specified project name.
     """
     if os.path.isdir(project_name):
         logger.info(u"Folder {} exists, please specify a new folder name.".format(project_name))
@@ -73,28 +75,21 @@ def create_scaffold(project_name):
         msg = "created file: {}".format(path)
         logger.info(msg)
 
-    sample_page = '''from poium import Page, PageElement
-
-
-class BaiduPage(Page):
-    """baidu page element"""
-    search_input = PageElement(id_="kw")
-    search_button = PageElement(id_="su")
-
-'''
     test_sample = '''import seldom
-from page.sample_page import BaiduPage
 
 
 class YouTest(seldom.TestCase):
 
     def test_case(self):
         """a simple test case """
-        page = BaiduPage(self.driver)
-        page.get("https://www.baidu.com")
-        page.search_input = "seldom"
-        page.search_button.click()
+        self.open("https://www.baidu.com")
+        self.type(id_="kw", text="seldom")
+        self.click(css="#su")
         self.assertTitle("seldom")
+
+
+if __name__ == '__main__':
+    seldom.main("test_sample.py")
 
 '''
     run_test = """import seldom
@@ -107,10 +102,8 @@ if __name__ == '__main__':
 
 """
     create_folder(project_name)
-    create_folder(os.path.join(project_name, "page"))
     create_folder(os.path.join(project_name, "test_dir"))
     create_folder(os.path.join(project_name, "reports"))
-    create_file(os.path.join(project_name, "page", "sample_page.py"), sample_page)
     create_file(os.path.join(project_name, "test_dir", "test_sample.py"), test_sample)
     create_file(os.path.join(project_name, "run.py"), run_test)
 
