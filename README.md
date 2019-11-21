@@ -1,4 +1,5 @@
-# seldom
+
+![](seldom_logo.gif)
 
 WebUI automation testing framework based on Selenium and unittest.
 
@@ -6,14 +7,13 @@ WebUI automation testing framework based on Selenium and unittest.
 
 ## 特点
 
-* 默认使用CSS定位，同时支持多种定位方法（id\name\class\link_text\xpath\css）。
-* 基于Selenium二次封装，使用更简单。
+* 提供更加简单API编写自动化测试。
 * 提供脚手架，快速生成自动化测试项目。
-* 自动生成/reports/目录，以及HTML测试报告生成。
+* 自动生成HTML测试报告生成。
 * 自带断言方法，断言title、URL 和 text。
 * 支持用例参数化。
-* 只用用例失败重跑。
-* 支持用例失败/错误截图。
+* 支持用例失败重跑。
+* 用例失败/错误截图。
 
 ### 安装
 
@@ -278,3 +278,6 @@ class BaiduTest(seldom.TestCase):
 * [HTMLTestRunner_Chart](https://github.com/githublitao/HTMLTestRunner_Chart)
 
 * [parameterized](https://github.com/wolever/parameterized)
+
+## 交流
+QQ群：948994709
