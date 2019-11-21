@@ -1,3 +1,6 @@
+### 0.3.0
+Update element positioning
+
 ### 0.2.0
 Change the project name to seldom
 Introducing the poium test library,
