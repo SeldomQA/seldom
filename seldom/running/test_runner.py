@@ -33,7 +33,8 @@ def main(path=None,
          title="seldom Test Report",
          description="Test case execution",
          debug=False,
-         rerun=0):
+         rerun=0,
+         save_last_run=False):
     """
     runner test case
     :param path:
@@ -42,6 +43,7 @@ def main(path=None,
     :param description:
     :param debug:
     :param rerun:
+    :param save_last_run:
     :return:
     """
 
@@ -79,7 +81,7 @@ def main(path=None,
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
             print(seldom_str)
-            runner.run(suits, rerun=rerun)
+            runner.run(suits, rerun=rerun, save_last_run=save_last_run)
         print("generated html file: file:///{}".format(report))
     else:
         runner = unittest.TextTestRunner(verbosity=2)

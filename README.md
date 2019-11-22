@@ -133,20 +133,22 @@ if __name__ == '__main__':
     seldom.main(path="./",
               browser="chrome",
               title="百度测试用例", 
-              description="测试环境：Firefox", 
-              debug=True,
-              rerun=0
+              description="测试环境：chrome", 
+              debug=False,
+              rerun=0,
+              save_last_run=False
     )
 ```
 
 说明：
 
 * path ： 指定测试目录或文件。
-* browser: 指定测试浏览器，默认Chrome。
-* title ： 指定测试项目标题。
-* description ： 指定测试描述。
-* debug ： debug模式，设置为True不生成测试HTML测试。
-* rerun : 设置失败重新运行次数，默认为 0。
+* browser: 指定测试浏览器，默认`Chrome`。
+* title ： 指定测试报告标题。
+* description ： 指定测试报告描述。
+* debug ： debug模式，设置为True不生成测试HTML测试，默认为`False`。
+* rerun : 设置失败重新运行次数，默认为 `0`。
+* save_last_run : 设置只保存最后一次的结果，默认为`False`。
 
 ### Run the test
 

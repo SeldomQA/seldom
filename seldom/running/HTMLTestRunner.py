@@ -676,7 +676,7 @@ class _TestResult(TestResult):
     # note: _TestResult is a pure representation of results.
     # It lacks the output and reporting ability compares to unittest._TextTestResult.
 
-    def __init__(self, verbosity=1, rerun=0):
+    def __init__(self, verbosity=1, rerun=0, save_last_run=False):
         TestResult.__init__(self)
         self.stdout0 = None
         self.stderr0 = None
@@ -693,6 +693,7 @@ class _TestResult(TestResult):
         #   stack trace,
         # )
         self.rerun = rerun
+        self.save_last_run = save_last_run
         self.status = 0
         self.runs = 0
         self.result = []
@@ -729,15 +730,20 @@ class _TestResult(TestResult):
             if self.status == 1:
                 self.runs += 1
                 if self.runs <= self.rerun:
+                    if self.save_last_run:
+                        t = self.result.pop(-1)
+                        if t[0] == 1:
+                            self.failure_count -= 1
+                        else:
+                            self.error_count -= 1
                     test = copy.copy(test)
                     sys.stderr.write("Retesting... ")
                     sys.stderr.write(str(test))
                     sys.stderr.write('..%d \n' % self.runs)
                     doc = getattr(test, '_testMethodDoc', u"") or u''
-                    if doc.find('_rerun') != -1:
-                        doc = doc[:doc.find('_rerun')]
-                    desc = "%s_rerun:%d" % (doc, self.runs)
-
+                    if doc.find('->rerun') != -1:
+                        doc = doc[:doc.find('->rerun')]
+                    desc = "%s->rerun:%d" % (doc, self.runs)
                     if isinstance(desc, str):
                         desc = desc
                     test._testMethodDoc = desc
@@ -809,9 +815,10 @@ class HTMLTestRunner(Template_mixin):
     """
     """
 
-    def __init__(self, stream=sys.stdout, verbosity=1, title=None, description=None):
+    def __init__(self, stream=sys.stdout, verbosity=1, title=None, description=None, save_last_run=True):
         self.stream = stream
         self.verbosity = verbosity
+        self.save_last_run = save_last_run
         if title is None:
             self.title = self.DEFAULT_TITLE
         else:
@@ -823,9 +830,9 @@ class HTMLTestRunner(Template_mixin):
 
         self.startTime = datetime.datetime.now()
 
-    def run(self, test, rerun):
+    def run(self, test, rerun, save_last_run):
         """Run the given test case or test suite."""
-        result = _TestResult(self.verbosity, rerun=rerun)
+        result = _TestResult(self.verbosity, rerun=rerun, save_last_run=save_last_run)
         test(result)
         self.stopTime = datetime.datetime.now()
         self.generateReport(test, result)
