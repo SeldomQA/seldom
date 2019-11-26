@@ -16,17 +16,34 @@ class TestCase(unittest.TestCase, WebDriver):
     def tearDownClass(cls):
         cls.driver.quit()
     
-    def assertTitle(self, title, second=3):
+    def assertTitle(self, title=None):
         """
         Asserts whether the current title is in line with expectations.
-        The default is 3 seconds.
 
         Usage:
         self.assertTitle("title")
         """
         if title is None:
-            raise NameError("'title' can't be empty.")
-        for s in range(second):
+            raise AssertionError("The assertion title cannot be empty.")
+        for s in range(self.timeout):
+            try:
+                self.assertEqual(title, self.get_title())
+                break
+            except AssertionError:
+                sleep(1)
+        else:
+            self.assertEqual(title, self.get_title())
+
+    def assertInTitle(self, title=None):
+        """
+        Asserts whether the current title is in line with expectations.
+
+        Usage:
+        self.assertInTitle("title")
+        """
+        if title is None:
+            raise AssertionError("The assertion title cannot be empty.")
+        for s in range(self.timeout):
             try:
                 self.assertIn(title, self.get_title())
                 break
@@ -35,23 +52,39 @@ class TestCase(unittest.TestCase, WebDriver):
         else:
             self.assertIn(title, self.get_title())
 
-    def assertUrl(self, url, second=3):
+    def assertUrl(self, url):
         """
         Asserts whether the current URL is in line with expectations.
-        The default is 3 seconds.
 
         Usage:
         self.assertUrl("url")
         """
         if url is None:
-            raise NameError("'URL' can't be empty.")
-        for s in range(second):
+            raise AssertionError("The assertion URL cannot be empty.")
+        for s in range(self.timeout):
             try:
                 self.assertEqual(url, self.get_url())
             except AssertionError:
                 sleep(1)
         else:
             self.assertEqual(url, self.get_url())
+
+    def assertInUrl(self, url=None):
+        """
+        Asserts whether the current URL is in line with expectations.
+
+        Usage:
+        self.assertInUrl("url")
+        """
+        if url is None:
+            raise AssertionError("The assertion URL cannot be empty.")
+        for s in range(self.timeout):
+            try:
+                self.assertIn(url, self.get_url())
+            except AssertionError:
+                sleep(1)
+        else:
+            self.assertIn(url, self.get_url())
 
     def assertText(self, actual_el, expect_result):
         """

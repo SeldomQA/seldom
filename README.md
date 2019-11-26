@@ -295,9 +295,11 @@ poium提供了更多好用的功能，使Page层的创建更加简单。
 
 感谢从以下项目中得到思路和帮助。
 
-* [HTMLTestRunner_Chart](https://github.com/githublitao/HTMLTestRunner_Chart)
+* [HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
 
 * [parameterized](https://github.com/wolever/parameterized)
+
+* [pyderman](https://github.com/shadowmoose/pyderman)
 
 ## 交流
 QQ群：948994709
