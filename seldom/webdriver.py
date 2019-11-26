@@ -209,17 +209,6 @@ class WebDriver(object):
         el = self.get_element(**kwargs)
         ActionChains(self.driver).double_click(el).perform()
 
-    # def drag_and_drop(self, el_css, ta_css):
-    #     """
-    #     Drags an element a certain distance and then drops it.
-    #
-    #     Usage:
-    #     self.drag_and_drop("css=>#el","css=>#ta")
-    #     """
-    #     element = self.get_element(el_css)
-    #     target = self.get_element(ta_css)
-    #     ActionChains(self.driver).drag_and_drop(element, target).perform()
-
     def click_text(self, text):
         """
         Click the element by the link text
@@ -298,7 +287,7 @@ class WebDriver(object):
         Gets the value of an element attribute.
 
         Usage:
-        self.get_attribute(css=>"#el", attribute="type")
+        self.get_attribute(css="#el", attribute="type")
         """
         if attribute is None:
             raise ValueError("attribute is not None")
@@ -314,7 +303,7 @@ class WebDriver(object):
         Get element text information.
 
         Usage:
-        self.get_text(css=>"#el")
+        self.get_text(css="#el")
         """
         if not kwargs:
             raise ValueError("Please specify a locator")
@@ -396,7 +385,7 @@ class WebDriver(object):
         Switch to the specified frame.
 
         Usage:
-        self.switch_to_frame(css=>"#el")
+        self.switch_to_frame(css="#el")
         """
         if not kwargs:
             raise ValueError("Please specify a locator")
@@ -460,9 +449,9 @@ class WebDriver(object):
                 <option value="50">每页显示50条</option>
             </select>
 
-            self.select("#nr", value='20')
-            self.select("#nr", text='每页显示20条')
-            self.select("#nr", index=2)
+            self.select(css="#nr", value='20')
+            self.select(css="#nr", text='每页显示20条')
+            self.select(css="#nr", index=2)
         """
         if not kwargs:
             raise ValueError("Please specify a locator")

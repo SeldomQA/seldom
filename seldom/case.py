@@ -25,7 +25,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
-        for s in range(self.timeout):
+        for _ in range(self.timeout):
             try:
                 self.assertEqual(title, self.get_title())
                 break
@@ -43,7 +43,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
-        for s in range(self.timeout):
+        for _ in range(self.timeout):
             try:
                 self.assertIn(title, self.get_title())
                 break
@@ -61,7 +61,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
-        for s in range(self.timeout):
+        for _ in range(self.timeout):
             try:
                 self.assertEqual(url, self.get_url())
             except AssertionError:
@@ -78,7 +78,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
-        for s in range(self.timeout):
+        for _ in range(self.timeout):
             try:
                 self.assertIn(url, self.get_url())
             except AssertionError:
@@ -86,30 +86,35 @@ class TestCase(unittest.TestCase, WebDriver):
         else:
             self.assertIn(url, self.get_url())
 
-    def assertText(self, actual_el, expect_result):
+    def assertText(self, text=None):
         """
         Asserts whether the text of the current page conforms to expectations.
-        - actual_el: The actual element text.
-        - expect_result :expected results.
 
         Usage:
-        self.assertText("#el","text")
+        self.assertText("text")
         """
-        if actual_el is None or expect_result is None:
-            raise NameError("'actual' or 'exect' can't be empty.")
-        actual_result = self.get_text(actual_el)
-        self.assertEqual(actual_result, expect_result)
+        if text is None:
+            raise AssertionError("The assertion text cannot be empty.")
 
-    def assertAlert(self, expect_text):
+        elem = self.driver.find_element_by_tag_name("html")
+        for _ in range(self.timeout):
+            if elem.is_displayed():
+                try:
+                    self.assertIn(text, elem.text)
+                    break
+                except AssertionError:
+                    sleep(1)
+        else:
+            self.assertIn(text, elem.text)
+
+    def assertAlertText(self, text=None):
         """
         Asserts whether the text of the current page conforms to expectations.
-        - actual_el: The actual element text.
-        - expect_result :expected results.
 
         Usage:
-        self.assertText("#el","text")
+        self.assertAlert("text")
         """
-        if expect_text is None:
-            raise NameError("'expect_text' can't be empty.")
+        if text is None:
+            raise NameError("Alert text cannot be empty.")
         alert_text = self.get_alert_text()
-        self.assertEqual(alert_text, expect_text)
+        self.assertEqual(alert_text, text)

@@ -106,7 +106,7 @@ class YouTest(seldom.TestCase):
         self.open("https://www.baidu.com")
         self.type(id_="kw", text="seldom")
         self.click(css="#su")
-        self.assertTitle("seldom")
+        self.assertTitle("seldom_百度搜索")
 
 
 if __name__ == '__main__':
@@ -224,6 +224,17 @@ self.type(css="#kw", text="seldom")
 
 * [CSS选择器](https://www.w3school.com.cn/cssref/css_selectors.asp)
 * [xpath语法](https://www.w3school.com.cn/xpath/xpath_syntax.asp)
+
+### 断言方法
+
+```python
+self.assertTitle("title")   # 断言标题是否等于"title"
+self.assertInTitle("title") # 断言标题是否包含"title"
+self.assertUrl("url")  # 断言URL是否等于
+self.assertInUrl("url")  # 断言URL是否包含 
+self.assertText("text")  # 断言页面是否存在“text”
+self.assertAlertText("text") # 断言警告是否存在"text" 提示信息
+```
 
 ### 参数化测试用例
 
