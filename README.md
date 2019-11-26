@@ -220,6 +220,11 @@ self.type(css="#kw", text="seldom")
 
 ```
 
+帮助：
+
+* [CSS选择器](https://www.w3school.com.cn/cssref/css_selectors.asp)
+* [xpath语法](https://www.w3school.com.cn/xpath/xpath_syntax.asp)
+
 ### 参数化测试用例
 
 seldom 支持参数化测试用例，集成了[parameterized](https://github.com/wolever/parameterized)。
