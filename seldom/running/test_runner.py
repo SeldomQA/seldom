@@ -30,7 +30,7 @@ class Browser:
 
 def main(path=None,
          browser=None,
-         title="seldom Test Report",
+         title="Seldom Test Report",
          description="Test case execution",
          debug=False,
          rerun=0,

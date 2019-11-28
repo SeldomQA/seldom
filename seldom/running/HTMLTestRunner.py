@@ -164,6 +164,7 @@ class Template_mixin(object):
         0: 'pass',
         1: 'fail',
         2: 'error',
+        3: 'skip',
     }
 
     DEFAULT_TITLE = 'Unit Test Report'
@@ -249,22 +250,55 @@ function hide_img(obj){
 
 <!--
 output_list = Array();
-/* level - 0:Summary; 1:Failed; 2:All */
-function showCase(level) {
+/* level - 0:Summary; 1:Failed; 2:Skip; 3:All */
+function showCase(level, channel) {
     trs = document.getElementsByTagName("tr");
     for (var i = 0; i < trs.length; i++) {
         tr = trs[i];
         id = tr.id;
-        if (id.substr(0,2) == 'ft') {
-            if (level < 1) {
+        if (["ft","pt","et","st"].indexOf(id.substr(0,2))!=-1){
+           if ( level == 0 && id.substr(2,1) == channel ) {
                 tr.className = 'hiddenRow';
             }
-            else {
+        }
+        if (id.substr(0,3) == 'pt'+ channel) {
+            if ( level == 1){
                 tr.className = '';
             }
+            else if  (level > 4 && id.substr(2,1) == channel ){
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+         }
+        if (id.substr(0,3) == 'ft'+channel) {
+            if (level == 2) {
+                tr.className = '';
+            }
+            else if  (level > 4 && id.substr(2,1) == channel ){
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+          }
+        if (id.substr(0,3) == 'et'+channel) {
+            if (level == 3) {
+                tr.className = '';
+            }
+            else if  (level > 4 && id.substr(2,1) == channel ){
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
         }
-        if (id.substr(0,2) == 'pt') {
-            if (level > 1) {
+        if (id.substr(0,3) == 'st'+channel) {
+            if (level == 4) {
+                tr.className = '';
+            }
+            else if  (level > 4 && id.substr(2,1) == channel ){
                 tr.className = '';
             }
             else {
@@ -419,7 +453,8 @@ a.popup_link:hover {
 .passClass  { background-color: #d6e9c6; }
 .failClass  { background-color: #faebcc; }
 .errorClass { background-color: #ebccd1; }
-.passCase   { color: #6c6; }
+.passCase   { color: #28a745; }
+.skipCase   { color: ##383d41; }
 .failCase   { color: #c60; font-weight: bold; }
 .errorCase  { color: #c00; font-weight: bold; }
 .hiddenRow  { display: none; }
@@ -568,10 +603,13 @@ var myNewChart = new Chart(ctx).Pie(data,newopts);
     #
 
     REPORT_TMPL = """
-<p id='show_detail_line' style="margin-left: 10px;">Result
-<a href='javascript:showCase(0)' class="btn btn-secondary btn-sm">Summary</a>
-<a href='javascript:showCase(1)' class="btn btn-danger btn-sm">Failed</a>
-<a href='javascript:showCase(2)' class="btn btn-info btn-sm">All</a>
+<p id='show_detail_line' style="margin-left: 10px;">
+<a href='javascript:showCase(0, %(channel)s)' class="btn btn-dark btn-sm">Summary</a>
+<a href='javascript:showCase(1, %(channel)s)' class="btn btn-success btn-sm">Pass</a>
+<a href='javascript:showCase(2, %(channel)s)' class="btn btn-warning btn-sm">Failed</a>
+<a href='javascript:showCase(3, %(channel)s)' class="btn btn-danger btn-sm">Error</a>
+<a href='javascript:showCase(4, %(channel)s)' class="btn btn-light btn-sm">Skip</a>
+<a href='javascript:showCase(5, %(channel)s)' class="btn btn-info btn-sm">All</a>
 </p>
 <table id='result_table'>
 <colgroup>
@@ -683,11 +721,12 @@ class _TestResult(TestResult):
         self.success_count = 0
         self.failure_count = 0
         self.error_count = 0
+        self.skip_count = 0
         self.verbosity = verbosity
 
         # result is a list of result in 4 tuple
         # (
-        #   result code (0: success; 1: fail; 2: error),
+        #   result code (0: success; 1: fail; 2: error; 3: skip),
         #   TestCase object,
         #   Test output (byte string),
         #   stack trace,
@@ -810,6 +849,19 @@ class _TestResult(TestResult):
         else:
             sys.stderr.write('F')
 
+    def addSkip(self, test, reason):
+        self.skip_count += 1
+        self.status = 0
+        TestResult.addSkip(self, test, reason)
+        output = self.complete_output()
+        self.result.append((3, test, output, reason))
+        if self.verbosity > 1:
+            sys.stderr.write('S')
+            sys.stderr.write(str(test))
+            sys.stderr.write('\n')
+        else:
+            sys.stderr.write('S')
+
 
 class HTMLTestRunner(Template_mixin):
     """
@@ -819,6 +871,7 @@ class HTMLTestRunner(Template_mixin):
         self.stream = stream
         self.verbosity = verbosity
         self.save_last_run = save_last_run
+        self.run_times = 0
         if title is None:
             self.title = self.DEFAULT_TITLE
         else:
@@ -835,6 +888,7 @@ class HTMLTestRunner(Template_mixin):
         result = _TestResult(self.verbosity, rerun=rerun, save_last_run=save_last_run)
         test(result)
         self.stopTime = datetime.datetime.now()
+        self.run_times += 1
         self.generateReport(test, result)
         # print(sys.stderr, '\nTime Elapsed: %s' % (self.stopTime-self.startTime))
         return result
@@ -862,11 +916,13 @@ class HTMLTestRunner(Template_mixin):
         duration = str(self.stopTime - self.startTime)
         status = []
         if result.success_count:
-            status.append('Pass %s' % result.success_count)
+            status.append('Pass:%s' % result.success_count)
         if result.failure_count:
-            status.append('Failure %s' % result.failure_count)
+            status.append('Failure:%s' % result.failure_count)
         if result.error_count:
-            status.append('Error %s' % result.error_count)
+            status.append('Error:%s' % result.error_count)
+        if result.skip_count:
+            status.append('Skip:%s' % result.skip_count)
         if status:
             status = ' '.join(status)
         else:
@@ -893,6 +949,7 @@ class HTMLTestRunner(Template_mixin):
             report=report,
             ending=ending,
             chart_script=chart,
+            channel=self.run_times,
         )
         self.stream.write(output.encode('utf8'))
 
@@ -956,6 +1013,9 @@ class HTMLTestRunner(Template_mixin):
             Pass=str(result.success_count),
             fail=str(result.failure_count),
             error=str(result.error_count),
+            skip=str(result.skip_count),
+            total=str(result.success_count + result.failure_count + result.error_count),
+            channel=str(self.run_times),
         )
         return report
 
@@ -968,9 +1028,18 @@ class HTMLTestRunner(Template_mixin):
         return chart
 
     def _generate_report_test(self, rows, cid, tid, n, t, o, e):
-        # e.g. 'pt1.1', 'ft1.1', etc
+        # e.g. 'pt1.1', 'ft1.1','et1.1', 'st1.1' etc
         has_output = bool(o or e)
-        tid = (n == 0 and 'p' or 'f') + 't%s.%s' % (cid + 1, tid + 1)
+        if n == 0:
+            tmp = "p"
+        elif n == 1:
+            tmp = "f"
+        elif n == 2:
+            tmp = "e"
+        else:
+            tmp = "s"
+        tid = tmp + 't%d.%d.%d' % (self.run_times, cid + 1, tid + 1)
+        # tid = (n == 0 and 'p' or 'f') + 't%s.%s' % (cid + 1, tid + 1)
         name = t.id().split('.')[-1]
         doc = t.shortDescription() or ""
         desc = doc and ('%s: %s' % (name, doc)) or name

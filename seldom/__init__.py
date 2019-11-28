@@ -22,6 +22,7 @@ from .webdriver import WebDriver
 from .case import TestCase
 from .driver import browser
 from .testdata import ddt
+from .skip import skip
 
 __author__ = "bugmaster"
 
