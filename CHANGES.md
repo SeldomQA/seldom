@@ -1,3 +1,7 @@
+### 0.3.2
+Added a switch to display the last rerun result
+Optimized assertion method
+
 ### 0.3.0
 Update element positioning
 
