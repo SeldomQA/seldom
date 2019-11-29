@@ -261,7 +261,7 @@ class BaiduTest(seldom.TestCase):
         :param keyword: search keyword
         """
         self.open("https://www.baidu.com")
-        self.type(id_="kw", text=search_key)
+        self.type(id_="kw", text=keyword)
         self.click(css="#su")
         self.assertTitle(search_key+"_百度搜索")
 ```
