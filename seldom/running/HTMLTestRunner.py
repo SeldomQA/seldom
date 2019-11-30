@@ -318,6 +318,14 @@ function showClassDetail(cid, count) {
             tid = 'p' + tid0;
             tr = document.getElementById(tid);
         }
+        if (!tr) {
+            tid = 'e' + tid0;
+            tr = document.getElementById(tid);
+        }
+        if (!tr) {
+            tid = 's' + tid0;
+            tr = document.getElementById(tid);
+        }
         id_list[i] = tid;
         if (tr.className) {
             toHide = 0;
@@ -326,7 +334,6 @@ function showClassDetail(cid, count) {
     for (var i = 0; i < count; i++) {
         tid = id_list[i];
         if (toHide) {
-            document.getElementById('div_'+tid).style.display = 'none'
             document.getElementById(tid).className = 'hiddenRow';
         }
         else {
@@ -453,8 +460,8 @@ a.popup_link:hover {
 .passClass  { background-color: #d6e9c6; }
 .failClass  { background-color: #faebcc; }
 .errorClass { background-color: #ebccd1; }
-.passCase   { color: #28a745; }
-.skipCase   { color: ##383d41; }
+.passCase   { color: #28a745; font-weight: bold;}
+.skipCase   { color: ##383d41; font-weight: bold;}
 .failCase   { color: #c60; font-weight: bold; }
 .errorCase  { color: #c00; font-weight: bold; }
 .hiddenRow  { display: none; }
@@ -976,14 +983,16 @@ class HTMLTestRunner(Template_mixin):
         sortedResult = self.sortResult(result.result)
         for cid, (cls, cls_results) in enumerate(sortedResult):
             # subtotal for a class
-            np = nf = ne = 0
+            np = nf = ne = ns = 0
             for n, t, o, e in cls_results:
                 if n == 0:
                     np += 1
                 elif n == 1:
                     nf += 1
-                else:
+                elif n == 2:
                     ne += 1
+                else:
+                    ns += 1
 
             # format class description
             if cls.__module__ == "__main__":
@@ -1000,7 +1009,7 @@ class HTMLTestRunner(Template_mixin):
                 Pass=np,
                 fail=nf,
                 error=ne,
-                cid='c%s' % (cid + 1),
+                cid='c%s.%s' % (self.run_times, cid + 1),
             )
             rows.append(row)
 
