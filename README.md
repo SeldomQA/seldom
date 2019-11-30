@@ -236,6 +236,21 @@ self.assertText("text")  # 断言页面是否存在“text”
 self.assertAlertText("text") # 断言警告是否存在"text" 提示信息
 ```
 
+### 跳过用例
+
+```python
+import seldom
+
+
+class YouTest(seldom.TestCase):
+
+    @seldom.skip("跳过这条用例的执行")
+    def test_case(self):
+        """a simple test case """
+        #...
+
+```
+
 ### 参数化测试用例
 
 seldom 支持参数化测试用例，集成了[parameterized](https://github.com/wolever/parameterized)。
