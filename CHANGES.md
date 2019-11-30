@@ -1,3 +1,6 @@
+### 0.3.3
+add skip case
+
 ### 0.3.2
 Added a switch to display the last rerun result
 Optimized assertion method
