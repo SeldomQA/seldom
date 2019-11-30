@@ -221,7 +221,7 @@ function show_img(obj) {
     for (var i = 0; i < lis.length; i++) {
         funny(i);
     }
-    
+
     function autoPlay(){
         if(index>len-1){
             index=0;
@@ -248,7 +248,6 @@ function hide_img(obj){
     obj.parentElement.getElementsByClassName('imgyuan')[0].innerHTML = "";
 }
 
-<!--
 output_list = Array();
 /* level - 0:Summary; 1:Failed; 2:Skip; 3:All */
 function showCase(level, channel) {
@@ -373,7 +372,7 @@ function showOutput(id, name) {
     d.close();
 }
 */
---></script>
+</script>
 %(heading)s
 %(report)s
 %(ending)s
@@ -467,7 +466,6 @@ a.popup_link:hover {
 .failClass  { background-color: #faebcc; }
 .errorClass { background-color: #ebccd1; }
 .passCase   { color: #28a745; font-weight: bold;}
-.skipCase   { color: ##383d41; font-weight: bold;}
 .failCase   { color: #c60; font-weight: bold; }
 .errorCase  { color: #c00; font-weight: bold; }
 .hiddenRow  { display: none; }
