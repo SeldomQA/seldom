@@ -402,9 +402,15 @@ h1 {
 .heading {
     margin-top: 20px;
     margin-bottom: 1ex;
-	margin-left: 10px;
-	width: 30%;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 23%;
     float: left;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    box-shadow:0px 0px 5px #000;
 }
 .heading .attribute {
     margin-top: 1ex;
@@ -547,7 +553,7 @@ a.popup_link:hover {
     # Heading
     #
 
-    HEADING_TMPL = """<div class='heading'>
+    HEADING_TMPL = """<div class='heading card'>
 <h1>%(title)s</h1>
 %(parameters)s
 <p class='description'>%(description)s</p>
@@ -610,7 +616,7 @@ var myNewChart = new Chart(ctx).Pie(data,newopts);
     #
 
     REPORT_TMPL = """
-<p id='show_detail_line' style="margin-left: 10px;">
+<p id='show_detail_line' style="margin-left: 10px; margin-top: 30px;">
 <a href='javascript:showCase(0, %(channel)s)' class="btn btn-dark btn-sm">Summary</a>
 <a href='javascript:showCase(1, %(channel)s)' class="btn btn-success btn-sm">Pass</a>
 <a href='javascript:showCase(2, %(channel)s)' class="btn btn-warning btn-sm">Failed</a>
