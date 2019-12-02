@@ -2,12 +2,23 @@ import os
 import sys
 import argparse
 import logging
+import platform
 from seldom import __description__, __version__
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 PY3 = sys.version_info[0] == 3
+
+versions = sorted(['32', '64'], key=lambda v: not platform.machine().endswith(v))
+os_opts = [('win', 'win', '.exe'), ('darwin', 'mac', ''), ('linux', 'linux', '')]
+
+current_os = None
+ext = ''
+for o in os_opts:
+    if o[0] in platform.system().lower():
+        current_os = o[1]
+        ext = o[2]
 
 
 def main():
@@ -17,16 +28,20 @@ def main():
 
     parser = argparse.ArgumentParser(description=__description__)
     parser.add_argument(
-        '-V', '--version', dest='version', action='store_true',
+        '-v', '--version', dest='version', action='store_true',
         help="show version")
 
     parser.add_argument(
-        '--startproject',
-        help="Specify new project name.")
+        '--project',
+        help="Create an Seldom automation test project.")
 
     parser.add_argument(
         '-r',
         help="run test case")
+
+    parser.add_argument(
+        '-install',
+        help="Install the browser driver, For example, 'chromedriver', 'geckodriver' ")
 
     args = parser.parse_args()
 
@@ -34,7 +49,7 @@ def main():
         print("version {}".format(__version__), )
         return 0
 
-    project_name = args.startproject
+    project_name = args.project
     if project_name:
         create_scaffold(project_name)
         return 0
@@ -50,6 +65,11 @@ def main():
             os.system(py_version)
             command = "python " + run_file
         os.system(command)
+        return 0
+
+    driver_name = args.install
+    if driver_name:
+        install_driver(driver_name)
         return 0
 
 
@@ -107,3 +127,10 @@ if __name__ == '__main__':
     create_file(os.path.join(project_name, "test_dir", "test_sample.py"), test_sample)
     create_file(os.path.join(project_name, "run.py"), run_test)
 
+
+def install_driver(driver_name):
+    """
+    Download and install the browser driver
+    :param driver_name:
+    """
+    pass
