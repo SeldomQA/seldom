@@ -1,8 +1,18 @@
 import os
+import re
 import sys
-import argparse
+import ssl
+import shutil
+import zipfile
+import tarfile
 import logging
+import argparse
 import platform
+from os import makedirs
+from os.path import join, isfile, basename
+from os.path import isdir, dirname, abspath
+from urllib.request import urlopen
+
 from seldom import __description__, __version__
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -19,6 +29,8 @@ for o in os_opts:
     if o[0] in platform.system().lower():
         current_os = o[1]
         ext = o[2]
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 
 def main():
@@ -41,7 +53,7 @@ def main():
 
     parser.add_argument(
         '-install',
-        help="Install the browser driver, For example, 'chromedriver', 'geckodriver' ")
+        help="Install the browser driver, For example, 'chrome', 'firefox'. ")
 
     args = parser.parse_args()
 
@@ -131,9 +143,123 @@ if __name__ == '__main__':
     create_file(os.path.join(project_name, "run.py"), run_test)
 
 
-def install_driver(driver_name):
+def install_driver(browser=None, file_directory='./lib/'):
     """
     Download and install the browser driver
-    :param driver_name:
+
+    :param browser: The Driver to download. Pass as `chrome/firefox`. Default Chrome.
+    :param file_directory: The directory to save the driver.
+    :return: The absolute path of the downloaded driver, or None if something failed.
     """
-    pass
+    if not current_os:
+        raise Exception('Cannot determine OS version! [%s]' % platform.system())
+
+    if browser is None:
+        browser = "chrome"
+
+    for os_bit in versions:
+        if browser == "chrome":
+            data = chrome(_os=current_os, os_bit=os_bit)
+        else:
+            raise NameError("Currently only 'chrome' browser drivers are supported")
+        driver_path, url, ver = data
+        driver = basename(driver_path)
+        exts = [e for e in ['.zip', '.tar.gz', '.tar.bz2'] if url.endswith(e)]
+        if len(exts) != 1:
+            raise Exception("Unable to locate file extension in URL: %s (%s)" % (url, ','.join(exts)))
+        archive = exts[0]
+
+        archive_path = join(abspath(file_directory), '%s_%s%s%s' % (driver, current_os, os_bit, archive))
+        file_path = join(abspath(file_directory), '%s%s' % (driver, ext))
+
+        if isfile(file_path):
+            print('%s is already installed.' % driver)
+            return file_path
+
+        if not download(url, archive_path):
+            print('Download for %s version failed; Trying alternates.' % os_bit)
+            continue
+
+        out = extract(archive_path, driver_path, file_path)
+        if out:
+            mode = os.stat(out).st_mode
+            mode |= (mode & 0o444) >> 2  # copy R bits to X
+            os.chmod(out, mode)
+
+        return out
+    raise Exception('Unable to locate a valid Web Driver.')
+
+
+def chrome(_os=None, os_bit=None):
+    """
+    chrome driver info
+    :param _os: system
+    :param os_bit: system bit
+    :return:
+    """
+    latest_version = '78.0.3904.105'
+    base_download = "https://cdn.npm.taobao.org/dist/chromedriver/%s/chromedriver_%s%s.zip"
+    download = base_download % (latest_version, _os, os_bit)
+    return 'chromedriver', download, latest_version
+
+
+def download(url, path):
+    """
+    download driver file
+    :param url:
+    :param path:
+    :return:
+    """
+    print('\tDownloading from: ', url)
+    print('\tTo: ', path)
+    file = abspath(path)
+    if not isdir(dirname(file)):
+        makedirs(dirname(file), exist_ok=True)
+    try:
+        req = urlopen(url, timeout=15)
+    except Exception:
+        return False
+    with open(file, 'wb') as fp:
+        shutil.copyfileobj(req, fp, 16 * 1024)
+    return True
+
+
+def extract(path, driver_pattern, out_file):
+    """
+    Extracts zip files, or tar.gz files.
+    :param path: Path to the archive file, absolute.
+    :param driver_pattern:
+    :param out_file:
+    :return:
+    """
+    path = abspath(path)
+    out_file = abspath(out_file)
+    if not isfile(path):
+        return None
+    tmp_path = join(dirname(out_file), 'tmp_dl_dir_%s' % basename(path))
+    zip_ref, namelist = None, None
+    if path.endswith('.zip'):
+        zip_ref = zipfile.ZipFile(path, "r")
+        namelist = zip_ref.namelist()
+    elif path.endswith('.tar.gz'):
+        zip_ref = tarfile.open(path, "r:gz")
+        namelist = zip_ref.getnames()
+    elif path.endswith('.tar.bz2'):
+        zip_ref = tarfile.open(path, "r:bz2")
+        namelist = zip_ref.getnames()
+    if not zip_ref:
+        return None
+    ret = None
+    for n in namelist:
+        if re.match(driver_pattern, n):
+            zip_ref.extract(n, tmp_path)
+            ret = join(tmp_path, n)
+    zip_ref.close()
+    if ret:
+        if isfile(out_file):
+            os.remove(out_file)
+        os.rename(ret, out_file)
+        shutil.rmtree(tmp_path)
+        ret = out_file
+    os.remove(path)
+    return ret
