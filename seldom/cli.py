@@ -58,8 +58,11 @@ def main():
     if run_file:
         if PY3:
             py_version = "python3 -V"
-            os.system(py_version)
-            command = "python3 " + run_file
+            ret = os.system(py_version)
+            if ret != 0:
+                command = "python " + run_file
+            else:
+                command = "python3 " + run_file
         else:
             py_version = "python -V"
             os.system(py_version)
