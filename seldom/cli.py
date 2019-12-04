@@ -68,17 +68,16 @@ def main():
 
     run_file = args.r
     if run_file:
+        logger.info("Run the python version:")
         if PY3:
-            py_version = "python3 -V"
-            ret = os.system(py_version)
+            ret = os.system("python -V")
             if ret != 0:
-                command = "python " + run_file
-            else:
+                os.system("python3 -V")
                 command = "python3 " + run_file
+            else:
+                command = "python " + run_file
         else:
-            py_version = "python -V"
-            os.system(py_version)
-            command = "python " + run_file
+            raise NameError("Does not support python2")
         os.system(command)
         return 0
 
