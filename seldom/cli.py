@@ -142,6 +142,45 @@ if __name__ == '__main__':
     create_file(os.path.join(project_name, "run.py"), run_test)
 
 
+def firefox(_os=None, os_bit=None):
+    """
+    chrome driver info
+    :param _os: system
+    :param os_bit: system bit
+    :return:
+    """
+    base_url = 'https://github.com/mozilla/geckodriver/releases/latest'
+    try:
+        resp = urlopen(base_url, timeout=15)
+    except Exception:
+        return False
+    c_type = resp.headers.get_content_charset()
+    c_type = c_type if c_type else 'utf-8'
+    html = resp.read().decode(c_type, errors='ignore')
+    if not html:
+        raise Exception("Unable to download geckodriver version: latest")
+
+    urls = ['https://github.com%s' % u for u in re.findall(r'\"(.+?/download.+?)\"', html)]
+    for u in urls:
+        target = '%s%s' % (_os, os_bit) if _os is not 'mac' else 'macos'
+        if target in u:
+            ver = re.search(r'v(\d{1,2}\.\d{1,2}\.\d{1,2})', u).group(1)
+            return 'geckodriver', u, ver
+
+
+def chrome(_os=None, os_bit=None):
+    """
+    chrome driver info
+    :param _os: system
+    :param os_bit: system bit
+    :return:
+    """
+    latest_version = '78.0.3904.105'
+    base_download = "https://cdn.npm.taobao.org/dist/chromedriver/%s/chromedriver_%s%s.zip"
+    download = base_download % (latest_version, _os, os_bit)
+    return 'chromedriver', download, latest_version
+
+
 def install_driver(browser=None, file_directory='./lib/'):
     """
     Download and install the browser driver
@@ -159,8 +198,10 @@ def install_driver(browser=None, file_directory='./lib/'):
     for os_bit in versions:
         if browser == "chrome":
             data = chrome(_os=current_os, os_bit=os_bit)
+        elif browser == "firefox":
+            data = firefox(_os=current_os, os_bit=os_bit)
         else:
-            raise NameError("Currently only 'chrome' browser drivers are supported")
+            raise NameError("Currently only 'chrome/firefox' browser drivers are supported")
         driver_path, url, ver = data
         driver = basename(driver_path)
         exts = [e for e in ['.zip', '.tar.gz', '.tar.bz2'] if url.endswith(e)]
@@ -187,19 +228,6 @@ def install_driver(browser=None, file_directory='./lib/'):
 
         return out
     raise Exception('Unable to locate a valid Web Driver.')
-
-
-def chrome(_os=None, os_bit=None):
-    """
-    chrome driver info
-    :param _os: system
-    :param os_bit: system bit
-    :return:
-    """
-    latest_version = '78.0.3904.105'
-    base_download = "https://cdn.npm.taobao.org/dist/chromedriver/%s/chromedriver_%s%s.zip"
-    download = base_download % (latest_version, _os, os_bit)
-    return 'chromedriver', download, latest_version
 
 
 def download(url, path):
