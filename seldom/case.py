@@ -9,7 +9,7 @@ class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = browser(Browser.name)
+        cls.driver = browser(Browser.name, Browser.driver_path)
         cls.timeout = 10
 
     @classmethod

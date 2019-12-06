@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import sys
 import time
 import logging
 import unittest
@@ -26,6 +27,7 @@ class Browser:
     Define run browser name
     """
     name = None
+    driver_path = None
 
 
 def main(path=None,
@@ -34,7 +36,8 @@ def main(path=None,
          description="Test case execution",
          debug=False,
          rerun=0,
-         save_last_run=False):
+         save_last_run=False,
+         driver_path=None):
     """
     runner test case
     :param path:
@@ -44,6 +47,7 @@ def main(path=None,
     :param debug:
     :param rerun:
     :param save_last_run:
+    :param driver_path:
     :return:
     """
 
@@ -67,6 +71,9 @@ def main(path=None,
         Browser.name = "chrome"
     else:
         Browser.name = browser
+
+    if driver_path is not None:
+        Browser.driver_path = driver_path
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
