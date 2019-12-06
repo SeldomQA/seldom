@@ -468,6 +468,46 @@ class WebDriver(object):
             raise ValueError(
                 '"value" or "text" or "index" options can not be all empty.')
 
+    def get_cookies(self):
+        """
+        Returns a set of dictionaries, corresponding to cookies visible in the current session.
+        Usage:
+            self.get_cookies()
+        """
+        return self.driver.get_cookies()
+
+    def get_cookie(self, name):
+        """
+        Returns information of cookie with ``name`` as an object.
+        Usage:
+            self.get_cookie()
+        """
+        return self.driver.get_cookie(name)
+
+    def add_cookie(self, cookie_dict):
+        """
+        Adds a cookie to your current session.
+        Usage:
+            self.add_cookie({'name' : 'foo', 'value' : 'bar'})
+        """
+        return self.driver.add_cookie(cookie_dict)
+
+    def delete_cookie(self, name):
+        """
+        Deletes a single cookie with the given name.
+        Usage:
+            self.delete_cookie('my_cookie')
+        """
+        return self.driver.delete_cookie(name)
+
+    def delete_all_cookies(self):
+        """
+        Delete all cookies in the scope of the session.
+        Usage:
+            self.delete_all_cookies()
+        """
+        return self.driver.delete_all_cookies()
+
     @staticmethod
     def sleep(sec):
         """

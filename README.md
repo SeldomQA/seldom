@@ -190,8 +190,8 @@ if __name__ == '__main__':
 seldom 支持chrome和frefox浏览器的驱动下载：
 
 ```shell
-seldom -install chrome
-seldom -install firefox
+> seldom -install chrome
+> seldom -install firefox
 ```
 
 下载的驱动文件默认保存在`lib` 目录下面。
@@ -242,8 +242,8 @@ self.type(css="#kw", text="seldom")
 ```python
 self.assertTitle("title")   # 断言标题是否等于"title"
 self.assertInTitle("title") # 断言标题是否包含"title"
-self.assertUrl("url")  # 断言URL是否等于
-self.assertInUrl("url")  # 断言URL是否包含 
+self.assertURL("url")  # 断言URL是否等于
+self.assertInURL("url")  # 断言URL是否包含 
 self.assertText("text")  # 断言页面是否存在“text”
 self.assertAlertText("text") # 断言警告是否存在"text" 提示信息
 ```
@@ -290,7 +290,7 @@ class BaiduTest(seldom.TestCase):
         self.open("https://www.baidu.com")
         self.type(id_="kw", text=keyword)
         self.click(css="#su")
-        self.assertTitle(search_key+"_百度搜索")
+        self.assertTitle(keyword+"_百度搜索")
 ```
 
 ### page objects 设计模式
