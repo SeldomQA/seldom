@@ -1,4 +1,5 @@
 from parameterized.parameterized import *
+from parameterized import parameterized_class
 
 
 class ddt(parameterized):
@@ -66,3 +67,10 @@ class ddt(parameterized):
             f.__test__ = False
 
         return parameterized_expand_wrapper
+
+
+def ddt_class(attrs, input_values):
+    """
+    Parameterizes a test class by setting attributes on the class.
+    """
+    return parameterized_class(attrs, input_values)
