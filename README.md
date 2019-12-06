@@ -33,22 +33,23 @@ If you want to keep up with the latest version, you can install with github repo
 
 ```shell
 > seldom -h
-usage: seldom [-h] [-V] [--startproject STARTPROJECT] [-r R]
+usage: seldom [-h] [-v] [--project PROJECT] [-r R] [-install INSTALL]
 
 WebUI automation testing framework based on Selenium.
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -V, --version         show version
-  --startproject STARTPROJECT
-                        Specify new project name.
-  -r R                  run test case
+  -h, --help         show this help message and exit
+  -v, --version      show version
+  --project PROJECT  Create an Seldom automation test project.
+  -r R               run test case
+  -install INSTALL   Install the browser driver, For example, 'chrome',
+                     'firefox'.
 ```
 
 2、创建项目：
 
 ```shell
->seldom --startproject mypro
+>seldom --project mypro
 ```
 
 3、目录结构：
@@ -136,7 +137,8 @@ if __name__ == '__main__':
               description="测试环境：chrome", 
               debug=False,
               rerun=0,
-              save_last_run=False
+              save_last_run=False,
+              driver_path=None,
     )
 ```
 
@@ -149,6 +151,7 @@ if __name__ == '__main__':
 * debug ： debug模式，设置为True不生成测试HTML测试，默认为`False`。
 * rerun : 设置失败重新运行次数，默认为 `0`。
 * save_last_run : 设置只保存最后一次的结果，默认为`False`。
+* driver_path : 设置浏览器驱动的`绝对`路径。要和 `browser` 设置一致。
 
 ### Run the test
 
@@ -184,7 +187,16 @@ if __name__ == '__main__':
 
 ```
 
-不同浏览器驱动下载地址：
+seldom 支持chrome和frefox浏览器的驱动下载：
+
+```shell
+seldom -install chrome
+seldom -install firefox
+```
+
+下载的驱动文件默认保存在`lib` 目录下面。
+
+当然，你也可以手动下载不同浏览器驱动：
 
 geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
 
