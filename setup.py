@@ -15,7 +15,7 @@ with open("description.rst", "r", encoding="utf-8") as fh:
 setup(
     name='seldom',
     version=version,
-    url='https://github.com/defnngj/seldom/',
+    url='https://github.com/seldomQA/seldom/',
     license='BSD',
     author='bugmaster',
     author_email='fnngj@126.com',

@@ -1,3 +1,7 @@
+### 0.3.5
+Added chrome/firefox browser driver download command
+Driver file path Settings are supported
+
 ### 0.3.3
 add skip case
 
