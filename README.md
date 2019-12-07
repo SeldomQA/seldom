@@ -57,12 +57,12 @@ optional arguments:
 mypro/
 ├── test_dir/
 │   ├── test_sample.py
-├── report/
+├── reports/
 └── run.py
 ```
 
 * `test_dir/`目录实现用例编写。
-* `report/` 目录存放生成的测试报告。
+* `reports/` 目录存放生成的测试报告。
 * `run.py` 文件运行测试用例。
 
 3、运行项目：
