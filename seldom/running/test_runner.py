@@ -73,6 +73,9 @@ def main(path=None,
         Browser.name = browser
 
     if driver_path is not None:
+        ret = os.path.exists(driver_path)
+        if ret is False:
+            raise ValueError("Browser - driven path error，Please check if the file exists. => {}".format(driver_path))
         Browser.driver_path = driver_path
 
     if debug is False:
