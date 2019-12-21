@@ -1,13 +1,12 @@
 # coding=utf-8
 import time
+import logging
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 LOCATOR_LIST = {
     'css': By.CSS_SELECTOR,
@@ -30,18 +29,22 @@ class WebDriver(object):
     driver = None
     original_window = None
 
-    def wait_element(self, el):
+    def find_element(self, elem):
         """
-        Waiting for an element to display.
+        Find if the element exists.
         """
-        try:
-            WebDriverWait(self.driver, self.timeout).until(
-                EC.presence_of_element_located(el)
-            )
-        except TimeoutException:
-            return False
+        elems = self.driver.find_elements(by=elem[0], value=elem[1])
+        for i in range(self.timeout):
+            if len(elems) == 1:
+                logger.info("Find element: {by}={value} ".format(by=elem[0], value=elem[1]))
+                break
+            elif len(elems) > 1:
+                logger.info("Find {n} elements through：{by}={value}".format(n=len(elems), by=elem[0], value=elem[1]))
+                break
+            else:
+                time.sleep(1)
         else:
-            return True
+            logger.info("Find {n} elements through：{by}={value}".format(n=len(elems), by=elem[0], value=elem[1]))
 
     def get_element(self, **kwargs):
         """
@@ -53,47 +56,40 @@ class WebDriver(object):
         except KeyError:
             raise ValueError("Element positioning of type '{}' is not supported. ".format(by))
 
-        error = "Unable to locate elements, ({by}='{value}').".format(by=by, value=value)
         if by == "id_":
-            req = self.wait_element((By.ID, value))
-            if req is True:
-                element = self.driver.find_element_by_id(value)
-            else:
-                raise NoSuchElementException(error)
+            self.find_element((By.ID, value))
+            element = self.driver.find_element_by_id(value)
         elif by == "name":
-            req = self.wait_element((By.NAME, value))
-            if req is True:
-                element = self.driver.find_element_by_name(value)
-            else:
-                raise NoSuchElementException(error)
+            self.find_element((By.NAME, value))
+            element = self.driver.find_element_by_name(value)
         elif by == "class_name":
-            req = self.wait_element((By.CLASS_NAME, value))
-            if req is True:
-                element = self.driver.find_element_by_class_name(value)
-            else:
-                raise NoSuchElementException(error)
+            self.find_element((By.CLASS_NAME, value))
+            element = self.driver.find_element_by_class_name(value)
+        elif by == "tag":
+            self.find_element((By.TAG_NAME, value))
+            element = self.driver.find_element_by_class_name(value)
         elif by == "link_text":
-            req = self.wait_element((By.LINK_TEXT, value))
-            if req is True:
-                element = self.driver.find_element_by_link_text(value)
-            else:
-                raise NoSuchElementException(error)
+            self.find_element((By.LINK_TEXT, value))
+            element = self.driver.find_element_by_link_text(value)
         elif by == "xpath":
-            req = self.wait_element((By.XPATH, value))
-            if req is True:
-                element = self.driver.find_element_by_xpath(value)
-            else:
-                raise NoSuchElementException(error)
+            self.find_element((By.XPATH, value))
+            element = self.driver.find_element_by_xpath(value)
         elif by == "css":
-            req = self.wait_element((By.CSS_SELECTOR, value))
-            if req is True:
-                element = self.driver.find_element_by_css_selector(value)
-            else:
-                raise NoSuchElementException(error)
+            self.find_element((By.CSS_SELECTOR, value))
+            element = self.driver.find_element_by_css_selector(value)
         else:
             raise NameError(
-                "Please enter the correct targeting elements,'id','name','class','link_text','xpath','css'.")
+                "Please enter the correct targeting elements,'id_/name/class/tag/link_text/xpath/css'.")
         return element
+
+    def get(self, url):
+        """
+        get url.
+
+        Usage:
+        self.get("https://www.baidu.com")
+        """
+        self.driver.get(url)
 
     def open(self, url):
         """
@@ -102,7 +98,7 @@ class WebDriver(object):
         Usage:
         self.open("https://www.baidu.com")
         """
-        self.driver.get(url)
+        self.get(url)
 
     def max_window(self):
         """
@@ -122,7 +118,7 @@ class WebDriver(object):
         """
         self.driver.set_window_size(wide, high)
 
-    def type(self, text, clear=True, **kwargs):
+    def type(self, text, clear=False, **kwargs):
         """
         Operation input box.
 
