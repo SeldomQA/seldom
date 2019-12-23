@@ -18,10 +18,10 @@
 # under the License.
 
 from .running.test_runner import main
+from .testdata.parameterized import ddt, ddt_class
 from .webdriver import WebDriver
 from .case import TestCase
 from .driver import browser
-from .testdata import ddt, ddt_class
 from .skip import skip
 
 __author__ = "bugmaster"
