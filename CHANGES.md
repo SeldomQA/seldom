@@ -1,3 +1,7 @@
+### 0.3.6
+Add cookie manipulation APIs
+Optimized element wait
+
 ### 0.3.5
 Added chrome/firefox browser driver download command
 Driver file path Settings are supported

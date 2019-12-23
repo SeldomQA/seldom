@@ -26,7 +26,7 @@ from .skip import skip
 
 __author__ = "bugmaster"
 
-__version__ = "0.3.5"
+__version__ = "0.3.6"
 
 __description__ = "WebUI automation testing framework based on Selenium."
 
