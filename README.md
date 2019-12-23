@@ -52,7 +52,7 @@ optional arguments:
 >seldom --project mypro
 ```
 
-3、目录结构：
+目录结构如下：
 ```
 mypro/
 ├── test_dir/
@@ -69,7 +69,7 @@ mypro/
 
 ```shell
 > seldom -r run.py
-Python 3.7.1                                                                    
+Python 3.7.1
 
             _      _
            | |    | |
@@ -80,8 +80,8 @@ Python 3.7.1
 -----------------------------------------
                              @itest.info
 
-generated html file: file:///D:\mypro\reports\2019_11_12_22_28_53_result.html   
-.1                                                                              
+generated html file: file:///D:\mypro\reports\2019_11_12_22_28_53_result.html
+.1
 ```
 
 4、查看报告
@@ -121,7 +121,6 @@ __说明：__
 * 测试用例文件命名必须以 `test` 开头。
 * seldom的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
 
-
 ### main() 方法
 
 ```python
@@ -130,7 +129,7 @@ import seldom
 # ...
 
 if __name__ == '__main__':
-    
+
     seldom.main(path="./",
               browser="chrome",
               title="百度测试用例", 
@@ -316,7 +315,6 @@ class YouTest(seldom.TestCase):
 
 ```
 
-
 ### page objects 设计模式
 
 seldom 支持Page objects设计模式，可以配合[poium](https://github.com/wolever/parameterized) 使用。
@@ -350,8 +348,8 @@ if __name__ == '__main__':
     seldom.main("test_po_demo.py")
 
 ```
-poium提供了更多好用的功能，使Page层的创建更加简单。
 
+poium提供了更多好用的功能，使Page层的创建更加简单。
 
 ## 感谢
 
