@@ -1,8 +1,9 @@
 import re
 import sys
 import uuid
-import hashlib
 import random
+import hashlib
+import datetime
 
 from .data import (
     names,
@@ -11,14 +12,14 @@ from .data import (
     unicode_paragraphs,
     ascii_words,
     unicode_words,
-    words,
+    words_str,
     first_names_male,
     first_names_female,
     last_names,
 )
 
 
-def get_first_name(gender="", is_unicode=None):
+def first_name(gender="", is_unicode=None):
     """
     get first name
     :param gender:
@@ -47,12 +48,12 @@ def get_first_name(gender="", is_unicode=None):
             name = random.choice(first_names_female)
 
     if random.randint(0, 20) == 5:
-        name = '{}-{}'.format(name, get_first_name(gender, is_unicode))
+        name = '{}-{}'.format(name, first_name(gender, is_unicode))
 
     return name.capitalize()
 
 
-def get_last_name(is_unicode=None):
+def last_name(is_unicode=None):
     """
     get last name
     :param is_unicode:
@@ -67,19 +68,17 @@ def get_last_name(is_unicode=None):
         name = random.choice(last_names)
 
     if random.randint(0, 20) == 5:
-        name = '{}-{}'.format(name, get_last_name(is_unicode))
+        name = '{}-{}'.format(name, last_name(is_unicode))
 
     return name.capitalize()
 
 
-def get_username(name=""):
+def username(name=""):
     """
     Returns just a non-space ascii name, this is a very basic username generator
-    :param name:
-    :return:
     """
     if not name:
-        name = get_first_name() if yes() else get_last_name()
+        name = first_name() if yes() else last_name()
     name = re.sub(r"['-]", "", name)
     return name
 
@@ -87,10 +86,8 @@ def get_username(name=""):
 def get_email(name=''):
     """
     return a random email address
-    :param name:
-    :return:
     """
-    name = get_username(name)
+    name = username(name)
     email_domains = [
         "126.com",
         "163.com",
@@ -100,30 +97,10 @@ def get_email(name=''):
         "yahoo.com",
         "hotmail.com",
         "outlook.com",
-        "aol.com",
         "gmail.com",
         "msn.com",
-        "comcast.net",
-        "hotmail.co.uk",
-        "sbcglobal.net",
-        "yahoo.co.uk",
-        "yahoo.co.in",
-        "bellsouth.net",
-        "verizon.com",
-        "earthlink.net",
-        "cox.net",
-        "rediffmail.com",
-        "yahoo.ca",
-        "btinternet.com",
-        "charter.net",
-        "shaw.ca",
-        "ntlworld.com",
-        "gmx.com",
-        "gmx.net",
         "mail.com",
-        "mailinator.com"
     ]
-
     return '{}@{}'.format(name.lower(), random.choice(email_domains))
 
 
@@ -145,13 +122,34 @@ def get_md5(val=""):
 
 
 def get_uuid():
-    """Generate a random UUID"""
+    """
+    Generate a random UUID
+    """
     return str(uuid.uuid4())
 
 
-def get_float(min_size=None, max_size=None):
-    """return a random float
+def get_int(min_size=1, max_size=sys.maxsize):
+    """
+    return integer style data
+    :param min_size:
+    :param max_size:
+    """
+    return random.randint(min_size, max_size)
 
+
+def get_int32(min_size=1):
+    """returns a 32-bit positive integer"""
+    return random.randint(min_size, 2**31-1)
+
+
+def get_int64(min_size=1):
+    """returns up to a 64-bit positive integer"""
+    return random.randint(min_size, 2**63-1)
+
+
+def get_float(min_size=None, max_size=None):
+    """
+    return a random float
     sames as the random method but automatically sets min and max
 
     :param min_size: float, the minimum float size you want
@@ -164,6 +162,19 @@ def get_float(min_size=None, max_size=None):
     if max_size is None:
         max_size = float_info.max
     return random.uniform(min_size, max_size)
+
+
+def get_digits(count):
+    """
+    return a string value that contains count digits
+    :param count: int, how many digits you want, so if you pass in 4, you would get
+        4 digits
+    :returns: string, this returns a string because the digits might start with
+        zero
+    """
+    max_size = int("9" * count)
+    ret = "{{:0>{}}}".format(count).format(get_int(0, max_size))
+    return ret
 
 
 def yes(specifier=0):
@@ -214,3 +225,79 @@ def yes(specifier=0):
         choice = random.choice([0, 1])
 
     return choice
+
+
+def get_words(count=0, as_str=True, words=None):
+    """get some amount of random words
+    :param count: integer, how many words you want, 0 means a random amount (at most 20)
+    :param as_str: boolean, True to return as string, false to return as list of words
+    :param words: list, a list of words to choose from, defaults to unicode + ascii words
+    :returns: unicode|list, your requested words
+    """
+    # since we specified we didn't care, randomly choose how many words there should be
+    if count == 0:
+        count = random.randint(1, 20)
+
+    if not words:
+        words = words_str
+
+    ret_words = random.sample(words, count)
+    return ret_words if not as_str else ' '.join(ret_words)
+
+
+def get_word(words=None):
+    return words(1, as_str=True, words=words)
+
+
+def get_birthday(as_str=False, start_age=18, stop_age=100):
+    """
+    return a random YYYY-MM-DD
+    :param as_str: boolean, true to return the bday as a YYYY-MM-DD string
+    :param start_age: int, minimum age of the birthday date
+    :param stop_age: int, maximum age of the birthday date
+    :returns: datetime.date|string
+    """
+    age = random.randint(start_age, stop_age)
+    year = (datetime.datetime.utcnow() - datetime.timedelta(weeks=(age * 52))).year
+    month = random.randint(1, 12)
+    if month == 2:
+        day = random.randint(1, 28)
+    elif month in [9, 4, 6, 11]:
+        day = random.randint(1, 30)
+    else:
+        day = random.randint(1, 31)
+
+    birthday = datetime.date(year, month, day)
+    if as_str:
+        birthday = "{:%Y-%m-%d}".format(birthday)
+
+    return birthday
+
+
+def get_past_datetime(now=None):
+    """
+    return a datetime guaranteed to be in the past from now
+    """
+    if not now: now = datetime.datetime.utcnow()
+    if isinstance(now, datetime.timedelta):
+        now = datetime.datetime.utcnow() - now
+
+    td = now - datetime.datetime(year=2000, month=1, day=1)
+    return now - datetime.timedelta(
+        days=random.randint(1, max(td.days, 1)),
+        seconds=random.randint(1, max(td.seconds, 1))
+    )
+
+
+def get_future_datetime(now=None):
+    """return a datetime guaranteed to be in the future from now"""
+    if not now: now = datetime.datetime.utcnow()
+    if isinstance(now, datetime.timedelta):
+        now = datetime.datetime.utcnow() + now
+
+    return now + datetime.timedelta(
+        weeks=random.randint(1, 52 * 50),
+        hours=random.randint(0, 24),
+        days=random.randint(0, 365),
+        seconds=random.randint(0, 86400)
+    )
