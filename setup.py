@@ -19,7 +19,7 @@ setup(
     license='BSD',
     author='bugmaster',
     author_email='fnngj@126.com',
-    description='WebUI automation testing framework based on Selenium and unittest ',
+    description='WebUI automation testing framework based on Selenium and unittest.',
     long_description=long_description,
     packages=find_packages(),
     include_package_data=True,
