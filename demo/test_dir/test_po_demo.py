@@ -1,5 +1,10 @@
 """
 page object model
+Using the poium Library
+https://github.com/SeldomQA/poium
+```
+> pip install poum
+```
 """
 import seldom
 from poium import Page, PageElement

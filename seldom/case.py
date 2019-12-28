@@ -112,7 +112,7 @@ class TestCase(unittest.TestCase, WebDriver):
         Asserts whether the text of the current page conforms to expectations.
 
         Usage:
-        self.assertAlert("text")
+        self.assertAlertText("text")
         """
         if text is None:
             raise NameError("Alert text cannot be empty.")

@@ -13,7 +13,7 @@ class BaiduTest(seldom.TestCase):
         self.select(css="#nr", value='20')
         self.click(class_name="prefpanelgo")
         self.sleep(2)
-        self.assertAlert("已经记录下您的使用偏好")
+        self.assertAlertText("已经记录下您的使用偏好")
         self.accept_alert()
 
     @ddt.data([
