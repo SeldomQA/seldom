@@ -1,12 +1,9 @@
 # coding=utf-8
 import time
-import logging
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+from .logging import log
 
 LOCATOR_LIST = {
     'css': By.CSS_SELECTOR,
@@ -36,15 +33,15 @@ class WebDriver(object):
         elems = self.driver.find_elements(by=elem[0], value=elem[1])
         for i in range(self.timeout):
             if len(elems) == 1:
-                logger.info("Find element: {by}={value} ".format(by=elem[0], value=elem[1]))
+                log.info("Find element: {by}={value} ".format(by=elem[0], value=elem[1]))
                 break
             elif len(elems) > 1:
-                logger.info("Find {n} elements through：{by}={value}".format(n=len(elems), by=elem[0], value=elem[1]))
+                log.warn("Find {n} elements through：{by}={value}".format(n=len(elems), by=elem[0], value=elem[1]))
                 break
             else:
                 time.sleep(1)
         else:
-            logger.info("Find {n} elements through：{by}={value}".format(n=len(elems), by=elem[0], value=elem[1]))
+            log.error("Find {n} elements through：{by}={value}".format(n=len(elems), by=elem[0], value=elem[1]))
 
     def get_element(self, **kwargs):
         """

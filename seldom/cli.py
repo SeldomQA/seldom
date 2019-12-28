@@ -5,18 +5,15 @@ import ssl
 import shutil
 import zipfile
 import tarfile
-import logging
 import argparse
 import platform
 from os import makedirs
 from os.path import join, isfile, basename
 from os.path import isdir, dirname, abspath
 from urllib.request import urlopen
+from .logging import log
 
 from seldom import __description__, __version__
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
 
 PY3 = sys.version_info[0] == 3
 
@@ -58,7 +55,7 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        print("version {}".format(__version__), )
+        log.info("version {}".format(__version__))
         return 0
 
     project_name = args.project
@@ -68,7 +65,7 @@ def main():
 
     run_file = args.r
     if run_file:
-        logger.info("Run the python version:")
+        log.info("Run the python version:")
         if PY3:
             ret = os.system("python -V")
             if ret != 0:
@@ -92,22 +89,22 @@ def create_scaffold(project_name):
     create scaffold with specified project name.
     """
     if os.path.isdir(project_name):
-        logger.info(u"Folder {} exists, please specify a new folder name.".format(project_name))
+        log.info(u"Folder {} exists, please specify a new folder name.".format(project_name))
         return
 
-    logger.info("Start to create new test project: {}".format(project_name))
-    logger.info("CWD: {}\n".format(os.getcwd()))
+    log.info("Start to create new test project: {}".format(project_name))
+    log.info("CWD: {}\n".format(os.getcwd()))
 
     def create_folder(path):
         os.makedirs(path)
         msg = "created folder: {}".format(path)
-        logger.info(msg)
+        log.info(msg)
 
     def create_file(path, file_content=""):
         with open(path, 'w') as f:
             f.write(file_content)
         msg = "created file: {}".format(path)
-        logger.info(msg)
+        log.info(msg)
 
     test_sample = '''import seldom
 
@@ -213,11 +210,11 @@ def install_driver(browser=None, file_directory='./lib/'):
         file_path = join(abspath(file_directory), '%s%s' % (driver, ext))
 
         if isfile(file_path):
-            print('%s is already installed.' % driver)
+            log.info('{} is already installed.'.format(driver))
             return file_path
 
         if not download(url, archive_path):
-            print('Download for %s version failed; Trying alternates.' % os_bit)
+            log.info('Download for {} version failed; Trying alternates.'.format(os_bit))
             continue
 
         out = extract(archive_path, driver_path, file_path)
@@ -237,8 +234,8 @@ def download(url, path):
     :param path:
     :return:
     """
-    print('\tDownloading from: ', url)
-    print('\tTo: ', path)
+    log.info('\tDownloading from: {}'.format(url))
+    log.info('\tTo: {}'.format(path))
     file = abspath(path)
     if not isdir(dirname(file)):
         makedirs(dirname(file), exist_ok=True)
