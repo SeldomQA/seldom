@@ -278,9 +278,9 @@ def get_past_datetime(now=None):
     """
     return a datetime guaranteed to be in the past from now
     """
-    if not now: now = datetime.datetime.utcnow()
+    if not now: now = datetime.datetime.now()
     if isinstance(now, datetime.timedelta):
-        now = datetime.datetime.utcnow() - now
+        now = datetime.datetime.now() - now
 
     td = now - datetime.datetime(year=2000, month=1, day=1)
     return now - datetime.timedelta(
@@ -290,10 +290,13 @@ def get_past_datetime(now=None):
 
 
 def get_future_datetime(now=None):
-    """return a datetime guaranteed to be in the future from now"""
-    if not now: now = datetime.datetime.utcnow()
+    """
+    return a datetime guaranteed to be in the future from now
+    """
+    if not now:
+        now = datetime.datetime.now()
     if isinstance(now, datetime.timedelta):
-        now = datetime.datetime.utcnow() + now
+        now = datetime.datetime.now() + now
 
     return now + datetime.timedelta(
         weeks=random.randint(1, 52 * 50),
@@ -301,3 +304,26 @@ def get_future_datetime(now=None):
         days=random.randint(0, 365),
         seconds=random.randint(0, 86400)
     )
+
+
+def get_now_time():
+    """
+    Get date, default to current day。
+    :return:
+    """
+    date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return date
+
+
+def get_date(day=None):
+    """
+    Get date, default to current day。
+    :return:
+    """
+    if day is None:
+        date = datetime.datetime.now().strftime("%Y-%m-%d")
+    else:
+        date = (datetime.datetime.now() + datetime.timedelta(days=day)).strftime("%Y-%m-%d")
+
+    return date
+
