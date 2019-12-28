@@ -26,7 +26,8 @@ setup(
     zip_safe=False,
     install_requires=[
         'selenium>=3.12.0',
-        'parameterized==0.7.0'
+        'parameterized==0.7.0',
+        'colorama>=0.4.3'
     ],
     classifiers=[
         'Intended Audience :: Developers',
