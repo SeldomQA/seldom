@@ -119,7 +119,7 @@ class YouTest(seldom.TestCase):
         self.open("https://www.baidu.com")
         self.type(id_="kw", text="seldom")
         self.click(css="#su")
-        self.assertTitle("seldom")
+        self.assertInTitle("seldom")
 
 
 if __name__ == '__main__':

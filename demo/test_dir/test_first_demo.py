@@ -31,7 +31,7 @@ class BaiduTest(seldom.TestCase):
         self.open("https://www.baidu.com")
         self.type(id_="kw", text=search_key)
         self.click(css="#su")
-        self.assertTitle(search_key)
+        self.assertInTitle(search_key)
 
 
 if __name__ == '__main__':
