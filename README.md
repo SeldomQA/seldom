@@ -132,8 +132,8 @@ if __name__ == '__main__':
 
     seldom.main(path="./",
               browser="chrome",
-              title="百度测试用例", 
-              description="测试环境：chrome", 
+              title="百度测试用例",
+              description="测试环境：chrome",
               debug=False,
               rerun=0,
               save_last_run=False,
