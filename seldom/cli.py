@@ -55,7 +55,7 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        log.info("version {}".format(__version__))
+        print("version {}".format(__version__))
         return 0
 
     project_name = args.project
