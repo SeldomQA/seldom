@@ -1,8 +1,8 @@
 # coding=utf-8
 import time
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.action_chains import ActionChains
 from .logging import log
 
 LOCATOR_LIST = {
@@ -25,6 +25,7 @@ class WebDriver(object):
     """
     driver = None
     original_window = None
+    timeout = 0
 
     def find_element(self, elem):
         """
@@ -43,10 +44,15 @@ class WebDriver(object):
         else:
             log.error("Find {n} elements through：{by}={value}".format(n=len(elems), by=elem[0], value=elem[1]))
 
-    def get_element(self, **kwargs):
+    def get_element(self, index, **kwargs):
         """
         Judge element positioning way, and returns the element.
         """
+        if not kwargs:
+            raise ValueError("Please specify a locator")
+        if len(kwargs) > 1:
+            raise ValueError("Please specify only one locator")
+
         by, value = next(iter(kwargs.items()))
         try:
             LOCATOR_LIST[by]
@@ -55,29 +61,29 @@ class WebDriver(object):
 
         if by == "id_":
             self.find_element((By.ID, value))
-            element = self.driver.find_element_by_id(value)
+            elem = self.driver.find_elements_by_id(value)[index]
         elif by == "name":
             self.find_element((By.NAME, value))
-            element = self.driver.find_element_by_name(value)
+            elem = self.driver.find_elements_by_name(value)[index]
         elif by == "class_name":
             self.find_element((By.CLASS_NAME, value))
-            element = self.driver.find_element_by_class_name(value)
+            elem = self.driver.find_elements_by_class_name(value)[index]
         elif by == "tag":
             self.find_element((By.TAG_NAME, value))
-            element = self.driver.find_element_by_class_name(value)
+            elem = self.driver.find_elements_by_class_name(value)[index]
         elif by == "link_text":
             self.find_element((By.LINK_TEXT, value))
-            element = self.driver.find_element_by_link_text(value)
+            elem = self.driver.find_elements_by_link_text(value)[index]
         elif by == "xpath":
             self.find_element((By.XPATH, value))
-            element = self.driver.find_element_by_xpath(value)
+            elem = self.driver.find_elements_by_xpath(value)[index]
         elif by == "css":
             self.find_element((By.CSS_SELECTOR, value))
-            element = self.driver.find_element_by_css_selector(value)
+            elem = self.driver.find_elements_by_css_selector(value)[index]
         else:
             raise NameError(
-                "Please enter the correct targeting elements,'id_/name/class/tag/link_text/xpath/css'.")
-        return element
+                "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
+        return elem
 
     def get(self, url):
         """
@@ -115,37 +121,29 @@ class WebDriver(object):
         """
         self.driver.set_window_size(wide, high)
 
-    def type(self, text, clear=False, **kwargs):
+    def type(self, text, clear=False, index=0, **kwargs):
         """
         Operation input box.
 
         Usage:
         self.type(css="#el", text="selenium")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
         if clear is True:
-            self.clear(**kwargs)
-        el = self.get_element(**kwargs)
-        el.send_keys(text)
+            self.clear(index, **kwargs)
+        elem = self.get_element(index, **kwargs)
+        elem.send_keys(text)
 
-    def clear(self, **kwargs):
+    def clear(self, index=0, **kwargs):
         """
         Clear the contents of the input box.
 
         Usage:
         self.clear(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        el.clear()
+        elem = self.get_element(index, **kwargs)
+        elem.clear()
 
-    def click(self, **kwargs):
+    def click(self, index=0, **kwargs):
         """
         It can click any text / image can be clicked
         Connection, check box, radio buttons, and even drop-down box etc..
@@ -153,54 +151,48 @@ class WebDriver(object):
         Usage:
         self.click(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        el.click()
+        elem = self.get_element(index, **kwargs)
+        elem.click()
 
-    def right_click(self, **kwargs):
+    def right_click(self, index=0, **kwargs):
         """
         Right click element.
 
         Usage:
         self.right_click(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        ActionChains(self.driver).context_click(el).perform()
+        elem = self.get_element(index, **kwargs)
+        ActionChains(self.driver).context_click(elem).perform()
 
-    def move_to_element(self, **kwargs):
+    def move_to_element(self, index=0, **kwargs):
         """
         Mouse over the element.
 
         Usage:
         self.move_to_element(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        ActionChains(self.driver).move_to_element(el).perform()
+        elem = self.get_element(index, **kwargs)
+        ActionChains(self.driver).move_to_element(elem).perform()
 
-    def double_click(self, **kwargs):
+    def click_and_hold(self, index=0, **kwargs):
+        """
+        Mouse over the element.
+
+        Usage:
+        self.move_to_element(css="#el")
+        """
+        elem = self.get_element(index, **kwargs)
+        ActionChains(self.driver).click_and_hold(elem).perform()
+
+    def double_click(self, index=0, **kwargs):
         """
         Double click element.
 
         Usage:
         self.double_click(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        ActionChains(self.driver).double_click(el).perform()
+        elem = self.get_element(index, **kwargs)
+        ActionChains(self.driver).double_click(elem).perform()
 
     def click_text(self, text):
         """
@@ -209,6 +201,7 @@ class WebDriver(object):
         Usage:
         self.click_text("新闻")
         """
+        self.find_element((By.PARTIAL_LINK_TEXT, text))
         self.driver.find_element_by_partial_link_text(text).click()
 
     def close(self):
@@ -230,19 +223,15 @@ class WebDriver(object):
         """
         self.driver.quit()
 
-    def submit(self, **kwargs):
+    def submit(self, index=0, **kwargs):
         """
         Submit the specified form.
 
         Usage:
         driver.submit(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        el.submit()
+        elem = self.get_element(index, **kwargs)
+        elem.submit()
 
     def refresh(self):
         """
@@ -275,7 +264,7 @@ class WebDriver(object):
         js = "window.scrollTo({w},{h});".format(w=str(width), h=str(height))
         self.execute_script(js)
 
-    def get_attribute(self, attribute=None, **kwargs):
+    def get_attribute(self, attribute=None, index=0, **kwargs):
         """
         Gets the value of an element attribute.
 
@@ -284,40 +273,28 @@ class WebDriver(object):
         """
         if attribute is None:
             raise ValueError("attribute is not None")
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        return el.get_attribute(attribute)
+        elem = self.get_element(index, **kwargs)
+        return elem.get_attribute(attribute)
 
-    def get_text(self, **kwargs):
+    def get_text(self, index=0, **kwargs):
         """
         Get element text information.
 
         Usage:
         self.get_text(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        return el.text
+        elem = self.get_element(index, **kwargs)
+        return elem.text
 
-    def get_display(self, **kwargs):
+    def get_display(self, index=0, **kwargs):
         """
         Gets the element to display,The return result is true or false.
 
         Usage:
         self.get_display(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
-        return el.is_displayed()
+        elem = self.get_element(index, **kwargs)
+        return elem.is_displayed()
 
     def get_title(self):
         """
@@ -373,19 +350,15 @@ class WebDriver(object):
         """
         self.driver.switch_to.alert.dismiss()
 
-    def switch_to_frame(self, **kwargs):
+    def switch_to_frame(self, index=0, **kwargs):
         """
         Switch to the specified frame.
 
         Usage:
         self.switch_to_frame(css="#el")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        frame_elem = self.get_element(**kwargs)
-        self.driver.switch_to.frame(frame_elem)
+        elem = self.get_element(index, **kwargs)
+        self.driver.switch_to.frame(elem)
 
     def switch_to_frame_out(self):
         """
@@ -397,21 +370,16 @@ class WebDriver(object):
         """
         self.driver.switch_to.default_content()
 
-    def open_new_window(self, **kwargs):
+    def open_new_window(self, index=0, **kwargs):
         """
         Open the new window and switch the handle to the newly opened window.
 
         Usage:
         self.open_new_window(link_text="注册")
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-
         original_window = self.driver.current_window_handle
-        el = self.get_element(**kwargs)
-        el.click()
+        elem = self.get_element(index, **kwargs)
+        elem.click()
         all_handles = self.driver.window_handles
         for handle in all_handles:
             if handle != original_window:
@@ -446,17 +414,13 @@ class WebDriver(object):
             self.select(css="#nr", text='每页显示20条')
             self.select(css="#nr", index=2)
         """
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-        el = self.get_element(**kwargs)
+        elem = self.get_element(index=0, **kwargs)
         if value is not None:
-            Select(el).select_by_value(value)
+            Select(elem).select_by_value(value)
         elif text is not None:
-            Select(el).select_by_visible_text(text)
+            Select(elem).select_by_visible_text(text)
         elif index is not None:
-            Select(el).select_by_index(index)
+            Select(elem).select_by_index(index)
         else:
             raise ValueError(
                 '"value" or "text" or "index" options can not be all empty.')
@@ -483,7 +447,29 @@ class WebDriver(object):
         Usage:
             self.add_cookie({'name' : 'foo', 'value' : 'bar'})
         """
-        return self.driver.add_cookie(cookie_dict)
+        if isinstance(cookie_dict, dict):
+            self.driver.add_cookie(cookie_dict)
+        else:
+            raise TypeError("Wrong cookie type.")
+
+    def add_cookies(self, cookie_list):
+        """
+        Adds a cookie to your current session.
+        Usage:
+            cookie_list = [
+                {'name' : 'foo', 'value' : 'bar'},
+                {'name' : 'foo', 'value' : 'bar'}
+            ]
+            self.add_cookie(cookie_list)
+        """
+        if isinstance(cookie_list, list):
+            for cookie in cookie_list:
+                if isinstance(cookie, dict):
+                    self.driver.add_cookie(cookie)
+                else:
+                    raise TypeError("Wrong cookie type.")
+        else:
+            raise TypeError("Wrong cookie type.")
 
     def delete_cookie(self, name):
         """
@@ -491,7 +477,7 @@ class WebDriver(object):
         Usage:
             self.delete_cookie('my_cookie')
         """
-        return self.driver.delete_cookie(name)
+        self.driver.delete_cookie(name)
 
     def delete_all_cookies(self):
         """
@@ -499,7 +485,7 @@ class WebDriver(object):
         Usage:
             self.delete_all_cookies()
         """
-        return self.driver.delete_all_cookies()
+        self.driver.delete_all_cookies()
 
     @staticmethod
     def sleep(sec):
