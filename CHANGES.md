@@ -1,3 +1,6 @@
+### 1.0.0 beta 1
+The framework function has been basically improved. I'm glad to release version 1.0
+
 ### 0.3.6
 Add cookie manipulation APIs
 Optimized element wait
