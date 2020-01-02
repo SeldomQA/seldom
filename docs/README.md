@@ -8,9 +8,9 @@
 
 * [生成测试报告](./reposts.md)
 
-* seldom 元素定位
+* [seldom 元素定位](./find_element.md)
 
-* seldom API
+* [seldom API](./seldom_api.md)
 
 * 用例失败重跑&自动截图
 
