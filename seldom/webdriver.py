@@ -32,8 +32,8 @@ class WebDriver(object):
         """
         Find if the element exists.
         """
-        elems = self.driver.find_elements(by=elem[0], value=elem[1])
         for i in range(self.timeout):
+            elems = self.driver.find_elements(by=elem[0], value=elem[1])
             if len(elems) == 1:
                 log.info("Find element: {by}={value} ".format(by=elem[0], value=elem[1]))
                 break
@@ -205,8 +205,8 @@ class WebDriver(object):
         Usage:
         self.click_text("新闻")
         """
-        self.find_element((By.PARTIAL_LINK_TEXT, text))
-        self.driver.find_element_by_partial_link_text(text).click()
+        self.find_element((By.LINK_TEXT, text))
+        self.driver.find_element_by_link_text(text).click()
 
     def close(self):
         """
