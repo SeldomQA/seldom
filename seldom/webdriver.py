@@ -74,6 +74,9 @@ class WebDriver(object):
         elif by == "link_text":
             self.find_element((By.LINK_TEXT, value))
             elem = self.driver.find_elements_by_link_text(value)[index]
+        elif by == "partial_link_text":
+            self.find_element((By.PARTIAL_LINK_TEXT, value))
+            elem = self.driver.find_elements_by_partial_link_text(value)[index]
         elif by == "xpath":
             self.find_element((By.XPATH, value))
             elem = self.driver.find_elements_by_xpath(value)[index]
