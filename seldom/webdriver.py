@@ -1,5 +1,6 @@
 # coding=utf-8
 import time
+import warnings
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
@@ -380,6 +381,8 @@ class WebDriver(object):
         Usage:
         self.open_new_window(link_text="注册")
         """
+        warnings.warn("This method is not recommended",
+                      DeprecationWarning, stacklevel=2)
         original_window = self.driver.current_window_handle
         elem = self.get_element(index, **kwargs)
         elem.click()
@@ -387,6 +390,50 @@ class WebDriver(object):
         for handle in all_handles:
             if handle != original_window:
                 self.driver.switch_to.window(handle)
+
+    @property
+    def current_window_handle(self):
+        """
+        Returns the handle of the current window.
+
+        :Usage:
+            self.current_window_handle
+        """
+        return self.driver.current_window_handle
+
+    @property
+    def new_window_handle(self):
+        """
+        Returns the handle of the new window.
+
+        :Usage:
+            self.new_window_handle
+        """
+        new_handle = self.window_handles
+        return new_handle[-1]
+
+    @property
+    def window_handles(self):
+        """
+        Returns the handles of all windows within the current session.
+
+        :Usage:
+            self.window_handles
+        """
+        all_handles = self.driver.window_handles
+        return all_handles
+
+    def switch_to_window(self, window_name):
+        """
+        Switches focus to the specified window.
+
+        :Args:
+         - window_name: The name or window handle of the window to switch to.
+
+        :Usage:
+            self.switch_to_window('main')
+        """
+        self.driver.switch_to.window(window_name)
 
     def screenshots(self, file_path):
         """
