@@ -12,6 +12,8 @@
 
 * [seldom API](./seldom_api.md)
 
+* [seldom 断言](./assert.md)
+
 * 用例失败重跑&自动截图
 
 * 参数化
