@@ -14,10 +14,8 @@
 
 * [seldom 断言](./assert.md)
 
-* 用例失败重跑&自动截图
+* [用例失败重跑&自动截图](./rerun_screenshot.md)
 
-* 参数化
+* [数据驱动最佳实践](./parameterized.md)
 
-* 实现Page Objects设计模式
-
-* ...
+* [实现Page Objects设计模式](./poium.md)
