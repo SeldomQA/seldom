@@ -246,7 +246,7 @@ def get_words(count=0, as_str=True, words=None):
 
 
 def get_word(words=None):
-    return words(1, as_str=True, words=words)
+    return get_words(1, as_str=True, words=words)
 
 
 def get_birthday(as_str=False, start_age=18, stop_age=100):
