@@ -1,8 +1,10 @@
 # seldom 文档
 
-* [安装](./install.md)
+* [seldom安装](./install.md)
 
-* [创建项目](./create_project.md)
+* [seldom创建项目](./create_project.md)
+
+* [切换浏览器&安装驱动](./driver.md)
 
 * [运行测试](./run_test.md)
 
@@ -19,3 +21,7 @@
 * [数据驱动最佳实践](./parameterized.md)
 
 * [实现Page Objects设计模式](./poium.md)
+
+* [生成测试数据](./testdata.md)
+
+* [跳过测试用例](./skip.md)
