@@ -6,12 +6,7 @@ import hashlib
 import datetime
 
 from .data import (
-    names,
     unicode_names,
-    ascii_paragraphs,
-    unicode_paragraphs,
-    ascii_words,
-    unicode_words,
     words_str,
     first_names_male,
     first_names_female,
@@ -278,7 +273,8 @@ def get_past_datetime(now=None):
     """
     return a datetime guaranteed to be in the past from now
     """
-    if not now: now = datetime.datetime.now()
+    if not now:
+        now = datetime.datetime.now()
     if isinstance(now, datetime.timedelta):
         now = datetime.datetime.now() - now
 
@@ -326,4 +322,3 @@ def get_date(day=None):
         date = (datetime.datetime.now() + datetime.timedelta(days=day)).strftime("%Y-%m-%d")
 
     return date
-

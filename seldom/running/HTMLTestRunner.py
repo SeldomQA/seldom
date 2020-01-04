@@ -82,7 +82,6 @@ Version in 0.7.1
 import datetime
 import io
 import sys
-import time
 import copy
 import unittest
 from xml.sax import saxutils
@@ -395,8 +394,8 @@ table       { font-size: 100%; }
 pre         {  }
 /* -- heading ---------------------------------------------------------------------- */
 h1 {
-	font-size: 16pt;
-	color: gray;
+    font-size: 16pt;
+    color: gray;
 }
 .heading {
     margin-top: 20px;
@@ -455,7 +454,7 @@ a.popup_link:hover {
     background-color: #f5f5f5;
     border-top-width: 10px;
     border-color: #d6e9c6;
-	font-size: 15px;
+    font-size: 15px;
 }
 #result_table td {
     border: 1px solid #f5f5f5;
@@ -495,18 +494,18 @@ a.popup_link:hover {
 
 /* -- screenshots ---------------------------------------------------------------------- */
 .img{
-	height: 100%;
-	border-collapse: collapse;
+    height: 100%;
+    border-collapse: collapse;
 }
 .screenshots {
     z-index: 100;
-	position:fixed;
-	height: 80%;
+    position:fixed;
+    height: 80%;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
-	display: none;
-	box-shadow:1px 2px 20px #333333;
+    display: none;
+    box-shadow:1px 2px 20px #333333;
 }
 .imgyuan{
     height: 20px;
@@ -557,13 +556,13 @@ a.popup_link:hover {
 <p class='description'>%(description)s</p>
 </div>
 <div style="float:left; margin-left: 10px; margin-top: 20px;">
-	<p> Test Case Pie charts </p>
-	<a class="badge text-wrap btn-info1">-Pass-</a><br>
-	<a class="badge text-wrap btn-info2">-Faild-</a><br>
-	<a class="badge text-wrap btn-info3">-Error-</a><br>
+    <p> Test Case Pie charts </p>
+    <a class="badge text-wrap btn-info1">-Pass-</a><br>
+    <a class="badge text-wrap btn-info2">-Faild-</a><br>
+    <a class="badge text-wrap btn-info3">-Error-</a><br>
 </div>
 <div class="testChars">
-	<canvas id="myChart" width="250" height="250"></canvas>
+    <canvas id="myChart" width="250" height="250"></canvas>
 </div>
 """  # variables: (title, parameters, description)
 
@@ -574,37 +573,37 @@ a.popup_link:hover {
     ECHARTS_SCRIPT = """
     <script type="text/javascript">
 var data = [
-	{
-		value: %(error)s,
-		color: "#ebccd1",
-		label: "Error",
-		labelColor: 'white',
-		labelFontSize: '16'
-	},
-	{
-		value : %(fail)s,
-		color : "#faebcc",
-		label: "Fail",
-		labelColor: 'white',
-		labelFontSize: '16'
-	},
-	{
-		value : %(Pass)s,
-		color : "#d6e9c6",
-		label : "Pass",
-		labelColor: 'white',
-		labelFontSize: '16'
-	}			
+    {
+        value: %(error)s,
+        color: "#ebccd1",
+        label: "Error",
+        labelColor: 'white',
+        labelFontSize: '16'
+    },
+    {
+        value : %(fail)s,
+        color : "#faebcc",
+        label: "Fail",
+        labelColor: 'white',
+        labelFontSize: '16'
+    },
+    {
+        value : %(Pass)s,
+        color : "#d6e9c6",
+        label : "Pass",
+        labelColor: 'white',
+        labelFontSize: '16'
+    }
 ]
 var newopts = {
-     animationSteps: 100,
- 		animationEasing: 'easeInOutQuart',
+    animationSteps: 100,
+    animationEasing: 'easeInOutQuart'
 }
 //Get the context of the canvas element we want to select
 var ctx = document.getElementById("myChart").getContext("2d");
 var myNewChart = new Chart(ctx).Pie(data,newopts);
 </script>
-	"""
+"""
 
     HEADING_ATTRIBUTE_TMPL = """<p class='attribute'><strong>%(name)s:</strong> %(value)s</p>
 """  # variables: (name, value)
@@ -911,7 +910,7 @@ class HTMLTestRunner(Template_mixin):
         classes = []
         for n, t, o, e in result_list:
             cls = t.__class__
-            if not cls in rmap:
+            if cls not in rmap:
                 rmap[cls] = []
                 classes.append(cls)
             rmap[cls].append((n, t, o, e))

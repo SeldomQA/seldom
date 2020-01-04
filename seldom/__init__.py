@@ -30,4 +30,3 @@ __author__ = "bugmaster"
 __version__ = "1.0.0 beta"
 
 __description__ = "WebUI automation testing framework based on Selenium."
-

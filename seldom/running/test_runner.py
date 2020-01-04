@@ -1,6 +1,5 @@
 # coding=utf-8
 import os
-import sys
 import time
 import logging
 import unittest
@@ -103,4 +102,3 @@ def main(path=None,
 
 if __name__ == '__main__':
     main()
-

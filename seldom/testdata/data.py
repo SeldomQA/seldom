@@ -543,5 +543,3 @@ if sys.maxunicode > 65535:
 ascii_words = re.split(r'\s+', ascii_paragraphs.strip())
 unicode_words = re.split(r'\s+', unicode_paragraphs.strip())
 words_str = ascii_words + unicode_words
-
-
