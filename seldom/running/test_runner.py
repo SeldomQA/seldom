@@ -1,13 +1,9 @@
 # coding=utf-8
 import os
 import time
-import logging
+from ..logging import log
 import unittest
 from .HTMLTestRunner import HTMLTestRunner
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
 
 seldom_str = """
             _      _                   
@@ -89,15 +85,14 @@ def main(path=None,
 
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
-            print(seldom_str)
+            log.info(seldom_str)
             runner.run(suits, rerun=rerun, save_last_run=save_last_run)
         print("generated html file: file:///{}".format(report))
     else:
         runner = unittest.TextTestRunner(verbosity=2)
-        logger.info("seldom run test 🛫🛫!")
-        print(seldom_str)
+        log.info("A run the test in debug mode without generating HTML report!")
+        log.info(seldom_str)
         runner.run(suits)
-        logger.info("End of the test 🔚!")
 
 
 if __name__ == '__main__':
