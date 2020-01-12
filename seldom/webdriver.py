@@ -43,7 +43,7 @@ class WebDriver(object):
             else:
                 time.sleep(1)
         else:
-            log.error("Find {n} elements through：{by}={value}".format(n=len(elems), by=elem[0], value=elem[1]))
+            log.error("Find 0 elements through：{by}={value}".format(by=elem[0], value=elem[1]))
 
     def get_element(self, index, **kwargs):
         """
