@@ -8,7 +8,7 @@
 
 * [运行测试](./run_test.md)
 
-* [生成测试报告](./reposts.md)
+* [生成测试报告](./reports.md)
 
 * [seldom 元素定位](./find_element.md)
 
