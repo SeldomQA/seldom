@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as CH_Options
 from selenium.webdriver.firefox.options import Options as FF_Options
-from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
@@ -13,6 +12,7 @@ def browser(name=None, driver_path=None, remote_url=None):
     the Internet Explorer browser for "internet explorer" or "ie".
     :param name: Browser name
     :param driver_path: Browser driver path
+    :param remote_url: selenium grid hub url. eg: "127.0.0.1/wd/hub"
     :return:
     """
     if name is None:
