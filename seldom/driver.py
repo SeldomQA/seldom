@@ -1,9 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as CH_Options
 from selenium.webdriver.firefox.options import Options as FF_Options
+from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-def browser(name=None, driver_path=None):
+def browser(name=None, driver_path=None, remote_url=None):
     """
     Run class initialization method, the default is proper
     to drive the Firefox browser. Of course, you can also
@@ -19,10 +21,18 @@ def browser(name=None, driver_path=None):
     if name == "firefox" or name == "ff":
         if driver_path is not None:
             return webdriver.Firefox(executable_path=driver_path)
+        if remote_url is not None:
+            return webdriver.Remote(
+                command_executor=remote_url,
+                desired_capabilities=DesiredCapabilities.FIREFOX)
         return webdriver.Firefox()
     elif name == "chrome":
         if driver_path is not None:
             return webdriver.Chrome(executable_path=driver_path)
+        if remote_url is not None:
+            return webdriver.Remote(
+                command_executor=remote_url,
+                desired_capabilities=DesiredCapabilities.CHROME)
         return webdriver.Chrome()
     elif name == "internet explorer" or name == "ie":
         return webdriver.Ie()
@@ -44,4 +54,4 @@ def browser(name=None, driver_path=None):
         return webdriver.Edge()
     else:
         raise NameError(
-                "Not found {} browser, You can enter 'ie', 'ff', 'opera', 'edge', 'chrome'.".format(name))
+            "Not found {} browser, You can enter 'ie', 'ff', 'opera', 'edge', 'chrome'.".format(name))

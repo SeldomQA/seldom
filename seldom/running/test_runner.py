@@ -4,6 +4,7 @@ import time
 from ..logging import log
 import unittest
 from .HTMLTestRunner import HTMLTestRunner
+import requests
 
 seldom_str = """
             _      _                   
@@ -23,6 +24,7 @@ class Browser:
     """
     name = None
     driver_path = None
+    remote_url = None
 
 
 def main(path=None,
@@ -32,7 +34,9 @@ def main(path=None,
          debug=False,
          rerun=0,
          save_last_run=False,
-         driver_path=None):
+         driver_path=None,
+         remote_url=None
+         ):
     """
     runner test case
     :param path:
@@ -43,6 +47,7 @@ def main(path=None,
     :param rerun:
     :param save_last_run:
     :param driver_path:
+    :param remote_url:
     :return:
     """
 
@@ -72,6 +77,13 @@ def main(path=None,
         if ret is False:
             raise ValueError("Browser - driven path error，Please check if the file exists. => {}".format(driver_path))
         Browser.driver_path = driver_path
+
+    if remote_url is not None:
+        url = remote_url.replace('/wd/hub','')
+        result = requests.get(url);
+        if result.status_code != 200:
+            raise ValueError("remote_url - remote url error，Please check if the url can access => {}".format(remote_url))
+        Browser.remote_url = remote_url
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):

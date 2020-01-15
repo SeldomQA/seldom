@@ -9,13 +9,13 @@ class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = browser(Browser.name, Browser.driver_path)
+        cls.driver = browser(Browser.name, Browser.driver_path, Browser.remote_url)
         cls.timeout = 10
 
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
-    
+
     def assertTitle(self, title=None):
         """
         Asserts whether the current title is in line with expectations.
