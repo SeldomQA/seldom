@@ -51,6 +51,8 @@ def browser(name=None, driver_path=None, grid_url=None):
         return webdriver.Firefox(firefox_options=firefox_options)
     elif name == 'edge':
         return webdriver.Edge()
+    elif name == 'safari':
+        return webdriver.Safari()
     else:
         raise NameError(
                 "Not found {} browser, You can enter 'ie', 'ff', 'opera', 'edge', 'chrome'.".format(name))
