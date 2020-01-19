@@ -1,9 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as CH_Options
 from selenium.webdriver.firefox.options import Options as FF_Options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-def browser(name=None, driver_path=None):
+def browser(name=None, driver_path=None, grid_url=None):
     """
     Run class initialization method, the default is proper
     to drive the Firefox browser. Of course, you can also
@@ -11,6 +12,8 @@ def browser(name=None, driver_path=None):
     the Internet Explorer browser for "internet explorer" or "ie".
     :param name: Browser name
     :param driver_path: Browser driver path
+    :param grid_url: Either a string representing URL of the remote server or a custom
+             remote_connection.RemoteConnection object.
     :return:
     """
     if name is None:
@@ -19,10 +22,16 @@ def browser(name=None, driver_path=None):
     if name == "firefox" or name == "ff":
         if driver_path is not None:
             return webdriver.Firefox(executable_path=driver_path)
+        if grid_url is not None:
+            webdriver.Remote(command_executor=grid_url,
+                             desired_capabilities=DesiredCapabilities.FIREFOX.copy())
         return webdriver.Firefox()
     elif name == "chrome":
         if driver_path is not None:
             return webdriver.Chrome(executable_path=driver_path)
+        if grid_url is not None:
+            webdriver.Remote(command_executor=grid_url,
+                             desired_capabilities=DesiredCapabilities.CHROME.copy())
         return webdriver.Chrome()
     elif name == "internet explorer" or name == "ie":
         return webdriver.Ie()

@@ -23,6 +23,7 @@ class Browser:
     """
     name = None
     driver_path = None
+    grid_url = None
 
 
 def main(path=None,
@@ -32,7 +33,8 @@ def main(path=None,
          debug=False,
          rerun=0,
          save_last_run=False,
-         driver_path=None):
+         driver_path=None,
+         grid_url=None):
     """
     runner test case
     :param path:
@@ -43,6 +45,7 @@ def main(path=None,
     :param rerun:
     :param save_last_run:
     :param driver_path:
+    :param grid_url:
     :return:
     """
 
@@ -66,6 +69,7 @@ def main(path=None,
         Browser.name = "chrome"
     else:
         Browser.name = browser
+        Browser.grid_url = grid_url
 
     if driver_path is not None:
         ret = os.path.exists(driver_path)
