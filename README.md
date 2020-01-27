@@ -9,11 +9,10 @@ WebUI automation testing framework based on Selenium and unittest.
 
 * 提供更加简单API编写自动化测试。
 * 提供脚手架，快速生成自动化测试项目。
-* 自动生成HTML测试报告生成。
-* 自带断言方法，断言title、URL 和 text。
+* 全局启动和关闭浏览器，减少浏览器的启动次数。
 * 支持用例参数化。
-* 支持用例失败重跑。
-* 用例失败/错误截图。
+* 支持用例失败/错误重跑。
+* 支持生成HTML测试报告生成，运行失败/错误自动截图。
 
 ### 安装
 
