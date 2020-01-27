@@ -1,21 +1,16 @@
 import unittest
 from time import sleep
 from .webdriver import WebDriver
-from .driver import browser
-from .running.test_runner import Browser
+from .running.test_runner import Seldom
 
 
 class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = browser(Browser.name, Browser.driver_path, Browser.grid_url)
+        cls.driver = Seldom.driver
         cls.timeout = 10
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.driver.quit()
-    
     def assertTitle(self, title=None):
         """
         Asserts whether the current title is in line with expectations.

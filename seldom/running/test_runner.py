@@ -1,8 +1,9 @@
 # coding=utf-8
 import os
 import time
-from ..logging import log
 import unittest
+from ..logging import log
+from ..driver import browser as b
 from .HTMLTestRunner import HTMLTestRunner
 
 seldom_str = """
@@ -17,9 +18,16 @@ seldom_str = """
 """
 
 
-class Browser:
+class Seldom:
     """
-    Define run browser name
+    Seldom browser driver
+    """
+    driver = None
+
+
+class BrowserConfig:
+    """
+    Define run browser config
     """
     name = None
     driver_path = None
@@ -66,16 +74,21 @@ def main(path=None,
             suits = unittest.defaultTestLoader.discover(path)
 
     if browser is None:
-        Browser.name = "chrome"
+        BrowserConfig.name = "chrome"
     else:
-        Browser.name = browser
-        Browser.grid_url = grid_url
+        BrowserConfig.name = browser
+        BrowserConfig.grid_url = grid_url
 
     if driver_path is not None:
         ret = os.path.exists(driver_path)
         if ret is False:
             raise ValueError("Browser - driven path error，Please check if the file exists. => {}".format(driver_path))
-        Browser.driver_path = driver_path
+        BrowserConfig.driver_path = driver_path
+
+    """
+    Global launch browser
+    """
+    Seldom.driver = b(BrowserConfig.name, BrowserConfig.driver_path, BrowserConfig.grid_url)
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
@@ -97,6 +110,11 @@ def main(path=None,
         log.info("A run the test in debug mode without generating HTML report!")
         log.info(seldom_str)
         runner.run(suits)
+
+    """
+    Close browser globally
+    """
+    Seldom.driver.quit()
 
 
 if __name__ == '__main__':
