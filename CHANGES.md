@@ -1,3 +1,6 @@
+### 1.2.0
+Global launch browser
+
 ### 1.1.0
 seldnium grid support
 Added safari support
