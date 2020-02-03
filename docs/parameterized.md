@@ -11,7 +11,6 @@ __参数化测试用例：__
 import seldom
 from seldom import data
 
-# ...
 
 class BaiduTest(seldom.TestCase):
 
@@ -32,7 +31,7 @@ class BaiduTest(seldom.TestCase):
         self.assertTitle(keyword+"_百度搜索")
 ```
 
-通过`@ddt.data()` 装饰器来参数化测试用例。
+通过`@data()` 装饰器来参数化测试用例。
 
 __参数化测试类：__
 
@@ -59,7 +58,7 @@ class YouTest(seldom.TestCase):
 
 ```
 
-__使用第三方ddt：__
+#### 使用第三方ddt
 
 有时测试数据会比较多，需要将数据存到测试文件，推荐使用[ddt](https://github.com/datadriventests/ddt)。
 

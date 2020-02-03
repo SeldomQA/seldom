@@ -295,7 +295,7 @@ class BaiduTest(seldom.TestCase):
 
 ```python
 import seldom
-from seldom import ddt_class
+from seldom import data_class
 
 
 @data_class(
