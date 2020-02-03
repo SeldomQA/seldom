@@ -9,13 +9,13 @@ __参数化测试用例：__
 ```python
 
 import seldom
-from seldom import ddt
+from seldom import data
 
 # ...
 
 class BaiduTest(seldom.TestCase):
 
-    @ddt.data([
+    @data([
         (1, 'seldom'),
         (2, 'selenium'),
         (3, 'unittest'),
@@ -36,14 +36,14 @@ class BaiduTest(seldom.TestCase):
 
 __参数化测试类：__
 
-也可以针对测试类进行参数化, 通过`ddt_class` 方法：
+也可以针对测试类进行参数化, 通过`data_class` 方法：
 
 ```python
 import seldom
 from seldom import ddt_class
 
 
-@ddt_class(
+@data_class(
     ("keyword", "assert_tile"),
     [("seldom", "seldom_百度搜索"),
      ("python", "python_百度搜索")

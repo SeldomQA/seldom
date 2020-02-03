@@ -18,7 +18,7 @@
 # under the License.
 
 from .running.test_runner import main
-from .testdata.parameterized import ddt, ddt_class
+from .testdata.parameterized import data, data_class
 from .webdriver import WebDriver
 from .case import TestCase
 from .driver import browser
