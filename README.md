@@ -23,7 +23,7 @@ WebUI automation testing framework based on Selenium and unittest.
 If you want to keep up with the latest version, you can install with github repository url:
 
 ```shell
-> pip install -U git+https://github.com/defnngj/seldom.git@master
+> pip install -U git+https://github.com/SeldomQA/seldom.git@master
 ```
 
 ### Quick Start
