@@ -15,6 +15,7 @@ if __name__ == '__main__':
     seldom.main(browser="ie")  # IE浏览器
     seldom.main(browser="opera") # opera浏览器
     seldom.main(browser="edge") # edge浏览器
+    seldom.main(browser="safari") # safari浏览器
     seldom.main(browser="chrome_headless") # chrome浏览器headless模式
     seldom.main(browser="firefox_headless") # Firefox浏览器headless模式
 
@@ -58,3 +59,26 @@ if __name__ == '__main__':
 ```
 
 注：浏览器要`browser`与驱动`driver_path` 要保持对应关系。
+
+
+## 支持远程节点（Selenium Grid）
+
+
+首先，安装Java环境，然后下载 `selenium-server`。
+
+```shell
+> java -jar selenium-server-standalone-3.141.59.jar
+```
+
+运行自动化测试，指定 `grid_url`。
+
+```python
+import seldom
+
+# ……
+if __name__ == '__main__':
+    seldom.main(path="test_sample.py",
+                browser="chrome",
+                grid_url="http://127.0.0.1:4444/wd/hub")
+
+```

@@ -1,3 +1,10 @@
+### 1.2.0
+Global launch browser
+
+### 1.1.0
+seldnium grid support
+Added safari support
+
 ### 1.0.0
 The framework function has been basically improved. I'm glad to release version 1.0
 

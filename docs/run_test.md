@@ -1,6 +1,6 @@
 ## seldom 运行
 
-seldom的给需求新手造成了困扰，强烈不建议你在pycharm里面运行。因为许多新手根本搞不明白 pycharm 的运行配置，引起的运行错误也不知道怎么解决。
+seldom的给运行新手造成了困扰，强烈不建议你在`pycharm`里面运行。因为许多新手根本搞不明白 pycharm 的运行配置，引起的运行错误也不知道怎么解决。
 
 > Window建议使用cmder, mac/linux使用自带终端。
 
@@ -27,13 +27,13 @@ seldom.main(path="./")
 在cmder/终端下面运行 `run.py` 文件
 
 ```shell
-python run.py
+> python run.py
 ```
 
 或者：
 
 ```shell
-seldom -r run.py
+> seldom -r run.py
 ```
 
 __要运行的用例由 `path` 参数控制__

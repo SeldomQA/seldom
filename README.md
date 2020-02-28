@@ -9,11 +9,10 @@ WebUI automation testing framework based on Selenium and unittest.
 
 * 提供更加简单API编写自动化测试。
 * 提供脚手架，快速生成自动化测试项目。
-* 自动生成HTML测试报告生成。
-* 自带断言方法，断言title、URL 和 text。
+* 全局启动和关闭浏览器，减少浏览器的启动次数。
 * 支持用例参数化。
-* 支持用例失败重跑。
-* 用例失败/错误截图。
+* 支持用例失败/错误重跑。
+* 支持生成HTML测试报告生成，运行失败/错误自动截图。
 
 ### 安装
 
@@ -24,7 +23,7 @@ WebUI automation testing framework based on Selenium and unittest.
 If you want to keep up with the latest version, you can install with github repository url:
 
 ```shell
-> pip install -U git+https://github.com/defnngj/seldom.git@master
+> pip install -U git+https://github.com/SeldomQA/seldom.git@master
 ```
 
 ### Quick Start
@@ -269,13 +268,13 @@ seldom 支持参数化测试用例，集成了[parameterized](https://github.com
 ```python
 
 import seldom
-from seldom import ddt
+from seldom import data
 
 # ...
 
 class BaiduTest(seldom.TestCase):
 
-    @ddt.data([
+    @data([
         (1, 'seldom'),
         (2, 'selenium'),
         (3, 'unittest'),
@@ -292,14 +291,14 @@ class BaiduTest(seldom.TestCase):
         self.assertTitle(keyword+"_百度搜索")
 ```
 
-也可以针对测试类进行参数化, 通过`ddt_class` 方法：
+也可以针对测试类进行参数化, 通过`data_class` 方法：
 
 ```python
 import seldom
-from seldom import ddt_class
+from seldom import data_class
 
 
-@ddt_class(
+@data_class(
     ("keyword", "assert_tile"),
     [("seldom", "seldom_百度搜索"),
      ("python", "python_百度搜索")
