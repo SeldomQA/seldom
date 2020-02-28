@@ -71,7 +71,7 @@ class WebDriver(object):
             elem = self.driver.find_elements_by_class_name(value)[index]
         elif by == "tag":
             self.find_element((By.TAG_NAME, value))
-            elem = self.driver.find_elements_by_class_name(value)[index]
+            elem = self.driver.find_elements_by_tag_name(value)[index]
         elif by == "link_text":
             self.find_element((By.LINK_TEXT, value))
             elem = self.driver.find_elements_by_link_text(value)[index]
