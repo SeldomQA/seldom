@@ -2,3 +2,4 @@ colorama==0.4.3
 selenium==3.141.0
 parameterized==0.7.0
 poium==0.5.2
+openpyxl==3.0.3
