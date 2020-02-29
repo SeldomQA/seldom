@@ -265,6 +265,8 @@ class YouTest(seldom.TestCase):
 
 seldom 支持参数化测试用例，集成了[parameterized](https://github.com/wolever/parameterized)。
 
+简单用法：
+
 ```python
 
 import seldom
@@ -291,28 +293,10 @@ class BaiduTest(seldom.TestCase):
         self.assertTitle(keyword+"_百度搜索")
 ```
 
-也可以针对测试类进行参数化, 通过`data_class` 方法：
-
-```python
-import seldom
-from seldom import data_class
-
-
-@data_class(
-    ("keyword", "assert_tile"),
-    [("seldom", "seldom_百度搜索"),
-     ("python", "python_百度搜索")
-])
-class YouTest(seldom.TestCase):
-
-    def test_case(self):
-        """a simple test case """
-        self.open("https://www.baidu.com")
-        self.type(id_="kw", text=self.keyword)
-        self.click(css="#su")
-        self.assertTitle(self.assert_tile)
-
-```
+同时seldom 也支持不同文件的读取，[帮助文档](/docs/parameterized.md)， 包括：
+* csv文件
+* excel文件
+* json/yaml文件，需要第三方支持。
 
 ### page objects 设计模式
 

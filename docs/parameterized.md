@@ -57,6 +57,66 @@ class YouTest(seldom.TestCase):
         self.assertTitle(self.assert_tile)
 
 ```
+#### 读取csv文件
+
+seldom支持将 csv文件的数据解析为 list。
+
+```python
+import os
+import seldom
+from seldom import data
+from seldom import csv_to_list
+
+base_path = os.path.dirname(os.path.abspath(__file__))
+csv_data_file = os.path.join(base_path, "test_data/data.csv")
+
+
+class YouTest(seldom.TestCase):
+
+    @data(csv_to_list(file=csv_data_file, line=2))
+    def test_login(self, username, password):
+        """a simple test case """
+        print(username)
+        print(password)
+        # ...
+
+```
+
+`csv_to_list()` 方法excel文件内容转化为list。
+
+* file: 指定csv文件的绝对路径。
+* line: 指定从第几行开始读取，默认第一行。
+
+#### 读取excel文件
+
+seldom支持将excel文件的数据解析为 list。
+
+```python
+import os
+import seldom
+from seldom import data
+from seldom import excel_to_list
+
+base_path = os.path.dirname(os.path.abspath(__file__))
+excel_data_file = os.path.join(base_path, "test_data/data.xlsx")
+
+
+class YouTest(seldom.TestCase):
+
+    @data(excel_to_list(file=excel_data_file,  sheet="Sheet1", line=2))
+    def test_login(self, username, password):
+        """a simple test case """
+        print(username)
+        print(password)
+        # ...
+
+```
+
+`excel_to_list()` 方法excel文件数据转化为list。
+
+* file : 指定excel文件的绝对路径。
+* sheet: 指定excel的标签页，默认名称为 Sheet1。
+* line :  指定从第几行开始读取，默认第一行。
 
 #### 使用第三方ddt
 
