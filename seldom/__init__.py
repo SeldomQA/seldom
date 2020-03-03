@@ -28,6 +28,6 @@ from .skip import skip_if
 
 __author__ = "bugmaster"
 
-__version__ = "1.2.0"
+__version__ = "1.2.2"
 
 __description__ = "WebUI automation testing framework based on Selenium."
