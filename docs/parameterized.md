@@ -57,9 +57,17 @@ class YouTest(seldom.TestCase):
         self.assertTitle(self.assert_tile)
 
 ```
+
 #### 读取csv文件
 
 seldom支持将 csv文件的数据解析为 list。
+
+表格内容如下（data.csv）：
+
+|  username   | password  |
+|  ----  | ----  |
+| admin  | admin123 |
+| guest  | guest123 |
 
 ```python
 import os
