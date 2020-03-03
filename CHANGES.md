@@ -1,8 +1,12 @@
+### 1.2.2
+* fix bug
+* add function: csv_to_list()/ excel_to_list()
+
 ### 1.2.0
 Global launch browser
 
 ### 1.1.0
-seldnium grid support
+selenium grid support
 Added safari support
 
 ### 1.0.0
