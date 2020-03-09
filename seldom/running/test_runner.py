@@ -2,6 +2,7 @@
 import os
 import time
 import unittest
+import inspect
 from ..logging import log
 from ..driver import browser as b
 from .HTMLTestRunner import HTMLTestRunner
@@ -58,7 +59,11 @@ def main(path=None,
     """
 
     if path is None:
-        suits = unittest.defaultTestLoader.discover(os.getcwd())
+        stack_t = inspect.stack()
+        ins = inspect.getframeinfo(stack_t[1][0])
+        file_path = os.path.dirname(os.path.abspath(ins.filename))
+        this_file = ins.filename
+        suits = unittest.defaultTestLoader.discover(file_path, this_file)
     else:
         if len(path) > 3:
             if path[-3:] == ".py":

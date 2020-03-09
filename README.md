@@ -110,7 +110,7 @@ class YouTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main("test_sample.py")
+    seldom.main()
 
 ```
 
@@ -156,10 +156,10 @@ if __name__ == '__main__':
 ```python
 import seldom
 
+seldom.main()  # 默认运行当前测试文件
 seldom.main(path="./")  # 当前目录下的所有测试文件
 seldom.main(path="./test_dir/")  # 指定目录下的所有测试文件
 seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
-seldom.main(path="test_sample.py")  # 指定当前目录下的测试文件
 ```
 
 说明：
