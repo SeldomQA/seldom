@@ -61,9 +61,15 @@ def main(path=None,
     if path is None:
         stack_t = inspect.stack()
         ins = inspect.getframeinfo(stack_t[1][0])
-        file_path = os.path.dirname(os.path.abspath(ins.filename))
-        this_file = ins.filename
-        suits = unittest.defaultTestLoader.discover(file_path, this_file)
+        file_dir = os.path.dirname(os.path.abspath(ins.filename))
+        file_path = ins.filename
+        if "\\" in file_path:
+            this_file = file_path.split("\\")[-1]
+        elif "/" in file_path:
+            this_file = file_path.split("/")[-1]
+        else:
+            this_file = file_path
+        suits = unittest.defaultTestLoader.discover(file_dir, this_file)
     else:
         if len(path) > 3:
             if path[-3:] == ".py":
