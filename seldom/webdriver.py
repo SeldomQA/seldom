@@ -158,6 +158,15 @@ class WebDriver(object):
         elem = self.get_element(index, **kwargs)
         elem.click()
 
+    def slow_click(self, index=0, **kwargs):
+        """
+        Moving the mouse to the middle of an element. and click element.
+        Usage:
+        self.slow_click(css="#el")
+        """
+        elem = self.get_element(index, **kwargs)
+        ActionChains(self.driver).move_to_element(elem).click(elem).perform()
+
     def right_click(self, index=0, **kwargs):
         """
         Right click element.
