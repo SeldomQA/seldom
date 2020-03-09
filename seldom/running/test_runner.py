@@ -37,6 +37,7 @@ class BrowserConfig:
 
 def main(path=None,
          browser=None,
+         report=None,
          title="Seldom Test Report",
          description="Test case execution",
          debug=False,
@@ -48,6 +49,7 @@ def main(path=None,
     runner test case
     :param path:
     :param browser:
+    :param report:
     :param title:
     :param description:
     :param debug:
@@ -108,8 +110,9 @@ def main(path=None,
         else:
             os.mkdir(os.path.join(os.getcwd(), "reports"))
 
-        now = time.strftime("%Y_%m_%d_%H_%M_%S")
-        report = os.path.join(os.getcwd(), "reports", now + "_result.html")
+        if report is None:
+            now = time.strftime("%Y_%m_%d_%H_%M_%S")
+            report = os.path.join(os.getcwd(), "reports", now + "_result.html")
 
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
