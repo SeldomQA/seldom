@@ -328,7 +328,7 @@ class BaiduTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main("test_po_demo.py")
+    seldom.main()
 
 ```
 
