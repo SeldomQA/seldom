@@ -1,5 +1,5 @@
 import seldom
-from seldom import ddt
+from seldom import data
 
 
 class BaiduTest(seldom.TestCase):
@@ -16,7 +16,7 @@ class BaiduTest(seldom.TestCase):
         self.assertAlertText("已经记录下您的使用偏好")
         self.accept_alert()
 
-    @ddt.data([
+    @data([
         (1, 'seldom'),
         (2, 'selenium'),
         (3, 'unittest'),
@@ -35,5 +35,5 @@ class BaiduTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main("test_first_demo.py", debug=True)
+    seldom.main(debug=True)
 

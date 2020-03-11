@@ -31,4 +31,4 @@ class BaiduTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main("test_po_demo.py", debug=True)
+    seldom.main(debug=True)

@@ -120,7 +120,7 @@ class YouTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main("test_sample.py")
+    seldom.main()
 
 '''
     run_test = """import seldom
