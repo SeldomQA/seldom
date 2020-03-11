@@ -1,3 +1,8 @@
+### 1.2.3
+* 增加 slow_click() 方法。
+* seldom.main() 默认运行当前文件不需要传参。
+* seldom.main(report="report-name.html") 允许自定义报告名称。
+
 ### 1.2.2
 * fix bug
 * add function: csv_to_list()/ excel_to_list()
