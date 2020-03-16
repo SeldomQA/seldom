@@ -1,5 +1,5 @@
 import unittest
-
+from unittest import TestCase
 
 def skip(reason=None):
     """
@@ -20,3 +20,13 @@ def skip_if(condition, reason):
     :return:
     """
     return unittest.skipIf(condition, reason)
+
+
+def skip_unless(condition, reason):
+    """
+    Skip a test unless the condition is true.
+    :param condition:
+    :param reason:
+    :return:
+    """
+    return unittest.skipUnless(condition, reason)

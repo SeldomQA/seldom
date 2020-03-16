@@ -25,6 +25,7 @@ from .case import TestCase
 from .driver import browser
 from .skip import skip
 from .skip import skip_if
+from .skip import skip_unless
 
 __author__ = "bugmaster"
 

@@ -113,3 +113,23 @@ class TestCase(unittest.TestCase, WebDriver):
             raise NameError("Alert text cannot be empty.")
         alert_text = self.get_alert_text()
         self.assertEqual(alert_text, text)
+
+    def xSkip(self, reason):
+        """
+        Skip this test.
+        :param reason:
+        Usage:
+        if data is None:
+            self.xSkip("data is None.")
+        """
+        self.skipTest(reason)
+
+    def xFail(self, msg):
+        """
+        Fail immediately, with the given message
+        :param msg:
+        Usage:
+        if data is None:
+            self.xFail("This case fails.")
+        """
+        self.fail(msg)
