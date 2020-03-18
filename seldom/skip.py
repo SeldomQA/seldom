@@ -1,5 +1,5 @@
 import unittest
-from unittest import TestCase
+
 
 def skip(reason=None):
     """
