@@ -172,7 +172,7 @@ def chrome(_os=None, os_bit=None):
     :param os_bit: system bit
     :return:
     """
-    latest_version = '79.0.3945.36'
+    latest_version = '80.0.3987.106'
     base_download = "https://cdn.npm.taobao.org/dist/chromedriver/%s/chromedriver_%s%s.zip"
     download = base_download % (latest_version, _os, os_bit)
     return 'chromedriver', download, latest_version
@@ -240,7 +240,7 @@ def download(url, path):
     if not isdir(dirname(file)):
         makedirs(dirname(file), exist_ok=True)
     try:
-        req = urlopen(url, timeout=15)
+        req = urlopen(url, timeout=100)
     except Exception:
         return False
     with open(file, 'wb') as fp:
