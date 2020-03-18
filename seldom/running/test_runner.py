@@ -33,6 +33,7 @@ class BrowserConfig:
     name = None
     driver_path = None
     grid_url = None
+    report_path = None
 
 
 def main(path=None,
@@ -113,6 +114,7 @@ def main(path=None,
         if report is None:
             now = time.strftime("%Y_%m_%d_%H_%M_%S")
             report = os.path.join(os.getcwd(), "reports", now + "_result.html")
+            BrowserConfig.report_path = report
 
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
