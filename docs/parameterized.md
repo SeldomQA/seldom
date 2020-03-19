@@ -148,11 +148,10 @@ class YouTest(seldom.TestCase):
 
 ```
 
-`excel_to_list()` 方法excel文件数据转化为list。
+`json_to_list()` 方法JSON文件数据转化为list/dict。
 
-* file : 指定excel文件的绝对路径。
-* sheet: 指定excel的标签页，默认名称为 Sheet1。
-* line :  指定从第几行开始读取，默认第一行。
+* file : 指定JSON文件的绝对路径。
+* key: 指定字典的key。
 
 #### 使用第三方ddt
 
