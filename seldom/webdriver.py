@@ -28,7 +28,7 @@ class WebDriver(object):
     original_window = None
     timeout = 0
 
-    def find_element(self, elem):
+    def __find_element(self, elem):
         """
         Find if the element exists.
         """
@@ -45,7 +45,7 @@ class WebDriver(object):
         else:
             log.error("Find 0 elements through：{by}={value}".format(by=elem[0], value=elem[1]))
 
-    def get_element(self, index, **kwargs):
+    def __get_element(self, index, **kwargs):
         """
         Judge element positioning way, and returns the element.
         """
@@ -61,28 +61,28 @@ class WebDriver(object):
             raise ValueError("Element positioning of type '{}' is not supported. ".format(by))
 
         if by == "id_":
-            self.find_element((By.ID, value))
+            self.__find_element((By.ID, value))
             elem = self.driver.find_elements_by_id(value)[index]
         elif by == "name":
-            self.find_element((By.NAME, value))
+            self.__find_element((By.NAME, value))
             elem = self.driver.find_elements_by_name(value)[index]
         elif by == "class_name":
-            self.find_element((By.CLASS_NAME, value))
+            self.__find_element((By.CLASS_NAME, value))
             elem = self.driver.find_elements_by_class_name(value)[index]
         elif by == "tag":
-            self.find_element((By.TAG_NAME, value))
+            self.__find_element((By.TAG_NAME, value))
             elem = self.driver.find_elements_by_tag_name(value)[index]
         elif by == "link_text":
-            self.find_element((By.LINK_TEXT, value))
+            self.__find_element((By.LINK_TEXT, value))
             elem = self.driver.find_elements_by_link_text(value)[index]
         elif by == "partial_link_text":
-            self.find_element((By.PARTIAL_LINK_TEXT, value))
+            self.__find_element((By.PARTIAL_LINK_TEXT, value))
             elem = self.driver.find_elements_by_partial_link_text(value)[index]
         elif by == "xpath":
-            self.find_element((By.XPATH, value))
+            self.__find_element((By.XPATH, value))
             elem = self.driver.find_elements_by_xpath(value)[index]
         elif by == "css":
-            self.find_element((By.CSS_SELECTOR, value))
+            self.__find_element((By.CSS_SELECTOR, value))
             elem = self.driver.find_elements_by_css_selector(value)[index]
         else:
             raise NameError(
@@ -134,7 +134,7 @@ class WebDriver(object):
         """
         if clear is True:
             self.clear(index, **kwargs)
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         elem.send_keys(text)
 
     def clear(self, index=0, **kwargs):
@@ -144,7 +144,7 @@ class WebDriver(object):
         Usage:
         self.clear(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         elem.clear()
 
     def click(self, index=0, **kwargs):
@@ -155,7 +155,7 @@ class WebDriver(object):
         Usage:
         self.click(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         elem.click()
 
     def slow_click(self, index=0, **kwargs):
@@ -164,7 +164,7 @@ class WebDriver(object):
         Usage:
         self.slow_click(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         ActionChains(self.driver).move_to_element(elem).click(elem).perform()
 
     def right_click(self, index=0, **kwargs):
@@ -174,7 +174,7 @@ class WebDriver(object):
         Usage:
         self.right_click(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         ActionChains(self.driver).context_click(elem).perform()
 
     def move_to_element(self, index=0, **kwargs):
@@ -184,7 +184,7 @@ class WebDriver(object):
         Usage:
         self.move_to_element(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         ActionChains(self.driver).move_to_element(elem).perform()
 
     def click_and_hold(self, index=0, **kwargs):
@@ -194,7 +194,7 @@ class WebDriver(object):
         Usage:
         self.move_to_element(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         ActionChains(self.driver).click_and_hold(elem).perform()
 
     def double_click(self, index=0, **kwargs):
@@ -204,7 +204,7 @@ class WebDriver(object):
         Usage:
         self.double_click(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         ActionChains(self.driver).double_click(elem).perform()
 
     def click_text(self, text):
@@ -214,7 +214,7 @@ class WebDriver(object):
         Usage:
         self.click_text("新闻")
         """
-        self.find_element((By.LINK_TEXT, text))
+        self.__find_element((By.LINK_TEXT, text))
         self.driver.find_element_by_link_text(text).click()
 
     def close(self):
@@ -243,7 +243,7 @@ class WebDriver(object):
         Usage:
         driver.submit(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         elem.submit()
 
     def refresh(self):
@@ -286,7 +286,7 @@ class WebDriver(object):
         """
         if attribute is None:
             raise ValueError("attribute is not None")
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         return elem.get_attribute(attribute)
 
     def get_text(self, index=0, **kwargs):
@@ -296,7 +296,7 @@ class WebDriver(object):
         Usage:
         self.get_text(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         return elem.text
 
     def get_display(self, index=0, **kwargs):
@@ -306,7 +306,7 @@ class WebDriver(object):
         Usage:
         self.get_display(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         return elem.is_displayed()
 
     def get_title(self):
@@ -370,7 +370,7 @@ class WebDriver(object):
         Usage:
         self.switch_to_frame(css="#el")
         """
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         self.driver.switch_to.frame(elem)
 
     def switch_to_frame_out(self):
@@ -393,7 +393,7 @@ class WebDriver(object):
         warnings.warn("This method is not recommended",
                       DeprecationWarning, stacklevel=2)
         original_window = self.driver.current_window_handle
-        elem = self.get_element(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
         elem.click()
         all_handles = self.driver.window_handles
         for handle in all_handles:
@@ -473,7 +473,7 @@ class WebDriver(object):
             self.select(css="#nr", text='每页显示20条')
             self.select(css="#nr", index=2)
         """
-        elem = self.get_element(index=0, **kwargs)
+        elem = self.__get_element(index=0, **kwargs)
         if value is not None:
             Select(elem).select_by_value(value)
         elif text is not None:

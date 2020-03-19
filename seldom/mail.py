@@ -43,7 +43,7 @@ class SMTP(object):
         if "\\" in attachments:
             att_name = attachments.split("\\")[-1]
         if "/" in attachments:
-            att_name = attachments.split("\\")[-1]
+            att_name = attachments.split("/")[-1]
 
         att = MIMEApplication(open(attachments, 'rb').read())
         att['Content-Type'] = 'application/octet-stream'

@@ -402,7 +402,7 @@ h1 {
     margin-bottom: 1ex;
     margin-left: 10px;
     margin-right: 10px;
-    width: 23%;
+    width: 380px;
     float: left;
     padding-top: 10px;
     padding-left: 10px;
