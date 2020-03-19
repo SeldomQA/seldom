@@ -2,6 +2,7 @@
 Data type conversion of different files
 """
 import csv
+import json
 import codecs
 from itertools import islice
 try:
@@ -35,7 +36,7 @@ def csv_to_list(file=None, line=1):
 
 def excel_to_list(file=None, sheet="Sheet1", line=1):
     """
-    Convert CSV file data to list
+    Convert Excel file data to list
     :param file: Path to file
     :param sheet: excel sheet, default name is Sheet1
     :param line: Start line of read data
@@ -60,3 +61,31 @@ def excel_to_list(file=None, sheet="Sheet1", line=1):
         table_data.append(line_data)
 
     return table_data
+
+
+def json_to_list(file, key=None):
+    """
+    Convert JSON file data to list
+    :param file: Path to file
+    :param key: Specifies the key for the dictionary
+    :return: list data
+
+    @data(json_to_list(/home/user/seldom/data.json, key="login"))
+    def test_login(self, username, password):
+        print(username)
+        print(password)
+    """
+    if file is None:
+        raise FileExistsError("Please specify the JSON file to convert.")
+
+    if key is None:
+        with open(file, "r", encoding="utf-8") as f:
+            dict_data = json.load(f)
+    else:
+        with open(file, "r", encoding="utf-8") as f:
+            try:
+                dict_data = json.load(f)[key]
+            except KeyError:
+                raise ValueError("Check the test data, no '{}'".format(key))
+
+    return dict_data
