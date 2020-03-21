@@ -1,5 +1,5 @@
 
-![](seldom_logo.gif)
+![](seldom_logo.png)
 
 WebUI automation testing framework based on Selenium and unittest.
 
