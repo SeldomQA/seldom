@@ -151,7 +151,7 @@ class YouTest(seldom.TestCase):
 `json_to_list()` 方法JSON文件数据转化为list/dict。
 
 * file : 指定JSON文件的绝对路径。
-* key: 指定字典的key。
+* key: 指定字典的key，默认不指定解析整个JSON文件。
 
 #### 使用第三方ddt
 
