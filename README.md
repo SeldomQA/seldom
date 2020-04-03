@@ -300,7 +300,7 @@ class BaiduTest(seldom.TestCase):
 
 ### page objects 设计模式
 
-seldom 支持Page objects设计模式，可以配合[poium](https://github.com/wolever/parameterized) 使用。
+seldom 支持Page objects设计模式，可以配合[poium](https://github.com/SeldomQA/poium) 使用。
 
 ```python
 import seldom

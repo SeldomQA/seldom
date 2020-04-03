@@ -25,3 +25,5 @@
 * [生成测试数据](./testdata.md)
 
 * [跳过测试用例](./skip.md)
+
+* [发邮件功能](./send_mail.md)
