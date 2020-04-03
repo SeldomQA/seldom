@@ -1,3 +1,10 @@
+from xml.sax import saxutils
+import unittest
+import copy
+import time
+import sys
+import io
+import datetime
 """
 A TestRunner for use with the Python unit testing framework. It
 generates a HTML report to show the result at a glance.
@@ -78,13 +85,6 @@ Version in 0.7.1
 
 # TODO: color stderr
 # TODO: simplify javascript using ,ore than 1 class in the class attribute?
-
-import datetime
-import io
-import sys
-import copy
-import unittest
-from xml.sax import saxutils
 
 
 # ------------------------------------------------------------------------
@@ -179,13 +179,13 @@ class Template_mixin(object):
     <title>%(title)s</title>
     <meta name="generator" content="%(generator)s"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.16.1/popper.min.js"></script>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
     <!-- <link href="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.min.js" rel="stylesheet">   -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="http://img.itest.info/classic.css">
 
     %(stylesheet)s
 </head>
@@ -220,7 +220,7 @@ function show_img(obj) {
     for (var i = 0; i < lis.length; i++) {
         funny(i);
     }
-
+    
     function autoPlay(){
         if(index>len-1){
             index=0;
@@ -394,15 +394,15 @@ table       { font-size: 100%; }
 pre         {  }
 /* -- heading ---------------------------------------------------------------------- */
 h1 {
-    font-size: 16pt;
-    color: gray;
+	font-size: 16pt;
+	color: gray;
 }
 .heading {
     margin-top: 20px;
     margin-bottom: 1ex;
     margin-left: 10px;
     margin-right: 10px;
-    width: 380px;
+    width: 23%;
     float: left;
     padding-top: 10px;
     padding-left: 10px;
@@ -432,7 +432,7 @@ a.popup_link:hover {
     /*border: solid #627173 1px; */
     font-family: "Lucida Console", "Courier New", Courier, monospace;
     text-align: left;
-    font-size: 8pt;
+    font-size: 12pt;
     width: 500px;
 }
 }
@@ -442,25 +442,17 @@ a.popup_link:hover {
     margin-bottom: 1ex;
     margin-left: 10px;
 }
-#result_table {
-    width: 80%;
-    border-collapse: collapse;
-    border: 1px solid #777;
-    margin-left: 10px;
-}
+
 #header_row {
     font-weight: bold;
     color: #606060;
     background-color: #f5f5f5;
     border-top-width: 10px;
     border-color: #d6e9c6;
-    font-size: 15px;
+	font-size: 15px;
 }
-#result_table td {
-    border: 1px solid #f5f5f5;
-    padding: 2px;
-}
-#total_row  { font-weight: bold; }
+
+#total_row  { font-weight: bold; background-color: #dee2e6;}
 .passClass  { background-color: #d6e9c6; }
 .failClass  { background-color: #faebcc; }
 .errorClass { background-color: #ebccd1; }
@@ -494,18 +486,18 @@ a.popup_link:hover {
 
 /* -- screenshots ---------------------------------------------------------------------- */
 .img{
-    height: 100%;
-    border-collapse: collapse;
+	height: 100%;
+	border-collapse: collapse;
 }
 .screenshots {
     z-index: 100;
-    position:fixed;
-    height: 80%;
+	position:fixed;
+	height: 80%;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
-    display: none;
-    box-shadow:1px 2px 20px #333333;
+	display: none;
+	box-shadow:1px 2px 20px #333333;
 }
 .imgyuan{
     height: 20px;
@@ -550,19 +542,46 @@ a.popup_link:hover {
     # Heading
     #
 
-    HEADING_TMPL = """<div class='heading card'>
-<h1>%(title)s</h1>
-%(parameters)s
-<p class='description'>%(description)s</p>
+    HEADING_TMPL = """
+<nav class="navbar navbar-expand navbar-light bg-white">
+    <a class="sidebar-toggle d-flex mr-2">
+        <i class="hamburger align-self-center"></i>
+    </a>
+    <h1 style="margin-bottom: 0px;">seldom</h1>
+    <div class="navbar-collapse collapse">
+        <ul class="navbar-nav ml-auto">
+            <h3 style="float: right;">%(title)s</h3>
+        </ul>
+    </div>
+</nav>
+<div style="height: 260px; margin-top: 20px;">
+<div class="col-12 col-lg-5 col-xl-3 d-flex" style="float:left">
+    <div class='card flex-fill'>
+        <div class="card-body my-2">
+        <table class="table my-0">
+            <tbody>
+            %(parameters)s
+            <tr><td>Description:</td><td class="text-right">%(description)s</td></tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
 </div>
+
 <div style="float:left; margin-left: 10px; margin-top: 20px;">
     <p> Test Case Pie charts </p>
-    <a class="badge text-wrap btn-info1">-Pass-</a><br>
-    <a class="badge text-wrap btn-info2">-Faild-</a><br>
-    <a class="badge text-wrap btn-info3">-Error-</a><br>
+    
+    <h2 class="d-flex align-items-center mb-0 font-weight-light btn-info1">2</h2>
+    <a>PASS</a><br>
+    <h2 class="d-flex align-items-center mb-0 font-weight-light btn-info2">2</h2>
+    <a>FAILD</a>
+    <h2 class="d-flex align-items-center mb-0 font-weight-light btn-info3">1</h2>
+    <a>ERROR</a><br>
 </div>
 <div class="testChars">
     <canvas id="myChart" width="250" height="250"></canvas>
+</div>
+
 </div>
 """  # variables: (title, parameters, description)
 
@@ -573,39 +592,39 @@ a.popup_link:hover {
     ECHARTS_SCRIPT = """
     <script type="text/javascript">
 var data = [
-    {
-        value: %(error)s,
-        color: "#ebccd1",
-        label: "Error",
-        labelColor: 'white',
-        labelFontSize: '16'
-    },
-    {
-        value : %(fail)s,
-        color : "#faebcc",
-        label: "Fail",
-        labelColor: 'white',
-        labelFontSize: '16'
-    },
-    {
-        value : %(Pass)s,
-        color : "#d6e9c6",
-        label : "Pass",
-        labelColor: 'white',
-        labelFontSize: '16'
-    }
+	{
+		value: %(error)s,
+		color: "#ebccd1",
+		label: "Error",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : %(fail)s,
+		color : "#faebcc",
+		label: "Fail",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : %(Pass)s,
+		color : "#d6e9c6",
+		label : "Pass",
+		labelColor: 'white',
+		labelFontSize: '16'
+	}			
 ]
 var newopts = {
-    animationSteps: 100,
-    animationEasing: 'easeInOutQuart'
+     animationSteps: 100,
+ 		animationEasing: 'easeInOutQuart',
 }
 //Get the context of the canvas element we want to select
 var ctx = document.getElementById("myChart").getContext("2d");
 var myNewChart = new Chart(ctx).Pie(data,newopts);
 </script>
-"""
+	"""
 
-    HEADING_ATTRIBUTE_TMPL = """<p class='attribute'><strong>%(name)s:</strong> %(value)s</p>
+    HEADING_ATTRIBUTE_TMPL = """<tr><td>%(name)s:</td><td class="text-right">%(value)s</td></tr>
 """  # variables: (name, value)
 
     # ------------------------------------------------------------------------
@@ -621,25 +640,18 @@ var myNewChart = new Chart(ctx).Pie(data,newopts);
 <a href='javascript:showCase(4, %(channel)s)' class="btn btn-light btn-sm">Skip</a>
 <a href='javascript:showCase(5, %(channel)s)' class="btn btn-info btn-sm">All</a>
 </p>
-<table id='result_table'>
-<colgroup>
-<col align='left' />
-<col align='right' />
-<col align='right' />
-<col align='right' />
-<col align='right' />
-<col align='right' />
-<col align='right' />
-</colgroup>
-<tr id='header_row' class="panel-title">
-    <td>Test Group/Test case</td>
-    <td>Count</td>
-    <td>Pass</td>
-    <td>Fail</td>
-    <td>Error</td>
-    <td>View</td>
-    <td>Screenshots</td>
-</tr>
+<table class="table mb-0">
+<thead>
+    <tr id='header_row'>
+        <td>Test Group/Test case</td>
+        <td>Count</td>
+        <td>Pass</td>
+        <td>Fail</td>
+        <td>Error</td>
+        <td>View</td>
+        <td>Screenshots</td>
+    </tr>
+</thead>
 %(test_list)s
 <tr id='total_row'>
     <td>Total</td>
@@ -895,7 +907,8 @@ class HTMLTestRunner(Template_mixin):
 
     def run(self, test, rerun, save_last_run):
         """Run the given test case or test suite."""
-        result = _TestResult(self.verbosity, rerun=rerun, save_last_run=save_last_run)
+        result = _TestResult(self.verbosity, rerun=rerun,
+                             save_last_run=save_last_run)
         test(result)
         self.stopTime = datetime.datetime.now()
         self.run_times += 1
@@ -910,7 +923,7 @@ class HTMLTestRunner(Template_mixin):
         classes = []
         for n, t, o, e in result_list:
             cls = t.__class__
-            if cls not in rmap:
+            if not cls in rmap:
                 rmap[cls] = []
                 classes.append(cls)
             rmap[cls].append((n, t, o, e))
@@ -1021,12 +1034,14 @@ class HTMLTestRunner(Template_mixin):
 
         report = self.REPORT_TMPL % dict(
             test_list=''.join(rows),
-            count=str(result.success_count + result.failure_count + result.error_count),
+            count=str(result.success_count +
+                      result.failure_count + result.error_count),
             Pass=str(result.success_count),
             fail=str(result.failure_count),
             error=str(result.error_count),
             skip=str(result.skip_count),
-            total=str(result.success_count + result.failure_count + result.error_count),
+            total=str(result.success_count +
+                      result.failure_count + result.error_count),
             channel=str(self.run_times),
         )
         return report
@@ -1080,9 +1095,11 @@ class HTMLTestRunner(Template_mixin):
             tmp = ""
             for i, img in enumerate(t.imgs):
                 if i == 0:
-                    tmp += """<img src="data:image/jpg;base64,{}" style="display: block;" class="img"/>\n""".format(img)
+                    tmp += """<img src="data:image/jpg;base64,{}" style="display: block;" class="img"/>\n""".format(
+                        img)
                 else:
-                    tmp += """<img src="data:image/jpg;base64,{}" style="display: none;" class="img"/>\n""".format(img)
+                    tmp += """<img src="data:image/jpg;base64,{}" style="display: none;" class="img"/>\n""".format(
+                        img)
             screenshots_html = self.IMG_TMPL.format(imgs=tmp)
         else:
             screenshots_html = """"""
@@ -1090,7 +1107,8 @@ class HTMLTestRunner(Template_mixin):
         row = tmpl % dict(
             tid=tid,
             Class=(n == 0 and 'hiddenRow' or 'none'),
-            style=n == 2 and 'errorCase' or (n == 1 and 'failCase' or 'passCase'),
+            style=n == 2 and 'errorCase' or (
+                n == 1 and 'failCase' or 'passCase'),
             desc=desc,
             script=script,
             status=self.STATUS[n],
