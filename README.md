@@ -12,7 +12,7 @@ WebUI automation testing framework based on Selenium and unittest.
 * 全局启动和关闭浏览器，减少浏览器的启动次数。
 * 支持用例参数化。
 * 支持用例失败/错误重跑。
-* 支持生成HTML测试报告生成，运行失败/错误自动截图。
+* 定制化HTML测试报告，用例失败/错误自动截图。
 
 ### 安装
 
@@ -52,7 +52,8 @@ optional arguments:
 ```
 
 目录结构如下：
-```
+
+```shell
 mypro/
 ├── test_dir/
 │   ├── test_sample.py
@@ -87,7 +88,7 @@ generated html file: file:///D:\mypro\reports\2019_11_12_22_28_53_result.html
 
 你可以到 `mypro\reports\` 目录查看测试报告。
 
-![](./test_report.png)
+![test report](./test_report.png)
 
 ## API Documents
 
@@ -131,25 +132,29 @@ if __name__ == '__main__':
 
     seldom.main(path="./",
               browser="chrome",
+              report=None,
               title="百度测试用例",
               description="测试环境：chrome",
               debug=False,
               rerun=0,
               save_last_run=False,
               driver_path=None,
+              grid_url=None
     )
 ```
 
 说明：
 
 * path ： 指定测试目录或文件。
-* browser: 指定测试浏览器，默认`Chrome`。
+* browser : 指定测试浏览器，默认`Chrome`。
+* report : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`
 * title ： 指定测试报告标题。
 * description ： 指定测试报告描述。
 * debug ： debug模式，设置为True不生成测试HTML测试，默认为`False`。
 * rerun : 设置失败重新运行次数，默认为 `0`。
 * save_last_run : 设置只保存最后一次的结果，默认为`False`。
-* driver_path : 设置浏览器驱动的`绝对`路径。要和 `browser` 设置一致。
+* driver_path : 设置浏览器驱动的`绝对`路径。要和 `browser` 设置保持一致。
+* grid_url : 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
 
 ### Run the test
 
@@ -294,6 +299,7 @@ class BaiduTest(seldom.TestCase):
 ```
 
 同时seldom 也支持不同文件的读取，[帮助文档](/docs/parameterized.md)， 包括：
+
 * csv文件
 * excel文件
 * json/yaml文件，需要第三方支持。
@@ -317,9 +323,7 @@ class BaiduTest(seldom.TestCase):
     """Baidu serach test case"""
 
     def test_case(self):
-        """
-        A simple test
-        """
+        """A simple test"""
         page = BaiduPage(self.driver)
         page.get("https://www.baidu.com")
         page.search_input = "seldom"
@@ -347,4 +351,5 @@ poium提供了更多好用的功能，使Page层的创建更加简单。
 * [utx](https://github.com/jianbing/utx)
 
 ## 交流
+
 QQ群：948994709
