@@ -139,7 +139,8 @@ if __name__ == '__main__':
               rerun=0,
               save_last_run=False,
               driver_path=None,
-              grid_url=None
+              grid_url=None,
+              timeout=None
     )
 ```
 
@@ -155,6 +156,7 @@ if __name__ == '__main__':
 * save_last_run : 设置只保存最后一次的结果，默认为`False`。
 * driver_path : 设置浏览器驱动的`绝对`路径。要和 `browser` 设置保持一致。
 * grid_url : 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
+* timeout : 设置超时时间，默认10秒
 
 ### Run the test
 

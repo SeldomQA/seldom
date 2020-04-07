@@ -24,6 +24,7 @@ class Seldom:
     Seldom browser driver
     """
     driver = None
+    timeout = None
 
 
 class BrowserConfig:
@@ -45,7 +46,8 @@ def main(path=None,
          rerun=0,
          save_last_run=False,
          driver_path=None,
-         grid_url=None):
+         grid_url=None,
+         timeout=10):
     """
     runner test case
     :param path:
@@ -58,6 +60,7 @@ def main(path=None,
     :param save_last_run:
     :param driver_path:
     :param grid_url:
+    :param timeout:
     :return:
     """
 
@@ -86,18 +89,25 @@ def main(path=None,
                 suits = unittest.defaultTestLoader.discover(path)
         else:
             suits = unittest.defaultTestLoader.discover(path)
-
+    # set browser
     if browser is None:
         BrowserConfig.name = "chrome"
     else:
         BrowserConfig.name = browser
         BrowserConfig.grid_url = grid_url
 
+    # Set browser drive path
     if driver_path is not None:
         ret = os.path.exists(driver_path)
         if ret is False:
             raise ValueError("Browser - driven path error，Please check if the file exists. => {}".format(driver_path))
         BrowserConfig.driver_path = driver_path
+
+    # set timeout
+    if isinstance(timeout, int):
+        Seldom.timeout = timeout
+    else:
+        raise TypeError("Timeout {} is not integer.".format(timeout))
 
     """
     Global launch browser

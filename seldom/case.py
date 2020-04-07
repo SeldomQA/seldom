@@ -9,7 +9,7 @@ class TestCase(unittest.TestCase, WebDriver):
     @classmethod
     def setUpClass(cls):
         cls.driver = Seldom.driver
-        cls.timeout = 10
+        cls.timeout = Seldom.timeout
 
     def assertTitle(self, title=None):
         """
