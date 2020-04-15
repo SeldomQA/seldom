@@ -2,6 +2,7 @@
 import time
 import warnings
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from .logging import log
@@ -135,7 +136,22 @@ class WebDriver(object):
         if clear is True:
             self.clear(index, **kwargs)
         elem = self.__get_element(index, **kwargs)
+        log.info("input '{text}'.".format(text=text))
         elem.send_keys(text)
+    
+    def type_enter(self, text, clear=False, index=0, **kwargs):
+        """
+        Enter text and enter directly.
+
+        Usage:
+        self.type_enter(css="#el", text="selenium")
+        """
+        if clear is True:
+            self.clear(index, **kwargs)
+        elem = self.__get_element(index, **kwargs)
+        log.info("input '{text}' and enter.".format(text=text))
+        elem.send_keys(text)
+        elem.send_keys(Keys.ENTER)
 
     def clear(self, index=0, **kwargs):
         """
@@ -309,6 +325,7 @@ class WebDriver(object):
         elem = self.__get_element(index, **kwargs)
         return elem.is_displayed()
 
+    @property
     def get_title(self):
         """
         Get window title.
@@ -318,6 +335,7 @@ class WebDriver(object):
         """
         return self.driver.title
 
+    @property
     def get_url(self):
         """
         Get the URL address of the current page.
@@ -327,6 +345,7 @@ class WebDriver(object):
         """
         return self.driver.current_url
 
+    @property
     def get_alert_text(self):
         """
         Gets the text of the Alert.
