@@ -27,7 +27,8 @@ setup(
     install_requires=[
         'selenium>=3.12.0',
         'parameterized==0.7.0',
-        'colorama>=0.4.3'
+        'colorama>=0.4.3',
+        'openpyxl>=3.0.3'
     ],
     classifiers=[
         'Intended Audience :: Developers',
