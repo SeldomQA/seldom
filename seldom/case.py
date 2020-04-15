@@ -2,6 +2,7 @@ import unittest
 from time import sleep
 from .webdriver import WebDriver
 from .running.test_runner import Seldom
+from .logging import log
 
 
 class TestCase(unittest.TestCase, WebDriver):
@@ -22,12 +23,14 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion title cannot be empty.")
         for _ in range(self.timeout):
             try:
-                self.assertEqual(title, self.get_title())
+                self.assertEqual(title, self.get_title)
+                log.info("assert title: {title}.".format(title=self.get_title))
                 break
             except AssertionError:
                 sleep(1)
         else:
-            self.assertEqual(title, self.get_title())
+            log.error("assert fail: {title}.".format(title=title))
+            self.assertEqual(title, self.get_title)
 
     def assertInTitle(self, title=None):
         """
@@ -40,12 +43,14 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion title cannot be empty.")
         for _ in range(self.timeout):
             try:
-                self.assertIn(title, self.get_title())
+                self.assertIn(title, self.get_title)
+                log.info("assertIn title: {title}.".format(title=self.get_title))
                 break
             except AssertionError:
                 sleep(1)
         else:
-            self.assertIn(title, self.get_title())
+            log.error("assertIn fail: {title}.".format(title=title))
+            self.assertIn(title, self.get_title)
 
     def assertUrl(self, url):
         """
@@ -58,11 +63,14 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion URL cannot be empty.")
         for _ in range(self.timeout):
             try:
-                self.assertEqual(url, self.get_url())
+                self.assertEqual(url, self.get_url)
+                log.info("assert url: {url}.".format(url=self.get_url))
+                break
             except AssertionError:
                 sleep(1)
         else:
-            self.assertEqual(url, self.get_url())
+            log.error("assert fail: {url}.".format(url=url))
+            self.assertEqual(url, self.get_url)
 
     def assertInUrl(self, url=None):
         """
@@ -75,11 +83,14 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion URL cannot be empty.")
         for _ in range(self.timeout):
             try:
-                self.assertIn(url, self.get_url())
+                self.assertIn(url, self.get_url)
+                log.info("assertIn url: {url}.".format(url=self.get_url))
+                break
             except AssertionError:
                 sleep(1)
         else:
-            self.assertIn(url, self.get_url())
+            log.error("assertIn fail: {url}.".format(url=url))
+            self.assertIn(url, self.get_url)
 
     def assertText(self, text=None):
         """
