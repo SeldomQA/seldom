@@ -128,13 +128,13 @@ def main(path=None,
 
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
-            log.info(seldom_str)
+            print(seldom_str)
             runner.run(suits, rerun=rerun, save_last_run=save_last_run)
         print("generated html file: file:///{}".format(report))
     else:
         runner = unittest.TextTestRunner(verbosity=2)
-        log.info("A run the test in debug mode without generating HTML report!")
-        log.info(seldom_str)
+        print("A run the test in debug mode without generating HTML report!")
+        print(seldom_str)
         runner.run(suits)
 
     """
