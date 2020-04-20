@@ -5,6 +5,8 @@ import time
 import sys
 import io
 import datetime
+from .config import RunResult
+
 """
 A TestRunner for use with the Python unit testing framework. It
 generates a HTML report to show the result at a glance.
@@ -922,6 +924,11 @@ class HTMLTestRunner(Template_mixin):
         startTime = str(self.startTime)[:19]
         duration = str(self.stopTime - self.startTime)
         status = []
+
+        RunResult.passed = result.success_count
+        RunResult.failed = result.failure_count
+        RunResult.errors = result.error_count
+        RunResult.Skiped = result.skip_count
 
         if result.success_count:
             status.append('Passed:%s' % result.success_count)
