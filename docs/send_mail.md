@@ -38,3 +38,5 @@ if __name__ == '__main__':
     smtp.sender(to="receive@mail.com", attachments=report_path)
 
 ```
+
+> 自动化发邮件不支持`debug` 模式，`debug`模式不会生成测试报告，自然也无法将报告发送到指定邮箱了。

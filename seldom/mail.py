@@ -29,8 +29,8 @@ class SMTP(object):
                 <tbody>
                     <tr
                         style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-sizing:border-box;font-size:14px;margin:0">
-                        <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-sizing:border-box;font-size:16px;vertical-align:top;color:#fff;font-weight:500;text-align:center;border-radius:3px 3px 0 0;background-color:#71b6f9;margin:0;padding:20px"
-                            align="center" bgcolor="#71b6f9" valign="top">
+                        <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-sizing:border-box;font-size:16px;vertical-align:top;color:#fff;font-weight:500;text-align:center;border-radius:3px 3px 0 0;background-color:#354052;margin:0;padding:20px"
+                            align="center" bgcolor="#354052" valign="top">
                             <span style="margin-top:20px;display:block"> Seldom Test Report </span>
                         </td>
                     </tr>
