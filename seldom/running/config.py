@@ -1,3 +1,25 @@
+"""
+Seldom configuration file
+"""
+
+
+class Seldom:
+    """
+    Seldom browser driver
+    """
+    driver = None
+    timeout = None
+
+
+class BrowserConfig:
+    """
+    Define run browser config
+    """
+    name = None
+    driver_path = None
+    grid_url = None
+    report_path = None
+
 
 class RunResult:
     """

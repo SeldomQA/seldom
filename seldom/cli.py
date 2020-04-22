@@ -11,7 +11,7 @@ from os import makedirs
 from os.path import join, isfile, basename
 from os.path import isdir, dirname, abspath
 from urllib.request import urlopen
-from .logging import log
+from seldom.logging import log
 
 from seldom import __description__, __version__
 

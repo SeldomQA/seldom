@@ -3,9 +3,10 @@ import os
 import time
 import unittest
 import inspect
-from ..logging import log
-from ..driver import browser as b
-from .HTMLTestRunner import HTMLTestRunner
+from seldom.driver import browser as b
+from seldom.running.HTMLTestRunner import HTMLTestRunner
+from seldom.running.config import Seldom, BrowserConfig
+
 
 seldom_str = """
             _      _                   
@@ -17,24 +18,6 @@ seldom_str = """
 -----------------------------------------
                              @itest.info
 """
-
-
-class Seldom:
-    """
-    Seldom browser driver
-    """
-    driver = None
-    timeout = None
-
-
-class BrowserConfig:
-    """
-    Define run browser config
-    """
-    name = None
-    driver_path = None
-    grid_url = None
-    report_path = None
 
 
 def main(path=None,

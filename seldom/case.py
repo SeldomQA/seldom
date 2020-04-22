@@ -1,8 +1,8 @@
 import unittest
 from time import sleep
-from .webdriver import WebDriver
-from .running.test_runner import Seldom
-from .logging import log
+from seldom.webdriver import WebDriver
+from seldom.running.config import Seldom
+from seldom.logging import log
 
 
 class TestCase(unittest.TestCase, WebDriver):

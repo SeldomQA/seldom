@@ -1,11 +1,10 @@
-from xml.sax import saxutils
-import unittest
-import copy
-import time
-import sys
 import io
+import copy
+import sys
+import unittest
 import datetime
-from .config import RunResult
+from xml.sax import saxutils
+from seldom.running.config import RunResult
 
 """
 A TestRunner for use with the Python unit testing framework. It

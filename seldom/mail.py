@@ -3,8 +3,7 @@ from email.header import Header
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
-from seldom.running.test_runner import BrowserConfig
-from seldom.running.config import RunResult
+from seldom.running.config import BrowserConfig, RunResult
 from seldom.logging import log
 
 
