@@ -27,3 +27,5 @@
 * [跳过测试用例](./skip.md)
 
 * [发邮件功能](./send_mail.md)
+
+* [setUpClass方法](./setupclass.md)
