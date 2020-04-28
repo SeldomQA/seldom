@@ -1,6 +1,6 @@
 ## seldom 定位元素
 
-seldom 提供了8中定位方式，说seldom保持一致。
+seldom 提供了8中定位方式，与Selenium保持一致。
 
 * id_
 * name
