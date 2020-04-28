@@ -19,17 +19,17 @@ class TestCase(unittest.TestCase, WebDriver):
 
 ```
 
-如果，我想在项目当中使用`setUpClass()`方法，必然会重写，这就导致seldom的`setUpClass()`方法不可能，从而程序运行错误。 我们可以在自己的项目中这样定义。
+如果，我想在项目当中使用`setUpClass()`方法，必然会重写，这就导致seldom的`setUpClass()`方法不可用，从而导致程序运行错误。 我们可以在自己的项目中这样定义。
 
 ```python
 import seldom
-from seldom.mail import SMTP
 
 
 class Test(seldom.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        # 用以下方法：
         super(Test, cls).setUpClass()
         print("hello")
         print("world")
