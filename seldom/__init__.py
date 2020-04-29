@@ -30,6 +30,6 @@ from .skip import skip_unless
 
 __author__ = "bugmaster"
 
-__version__ = "1.2.6"
+__version__ = "1.5.0"
 
 __description__ = "WebUI automation testing framework based on Selenium."
