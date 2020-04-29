@@ -7,6 +7,7 @@ https://github.com/SeldomQA/poium
 ```
 """
 import seldom
+from seldom import Seldom
 from poium import Page, PageElement
 
 
@@ -23,7 +24,7 @@ class BaiduTest(seldom.TestCase):
         """
         A simple test
         """
-        page = BaiduPage(self.driver)
+        page = BaiduPage(Seldom.driver)
         page.get("https://www.baidu.com")
         page.search_input = "seldom"
         page.search_button.click()
