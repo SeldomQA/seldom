@@ -7,11 +7,6 @@ from seldom.logging import log
 
 class TestCase(unittest.TestCase, WebDriver):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.driver = Seldom.driver
-        cls.timeout = Seldom.timeout
-
     def assertTitle(self, title=None):
         """
         Asserts whether the current title is in line with expectations.
@@ -21,7 +16,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
-        for _ in range(self.timeout):
+        for _ in range(Seldom.timeout):
             try:
                 self.assertEqual(title, self.get_title)
                 log.info("assert title: {title}.".format(title=self.get_title))
@@ -41,7 +36,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
-        for _ in range(self.timeout):
+        for _ in range(Seldom.timeout):
             try:
                 self.assertIn(title, self.get_title)
                 log.info("assertIn title: {title}.".format(title=self.get_title))
@@ -61,7 +56,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
-        for _ in range(self.timeout):
+        for _ in range(Seldom.timeout):
             try:
                 self.assertEqual(url, self.get_url)
                 log.info("assert url: {url}.".format(url=self.get_url))
@@ -81,7 +76,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
-        for _ in range(self.timeout):
+        for _ in range(Seldom.timeout):
             try:
                 self.assertIn(url, self.get_url)
                 log.info("assertIn url: {url}.".format(url=self.get_url))
@@ -103,7 +98,7 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion text cannot be empty.")
 
         elem = self.driver.find_element_by_tag_name("html")
-        for _ in range(self.timeout):
+        for _ in range(Seldom.timeout):
             if elem.is_displayed():
                 try:
                     self.assertIn(text, elem.text)
