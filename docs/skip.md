@@ -14,7 +14,7 @@ class YouTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main(path="test_sample.py")
+    seldom.main()
 ```
 
 你可以通过 `skip()`装饰器设置要跳过的测试类或用例。

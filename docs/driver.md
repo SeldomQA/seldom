@@ -1,4 +1,4 @@
-## 切换浏览器
+## 浏览器与驱动
 
 我们运行的自动化测试不可能只在一个浏览器下运行，我们分别需要在chrome、firefox浏览器下运行，有时候甚至需要无界面模式。
 
@@ -82,3 +82,17 @@ if __name__ == '__main__':
                 grid_url="http://127.0.0.1:4444/wd/hub")
 
 ```
+
+## 驱动下载地址
+
+当然，你也可以手动下载不同浏览器驱动：
+
+geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
+
+Chromedriver(Chrome):https://sites.google.com/a/chromium.org/chromedriver/home
+
+IEDriverServer(IE):http://selenium-release.storage.googleapis.com/index.html
+
+operadriver(Opera):https://github.com/operasoftware/operachromiumdriver/releases
+
+MicrosoftWebDriver(Edge):https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver

@@ -4,9 +4,11 @@
 
 * [seldom创建项目](./create_project.md)
 
-* [切换浏览器&安装驱动](./driver.md)
+* [浏览器&驱动](./driver.md)
 
 * [运行测试](./run_test.md)
+
+* [学习main()方法](./main.md)
 
 * [生成测试报告](./reports.md)
 
@@ -28,4 +30,4 @@
 
 * [发邮件功能](./send_mail.md)
 
-* [setUpClass方法](./setupclass.md)
+* [setUp/setUpClass方法](./setupclass.md)

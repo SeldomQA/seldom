@@ -54,3 +54,30 @@ self.type(tag="input", index=7, text="seldom")
 
 在seldom中不指定`index`默认下标为`0`。
 
+
+### 8种定位用法
+
+```html
+<form id="form" class="fm" action="/s" name="f">
+    <span class="bg s_ipt_wr quickdelete-wrap">
+        <input id="kw" class="s_ipt" name="wd">
+```
+
+定位方式：
+
+```python
+self.type(id_="kw", text="seldom")
+self.type(name="wd", text="seldom")
+self.type(class_name="s_ipt", text="seldom")
+self.type(tag="input", text="seldom")
+self.type(link_text="hao123", text="seldom")
+self.type(partial_link_text="hao", text="seldom")
+self.type(xpath="//input[@id='kw']", text="seldom")
+self.type(css="#kw", text="seldom")
+
+```
+
+帮助：
+
+* [CSS选择器](https://www.w3school.com.cn/cssref/css_selectors.asp)
+* [xpath语法](https://www.w3school.com.cn/xpath/xpath_syntax.asp)

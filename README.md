@@ -90,7 +90,7 @@ generated html file: file:///D:\mypro\reports\2019_11_12_22_28_53_result.html
 
 ![test report](./test_report.png)
 
-## API Documents
+## Documents
 
 ### simple demo
 
@@ -121,42 +121,6 @@ __说明：__
 * 测试用例文件命名必须以 `test` 开头。
 * seldom的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
 
-### main() 方法
-
-```python
-import seldom
-
-# ...
-
-if __name__ == '__main__':
-
-    seldom.main(path="./",
-              browser="chrome",
-              report=None,
-              title="百度测试用例",
-              description="测试环境：chrome",
-              debug=False,
-              rerun=0,
-              save_last_run=False,
-              driver_path=None,
-              grid_url=None,
-              timeout=None
-    )
-```
-
-说明：
-
-* path ： 指定测试目录或文件。
-* browser : 指定测试浏览器，默认`Chrome`。
-* report : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`
-* title ： 指定测试报告标题。
-* description ： 指定测试报告描述。
-* debug ： debug模式，设置为True不生成测试HTML测试，默认为`False`。
-* rerun : 设置失败重新运行次数，默认为 `0`。
-* save_last_run : 设置只保存最后一次的结果，默认为`False`。
-* driver_path : 设置浏览器驱动的`绝对`路径。要和 `browser` 设置保持一致。
-* grid_url : 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
-* timeout : 设置超时时间，默认10秒
 
 ### Run the test
 
@@ -174,171 +138,42 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 * 如果指定的目录，测试文件必须以`test` 开头。
 * 如果要运行子目录下的文件，必须在子目录下加 `__init__.py` 文件。
 
-### 支持的浏览器及驱动
+### seldom 文档
 
-如果你想指定测试用例在不同的浏览器中运行，非常简单，只需要在`seldom.main()`方法中通过`browser` 参数设置。
+请阅读下面的文档，帮助你快速学会Seldom。
 
-```python
-import seldom
+* [seldom安装](./docs/install.md)
 
-if __name__ == '__main__':
-    seldom.main(browser="chrome") # chrome浏览器,默认值
-    seldom.main(browser="firefox") # firefox浏览器
-    seldom.main(browser="ie")  # IE浏览器
-    seldom.main(browser="opera") # opera浏览器
-    seldom.main(browser="edge") # edge浏览器
-    seldom.main(browser="chrome_headless") # chrome浏览器headless模式
-    seldom.main(browser="firefox_headless") # Firefox浏览器headless模式
+* [seldom创建项目](./docs/create_project.md)
 
-```
+* [浏览器&驱动](./docs/driver.md)
 
-seldom 支持chrome和frefox浏览器的驱动下载：
+* [运行测试](./docs/run_test.md)
 
-```shell
-> seldom -install chrome
-> seldom -install firefox
-```
+* [main()方法](./docs/main.md)
 
-下载的驱动文件默认保存在`lib` 目录下面。
+* [生成测试报告](./docs/reports.md)
 
-当然，你也可以手动下载不同浏览器驱动：
+* [seldom 元素定位](./docs/find_element.md)
 
-geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
+* [seldom API](./docs/seldom_api.md)
 
-Chromedriver(Chrome):https://sites.google.com/a/chromium.org/chromedriver/home
+* [seldom 断言](./docs/assert.md)
 
-IEDriverServer(IE):http://selenium-release.storage.googleapis.com/index.html
+* [用例失败重跑&自动截图](./docs/rerun_screenshot.md)
 
-operadriver(Opera):https://github.com/operasoftware/operachromiumdriver/releases
+* [数据驱动最佳实践](./docs/parameterized.md)
 
-MicrosoftWebDriver(Edge):https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver
+* [实现Page Objects设计模式](./docs/poium.md)
 
-==========================================================
+* [生成测试数据](./docs/testdata.md)
 
-### 元素定位
+* [跳过测试用例](./docs/skip.md)
 
-```html
-<form id="form" class="fm" action="/s" name="f">
-    <span class="bg s_ipt_wr quickdelete-wrap">
-        <input id="kw" class="s_ipt" name="wd">
-```
+* [发邮件功能](./docs/send_mail.md)
 
-定位方式：
+* [setUp/setUpClass方法](./docs/setupclass.md)
 
-```python
-self.type(id_="kw", text="seldom")
-self.type(name="wd", text="seldom")
-self.type(class_name="s_ipt", text="seldom")
-self.type(tag="input", text="seldom")
-self.type(link_text="hao123", text="seldom")
-self.type(partial_link_text="hao", text="seldom")
-self.type(xpath="//input[@id='kw']", text="seldom")
-self.type(css="#kw", text="seldom")
-
-```
-
-帮助：
-
-* [CSS选择器](https://www.w3school.com.cn/cssref/css_selectors.asp)
-* [xpath语法](https://www.w3school.com.cn/xpath/xpath_syntax.asp)
-
-### 断言方法
-
-```python
-self.assertTitle("title")   # 断言标题是否等于"title"
-self.assertInTitle("title") # 断言标题是否包含"title"
-self.assertURL("url")  # 断言URL是否等于
-self.assertInURL("url")  # 断言URL是否包含 
-self.assertText("text")  # 断言页面是否存在“text”
-self.assertAlertText("text") # 断言警告是否存在"text" 提示信息
-```
-
-### 跳过用例
-
-```python
-import seldom
-
-
-class YouTest(seldom.TestCase):
-
-    @seldom.skip("跳过这条用例的执行")
-    def test_case(self):
-        """a simple test case """
-        #...
-
-```
-
-### 参数化测试用例
-
-seldom 支持参数化测试用例，集成了[parameterized](https://github.com/wolever/parameterized)。
-
-简单用法：
-
-```python
-
-import seldom
-from seldom import data
-
-# ...
-
-class BaiduTest(seldom.TestCase):
-
-    @data([
-        (1, 'seldom'),
-        (2, 'selenium'),
-        (3, 'unittest'),
-    ])
-    def test_baidu(self, name, keyword):
-        """
-         used parameterized test
-        :param name: case name
-        :param keyword: search keyword
-        """
-        self.open("https://www.baidu.com")
-        self.type(id_="kw", text=keyword)
-        self.click(css="#su")
-        self.assertTitle(keyword+"_百度搜索")
-```
-
-同时seldom 也支持不同文件的读取，[帮助文档](/docs/parameterized.md)， 包括：
-
-* csv文件
-* excel文件
-* json/yaml文件，需要第三方支持。
-
-### page objects 设计模式
-
-seldom 支持Page objects设计模式，可以配合[poium](https://github.com/SeldomQA/poium) 使用。
-
-```python
-import seldom
-from poium import Page, PageElement
-
-
-class BaiduPage(Page):
-    """baidu page"""
-    search_input = PageElement(id_="kw")
-    search_button = PageElement(id_="su")
-
-
-class BaiduTest(seldom.TestCase):
-    """Baidu serach test case"""
-
-    def test_case(self):
-        """A simple test"""
-        page = BaiduPage(self.driver)
-        page.get("https://www.baidu.com")
-        page.search_input = "seldom"
-        page.search_button.click()
-        self.assertTitle("seldom_百度搜索")
-
-
-if __name__ == '__main__':
-    seldom.main()
-
-```
-
-poium提供了更多好用的功能，使Page层的创建更加简单。
 
 ## 感谢
 
