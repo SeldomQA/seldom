@@ -84,6 +84,10 @@ def get_element(index, **kwargs):
     else:
         raise NameError(
             "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
+
+    style_red = 'arguments[0].style.border="2px solid red"'
+    Seldom.driver.execute_script(style_red, elem)
+
     return elem
 
 
