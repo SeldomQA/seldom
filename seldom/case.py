@@ -19,12 +19,13 @@ class TestCase(unittest.TestCase, WebDriver):
         for _ in range(Seldom.timeout):
             try:
                 self.assertEqual(title, self.get_title)
-                log.info("assert title: {title}.".format(title=self.get_title))
+                log.info("👀 assert title: {title}.".format(
+                    title=self.get_title))
                 break
             except AssertionError:
                 sleep(1)
         else:
-            log.error("assert fail: {title}.".format(title=title))
+            log.error("❌ assert fail: {title}.".format(title=title))
             self.assertEqual(title, self.get_title)
 
     def assertInTitle(self, title=None):
@@ -39,12 +40,13 @@ class TestCase(unittest.TestCase, WebDriver):
         for _ in range(Seldom.timeout):
             try:
                 self.assertIn(title, self.get_title)
-                log.info("assertIn title: {title}.".format(title=self.get_title))
+                log.info("👀 assertIn title: {title}.".format(
+                    title=self.get_title))
                 break
             except AssertionError:
                 sleep(1)
         else:
-            log.error("assertIn fail: {title}.".format(title=title))
+            log.error("❌ assertIn fail: {title}.".format(title=title))
             self.assertIn(title, self.get_title)
 
     def assertUrl(self, url):
@@ -59,12 +61,12 @@ class TestCase(unittest.TestCase, WebDriver):
         for _ in range(Seldom.timeout):
             try:
                 self.assertEqual(url, self.get_url)
-                log.info("assert url: {url}.".format(url=self.get_url))
+                log.info("👀 assert url: {url}.".format(url=self.get_url))
                 break
             except AssertionError:
                 sleep(1)
         else:
-            log.error("assert fail: {url}.".format(url=url))
+            log.error("❌ assert fail: {url}.".format(url=url))
             self.assertEqual(url, self.get_url)
 
     def assertInUrl(self, url=None):
@@ -79,12 +81,12 @@ class TestCase(unittest.TestCase, WebDriver):
         for _ in range(Seldom.timeout):
             try:
                 self.assertIn(url, self.get_url)
-                log.info("assertIn url: {url}.".format(url=self.get_url))
+                log.info("👀 assertIn url: {url}.".format(url=self.get_url))
                 break
             except AssertionError:
                 sleep(1)
         else:
-            log.error("assertIn fail: {url}.".format(url=url))
+            log.error("❌ assertIn fail: {url}.".format(url=url))
             self.assertIn(url, self.get_url)
 
     def assertText(self, text=None):

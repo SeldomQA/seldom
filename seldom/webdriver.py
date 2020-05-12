@@ -28,17 +28,17 @@ def find_element(elem):
     for i in range(Seldom.timeout):
         elems = Seldom.driver.find_elements(by=elem[0], value=elem[1])
         if len(elems) == 1:
-            log.info("Find element: {by}={value} ".format(
+            log.info("✅ Find element: {by}={value} ".format(
                 by=elem[0], value=elem[1]))
             break
         elif len(elems) > 1:
-            log.warn("Find {n} elements through：{by}={value}".format(
+            log.warn("❓ Find {n} elements through: {by}={value}".format(
                 n=len(elems), by=elem[0], value=elem[1]))
             break
         else:
             time.sleep(1)
     else:
-        log.error("Find 0 elements through：{by}={value}".format(
+        log.error("❌ Find 0 elements through: {by}={value}".format(
             by=elem[0], value=elem[1]))
 
 
@@ -145,7 +145,7 @@ class WebDriver(object):
         if clear is True:
             self.clear(index, **kwargs)
         elem = get_element(index, **kwargs)
-        log.info("input '{text}'.".format(text=text))
+        log.info("🖋 input '{text}'.".format(text=text))
         elem.send_keys(text)
     
     def type_enter(self, text, clear=False, index=0, **kwargs):
@@ -158,7 +158,7 @@ class WebDriver(object):
         if clear is True:
             self.clear(index, **kwargs)
         elem = get_element(index, **kwargs)
-        log.info("input '{text}' and enter.".format(text=text))
+        log.info("🖋 ➕ 🖱 input '{text}' and enter.".format(text=text))
         elem.send_keys(text)
         elem.send_keys(Keys.ENTER)
 
@@ -181,6 +181,7 @@ class WebDriver(object):
         self.click(css="#el")
         """
         elem = get_element(index, **kwargs)
+        log.info("🖱 click.")
         elem.click()
 
     def slow_click(self, index=0, **kwargs):
