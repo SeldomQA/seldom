@@ -4,7 +4,7 @@ import sys
 import unittest
 import datetime
 from xml.sax import saxutils
-from seldom.running.config import RunResult
+from seldom.running.config import RunResult, Seldom
 
 """
 A TestRunner for use with the Python unit testing framework. It
@@ -819,13 +819,11 @@ class _TestResult(TestResult):
         _, _exc_str = self.errors[-1]
         output = self.complete_output()
         self.result.append((2, test, output, _exc_str))
-        if not getattr(test, "driver", ""):
-            pass
-        else:
+        
+        if Seldom.driver is not None:
             try:
-                driver = getattr(test, "driver")
-                test.imgs.append(driver.get_screenshot_as_base64())
-            except BaseException:
+                test.imgs.append(Seldom.driver.get_screenshot_as_base64())
+            except BaseException as msg:
                 pass
         if self.verbosity > 1:
             sys.stderr.write('E  ')
@@ -841,12 +839,10 @@ class _TestResult(TestResult):
         _, _exc_str = self.failures[-1]
         output = self.complete_output()
         self.result.append((1, test, output, _exc_str))
-        if not getattr(test, "driver", ""):
-            pass
-        else:
+
+        if Seldom.driver is not None:
             try:
-                driver = getattr(test, "driver")
-                test.imgs.append(driver.get_screenshot_as_base64())
+                test.imgs.append(Seldom.driver.get_screenshot_as_base64())
             except BaseException:
                 pass
         if self.verbosity > 1:
