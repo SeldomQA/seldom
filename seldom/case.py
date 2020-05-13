@@ -25,7 +25,7 @@ class TestCase(unittest.TestCase, WebDriver):
             except AssertionError:
                 sleep(1)
         else:
-            log.error("❌ assert fail: {title}.".format(title=title))
+            log.warn("❌ assert fail: {title}.".format(title=title))
             self.assertEqual(title, self.get_title)
 
     def assertInTitle(self, title=None):
@@ -46,7 +46,7 @@ class TestCase(unittest.TestCase, WebDriver):
             except AssertionError:
                 sleep(1)
         else:
-            log.error("❌ assertIn fail: {title}.".format(title=title))
+            log.warn("❌ assertIn fail: {title}.".format(title=title))
             self.assertIn(title, self.get_title)
 
     def assertUrl(self, url):
@@ -66,7 +66,7 @@ class TestCase(unittest.TestCase, WebDriver):
             except AssertionError:
                 sleep(1)
         else:
-            log.error("❌ assert fail: {url}.".format(url=url))
+            log.warn("❌ assert fail: {url}.".format(url=url))
             self.assertEqual(url, self.get_url)
 
     def assertInUrl(self, url=None):
@@ -86,7 +86,7 @@ class TestCase(unittest.TestCase, WebDriver):
             except AssertionError:
                 sleep(1)
         else:
-            log.error("❌ assertIn fail: {url}.".format(url=url))
+            log.warn("❌ assertIn fail: {url}.".format(url=url))
             self.assertIn(url, self.get_url)
 
     def assertText(self, text=None):
@@ -99,7 +99,7 @@ class TestCase(unittest.TestCase, WebDriver):
         if text is None:
             raise AssertionError("The assertion text cannot be empty.")
 
-        elem = self.driver.find_element_by_tag_name("html")
+        elem = Seldom.driver.find_element_by_tag_name("html")
         for _ in range(Seldom.timeout):
             if elem.is_displayed():
                 try:

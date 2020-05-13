@@ -7,6 +7,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from seldom.logging import log
 from seldom.running.config import Seldom
+from seldom.logging.exceptions import NotFindElementError
 
 
 LOCATOR_LIST = {
@@ -38,8 +39,10 @@ def find_element(elem):
         else:
             time.sleep(1)
     else:
-        log.error("❌ Find 0 elements through: {by}={value}".format(
-            by=elem[0], value=elem[1]))
+        error_msg = "❌ Find 0 elements through: {by}={value}".format(
+            by=elem[0], value=elem[1])
+        log.error(error_msg)
+        raise NotFindElementError(error_msg)
 
 
 def get_element(index, **kwargs):
