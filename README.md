@@ -68,9 +68,8 @@ mypro/
 3、运行项目：
 
 ```shell
-> seldom -r run.py
-Python 3.7.1
-
+python3 run.py
+2020-05-16 11:34:36,014 INFO
             _      _
            | |    | |
  ___   ___ | |  __| |  ___   _ __ ___
@@ -80,8 +79,13 @@ Python 3.7.1
 -----------------------------------------
                              @itest.info
 
-generated html file: file:///D:\mypro\reports\2019_11_12_22_28_53_result.html
-.1
+2020-05-16 11:34:38,798 INFO ✅ Find element: id=kw
+2020-05-16 11:34:38,813 INFO 🖋 input 'seldom'.
+2020-05-16 11:34:38,991 INFO ✅ Find element: css selector=#su
+2020-05-16 11:34:39,004 INFO 🖱 click.
+2020-05-16 11:34:40,091 INFO 👀 assertIn title: seldom_百度搜索.
+2020-05-16 11:34:40,092 INFO generated html file: file:////Users/tech/mypro/reports/2020_05_16_11_34_36_result.html
+.1%
 ```
 
 4、查看报告
