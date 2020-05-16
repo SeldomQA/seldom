@@ -7,7 +7,7 @@ _logger.setLevel(logging.DEBUG)
 _handler = logging.StreamHandler(sys.stdout)
 _handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
 _logger.addHandler(_handler)
-_logger.removeHandler(_handler)
+
 
 def debug(msg):
     _logger.debug("DEBUG " + str(msg))
