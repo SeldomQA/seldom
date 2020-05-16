@@ -120,16 +120,15 @@ class YouTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main()
-
+    seldom.main(debug=True)
 '''
     run_test = """import seldom
 
 
 if __name__ == '__main__':
     # run test
-    # seldom.main("./test_dir/")
-    seldom.main("./test_dir/test_sample.py")
+    seldom.main("./test_dir/")
+    #seldom.main("./test_dir/test_sample.py")
 
 """
     create_folder(project_name)
