@@ -7,7 +7,7 @@ from seldom.logging import log
 
 class TestCase(unittest.TestCase, WebDriver):
 
-    def assertTitle(self, title=None):
+    def assertTitle(self, title=None, msg=None):
         """
         Asserts whether the current title is in line with expectations.
 
@@ -26,9 +26,9 @@ class TestCase(unittest.TestCase, WebDriver):
                 sleep(1)
         else:
             log.warn("❌ assert fail: {title}.".format(title=title))
-            self.assertEqual(title, self.get_title)
+            self.assertEqual(title, self.get_title, msg=msg)
 
-    def assertInTitle(self, title=None):
+    def assertInTitle(self, title=None, msg=None):
         """
         Asserts whether the current title is in line with expectations.
 
@@ -47,9 +47,9 @@ class TestCase(unittest.TestCase, WebDriver):
                 sleep(1)
         else:
             log.warn("❌ assertIn fail: {title}.".format(title=title))
-            self.assertIn(title, self.get_title)
+            self.assertIn(title, self.get_title, msg=msg)
 
-    def assertUrl(self, url):
+    def assertUrl(self, url, msg=None):
         """
         Asserts whether the current URL is in line with expectations.
 
@@ -67,9 +67,9 @@ class TestCase(unittest.TestCase, WebDriver):
                 sleep(1)
         else:
             log.warn("❌ assert fail: {url}.".format(url=url))
-            self.assertEqual(url, self.get_url)
+            self.assertEqual(url, self.get_url, msg=msg)
 
-    def assertInUrl(self, url=None):
+    def assertInUrl(self, url=None, msg=None):
         """
         Asserts whether the current URL is in line with expectations.
 
@@ -87,9 +87,9 @@ class TestCase(unittest.TestCase, WebDriver):
                 sleep(1)
         else:
             log.warn("❌ assertIn fail: {url}.".format(url=url))
-            self.assertIn(url, self.get_url)
+            self.assertIn(url, self.get_url, msg=msg)
 
-    def assertText(self, text=None):
+    def assertText(self, text=None, msg=None):
         """
         Asserts whether the text of the current page conforms to expectations.
 
@@ -108,9 +108,9 @@ class TestCase(unittest.TestCase, WebDriver):
                 except AssertionError:
                     sleep(1)
         else:
-            self.assertIn(text, elem.text)
+            self.assertIn(text, elem.text, msg=msg)
 
-    def assertAlertText(self, text=None):
+    def assertAlertText(self, text=None, msg=None):
         """
         Asserts whether the text of the current page conforms to expectations.
 
@@ -120,7 +120,7 @@ class TestCase(unittest.TestCase, WebDriver):
         if text is None:
             raise NameError("Alert text cannot be empty.")
         alert_text = self.get_alert_text()
-        self.assertEqual(alert_text, text)
+        self.assertEqual(alert_text, text, msg=msg)
 
     def xSkip(self, reason):
         """
