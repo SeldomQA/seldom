@@ -1,4 +1,5 @@
 import sys
+import time
 import logging.handlers
 from colorama import Fore, Style
 
@@ -6,7 +7,8 @@ _logger = logging.getLogger('seldom')
 _logger.setLevel(logging.DEBUG)
 _handler = logging.StreamHandler(sys.stdout)
 _handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
-_logger.addHandler(_handler)
+if not _handler:
+    _logger.addHandler(_handler)
 
 
 def debug(msg):
