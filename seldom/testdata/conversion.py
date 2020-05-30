@@ -3,6 +3,7 @@ Data type conversion of different files
 """
 import csv
 import json
+import yaml
 import codecs
 from itertools import islice
 try:
@@ -85,6 +86,34 @@ def json_to_list(file, key=None):
         with open(file, "r", encoding="utf-8") as f:
             try:
                 dict_data = json.load(f)[key]
+            except KeyError:
+                raise ValueError("Check the test data, no '{}'".format(key))
+
+    return dict_data
+
+
+def yaml_to_list(file, key=None):
+    """
+    Convert JSON file data to list
+    :param file: Path to file
+    :param key: Specifies the key for the dictionary
+    :return: list data
+
+    @data(yaml_to_list(/home/user/seldom/data.yaml, key="login"))
+    def test_login(self, username, password):
+        print(username)
+        print(password)
+    """
+    if file is None:
+        raise FileExistsError("Please specify the YAML file to convert.")
+
+    if key is None:
+        with open(file, "r", encoding="utf-8") as f:
+            dict_data = yaml.load(f)
+    else:
+        with open(file, "r", encoding="utf-8") as f:
+            try:
+                dict_data = yaml.load(f)[key]
             except KeyError:
                 raise ValueError("Check the test data, no '{}'".format(key))
 
