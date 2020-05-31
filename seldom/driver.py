@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as CH_Options
 from selenium.webdriver.firefox.options import Options as FF_Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from appium.webdriver import Remote
 
 
 def browser(name=None, driver_path=None, grid_url=None):
@@ -56,3 +57,13 @@ def browser(name=None, driver_path=None, grid_url=None):
     else:
         raise NameError(
                 "Not found {} browser, You can enter 'ie', 'ff', 'opera', 'edge', 'chrome'.".format(name))
+
+
+def app(command_executor, desired_capabilities):
+    """
+    Run class initialization method, Get App driver.
+    :param command_executor: appium desktop url
+    :param desired_capabilities: app info.
+    :return:
+    """
+    return Remote(command_executor=command_executor, desired_capabilities=desired_capabilities)

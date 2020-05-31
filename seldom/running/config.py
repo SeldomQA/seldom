@@ -7,6 +7,7 @@ class Seldom:
     """
     Seldom browser driver
     """
+    application = None
     driver = None
     timeout = None
 

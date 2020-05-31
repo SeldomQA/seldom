@@ -5,12 +5,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from appium.webdriver.common.mobileby import MobileBy
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
 
 
 LOCATOR_LIST = {
+    # selenium
     'css': By.CSS_SELECTOR,
     'id_': By.ID,
     'name': By.NAME,
@@ -19,6 +21,18 @@ LOCATOR_LIST = {
     'partial_link_text': By.PARTIAL_LINK_TEXT,
     'tag': By.TAG_NAME,
     'class_name': By.CLASS_NAME,
+    # appium
+    'ios_uiautomation': MobileBy.IOS_UIAUTOMATION,
+    'ios_predicate': MobileBy.IOS_PREDICATE,
+    'ios_class_chain': MobileBy.IOS_CLASS_CHAIN,
+    'android_uiautomator': MobileBy.ANDROID_UIAUTOMATOR,
+    'android_viewtag': MobileBy.ANDROID_VIEWTAG,
+    'android_data_matcher': MobileBy.ANDROID_DATA_MATCHER,
+    'android_view_matcher': MobileBy.ANDROID_VIEW_MATCHER,
+    'windows_uiautomation': MobileBy.WINDOWS_UI_AUTOMATION,
+    'accessibility_id': MobileBy.ACCESSIBILITY_ID,
+    'image': MobileBy.IMAGE,
+    'custom': MobileBy.CUSTOM,
 }
 
 
@@ -84,12 +98,45 @@ def get_element(index, **kwargs):
     elif by == "css":
         find_element((By.CSS_SELECTOR, value))
         elem = Seldom.driver.find_elements_by_css_selector(value)[index]
+    elif by == "ios_uiautomation":
+        find_element((MobileBy.IOS_UIAUTOMATION, value))
+        elem = Seldom.driver.find_elements_by_ios_uiautomation(value)[index]
+    elif by == "ios_predicate":
+        find_element((MobileBy.IOS_PREDICATE, value))
+        elem = Seldom.driver.find_elements_by_ios_predicate(value)[index]
+    elif by == "ios_class_chain":
+        find_element((MobileBy.IOS_CLASS_CHAIN, value))
+        elem = Seldom.driver.find_elements_by_ios_class_chain(value)[index]
+    elif by == "android_uiautomator":
+        find_element((MobileBy.ANDROID_UIAUTOMATOR, value))
+        elem = Seldom.driver.find_elements_by_android_uiautomator(value)[index]
+    elif by == "android_viewtag":
+        find_element((MobileBy.ANDROID_VIEWTAG, value))
+        elem = Seldom.driver.find_elements_by_android_viewtag(value)[index]
+    elif by == "android_data_matcher":
+        find_element((MobileBy.ANDROID_DATA_MATCHER, value))
+        elem = Seldom.driver.find_elements_by_android_data_matcher(value)[index]
+    elif by == "android_view_matcher":
+        find_element((MobileBy.ANDROID_VIEW_MATCHER, value))
+        elem = Seldom.driver.find_elements_by_android_view_matcher(value)[index]
+    elif by == "windows_uiautomation":
+        find_element((MobileBy.WINDOWS_UI_AUTOMATION, value))
+        elem = Seldom.driver.find_elements_by_windows_uiautomation(value)[index]
+    elif by == "accessibility_id":
+        find_element((MobileBy.ACCESSIBILITY_ID, value))
+        elem = Seldom.driver.find_elements_by_accessibility_id(value)[index]
+    elif by == "image":
+        find_element((MobileBy.IMAGE, value))
+        elem = Seldom.driver.find_elements_by_image(value)[index]
+    elif by == "custom":
+        find_element((MobileBy.CUSTOM, value))
+        elem = Seldom.driver.find_elements_by_custom(value)[index]
     else:
-        raise NameError(
-            "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
+        raise NameError("Please enter the correct targeting elements.")
 
-    style_red = 'arguments[0].style.border="2px solid red"'
-    Seldom.driver.execute_script(style_red, elem)
+    if Seldom.application == "web":
+        style_red = 'arguments[0].style.border="2px solid red"'
+        Seldom.driver.execute_script(style_red, elem)
 
     return elem
 
