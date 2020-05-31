@@ -1,5 +1,4 @@
 import sys
-import time
 import platform
 import logging.handlers
 from colorama import Fore, Style
