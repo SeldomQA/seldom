@@ -1,5 +1,6 @@
 import sys
 import time
+import platform
 import logging.handlers
 from colorama import Fore, Style
 
@@ -7,8 +8,12 @@ _logger = logging.getLogger('seldom')
 _logger.setLevel(logging.DEBUG)
 _handler = logging.StreamHandler(sys.stdout)
 _handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
-if not _handler:
+
+if platform.system().lower() == "windows":
     _logger.addHandler(_handler)
+else:
+    _logger.addHandler(_handler)
+    _logger.removeHandler(_handler)
 
 
 def debug(msg):
