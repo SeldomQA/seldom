@@ -88,8 +88,18 @@ def get_element(index, **kwargs):
         raise NameError(
             "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
 
-    style_red = 'arguments[0].style.border="2px solid red"'
-    Seldom.driver.execute_script(style_red, elem)
+    # Show the elements of the operation
+    style_red = 'arguments[0].style.border="2px solid #FF0000"'
+    style_blue = 'arguments[0].style.border="2px solid #00FF00"'
+    style_null = 'arguments[0].style.border=""'
+    for _ in range(2):
+        Seldom.driver.execute_script(style_red, elem)
+        time.sleep(0.1)
+        Seldom.driver.execute_script(style_blue, elem)
+        time.sleep(0.1)
+    Seldom.driver.execute_script(style_blue, elem)
+    time.sleep(0.5)
+    Seldom.driver.execute_script(style_null, elem)
 
     return elem
 
