@@ -301,7 +301,7 @@ class WebDriver(object):
         Usage:
         self.execute_script("window.scrollTo(200,1000);")
         """
-        Seldom.driver.execute_script(script)
+        return Seldom.driver.execute_script(script)
 
     def window_scroll(self, width=None, height=None):
         """
