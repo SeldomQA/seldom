@@ -93,6 +93,9 @@ def main(path=None,
     else:
         raise TypeError("Timeout {} is not integer.".format(timeout))
 
+    # set debug
+    Seldom.debug = debug
+
     """
     Global launch browser
     """

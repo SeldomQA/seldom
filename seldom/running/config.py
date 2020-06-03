@@ -9,6 +9,7 @@ class Seldom:
     """
     driver = None
     timeout = None
+    debug = None
 
 
 class BrowserConfig:
