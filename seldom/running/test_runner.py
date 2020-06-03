@@ -2,6 +2,7 @@
 import os
 import time
 import unittest
+import webbrowser
 from xmlrunner import XMLTestRunner
 import inspect
 from seldom.logging import log
@@ -119,6 +120,7 @@ def main(path=None,
                 runner = XMLTestRunner(output=fp)
                 runner.run(suits)
         log.info("generated html file: file:///{}".format(report))
+        webbrowser.open_new("file:///{}".format(report))
     else:
         runner = unittest.TextTestRunner(verbosity=2)
         log.info("A run the test in debug mode without generating HTML report!")
