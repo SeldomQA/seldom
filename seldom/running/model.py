@@ -11,7 +11,6 @@ def runing_model(elem):
     style_blue = 'arguments[0].style.border="2px solid #00FF00"'
     style_null = 'arguments[0].style.border=""'
     if Seldom.debug is True:
-        Seldom.driver.execute_script(debug_windows)
         for _ in range(3):
             Seldom.driver.execute_script(style_red, elem)
             sleep(0.2)
