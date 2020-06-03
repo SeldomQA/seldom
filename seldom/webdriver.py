@@ -1,5 +1,6 @@
 # coding=utf-8
 import time
+import platform
 import warnings
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -111,6 +112,58 @@ class WebDriver(object):
     making it easier to use.
     """
     original_window = None
+
+    class Keys:
+        """
+        Achieve keyboard shortcuts
+        Usage:
+            self.Keys(id_="kw").enter()
+        """
+
+        def __init__(self, index=0, **kwargs):
+            self.elem = get_element(index, **kwargs)
+
+        def input(self, text=""):
+            self.elem.send_keys(text)
+
+        def enter(self):
+            self.elem.send_keys(Keys.ENTER)
+
+        def select_all(self):
+            if platform.system().lower() == "darwin":
+                self.elem.send_keys(Keys.COMMAND, "a")
+            else:
+                self.elem.send_keys(Keys.CONTROL, "a")
+
+        def cut(self):
+            if platform.system().lower() == "darwin":
+                self.elem.send_keys(Keys.COMMAND, "x")
+            else:
+                self.elem.send_keys(Keys.CONTROL, "x")
+
+        def copy(self):
+            if platform.system().lower() == "darwin":
+                self.elem.send_keys(Keys.COMMAND, "c")
+            else:
+                self.elem.send_keys(Keys.CONTROL, "c")
+
+        def paste(self):
+            if platform.system().lower() == "darwin":
+                self.elem.send_keys(Keys.COMMAND, "v")
+            else:
+                self.elem.send_keys(Keys.CONTROL, "v")
+
+        def backspace(self):
+            self.elem.send_keys(Keys.BACKSPACE)
+
+        def delete(self):
+            self.elem.send_keys(Keys.DELETE)
+
+        def tab(self):
+            self.elem.send_keys(Keys.TAB)
+
+        def space(self):
+            self.elem.send_keys(Keys.SPACE)
 
     def get(self, url):
         """
