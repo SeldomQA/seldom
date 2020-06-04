@@ -162,6 +162,8 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 * [seldom API](./docs/seldom_api.md)
 
+* [keys键盘操作](./docs/keys.md)
+
 * [seldom 断言](./docs/assert.md)
 
 * [用例失败重跑&自动截图](./docs/rerun_screenshot.md)
