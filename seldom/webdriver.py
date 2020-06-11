@@ -681,15 +681,33 @@ class WebDriver(object):
         """
         time.sleep(sec)
 
-    def check_element(self, index=0, **kwargs):
+    def check_element(self, css=None):
         """
-        It can click any text / image can be clicked
-        Connection, check box, radio buttons, and even drop-down box etc..
+        Check that the element exists
 
         Usage:
-        self.click(css="#el")
+        self.check_element(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        if css is None:
+            raise NameError("Please enter a CSS selector")
+
         log.info("👀 check element.")
-        return True
+        js = 'return document.querySelectorAll("{css}")'.format(css=css)
+        ret = Seldom.driver.execute_script(js)
+        if len(ret) > 0:
+            for i in range(len(ret)):
+                js = 'return document.querySelectorAll("{css}")[{i}].outerHTML;'.format(css=css, i=i)
+                ret = Seldom.driver.execute_script(js)
+                print("{} ->".format(i), ret)
+        else:
+            log.warn("No elements were found.")
+
+    def get_elements(self, **kwargs):
+        """
+        Get a set of elements
+
+        Usage:
+        ret = self.get_elements(css="#el")
+        print(len(ret))
+        """
+        return get_element(**kwargs)
