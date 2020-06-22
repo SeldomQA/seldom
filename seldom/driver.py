@@ -3,6 +3,12 @@ from selenium.webdriver.chrome.options import Options as CH_Options
 from selenium.webdriver.firefox.options import Options as FF_Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+PHONE_LIST = [
+    'iPhone 5', 'iPhone 6', 'iPhone 7', 'iPhone 8', 'iPhone 8 Plus',
+    'iPhone X', 'Pixel 2', 'Pixel XL', "Galaxy S5"
+]
+PAD_LIST = ['iPad', 'iPad Pro']
+
 
 def browser(name=None, driver_path=None, grid_url=None):
     """
@@ -53,6 +59,18 @@ def browser(name=None, driver_path=None, grid_url=None):
         return webdriver.Edge()
     elif name == 'safari':
         return webdriver.Safari()
+    elif name in PHONE_LIST:
+        options = CH_Options()
+        options.add_experimental_option("mobileEmulation", {"deviceName": name})
+        driver = webdriver.Chrome(chrome_options=options)
+        driver.set_window_size(width=480, height=900)
+        return driver
+    elif name in PAD_LIST:
+        options = CH_Options()
+        options.add_experimental_option("mobileEmulation", {"deviceName": name})
+        driver = webdriver.Chrome(chrome_options=options)
+        driver.set_window_size(width=1100, height=900)
+        return driver
     else:
         raise NameError(
-                "Not found {} browser, You can enter 'ie', 'ff', 'opera', 'edge', 'chrome'.".format(name))
+            "Not found '{}' browser, See the help doc: https://github.com/SeldomQA/seldom/blob/master/docs/driver.md'.".format(name))

@@ -23,6 +23,25 @@ if __name__ == '__main__':
 
 在`main()`方法中通过`browser`参数设置不同的浏览器，默认为`Chrome`浏览器。
 
+除此之外，还支持 Mobile web 模式：
+
+```python
+if __name__ == '__main__':
+    seldom.main(browser="iPhone 6") # iPhone 6 手机浏览器展示
+```
+
+支持的设备类型，如下：
+
+```python
+
+PHONE_LIST = [
+    'iPhone 5', 'iPhone 6', 'iPhone 7', 'iPhone 8', 'iPhone 8 Plus',
+    'iPhone X', 'Pixel 2', 'Pixel XL', "Galaxy S5"
+]
+PAD_LIST = ['iPad', 'iPad Pro']
+
+```
+
 ## 安装浏览器驱动
 
 虽然说安装浏览及驱动是做Web UI 自动化的前提，但是，浏览器驱动的下载安装和设置总是难倒了一部分新手。
@@ -60,9 +79,7 @@ if __name__ == '__main__':
 
 注：浏览器要`browser`与驱动`driver_path` 要保持对应关系。
 
-
 ## 支持远程节点（Selenium Grid）
-
 
 首先，安装Java环境，然后下载 `selenium-server`。
 
