@@ -381,7 +381,7 @@ function showOutput(id, name) {
 <style type="text/css" media="screen">
 body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
 table       { font-size: 100%; }
-pre         {  }
+pre         { overflow: initial; }
 /* -- heading ---------------------------------------------------------------------- */
 h1 {
 	font-size: 16pt;
