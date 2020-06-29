@@ -24,12 +24,12 @@ class SMTP(object):
         if contents is None:
             contents = """
             <table width="50%" cellpadding="0" cellspacing="0"
-                style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-sizing:border-box;display:inline-block;font-size:14px;overflow:hidden;border-radius:7px;background-color:#fff;margin:0;border:1px solid #e9e9e9"
-                bgcolor="#fff">
+                style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-sizing:border-box;display:inline-block;font-size:14px;overflow:hidden;border-radius:7px;background-color:##f5f9fc;margin:0;border:1px solid #e9e9e9"
+                bgcolor="#f5f9fc">
                 <tbody>
                     <tr
                         style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-sizing:border-box;font-size:14px;margin:0">
-                        <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-sizing:border-box;font-size:16px;vertical-align:top;color:#fff;font-weight:500;text-align:center;border-radius:3px 3px 0 0;background-color:#354052;margin:0;padding:20px"
+                        <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-sizing:border-box;font-size:16px;vertical-align:top;color:#fff;font-weight:500;text-align:center;border-radius:3px 3px 0 0;background-color:#47bac1;margin:0;padding:20px"
                             align="center" bgcolor="#354052" valign="top">
                             <span style="margin-top:20px;display:block"> Seldom Test Report </span>
                         </td>
