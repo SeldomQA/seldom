@@ -178,7 +178,7 @@ class Template_mixin(object):
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
-    <link rel="stylesheet" href="http://img.itest.info/classic.css">
+    <link rel="stylesheet" href="http://img.itest.info/seldom.css">
 
     %(stylesheet)s
 </head>
