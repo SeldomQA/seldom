@@ -395,6 +395,21 @@ class WebDriver(object):
         js = "window.scrollTo({w},{h});".format(w=str(width), h=str(height))
         self.execute_script(js)
 
+    def element_scroll(self, css, width=None, height=None):
+        """
+        Setting width and height of element scroll bar.
+        Usage:
+        self.element_scroll(css=".class", width=300, height=500)
+        """
+        if width is None:
+            width = "0"
+        if height is None:
+            height = "0"
+        scroll_life = 'document.querySelector("{css}").scrollLeft = {w};'.format(css=css, w=width)
+        scroll_top = 'document.querySelector("{css}").scrollTop = {h};'.format(css=css, h=height)
+        self.execute_script(scroll_life)
+        self.execute_script(scroll_top)
+
     def get_attribute(self, attribute=None, index=0, **kwargs):
         """
         Gets the value of an element attribute.
