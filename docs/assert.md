@@ -12,10 +12,10 @@ self.assertTitle("title")
 self.assertInTitle("title")
 
 # 断言URL是否等于
-self.assertURL("url")
+self.assertUrl("url")
 
 # 断言URL是否包含
-self.assertInURL("url")
+self.assertInUrl("url")
 
 # 断言页面是否存在“text”
 self.assertText("text")
