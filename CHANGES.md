@@ -1,3 +1,6 @@
+### 1.5.6
+* 封装test fixture方法
+
 ### 1.5.5
 * 修改HTMLTestRunner 错误日志的展示
 * 增加mobile web的支持
