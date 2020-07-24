@@ -7,13 +7,13 @@ from seldom.logging import log
 
 class TestCase(unittest.TestCase, WebDriver):
 
-    def setup_class(self):
+    def start_class(self):
         """
         Hook method for setting up class fixture before running tests in the class.
         """
         pass
 
-    def teardown_class(self):
+    def end_class(self):
         """
         Hook method for deconstructing the class fixture after running all tests in the class.
         """
@@ -21,11 +21,30 @@ class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
-        cls().setup_class()
+        cls().start_class()
 
     @classmethod
     def tearDownClass(cls):
-        cls().teardown_class()
+        cls().end_class()
+
+    def start(self):
+        """
+        Hook method for setting up the test fixture before exercising it.
+        """
+        pass
+
+    def end(self):
+        """
+        Hook method for deconstructing the test fixture after testing it.
+        """
+        pass
+
+    def setUp(self):
+        self.start()
+
+    def tearDown(self):
+        self.end()
+
 
     def assertTitle(self, title=None, msg=None):
         """

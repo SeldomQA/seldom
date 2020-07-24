@@ -178,7 +178,7 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 * [发邮件功能](./docs/send_mail.md)
 
-* [setUp/setUpClass方法](./docs/setupclass.md)
+* [test fixture](./docs/setupclass.md)
 
 
 ## 感谢
