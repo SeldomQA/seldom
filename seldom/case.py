@@ -7,6 +7,26 @@ from seldom.logging import log
 
 class TestCase(unittest.TestCase, WebDriver):
 
+    def setup_class(self):
+        """
+        Hook method for setting up class fixture before running tests in the class.
+        """
+        pass
+
+    def teardown_class(self):
+        """
+        Hook method for deconstructing the class fixture after running all tests in the class.
+        """
+        pass
+
+    @classmethod
+    def setUpClass(cls):
+        cls().setup_class()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls().teardown_class()
+
     def assertTitle(self, title=None, msg=None):
         """
         Asserts whether the current title is in line with expectations.
