@@ -5,6 +5,7 @@ import unittest
 import datetime
 from xml.sax import saxutils
 from seldom.running.config import RunResult, Seldom
+from seldom.logging.exceptions import TestFixtureRunError
 
 """
 A TestRunner for use with the Python unit testing framework. It
@@ -766,7 +767,10 @@ class _TestResult(TestResult):
             sys.stderr = self.stderr0
             self.stdout0 = None
             self.stderr0 = None
-        return self.outputBuffer.getvalue()
+        try:
+            return self.outputBuffer.getvalue()
+        except AttributeError:
+            raise TestFixtureRunError("test setup/teardown run error.")
 
     def stopTest(self, test):
         # Usually one of addSuccess, addError or addFailure would have been called.

@@ -28,3 +28,10 @@ class NotFindElementError(SeldomException):
     No element errors were found
     """
     pass
+
+
+class TestFixtureRunError(SeldomException):
+    """
+    Test fixture run error
+    """
+    pass
