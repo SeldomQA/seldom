@@ -58,4 +58,39 @@ if __name__ == '__main__':
 * 类方法以 `cls` 前缀。
 * 调用的方法第一个参数需要传 `cls` 参数
 
-总之，并不推荐你把用例的操作步骤 `setUpClass()`方法中。
+__总之，并不推荐你把用例的操作步骤 `setUpClass()`方法中!__
+
+__总之，并不推荐你把用例的操作步骤 `setUpClass()`方法中!__
+
+__总之，并不推荐你把用例的操作步骤 `setUpClass()`方法中!__
+
+
+如果非要写怎么办？ 请单独封装方法。
+
+```python
+import seldom
+
+
+class TestCase(seldom.TestCase):
+
+    def start(self):
+        """
+        封装操作步骤
+        """
+        self.get("https://www.baidu.com")
+        self.type(id_="kw", text="setupclass")
+        self.click(id_="su")
+        self.sleep(2)
+
+    @classmethod
+    def setUpClass(cls):
+        cls().start()
+
+    def test_get_search_result(self):
+        result = self.get_text(xpath="//div/h3/a", index=0)
+        print(result)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
