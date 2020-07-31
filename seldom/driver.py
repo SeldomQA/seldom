@@ -29,15 +29,15 @@ def browser(name=None, driver_path=None, grid_url=None):
         if driver_path is not None:
             return webdriver.Firefox(executable_path=driver_path)
         if grid_url is not None:
-            webdriver.Remote(command_executor=grid_url,
-                             desired_capabilities=DesiredCapabilities.FIREFOX.copy())
+            return webdriver.Remote(command_executor=grid_url,
+                                    desired_capabilities=DesiredCapabilities.FIREFOX.copy())
         return webdriver.Firefox()
     elif name == "chrome":
         if driver_path is not None:
             return webdriver.Chrome(executable_path=driver_path)
         if grid_url is not None:
-            webdriver.Remote(command_executor=grid_url,
-                             desired_capabilities=DesiredCapabilities.CHROME.copy())
+            return webdriver.Remote(command_executor=grid_url,
+                                    desired_capabilities=DesiredCapabilities.CHROME.copy())
         return webdriver.Chrome()
     elif name == "internet explorer" or name == "ie":
         return webdriver.Ie()
