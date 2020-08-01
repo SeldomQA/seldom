@@ -25,21 +25,21 @@ def browser(name=None, driver_path=None, grid_url=None):
     if name is None:
         name = "chrome"
 
-    if name == "firefox" or name == "ff":
+    if name in ["firefox", "ff"]:
         if driver_path is not None:
             return webdriver.Firefox(executable_path=driver_path)
         if grid_url is not None:
             return webdriver.Remote(command_executor=grid_url,
                                     desired_capabilities=DesiredCapabilities.FIREFOX.copy())
         return webdriver.Firefox()
-    elif name == "chrome":
+    elif name in ["chrome", "google chrome", "gc"]:
         if driver_path is not None:
             return webdriver.Chrome(executable_path=driver_path)
         if grid_url is not None:
             return webdriver.Remote(command_executor=grid_url,
                                     desired_capabilities=DesiredCapabilities.CHROME.copy())
         return webdriver.Chrome()
-    elif name == "internet explorer" or name == "ie":
+    elif name == ["internet explorer", "ie", "IE"]:
         return webdriver.Ie()
     elif name == "opera":
         return webdriver.Opera()
