@@ -115,6 +115,7 @@ def main(path=None,
             BrowserConfig.report_path = report
         else:
             report = os.path.join(os.getcwd(), "reports", report + ".html")
+            BrowserConfig.driver_path = driver_path
 
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
