@@ -113,6 +113,8 @@ def main(path=None,
             now = time.strftime("%Y_%m_%d_%H_%M_%S")
             report = os.path.join(os.getcwd(), "reports", now + "_result.html")
             BrowserConfig.report_path = report
+        else:
+            report = os.path.join(os.getcwd(), "reports", report + ".html")
 
         with(open(report, 'wb')) as fp:
             runner = HTMLTestRunner(stream=fp, title=title, description=description)
