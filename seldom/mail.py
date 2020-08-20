@@ -113,12 +113,15 @@ class SMTP(object):
         att["Content-Disposition"] = 'attachment; filename="{}"'.format(att_name)
         msg.attach(att)
 
-        smtp = smtplib.SMTP()
-        smtp.connect(self.host)
-        smtp.login(self.user, self.password)
-        smtp.sendmail(self.user, to, msg.as_string())
-        smtp.quit()
-        log.info("Email sent successfully!!")
+        try:
+            smtp = smtplib.SMTP()
+            smtp.connect(self.host)
+            smtp.login(self.user, self.password)
+            smtp.sendmail(self.user, to, msg.as_string())
+            smtp.quit()
+            log.info("📮Email sent successfully!!")
+        except Exception as error:
+            log.error('❌ Email failed to send!!'+str(error))
 
 
 if __name__ == '__main__':
