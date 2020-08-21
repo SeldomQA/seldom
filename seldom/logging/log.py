@@ -1,38 +1,57 @@
+import os
 import sys
+import time
+import inspect
 import platform
 import logging.handlers
 from colorama import Fore, Style
 
+stack_t = inspect.stack()
+ins = inspect.getframeinfo(stack_t[1][0])
+file_dir = os.path.dirname(os.path.abspath(ins.filename))
+log_dir = os.path.join(file_dir, "logs")
+if os.path.exists(log_dir) is False:
+    os.mkdir(log_dir)
+
+file_handler = logging.FileHandler(os.path.join(file_dir, "logs", str(time.time())+".log"), encoding='utf-8')
+
 _logger = logging.getLogger('seldom')
 _logger.setLevel(logging.DEBUG)
 _handler = logging.StreamHandler(sys.stdout)
-_handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
+
 
 if platform.system().lower() == "windows":
+    _logger.addHandler(file_handler)
     _logger.addHandler(_handler)
 else:
+    _logger.addHandler(file_handler)
     _logger.addHandler(_handler)
     _logger.removeHandler(_handler)
 
 
 def debug(msg):
-    _logger.debug("DEBUG " + str(msg))
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+    _logger.debug(now + " [DEBUG] " + str(msg))
 
 
 def info(msg):
-    _logger.info(Fore.GREEN + "INFO " + str(msg) + Style.RESET_ALL)
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+    _logger.info(Fore.GREEN + now + " [INFO] " + str(msg) + Style.RESET_ALL)
 
 
 def error(msg):
-    _logger.error(Fore.RED + "ERROR " + str(msg) + Style.RESET_ALL)
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+    _logger.error(Fore.RED + now + " [ERROR] " + str(msg) + Style.RESET_ALL)
 
 
 def warn(msg):
-    _logger.warning(Fore.YELLOW + "WARNING " + str(msg) + Style.RESET_ALL)
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+    _logger.warning(Fore.YELLOW + now + " [WARNING] " + str(msg) + Style.RESET_ALL)
 
 
 def _print(msg):
-    _logger.debug(Fore.BLUE + "PRINT " + str(msg) + Style.RESET_ALL)
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+    _logger.debug(Fore.BLUE + now + " [PRINT] " + str(msg) + Style.RESET_ALL)
 
 
 def set_level(level):
