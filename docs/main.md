@@ -19,7 +19,8 @@ if __name__ == '__main__':
               save_last_run=False,
               driver_path=None,
               grid_url=None,
-              timeout=None
+              timeout=None,
+              xmlrunner=False
     )
 ```
 
@@ -36,3 +37,4 @@ if __name__ == '__main__':
 * driver_path : 设置浏览器驱动的`绝对`路径。要和 `browser` 设置保持一致。
 * grid_url : 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
 * timeout : 设置超时时间，默认10秒
+* xmlrunner: 设置为 True ，生成XML格式的报告。不支持同时生成HTML和 XML 两种格式的报告。
