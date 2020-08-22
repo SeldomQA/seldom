@@ -119,9 +119,9 @@ class SMTP(object):
             smtp.login(self.user, self.password)
             smtp.sendmail(self.user, to, msg.as_string())
             smtp.quit()
-            log.info("📮Email sent successfully!!")
-        except Exception as error:
-            log.error('❌ Email failed to send!!'+str(error))
+            log.info(" 📧 Email sent successfully!!")
+        except BaseException as msg:
+            log.error('❌ Email failed to send!!' + str(msg))
 
 
 if __name__ == '__main__':
