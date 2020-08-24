@@ -27,6 +27,10 @@ from .driver import browser
 from .skip import skip
 from .skip import skip_if
 from .skip import skip_unless
+from .logging.log import _print
+from .logging.log import info
+from .logging.log import error
+from .logging.log import debug
 
 __author__ = "bugmaster"
 

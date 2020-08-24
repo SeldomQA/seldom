@@ -13,7 +13,8 @@ log_dir = os.path.join(file_dir, "logs")
 if os.path.exists(log_dir) is False:
     os.mkdir(log_dir)
 
-file_handler = logging.FileHandler(os.path.join(file_dir, "logs", str(time.time())+".log"), encoding='utf-8')
+now_time = str(time.time()).split('.')[0]
+file_handler = logging.FileHandler(os.path.join(file_dir, "logs", now_time + ".log"), encoding='utf-8')
 
 _logger = logging.getLogger('seldom')
 _logger.setLevel(logging.DEBUG)
