@@ -19,8 +19,7 @@
 
 from .running.test_runner import main
 from .running.config import Seldom
-from .testdata.parameterized import data, data_class
-from .testdata.conversion import csv_to_list, excel_to_list, json_to_list
+from .testdata.parameterized import data, file_data, data_class
 from .webdriver import WebDriver
 from .case import TestCase
 from .driver import browser
