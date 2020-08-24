@@ -33,6 +33,6 @@ from .logging.log import debug
 
 __author__ = "bugmaster"
 
-__version__ = "1.5.6"
+__version__ = "1.6.0"
 
 __description__ = "WebUI automation testing framework based on Selenium."
