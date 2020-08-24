@@ -143,6 +143,7 @@ class TestCase(unittest.TestCase, WebDriver):
             if elem.is_displayed():
                 try:
                     self.assertIn(text, elem.text)
+                    log.info("👀 assertText: {text}.".format(text=text))
                     break
                 except AssertionError:
                     sleep(1)
