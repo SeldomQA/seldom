@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as CH_Options
 from selenium.webdriver.firefox.options import Options as FF_Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver import ChromeOptions
 
 PHONE_LIST = [
     'iPhone 5', 'iPhone 6', 'iPhone 7', 'iPhone 8', 'iPhone 8 Plus',
@@ -22,6 +23,9 @@ def browser(name=None, driver_path=None, grid_url=None):
              remote_connection.RemoteConnection object.
     :return:
     """
+    # Prevention of detection
+    option = ChromeOptions()
+    option.add_experimental_option('excludeSwitches', ['enable-automation'])
     if name is None:
         name = "chrome"
 
@@ -34,11 +38,25 @@ def browser(name=None, driver_path=None, grid_url=None):
         return webdriver.Firefox()
     elif name in ["chrome", "google chrome", "gc"]:
         if driver_path is not None:
-            return webdriver.Chrome(executable_path=driver_path)
+            chromedriver = webdriver.Chrome(executable_path=driver_path, options=option)
+            chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+                "source": """
+                Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+                })"""
+            })
+            return chromedriver
         if grid_url is not None:
             return webdriver.Remote(command_executor=grid_url,
                                     desired_capabilities=DesiredCapabilities.CHROME.copy())
-        return webdriver.Chrome()
+        chromedriver = webdriver.Chrome(options=option)
+        chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+            Object.defineProperty(navigator, 'webdriver', {
+            get: () => undefined
+            })"""
+        })
+        return chromedriver
     elif name == ["internet explorer", "ie", "IE"]:
         return webdriver.Ie()
     elif name == "opera":
@@ -47,8 +65,22 @@ def browser(name=None, driver_path=None, grid_url=None):
         chrome_options = CH_Options()
         chrome_options.add_argument('--headless')
         if driver_path is not None:
-            return webdriver.Chrome(chrome_options=chrome_options, executable_path=driver_path)
-        return webdriver.Chrome(chrome_options=chrome_options)
+            chromedriver = webdriver.Chrome(chrome_options=chrome_options, options=option)
+            chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+                "source": """
+                Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+                })"""
+            })
+            return chromedriver
+        chromedriver = webdriver.Chrome(options=option)
+        chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+                                        Object.defineProperty(navigator, 'webdriver', {
+                                        get: () => undefined
+                                        })"""
+        })
+        return chromedriver
     elif name == "firefox_headless":
         firefox_options = FF_Options()
         firefox_options.headless = True
