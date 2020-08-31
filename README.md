@@ -13,6 +13,8 @@ WebUI automation testing framework based on Selenium and unittest.
 * 支持用例参数化。
 * 支持用例失败/错误重跑。
 * 定制化HTML测试报告，用例失败/错误自动截图。
+* 支持XML测试报告
+
 
 ### 安装
 
