@@ -76,9 +76,9 @@ def browser(name=None, driver_path=None, grid_url=None):
         chromedriver = webdriver.Chrome(options=option)
         chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
-                                        Object.defineProperty(navigator, 'webdriver', {
-                                        get: () => undefined
-                                        })"""
+            Object.defineProperty(navigator, 'webdriver', {
+            get: () => undefined
+            })"""
         })
         return chromedriver
     elif name == "firefox_headless":
