@@ -50,6 +50,12 @@ self.double_click(css="#el")
 # Execute JavaScript scripts.
 self.execute_script("window.scrollTo(200,1000);")
 
+# Setting width and height of window scroll bar.
+self.window_scroll(width=300, height=500)
+
+# Setting width and height of element scroll bar.
+self.element_scroll(css=".class", width=300, height=500)
+
 # get url.
 self.get("https://www.baidu.com")
 

@@ -28,3 +28,17 @@ class NotFindElementError(SeldomException):
     No element errors were found
     """
     pass
+
+
+class TestFixtureRunError(SeldomException):
+    """
+    Test fixture run error
+    """
+    pass
+
+
+class FileTypeError(SeldomException):
+    """
+    Data file type error
+    """
+    pass

@@ -5,6 +5,7 @@ import unittest
 import datetime
 from xml.sax import saxutils
 from seldom.running.config import RunResult, Seldom
+from seldom.logging.exceptions import TestFixtureRunError
 
 """
 A TestRunner for use with the Python unit testing framework. It
@@ -178,7 +179,7 @@ class Template_mixin(object):
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
-    <link rel="stylesheet" href="http://img.itest.info/classic.css">
+    <link rel="stylesheet" href="http://img.itest.info/seldom.css">
 
     %(stylesheet)s
 </head>
@@ -381,7 +382,7 @@ function showOutput(id, name) {
 <style type="text/css" media="screen">
 body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
 table       { font-size: 100%; }
-pre         {  }
+pre         { overflow: initial; }
 /* -- heading ---------------------------------------------------------------------- */
 h1 {
 	font-size: 16pt;
@@ -766,7 +767,10 @@ class _TestResult(TestResult):
             sys.stderr = self.stderr0
             self.stdout0 = None
             self.stderr0 = None
-        return self.outputBuffer.getvalue()
+        try:
+            return self.outputBuffer.getvalue()
+        except AttributeError:
+            raise TestFixtureRunError("test setup/teardown run error.")
 
     def stopTest(self, test):
         # Usually one of addSuccess, addError or addFailure would have been called.

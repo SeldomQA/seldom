@@ -2,6 +2,7 @@
 import os
 import time
 import unittest
+from xmlrunner import XMLTestRunner
 import inspect
 from seldom.logging import log
 from seldom.driver import browser as b
@@ -32,7 +33,8 @@ def main(path=None,
          save_last_run=False,
          driver_path=None,
          grid_url=None,
-         timeout=10):
+         timeout=10,
+         xmlrunner=False):
     """
     runner test case
     :param path:
@@ -46,6 +48,7 @@ def main(path=None,
     :param driver_path:
     :param grid_url:
     :param timeout:
+    :param xmlrunner:
     :return:
     """
     Seldom.application = "web"
@@ -95,10 +98,14 @@ def main(path=None,
     else:
         raise TypeError("Timeout {} is not integer.".format(timeout))
 
+    # set debug
+    Seldom.debug = debug
+
     """
     Global launch browser
     """
     Seldom.driver = b(BrowserConfig.name, BrowserConfig.driver_path, BrowserConfig.grid_url)
+    Seldom.driver.maximize_window()
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
@@ -109,13 +116,24 @@ def main(path=None,
 
         if report is None:
             now = time.strftime("%Y_%m_%d_%H_%M_%S")
-            report = os.path.join(os.getcwd(), "reports", now + "_result.html")
-            BrowserConfig.report_path = report
+            if xmlrunner is False:
+                report = os.path.join(os.getcwd(), "reports", now + "_result.html")
+                BrowserConfig.report_path = report
+            else:
+                report = os.path.join(os.getcwd(), "reports", now + ".xml")
+                BrowserConfig.report_path = report
+        else:
+            report = os.path.join(os.getcwd(), "reports", report + ".html")
+            BrowserConfig.driver_path = driver_path
 
         with(open(report, 'wb')) as fp:
-            runner = HTMLTestRunner(stream=fp, title=title, description=description)
             log.info(seldom_str)
-            runner.run(suits, rerun=rerun, save_last_run=save_last_run)
+            if xmlrunner is False:
+                runner = HTMLTestRunner(stream=fp, title=title, description=description)
+                runner.run(suits, rerun=rerun, save_last_run=save_last_run)
+            else:
+                runner = XMLTestRunner(output=fp)
+                runner.run(suits)
         log.info("generated html file: file:///{}".format(report))
     else:
         runner = unittest.TextTestRunner(verbosity=2)

@@ -13,6 +13,8 @@ WebUI automation testing framework based on Selenium and unittest.
 * 支持用例参数化。
 * 支持用例失败/错误重跑。
 * 定制化HTML测试报告，用例失败/错误自动截图。
+* 支持XML测试报告
+
 
 ### 安装
 
@@ -162,6 +164,8 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 * [seldom API](./docs/seldom_api.md)
 
+* [keys键盘操作](./docs/keys.md)
+
 * [seldom 断言](./docs/assert.md)
 
 * [用例失败重跑&自动截图](./docs/rerun_screenshot.md)
@@ -176,7 +180,7 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 * [发邮件功能](./docs/send_mail.md)
 
-* [setUp/setUpClass方法](./docs/setupclass.md)
+* [test fixture](./docs/setupclass.md)
 
 
 ## 感谢

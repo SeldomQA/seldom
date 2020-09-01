@@ -19,17 +19,20 @@
 
 from .running.test_runner import main, app
 from .running.config import Seldom
-from .testdata.parameterized import data, data_class
-from .testdata.conversion import csv_to_list, excel_to_list, json_to_list
+from .testdata.parameterized import data, file_data, data_class
 from .webdriver import WebDriver
 from .case import TestCase
 from .driver import browser
 from .skip import skip
 from .skip import skip_if
 from .skip import skip_unless
+from .logging.log import _print
+from .logging.log import info
+from .logging.log import error
+from .logging.log import debug
 
 __author__ = "bugmaster"
 
-__version__ = "1.5.2"
+__version__ = "1.6.0"
 
 __description__ = "WebUI automation testing framework based on Selenium."

@@ -29,7 +29,9 @@ setup(
         'Appium-Python-Client==1.0.1',
         'parameterized==0.7.0',
         'colorama>=0.4.3',
-        'openpyxl>=3.0.3'
+        'openpyxl>=3.0.3',
+        'pyyaml>=3.13',
+        'unittest-xml-reporting==3.0.4'
     ],
     classifiers=[
         'Intended Audience :: Developers',

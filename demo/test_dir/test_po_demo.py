@@ -3,7 +3,7 @@ page object model
 Using the poium Library
 https://github.com/SeldomQA/poium
 ```
-> pip install poum
+> pip install poium
 ```
 """
 import seldom
@@ -25,6 +25,7 @@ class BaiduTest(seldom.TestCase):
         A simple test
         """
         page = BaiduPage(Seldom.driver)
+        # page = BaiduPage(self.driver)
         page.get("https://www.baidu.com")
         page.search_input = "seldom"
         page.search_button.click()
@@ -32,4 +33,8 @@ class BaiduTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main(debug=True)
+    seldom.main(
+        browser='chrome',
+        driver_path=r'/Users/yuanbaolei/work/GitHub/PoiumAutoTest/driver/chromedriver',
+        debug=True)
+

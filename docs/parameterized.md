@@ -57,9 +57,9 @@ class YouTest(seldom.TestCase):
 
 ```
 
-#### 读取csv文件
+#### csv文件参数化
 
-seldom支持将 csv文件的数据解析为 list。
+seldom支持将`csv`文件的参数化。
 
 表格内容如下（data.csv）：
 
@@ -70,13 +70,12 @@ seldom支持将 csv文件的数据解析为 list。
 
 ```python
 import seldom
-from seldom import data
-from seldom import csv_to_list
+from seldom import file_data
 
 
 class YouTest(seldom.TestCase):
 
-    @data(csv_to_list(file="test_data/data.csv", line=2))
+    @file_data("./data.csv", line=2)
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -85,24 +84,23 @@ class YouTest(seldom.TestCase):
 
 ```
 
-`csv_to_list()` 方法excel文件内容转化为list。
+`csv_to_list()` 方法csv文件内容转化为list。
 
-* file: 指定csv文件的绝对路径。
-* line: 指定从第几行开始读取，默认第一行。
+* file: 指定csv文件的路径。
+* line: 指定从第几行开始读取，默认第1行。
 
-#### 读取excel文件
+#### excel文件参数化
 
-seldom支持将excel文件的数据解析为 list。
+seldom支持将`excel`文件的参数化。
 
 ```python
 import seldom
-from seldom import data
-from seldom import excel_to_list
+from seldom import file_data
 
 
 class YouTest(seldom.TestCase):
 
-    @data(excel_to_list(file="test_data/data.xlsx",  sheet="Sheet1", line=2))
+    @file_data("./data.xlsx", sheet="Sheet1", line=2)
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -113,13 +111,13 @@ class YouTest(seldom.TestCase):
 
 `excel_to_list()` 方法excel文件数据转化为list。
 
-* file : 指定excel文件的绝对路径。
+* file : 指定excel文件的路径。
 * sheet: 指定excel的标签页，默认名称为 Sheet1。
-* line :  指定从第几行开始读取，默认第一行。
+* line :  指定从第几行开始读取，默认第1行。
 
-#### 读取JSON文件
+#### JSON文件参数化
 
-seldom支持将JSON文件的数据解析为 list/dict。
+seldom支持将`JSON`文件的参数化。
 
 json 文件：
 ```json
@@ -133,13 +131,12 @@ json 文件：
 
 ```python
 import seldom
-from seldom import data
-from seldom import json_to_list
+from seldom import file_data
 
 
 class YouTest(seldom.TestCase):
 
-    @data(json_to_list(file="test_data/data.json", key="login"))
+    @file_data("./data.json", key="login")
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -148,14 +145,46 @@ class YouTest(seldom.TestCase):
 
 ```
 
-`json_to_list()` 方法JSON文件数据转化为list/dict。
-
-* file : 指定JSON文件的绝对路径。
+* file : 指定JSON文件的路径。
 * key: 指定字典的key，默认不指定解析整个JSON文件。
 
-#### 使用第三方ddt
+#### YAML文件参数化
 
-有时测试数据会比较多，需要将数据存到测试文件，推荐使用[ddt](https://github.com/datadriventests/ddt)。
+seldom支持`YAML`文件的参数化。
+
+data.yaml 文件：
+
+```yaml
+login:
+  - - admin
+    - admin123
+  - - guest
+    - guest123
+```
+
+```python
+import seldom
+from seldom import file_data
+
+
+class YouTest(seldom.TestCase):
+
+    @file_data("./data.yaml", key="login")
+    def test_login(self, username, password):
+        """a simple test case """
+        print(username)
+        print(password)
+        # ...
+
+```
+
+* file : 指定YAML文件的路径。
+* key: 指定字典的key，默认不指定解析整个YAML文件。
+
+
+#### 支持第三方ddt
+
+seldom支持第三方参数化库：[ddt](https://github.com/datadriventests/ddt)。
 
 安装：
 

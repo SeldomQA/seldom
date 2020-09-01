@@ -2,6 +2,7 @@
 
 如果你想将测试完成的报告发送到指定邮箱，那么可以调用发邮件的方法实现。
 
+
 ```python
 import seldom
 from seldom.mail import SMTP
@@ -20,8 +21,10 @@ class Test(seldom.TestCase):
 if __name__ == '__main__':
     seldom.main()
     smtp = SMTP(user="you@126.com", password="abc123", host="smtp.126.com")
-    smtp.sender(to="receive@mail.com")
+    smtp.sender(to="receive@mail.com", subject='Email title')
 ```
++ ```subject```邮件标题 默认：Seldom Test Report
++ ```to```添加多个收件人 , 号分隔
 
 如果你自定义了报告的名称，那么需要指定报告名称。
 

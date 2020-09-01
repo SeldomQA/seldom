@@ -8,6 +8,41 @@ from parameterized.parameterized import skip_on_empty_helper
 from parameterized.parameterized import reapply_patches_if_need
 from parameterized.parameterized import delete_patches_if_need
 from parameterized import parameterized_class
+from seldom.testdata import conversion
+from seldom.logging.exceptions import FileTypeError
+
+
+def file_data(file, line=1, sheet="Sheet1", key=None):
+    """
+    Support file parameterization.
+
+    d.json
+    ```json
+    {
+     "login":  [
+        ["admin", "admin123"],
+        ["guest", "guest123"]
+     ]
+    }
+    ```
+    >>  @file_data(file="./d.json", key="login")
+    ... def test_case(self, username, password):
+    ...     print(username)
+    ...     print(password)
+    """
+    suffix = file.split(".")[-1]
+    if suffix == "csv":
+        data_list = conversion.csv_to_list(file, line=line)
+    elif suffix == "xlsx":
+        data_list = conversion.excel_to_list(file, sheet=sheet, line=line)
+    elif suffix == "json":
+        data_list = conversion.json_to_list(file, key=key)
+    elif suffix == "yaml":
+        data_list = conversion.yaml_to_list(file, key=key)
+    else:
+        raise FileTypeError("Your file is not supported: {}".format(file))
+
+    return data(data_list)
 
 
 def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
@@ -21,8 +56,6 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
         ...     actual = add1(input)
         ...     assert_equal(actual, expected)
         ...
-        >> locals()
-        ... 'test_add1_foo_0': <function ...> ...
         >>
         """
 
