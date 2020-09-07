@@ -98,40 +98,40 @@ def get_element(**kwargs):
         elem = Seldom.driver.find_elements_by_xpath(value)
     elif by == "css":
         find_element((By.CSS_SELECTOR, value))
-        elem = Seldom.driver.find_elements_by_css_selector(value)[index]
+        elem = Seldom.driver.find_elements_by_css_selector(value)
     elif by == "ios_uiautomation":
         find_element((MobileBy.IOS_UIAUTOMATION, value))
-        elem = Seldom.driver.find_elements_by_ios_uiautomation(value)[index]
+        elem = Seldom.driver.find_elements_by_ios_uiautomation(value)
     elif by == "ios_predicate":
         find_element((MobileBy.IOS_PREDICATE, value))
-        elem = Seldom.driver.find_elements_by_ios_predicate(value)[index]
+        elem = Seldom.driver.find_elements_by_ios_predicate(value)
     elif by == "ios_class_chain":
         find_element((MobileBy.IOS_CLASS_CHAIN, value))
-        elem = Seldom.driver.find_elements_by_ios_class_chain(value)[index]
+        elem = Seldom.driver.find_elements_by_ios_class_chain(value)
     elif by == "android_uiautomator":
         find_element((MobileBy.ANDROID_UIAUTOMATOR, value))
-        elem = Seldom.driver.find_elements_by_android_uiautomator(value)[index]
+        elem = Seldom.driver.find_elements_by_android_uiautomator(value)
     elif by == "android_viewtag":
         find_element((MobileBy.ANDROID_VIEWTAG, value))
-        elem = Seldom.driver.find_elements_by_android_viewtag(value)[index]
+        elem = Seldom.driver.find_elements_by_android_viewtag(value)
     elif by == "android_data_matcher":
         find_element((MobileBy.ANDROID_DATA_MATCHER, value))
-        elem = Seldom.driver.find_elements_by_android_data_matcher(value)[index]
+        elem = Seldom.driver.find_elements_by_android_data_matcher(value)
     elif by == "android_view_matcher":
         find_element((MobileBy.ANDROID_VIEW_MATCHER, value))
-        elem = Seldom.driver.find_elements_by_android_view_matcher(value)[index]
+        elem = Seldom.driver.find_elements_by_android_view_matcher(value)
     elif by == "windows_uiautomation":
         find_element((MobileBy.WINDOWS_UI_AUTOMATION, value))
-        elem = Seldom.driver.find_elements_by_windows_uiautomation(value)[index]
+        elem = Seldom.driver.find_elements_by_windows_uiautomation(value)
     elif by == "accessibility_id":
         find_element((MobileBy.ACCESSIBILITY_ID, value))
-        elem = Seldom.driver.find_elements_by_accessibility_id(value)[index]
+        elem = Seldom.driver.find_elements_by_accessibility_id(value)
     elif by == "image":
         find_element((MobileBy.IMAGE, value))
-        elem = Seldom.driver.find_elements_by_image(value)[index]
+        elem = Seldom.driver.find_elements_by_image(value)
     elif by == "custom":
         find_element((MobileBy.CUSTOM, value))
-        elem = Seldom.driver.find_elements_by_custom(value)[index]
+        elem = Seldom.driver.find_elements_by_custom(value)
     else:
         raise NameError("Please enter the correct targeting elements.")
 
