@@ -35,30 +35,30 @@ def browser(name=None, driver_path=None, grid_url=None):
         if driver_path is not None:
             return selenium.Firefox(executable_path=driver_path)
         if grid_url is not None:
-            return webdriver.Remote(command_executor=grid_url,
+            return selenium.Remote(command_executor=grid_url,
                                     desired_capabilities=DesiredCapabilities.FIREFOX.copy())
         return selenium.Firefox()
     elif name in ["chrome", "google chrome", "gc"]:
         if driver_path is not None:
-            chromedriver = selenium.Chrome(executable_path=driver_path, options=option)
-            chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            driver = selenium.Chrome(executable_path=driver_path, options=option)
+            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
                 "source": """
                 Object.defineProperty(navigator, 'webdriver', {
                 get: () => undefined
                 })"""
             })
-            return chromedriver
+            return driver
         if grid_url is not None:
-            return webdriver.Remote(command_executor=grid_url,
-                                    desired_capabilities=DesiredCapabilities.CHROME.copy())
-        chromedriver = selenium.Chrome(options=option)
-        chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            return selenium.Remote(command_executor=grid_url,
+                                   desired_capabilities=DesiredCapabilities.CHROME.copy())
+        driver = selenium.Chrome(options=option)
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
             Object.defineProperty(navigator, 'webdriver', {
             get: () => undefined
             })"""
         })
-        return chromedriver
+        return driver
     elif name == ["internet explorer", "ie", "IE"]:
         return selenium.Ie()
     elif name == "opera":
@@ -67,22 +67,22 @@ def browser(name=None, driver_path=None, grid_url=None):
         chrome_options = CH_Options()
         chrome_options.add_argument('--headless')
         if driver_path is not None:
-            chromedriver = selenium.Chrome(chrome_options=chrome_options, options=option)
-            chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            driver = selenium.Chrome(chrome_options=chrome_options, options=option)
+            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
                 "source": """
                 Object.defineProperty(navigator, 'webdriver', {
                 get: () => undefined
                 })"""
             })
-            return chromedriver
-        chromedriver = selenium.Chrome(options=option)
-        chromedriver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            return driver
+        driver = selenium.Chrome(options=option)
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
             Object.defineProperty(navigator, 'webdriver', {
             get: () => undefined
             })"""
         })
-        return chromedriver
+        return driver
     elif name == "firefox_headless":
         firefox_options = FF_Options()
         firefox_options.headless = True
@@ -96,14 +96,27 @@ def browser(name=None, driver_path=None, grid_url=None):
     elif name in PHONE_LIST:
         options = CH_Options()
         options.add_experimental_option("mobileEmulation", {"deviceName": name})
-        driver = selenium.Chrome(chrome_options=options, executable_path=driver_path)
+        driver = selenium.Chrome(chrome_options=options, executable_path=driver_path, options=option)
         driver.set_window_size(width=480, height=900)
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+                    Object.defineProperty(navigator, 'webdriver', {
+                    get: () => undefined
+                    })"""
+        })
         return driver
     elif name in PAD_LIST:
         options = CH_Options()
         options.add_experimental_option("mobileEmulation", {"deviceName": name})
-        driver = selenium.Chrome(chrome_options=options, executable_path=driver_path)
+        driver = selenium.Chrome(chrome_options=options, executable_path=driver_path, options=option)
+
         driver.set_window_size(width=1100, height=900)
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+                    Object.defineProperty(navigator, 'webdriver', {
+                    get: () => undefined
+                    })"""
+        })
         return driver
     else:
         raise NameError(

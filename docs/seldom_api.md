@@ -1,7 +1,6 @@
 ### seldom API
 
 seldom 简化了selenium中的API，将以最简单的方式操作Web页面。
-
 所有API如下：
 
 ```python
@@ -158,4 +157,14 @@ self.new_window_handle
 
 # Returns the handles of all windows within the current session.
 self.window_handles
+```
+##### 文件上传
+```python
+# Single file upload
+filePath = r'C:\Users\admin\Desktop\文本文档.txt'
+self.type(css='.upload-button>input', text=filePath)
+
+# Multiple files upload
+filePath = r'C:\Users\admin\Desktop\第一文档.txt'+'\n'+r'C:\Users\admin\Desktop\第二文档.txt'
+self.type(css='.upload-button>input', text=filePath)
 ```
