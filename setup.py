@@ -26,7 +26,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'selenium>=3.12.0',
-        'Appium-Python-Client==1.0.1',
+        'Appium-Python-Client>=1.0.1',
         'parameterized==0.7.0',
         'colorama>=0.4.3',
         'openpyxl>=3.0.3',
