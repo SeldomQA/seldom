@@ -160,11 +160,11 @@ self.window_handles
 ```
 ##### 文件上传
 ```python
-# 单文件上传
+# Single file upload
 filePath = r'C:\Users\admin\Desktop\文本文档.txt'
 self.type(css='.upload-button>input', text=filePath)
 
-# 多文件上传
+# Multiple files upload
 filePath = r'C:\Users\admin\Desktop\第一文档.txt'+'\n'+r'C:\Users\admin\Desktop\第二文档.txt'
 self.type(css='.upload-button>input', text=filePath)
 ```
