@@ -135,10 +135,6 @@ def get_element(**kwargs):
     else:
         raise NameError("Please enter the correct targeting elements.")
 
-    if Seldom.application == "web":
-        style_red = 'arguments[0].style.border="2px solid red"'
-        Seldom.driver.execute_script(style_red, elem)
-
     return elem
 
 
@@ -147,27 +143,28 @@ def show_element(elem):
     Show the elements of the operation
     :param elem:
     """
-    style_red = 'arguments[0].style.border="2px solid #FF0000"'
-    style_blue = 'arguments[0].style.border="2px solid #00FF00"'
-    style_null = 'arguments[0].style.border=""'
-    if Seldom.debug is True:
-        for _ in range(3):
-            Seldom.driver.execute_script(style_red, elem)
-            time.sleep(0.2)
+    if Seldom.application == "web":
+        style_red = 'arguments[0].style.border="2px solid #FF0000"'
+        style_blue = 'arguments[0].style.border="2px solid #00FF00"'
+        style_null = 'arguments[0].style.border=""'
+        if Seldom.debug is True:
+            for _ in range(3):
+                Seldom.driver.execute_script(style_red, elem)
+                time.sleep(0.2)
+                Seldom.driver.execute_script(style_blue, elem)
+                time.sleep(0.2)
             Seldom.driver.execute_script(style_blue, elem)
-            time.sleep(0.2)
-        Seldom.driver.execute_script(style_blue, elem)
-        time.sleep(2)
-        Seldom.driver.execute_script(style_null, elem)
-    else:
-        for _ in range(2):
-            Seldom.driver.execute_script(style_red, elem)
-            time.sleep(0.1)
+            time.sleep(2)
+            Seldom.driver.execute_script(style_null, elem)
+        else:
+            for _ in range(2):
+                Seldom.driver.execute_script(style_red, elem)
+                time.sleep(0.1)
+                Seldom.driver.execute_script(style_blue, elem)
+                time.sleep(0.1)
             Seldom.driver.execute_script(style_blue, elem)
-            time.sleep(0.1)
-        Seldom.driver.execute_script(style_blue, elem)
-        time.sleep(0.3)
-        Seldom.driver.execute_script(style_null, elem)
+            time.sleep(0.3)
+            Seldom.driver.execute_script(style_null, elem)
 
 
 class WebDriver(object):

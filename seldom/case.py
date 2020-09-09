@@ -3,9 +3,10 @@ from time import sleep
 from seldom.webdriver import WebDriver
 from seldom.running.config import Seldom
 from seldom.logging import log
+from seldom.driver import app
 
 
-class TestCase(unittest.TestCase, WebDriver):
+class BaseCase(unittest.TestCase, WebDriver):
 
     def start_class(self):
         """
@@ -45,6 +46,31 @@ class TestCase(unittest.TestCase, WebDriver):
     def tearDown(self):
         self.end()
 
+    def xSkip(self, reason):
+        """
+        Skip this test.
+        :param reason:
+        Usage:
+        if data is None:
+            self.xSkip("data is None.")
+        """
+        self.skipTest(reason)
+
+    def xFail(self, msg):
+        """
+        Fail immediately, with the given message
+        :param msg:
+        Usage:
+        if data is None:
+            self.xFail("This case fails.")
+        """
+        self.fail(msg)
+
+
+class TestCase(BaseCase):
+    """
+    web case
+    """
 
     def assertTitle(self, title=None, msg=None):
         """
@@ -162,22 +188,42 @@ class TestCase(unittest.TestCase, WebDriver):
         alert_text = self.get_alert_text()
         self.assertEqual(alert_text, text, msg=msg)
 
-    def xSkip(self, reason):
-        """
-        Skip this test.
-        :param reason:
-        Usage:
-        if data is None:
-            self.xSkip("data is None.")
-        """
-        self.skipTest(reason)
 
-    def xFail(self, msg):
+class AppCase(BaseCase):
+    """
+    App case
+    """
+
+    def setUp(self):
         """
-        Fail immediately, with the given message
-        :param msg:
+        Start the App
+        """
+        Seldom.driver = app(Seldom.command_executor, desired_capabilities=Seldom.desired_capabilities)
+        self.start()
+
+    def tearDown(self):
+        """
+        Exit the app
+        """
+        Seldom.driver.quit()
+        self.end()
+
+    def assertText(self, first=None, second=None, msg=None):
+        """
+        Asserts whether the text of the current page conforms to expectations.
+
         Usage:
-        if data is None:
-            self.xFail("This case fails.")
+        self.assertText("text1", "text2")
         """
-        self.fail(msg)
+        if first is None or second is None:
+            raise AssertionError("The assertion text cannot be empty.")
+
+        for _ in range(Seldom.timeout):
+            try:
+                self.assertEqual(first, second, msg=msg)
+                log.info("👀 assertText: {text}.".format(text=second))
+                break
+            except AssertionError:
+                sleep(1)
+        else:
+            self.assertEqual(first, second, msg=msg)

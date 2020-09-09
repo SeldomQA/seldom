@@ -6,7 +6,6 @@ from xmlrunner import XMLTestRunner
 import inspect
 from seldom.logging import log
 from seldom.driver import browser as b
-from seldom.driver import app as a
 from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 
@@ -202,18 +201,17 @@ def app(path=None,
             suits = unittest.defaultTestLoader.discover(path)
 
     if command_executor is None:
-        command_executor = "http://127.0.0.1:4723/wd/hub"
+        Seldom.command_executor = "http://127.0.0.1:4723/wd/hub"
+    else:
+        Seldom.command_executor = command_executor
+
+    Seldom.desired_capabilities = desired_capabilities
 
     # set timeout
     if isinstance(timeout, int):
         Seldom.timeout = timeout
     else:
         raise TypeError("Timeout {} is not integer.".format(timeout))
-
-    """
-    Global launch app
-    """
-    Seldom.driver = a(command_executor, desired_capabilities)
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
@@ -238,11 +236,6 @@ def app(path=None,
         log.info("A run the test in debug mode without generating HTML report!")
         log.info(seldom_str)
         runner.run(suits)
-
-    """
-    Close browser globally
-    """
-    Seldom.driver.quit()
 
 
 if __name__ == '__main__':

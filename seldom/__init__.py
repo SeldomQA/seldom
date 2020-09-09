@@ -21,7 +21,7 @@ from .running.test_runner import main, app
 from .running.config import Seldom
 from .testdata.parameterized import data, file_data, data_class
 from .webdriver import WebDriver
-from .case import TestCase
+from .case import TestCase, AppCase
 from .driver import browser
 from .skip import skip
 from .skip import skip_if

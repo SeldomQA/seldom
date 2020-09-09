@@ -12,6 +12,10 @@ class Seldom:
     timeout = None
     debug = None
 
+    # app config
+    command_executor = None
+    desired_capabilities = None
+
 
 class BrowserConfig:
     """
