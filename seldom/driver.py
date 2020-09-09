@@ -94,14 +94,26 @@ def browser(name=None, driver_path=None, grid_url=None):
     elif name in PHONE_LIST:
         options = CH_Options()
         options.add_experimental_option("mobileEmulation", {"deviceName": name})
-        driver = webdriver.Chrome(chrome_options=options, executable_path=driver_path)
+        driver = webdriver.Chrome(chrome_options=options, executable_path=driver_path, options=option)
         driver.set_window_size(width=480, height=900)
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+                    Object.defineProperty(navigator, 'webdriver', {
+                    get: () => undefined
+                    })"""
+        })
         return driver
     elif name in PAD_LIST:
         options = CH_Options()
         options.add_experimental_option("mobileEmulation", {"deviceName": name})
-        driver = webdriver.Chrome(chrome_options=options, executable_path=driver_path)
+        driver = webdriver.Chrome(chrome_options=options, executable_path=driver_path, options=option)
         driver.set_window_size(width=1100, height=900)
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+                    Object.defineProperty(navigator, 'webdriver', {
+                    get: () => undefined
+                    })"""
+        })
         return driver
     else:
         raise NameError(
