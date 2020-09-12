@@ -100,7 +100,9 @@ def show_element(elem):
     style_red = 'arguments[0].style.border="2px solid #FF0000"'
     style_blue = 'arguments[0].style.border="2px solid #00FF00"'
     style_null = 'arguments[0].style.border=""'
+    print(Seldom.debug)
     if Seldom.debug is True:
+        print("a", elem)
         for _ in range(3):
             Seldom.driver.execute_script(style_red, elem)
             time.sleep(0.2)
@@ -110,6 +112,7 @@ def show_element(elem):
         time.sleep(2)
         Seldom.driver.execute_script(style_null, elem)
     else:
+        print("b")
         for _ in range(2):
             Seldom.driver.execute_script(style_red, elem)
             time.sleep(0.1)
@@ -217,7 +220,7 @@ class WebDriver(object):
         """
         Seldom.driver.set_window_size(wide, high)
 
-    def type(self, text, clear=False, index=0, **kwargs):
+    def type(self, text, clear=False, enter=False, index=0, **kwargs):
         """
         Operation input box.
 
@@ -230,6 +233,8 @@ class WebDriver(object):
         show_element(elem)
         log.info("🖋 input '{text}'.".format(text=text))
         elem.send_keys(text)
+        if enter is True:
+            elem.send_keys(Keys.ENTER)
     
     def type_enter(self, text, clear=False, index=0, **kwargs):
         """
@@ -717,7 +722,7 @@ class WebDriver(object):
         else:
             log.warn("No elements were found.")
 
-    def get_elements(self, **kwargs):
+    def get_elements(self, index=None, **kwargs):
         """
         Get a set of elements
 
@@ -725,4 +730,7 @@ class WebDriver(object):
         ret = self.get_elements(css="#el")
         print(len(ret))
         """
+        if index is not None:
+            return get_element(**kwargs)[index]
+
         return get_element(**kwargs)
