@@ -58,10 +58,12 @@ def browser(name=None, driver_path=None, grid_url=None):
             })"""
         })
         return driver
-    elif name == ["internet explorer", "ie", "IE"]:
+
+    elif name in ["internet explorer", "ie", "IE"]:
         if driver_path is None:
             driver_path = IEDRIVER
         return webdriver.Ie(executable_path=driver_path)
+
     elif name == "opera":
         if driver_path is None:
             driver_path = OPERADRIVER
