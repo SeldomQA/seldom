@@ -100,9 +100,7 @@ def show_element(elem):
     style_red = 'arguments[0].style.border="2px solid #FF0000"'
     style_blue = 'arguments[0].style.border="2px solid #00FF00"'
     style_null = 'arguments[0].style.border=""'
-    print(Seldom.debug)
     if Seldom.debug is True:
-        print("a", elem)
         for _ in range(3):
             Seldom.driver.execute_script(style_red, elem)
             time.sleep(0.2)
@@ -112,7 +110,6 @@ def show_element(elem):
         time.sleep(2)
         Seldom.driver.execute_script(style_null, elem)
     else:
-        print("b")
         for _ in range(2):
             Seldom.driver.execute_script(style_red, elem)
             time.sleep(0.1)
