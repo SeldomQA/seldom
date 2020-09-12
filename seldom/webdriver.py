@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from appium.webdriver.common.mobileby import MobileBy
+from appium.webdriver.common.touch_action import TouchAction as MobileTouchAction
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
@@ -140,7 +141,7 @@ def get_element(**kwargs):
 
 def show_element(elem):
     """
-    Show the elements of the operation
+    Show the web elements of the operation
     :param elem:
     """
     if Seldom.application == "web":
@@ -773,3 +774,57 @@ class WebDriver(object):
         print(len(ret))
         """
         return get_element(**kwargs)
+
+    def switch_to_app(self):
+        """
+        appium API
+        Switch to native app.
+        """
+        Seldom.driver.switch_to.context('NATIVE_APP')
+
+    def switch_to_web(self, context=None):
+        """
+        appium API
+        Switch to web view.
+        """
+        if context is not None:
+            Seldom.driver.switch_to.context(context)
+        else:
+            all_context = Seldom.driver.contexts
+            for context in all_context:
+                if "WEBVIEW" in context:
+                    Seldom.driver.switch_to.context(context)
+                    break
+            else:
+                raise NameError("No WebView found.")
+
+    def top(self, elem, x, y, count):
+        """
+        appium API
+        Perform a tap action on the element
+        """
+        action = MobileTouchAction(Seldom.driver)
+        action.tap(elem, x, y, count).perform()
+
+    def press(self, elem, x, y, pressure):
+        """
+        appium API
+        Begin a chain with a press down action at a particular element or point
+        """
+        action = MobileTouchAction(Seldom.driver)
+        action.press(elem, x, y, pressure).perform()
+
+    def long_press(self, elem, x, y, duration):
+        """
+        appium API
+        Begin a chain with a press down that lasts `duration` milliseconds
+        """
+        action = MobileTouchAction(Seldom.driver)
+        action.long_press(elem, x, y, duration).perform()
+
+    def swipe(self, start_x, start_y, end_x, end_y, duration=None):
+        """
+        appium API
+        Swipe from one point to another point, for an optional duration.
+        """
+        Seldom.driver.swipe(start_x, start_y, end_x, end_y, duration)
