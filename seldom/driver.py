@@ -10,6 +10,66 @@ PHONE_LIST = [
 ]
 PAD_LIST = ['iPad', 'iPad Pro']
 
+class ChromeConfig:
+    command_executor = "chromedriver"
+    options = None
+
+
+class FirefoxConfig:
+    command_executor = "geckodriver"
+
+
+class Browser():
+    """
+    Run class initialization method, the default is proper
+    to drive the Firefox browser. Of course, you can also
+    pass parameter for other browser, Chrome browser for the "Chrome",
+    the Internet Explorer browser for "internet explorer" or "ie".
+    :param name: Browser name
+    :param driver_path: Browser driver path
+    :param grid_url: Either a string representing URL of the remote server or a custom
+             remote_connection.RemoteConnection object.
+    :return:
+    """
+
+    IEDRIVER = "IEDriverServer.exe"
+    OPERADRIVER = "operadriver"
+    EDGEDRIVER = "MicrosoftWebDriver.exe"
+    SAFAIRDRIVER = "/usr/bin/safaridriver"
+
+    def __init__(self, name=None, driver_path=None, grid_url=None):
+        self.name = name
+        self.driver_path = driver_path
+        self.grid_url = grid_url
+
+    def run(self):
+        if (self.name is None) or (name in ["chrome", "google chrome", "gc"]):
+            return self.chrome()
+        elif if name in ["firefox", "ff"]:
+            
+            return self.chrome()
+
+    def chrome(self):
+        if self.grid_url is not None:
+            return webdriver.Remote(command_executor=self.grid_url,
+                                    desired_capabilities=DesiredCapabilities.CHROME.copy())
+        driver = webdriver.Chrome(
+            options=ChromeConfig.option, 
+            executable_path=ChromeConfig.executable_path)
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+            Object.defineProperty(navigator, 'webdriver', {
+            get: () => undefined
+            })"""
+        })
+        return driver
+
+    def firefox(self):
+        if grid_url is not None:
+            return webdriver.Remote(command_executor=grid_url,
+                                    desired_capabilities=DesiredCapabilities.FIREFOX.copy())
+        return webdriver.Firefox(executable_path=FirefoxConfig.executable_path)
+
 
 def browser(name=None, driver_path=None, grid_url=None):
     """
@@ -33,6 +93,7 @@ def browser(name=None, driver_path=None, grid_url=None):
     # Prevention of detection
     option = ChromeOptions()
     option.add_experimental_option('excludeSwitches', ['enable-automation'])
+    option.add_argument('--ignore-certificate-errors')
     if name is None:
         name = "chrome"
 
