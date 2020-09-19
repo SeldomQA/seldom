@@ -29,6 +29,7 @@ class IEConfig:
     executable_path = "IEDriverServer.exe"
     command_executor = ""
 
+
 class EdgeConfig:
     executable_path = "MicrosoftWebDriver.exe"
     command_executor = ""
@@ -51,15 +52,12 @@ class Browser(object):
     pass parameter for other browser, Chrome browser for the "Chrome",
     the Internet Explorer browser for "internet explorer" or "ie".
     :param name: Browser name
-    :param grid_url: Either a string representing URL of the remote server or a custom
-             remote_connection.RemoteConnection object.
     :return:
     """
 
-    def __init__(self, name=None, driver_path=None, grid_url=None):
+    def __init__(self, name=None, driver_path=None):
         self.name = name
         self.driver_path = driver_path
-        self.grid_url = grid_url
 
     @property
     def driver(self):
@@ -82,8 +80,7 @@ class Browser(object):
         elif self.name in PAD_LIST:
             return self.pad()
         raise NameError(
-            "Not found '{}' browser, See the help doc: https://github.com/SeldomQA/seldom/blob/master/docs/driver.md'.".format(
-                self.name))
+            "Not found '{}' browser, See the help doc: https://github.com/SeldomQA/seldom/blob/master/docs/driver.md'.".format(self.name))
 
     @staticmethod
     def chrome():
@@ -192,7 +189,7 @@ def browser(name=None, driver_path=None, grid_url=None):
     CHROMEDRIVER = "chromedriver"
     FIREFOXDRIVER = "geckodriver"
     IEDRIVER = "IEDriverServer.exe"
-    OPERADRIVER ="operadriver"
+    OPERADRIVER = "operadriver"
     EDGEDRIVER = "MicrosoftWebDriver.exe"
     SAFAIRDRIVER = "/usr/bin/safaridriver"
 
