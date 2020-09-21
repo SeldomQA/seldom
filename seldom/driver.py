@@ -22,6 +22,7 @@ class ChromeConfig:
 class FirefoxConfig:
     headless = False
     executable_path = "geckodriver"
+    options = None
     command_executor = ""
 
 
@@ -91,10 +92,12 @@ class Browser(object):
         if ChromeConfig.headless is True:
             chrome_options = CH_Options()
             chrome_options.add_argument('--headless')
-            driver = webdriver.Chrome(chrome_options=chrome_options, options=ChromeConfig.options,
+            driver = webdriver.Chrome(options=ChromeConfig.options,
+                                      chrome_options=chrome_options,
                                       executable_path=ChromeConfig.executable_path)
         else:
             driver = webdriver.Chrome(options=ChromeConfig.options,
+                                      chrome_options=ChromeConfig.chrome_options,
                                       executable_path=ChromeConfig.executable_path)
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
@@ -112,8 +115,12 @@ class Browser(object):
         if FirefoxConfig.headless is True:
             firefox_options = FF_Options()
             firefox_options.headless = True
-            return webdriver.Firefox(firefox_options=firefox_options, executable_path=FirefoxConfig.executable_path)
-        return webdriver.Firefox(executable_path=FirefoxConfig.executable_path)
+            driver = webdriver.Firefox(firefox_options=firefox_options,
+                                       executable_path=FirefoxConfig.executable_path)
+        else:
+            driver = webdriver.Firefox(firefox_binary=FirefoxConfig.options,
+                                       executable_path=FirefoxConfig.executable_path)
+        return driver
 
     @staticmethod
     def ie():
