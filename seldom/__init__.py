@@ -22,7 +22,12 @@ from .running.config import Seldom
 from .testdata.parameterized import data, file_data, data_class
 from .webdriver import WebDriver
 from .case import TestCase
-from .driver import browser
+from .driver import ChromeConfig
+from .driver import FirefoxConfig
+from .driver import IEConfig
+from .driver import EdgeConfig
+from .driver import OperaConfig
+from .driver import SafariConfig
 from .skip import skip
 from .skip import skip_if
 from .skip import skip_unless

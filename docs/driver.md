@@ -26,6 +26,10 @@ if __name__ == '__main__':
 除此之外，还支持 Mobile web 模式：
 
 ```python
+import seldom
+
+#...
+
 if __name__ == '__main__':
     seldom.main(browser="iPhone 6") # iPhone 6 手机浏览器展示
 ```
@@ -48,7 +52,7 @@ Firefox和 Chrome浏览器支持`headless` 模式，即将浏览器置于后台�
 
 ```python
 import seldom
-from seldom.driver import ChromeConfig
+from seldom import ChromeConfig
 
 #...
 
@@ -67,7 +71,7 @@ seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，但架�
 
 ```python
 import seldom
-from seldom.driver import ChromeConfig
+from seldom import ChromeConfig
 from selenium.webdriver.chrome.options import Options
 
 
