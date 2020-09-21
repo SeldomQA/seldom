@@ -45,7 +45,6 @@ class TestCase(unittest.TestCase, WebDriver):
     def tearDown(self):
         self.end()
 
-
     def assertTitle(self, title=None, msg=None):
         """
         Asserts whether the current title is in line with expectations.
