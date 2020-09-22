@@ -1,8 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as CH_Options
-from selenium.webdriver.firefox.options import Options as FF_Options
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver import ChromeOptions
+from selenium.webdriver import FirefoxOptions
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
 
 PHONE_LIST = [
     'iPhone 5', 'iPhone 6', 'iPhone 7', 'iPhone 8', 'iPhone 8 Plus',
@@ -14,7 +14,6 @@ PAD_LIST = ['iPad', 'iPad Pro']
 class ChromeConfig:
     headless = False
     executable_path = "chromedriver"
-    chrome_options = None
     options = None
     command_executor = ""
 
@@ -87,16 +86,17 @@ class Browser(object):
             return webdriver.Remote(command_executor=ChromeConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.CHROME.copy())
 
-        if ChromeConfig.headless is True:
-            chrome_options = CH_Options()
-            chrome_options.add_argument('--headless')
-            driver = webdriver.Chrome(options=ChromeConfig.options,
-                                      chrome_options=chrome_options,
-                                      executable_path=ChromeConfig.executable_path)
+        if ChromeConfig.options is None:
+            chrome_options = ChromeOptions()
+            if ChromeConfig.headless is True:
+                chrome_options.add_argument('--headless')
         else:
-            driver = webdriver.Chrome(options=ChromeConfig.options,
-                                      chrome_options=ChromeConfig.chrome_options,
-                                      executable_path=ChromeConfig.executable_path)
+            chrome_options = ChromeConfig.options
+            if ChromeConfig.headless is True:
+                chrome_options.add_argument('--headless')
+
+        driver = webdriver.Chrome(options=chrome_options,
+                                  executable_path=ChromeConfig.executable_path)
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
             Object.defineProperty(navigator, 'webdriver', {
@@ -110,14 +110,18 @@ class Browser(object):
         if FirefoxConfig.command_executor != "":
             return webdriver.Remote(command_executor=FirefoxConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.FIREFOX.copy())
-        if FirefoxConfig.headless is True:
-            firefox_options = FF_Options()
-            firefox_options.headless = True
-            driver = webdriver.Firefox(firefox_options=firefox_options,
-                                       executable_path=FirefoxConfig.executable_path)
+
+        if FirefoxConfig.options is None:
+            firefox_options = FirefoxOptions()
+            if FirefoxConfig.headless is True:
+                firefox_options.headless = True
         else:
-            driver = webdriver.Firefox(firefox_binary=FirefoxConfig.options,
-                                       executable_path=FirefoxConfig.executable_path)
+            firefox_options = FirefoxConfig.options
+            if FirefoxConfig.headless is True:
+                firefox_options.headless = True
+
+        driver = webdriver.Firefox(options=firefox_options,
+                                   executable_path=FirefoxConfig.executable_path)
         return driver
 
     @staticmethod

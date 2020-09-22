@@ -94,7 +94,6 @@ def main(path=None,
     Global launch browser
     """
     Seldom.driver = Browser(BrowserConfig.name, BrowserConfig.grid_url).driver
-    Seldom.driver.maximize_window()
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):

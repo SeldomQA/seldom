@@ -72,11 +72,11 @@ seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，但架�
 ```python
 import seldom
 from seldom import ChromeConfig
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver import ChromeOptions
 
 
 if __name__ == '__main__':
-    chrome_options = Options()
+    chrome_options = ChromeOptions()
     chrome_options.add_argument('--ignore-certificate-errors')  # 忽略无效证书的问题
     ChromeConfig.chrome_options = chrome_options
     seldom.main(browser="chrome")
