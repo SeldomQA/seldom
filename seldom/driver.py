@@ -74,8 +74,6 @@ class Browser(object):
             return self.opera()
         elif self.name == "safari":
             return self.safari()
-        elif self.name == "chrome_headless":
-            return self.safari()
         elif self.name in PHONE_LIST:
             return self.phone()
         elif self.name in PAD_LIST:
