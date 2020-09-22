@@ -2,7 +2,6 @@ from selenium import webdriver as selenium
 from selenium.webdriver.chrome.options import Options as CH_Options
 from selenium.webdriver.firefox.options import Options as FF_Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver import ChromeOptions
 from appium import webdriver as appium
 
 
@@ -13,45 +12,94 @@ PHONE_LIST = [
 PAD_LIST = ['iPad', 'iPad Pro']
 
 
-def browser(name=None, driver_path=None, grid_url=None):
+class ChromeConfig:
+    headless = False
+    executable_path = "chromedriver"
+    chrome_options = None
+    options = None
+    command_executor = ""
+
+
+class FirefoxConfig:
+    headless = False
+    executable_path = "geckodriver"
+    options = None
+    command_executor = ""
+
+
+class IEConfig:
+    executable_path = "IEDriverServer.exe"
+    command_executor = ""
+
+
+class EdgeConfig:
+    executable_path = "MicrosoftWebDriver.exe"
+    command_executor = ""
+
+
+class OperaConfig:
+    executable_path = "operadriver"
+    command_executor = ""
+
+
+class SafariConfig:
+    executable_path = "/usr/bin/safaridriver"
+    command_executor = ""
+
+
+class Browser(object):
     """
     Run class initialization method, the default is proper
     to drive the Firefox browser. Of course, you can also
     pass parameter for other browser, Chrome browser for the "Chrome",
     the Internet Explorer browser for "internet explorer" or "ie".
     :param name: Browser name
-    :param driver_path: Browser driver path
-    :param grid_url: Either a string representing URL of the remote server or a custom
-             remote_connection.RemoteConnection object.
     :return:
     """
-    # Prevention of detection
-    option = ChromeOptions()
-    option.add_experimental_option('excludeSwitches', ['enable-automation'])
-    if name is None:
-        name = "chrome"
 
-    if name in ["firefox", "ff"]:
-        if driver_path is not None:
-            return selenium.Firefox(executable_path=driver_path)
-        if grid_url is not None:
-            return selenium.Remote(command_executor=grid_url,
-                                    desired_capabilities=DesiredCapabilities.FIREFOX.copy())
-        return selenium.Firefox()
-    elif name in ["chrome", "google chrome", "gc"]:
-        if driver_path is not None:
-            driver = selenium.Chrome(executable_path=driver_path, options=option)
-            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-                "source": """
-                Object.defineProperty(navigator, 'webdriver', {
-                get: () => undefined
-                })"""
-            })
-            return driver
-        if grid_url is not None:
-            return selenium.Remote(command_executor=grid_url,
+    def __init__(self, name=None, driver_path=None):
+        self.name = name
+        self.driver_path = driver_path
+
+    @property
+    def driver(self):
+        if (self.name is None) or (self.name in ["chrome", "google chrome", "gc"]):
+            return self.chrome()
+        elif self.name in ["firefox", "ff"]:
+            return self.firefox()
+        elif self.name in ["internet explorer", "ie", "IE"]:
+            return self.ie()
+        elif self.name == "edge":
+            return self.edge()
+        elif self.name == "opera":
+            return self.opera()
+        elif self.name == "safari":
+            return self.safari()
+        elif self.name == "chrome_headless":
+            return self.safari()
+        elif self.name in PHONE_LIST:
+            return self.phone()
+        elif self.name in PAD_LIST:
+            return self.pad()
+        raise NameError(
+            "Not found '{}' browser, See the help doc: https://github.com/SeldomQA/seldom/blob/master/docs/driver.md'.".format(self.name))
+
+    @staticmethod
+    def chrome():
+        if ChromeConfig.command_executor != "":
+            return selenium.Remote(command_executor=ChromeConfig.command_executor,
                                    desired_capabilities=DesiredCapabilities.CHROME.copy())
-        driver = selenium.Chrome(options=option)
+
+        if ChromeConfig.headless is True:
+            chrome_options = CH_Options()
+            chrome_options.add_argument('--headless')
+            driver = selenium.Chrome(options=ChromeConfig.options,
+                                     chrome_options=chrome_options,
+                                     executable_path=ChromeConfig.executable_path)
+        else:
+            driver = selenium.Chrome(options=ChromeConfig.options,
+                                     chrome_options=ChromeConfig.chrome_options,
+                                     executable_path=ChromeConfig.executable_path)
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
             Object.defineProperty(navigator, 'webdriver', {
@@ -59,68 +107,79 @@ def browser(name=None, driver_path=None, grid_url=None):
             })"""
         })
         return driver
-    elif name == ["internet explorer", "ie", "IE"]:
-        return selenium.Ie()
-    elif name == "opera":
-        return selenium.Opera()
-    elif name == "chrome_headless":
+
+    @staticmethod
+    def firefox():
+        if FirefoxConfig.command_executor != "":
+            return selenium.Remote(command_executor=FirefoxConfig.command_executor,
+                                   desired_capabilities=DesiredCapabilities.FIREFOX.copy())
+        if FirefoxConfig.headless is True:
+            firefox_options = FF_Options()
+            firefox_options.headless = True
+            driver = selenium.Firefox(firefox_options=firefox_options,
+                                      executable_path=FirefoxConfig.executable_path)
+        else:
+            driver = selenium.Firefox(firefox_binary=FirefoxConfig.options,
+                                      executable_path=FirefoxConfig.executable_path)
+        return driver
+
+    @staticmethod
+    def ie():
+        if IEConfig.command_executor != "":
+            return selenium.Remote(command_executor=IEConfig.command_executor,
+                                   desired_capabilities=DesiredCapabilities.INTERNETEXPLORER.copy())
+        return selenium.Ie(executable_path=IEConfig.executable_path)
+
+    @staticmethod
+    def edge():
+        if EdgeConfig.command_executor != "":
+            return selenium.Remote(command_executor=EdgeConfig.command_executor,
+                                   desired_capabilities=DesiredCapabilities.EDGE.copy())
+        return selenium.Edge(executable_path=EdgeConfig.executable_path)
+
+    @staticmethod
+    def opera():
+        if OperaConfig.command_executor != "":
+            return selenium.Remote(command_executor=OperaConfig.command_executor,
+                                   desired_capabilities=DesiredCapabilities.OPERA.copy())
+        return selenium.Opera(executable_path=OperaConfig.executable_path)
+
+    @staticmethod
+    def safari():
+        if SafariConfig.command_executor != "":
+            return selenium.Remote(command_executor=SafariConfig.command_executor,
+                                   desired_capabilities=DesiredCapabilities.SAFARI.copy())
+        return selenium.Safari(executable_path=OperaConfig.executable_path)
+
+    def phone(self):
         chrome_options = CH_Options()
-        chrome_options.add_argument('--headless')
-        if driver_path is not None:
-            driver = selenium.Chrome(chrome_options=chrome_options, options=option)
-            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-                "source": """
-                Object.defineProperty(navigator, 'webdriver', {
-                get: () => undefined
-                })"""
-            })
-            return driver
-        driver = selenium.Chrome(options=option)
-        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-            "source": """
-            Object.defineProperty(navigator, 'webdriver', {
-            get: () => undefined
-            })"""
-        })
-        return driver
-    elif name == "firefox_headless":
-        firefox_options = FF_Options()
-        firefox_options.headless = True
-        if driver_path is not None:
-            return selenium.Firefox(firefox_options=firefox_options, executable_path=driver_path)
-        return selenium.Firefox(firefox_options=firefox_options)
-    elif name == 'edge':
-        return selenium.Edge()
-    elif name == 'safari':
-        return selenium.Safari()
-    elif name in PHONE_LIST:
-        options = CH_Options()
-        options.add_experimental_option("mobileEmulation", {"deviceName": name})
-        driver = selenium.Chrome(chrome_options=options, executable_path=driver_path, options=option)
+        chrome_options.add_experimental_option("mobileEmulation", {"deviceName": self.name})
+        driver = selenium.Chrome(chrome_options=chrome_options,
+                                 executable_path=ChromeConfig.executable_path,
+                                 options=ChromeConfig.options)
         driver.set_window_size(width=480, height=900)
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
-                    Object.defineProperty(navigator, 'webdriver', {
-                    get: () => undefined
-                    })"""
+                Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+                })"""
         })
         return driver
-    elif name in PAD_LIST:
-        options = CH_Options()
-        options.add_experimental_option("mobileEmulation", {"deviceName": name})
-        driver = selenium.Chrome(chrome_options=options, executable_path=driver_path, options=option)
 
+    def pad(self):
+        chrome_options = CH_Options()
+        chrome_options.add_experimental_option("mobileEmulation", {"deviceName": self.name})
+        driver = selenium.Chrome(chrome_options=chrome_options,
+                                 executable_path=ChromeConfig.executable_path,
+                                 options=ChromeConfig.options)
         driver.set_window_size(width=1100, height=900)
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
-                    Object.defineProperty(navigator, 'webdriver', {
-                    get: () => undefined
-                    })"""
+                Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+                })"""
         })
         return driver
-    else:
-        raise NameError(
-            "Not found '{}' browser, See the help doc: https://github.com/SeldomQA/seldom/blob/master/docs/driver.md'.".format(name))
 
 
 def app(command_executor, desired_capabilities):
@@ -131,3 +190,4 @@ def app(command_executor, desired_capabilities):
     :return:
     """
     return appium.Remote(command_executor, desired_capabilities=desired_capabilities)
+

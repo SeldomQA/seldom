@@ -26,6 +26,10 @@ if __name__ == '__main__':
 除此之外，还支持 Mobile web 模式：
 
 ```python
+import seldom
+
+#...
+
 if __name__ == '__main__':
     seldom.main(browser="iPhone 6") # iPhone 6 手机浏览器展示
 ```
@@ -40,6 +44,42 @@ PHONE_LIST = [
 ]
 PAD_LIST = ['iPad', 'iPad Pro']
 
+```
+
+## 开启headless模式
+
+Firefox和 Chrome浏览器支持`headless` 模式，即将浏览器置于后台运行，这样不会影响到我们在测试机上完成其他工作。
+
+```python
+import seldom
+from seldom import ChromeConfig
+
+#...
+
+if __name__ == '__main__':
+    ChromeConfig.headless = True
+    seldom.main(browser="chrome")
+```
+
+只需要将 ChromeConfig 类中的 headless 设置为 `True`即可， Firefox浏览器配置方法类似。
+
+## 开放Chrome浏览器配置能力
+
+seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，但架不住部分个性化的需求，比如禁用浏览器插件，设置浏览器代理等。所以，通过ChromeConfig类的参数来开放这些能力。
+
+例如，浏览器忽略无效证书的问题。
+
+```python
+import seldom
+from seldom import ChromeConfig
+from selenium.webdriver.chrome.options import Options
+
+
+if __name__ == '__main__':
+    chrome_options = Options()
+    chrome_options.add_argument('--ignore-certificate-errors')  # 忽略无效证书的问题
+    ChromeConfig.chrome_options = chrome_options
+    seldom.main(browser="chrome")
 ```
 
 ## 安装浏览器驱动
@@ -68,13 +108,12 @@ seldom -install firefox
 
 ```python
 import seldom
+from seldom.driver import ChromeConfig
 
 # ……
 if __name__ == '__main__':
-    seldom.main(path="test_sample.py",
-                browser="chrome",
-                driver_path="D:\git\seldom\lib\chromedriver.exe")
-
+    ChromeConfig.executable_path = "D:\git\seldom\lib\chromedriver.exe"
+    seldom.main(browser="chrome")
 ```
 
 注：浏览器要`browser`与驱动`driver_path` 要保持对应关系。
@@ -94,8 +133,7 @@ import seldom
 
 # ……
 if __name__ == '__main__':
-    seldom.main(path="test_sample.py",
-                browser="chrome",
+    seldom.main(browser="chrome",
                 grid_url="http://127.0.0.1:4444/wd/hub")
 
 ```
