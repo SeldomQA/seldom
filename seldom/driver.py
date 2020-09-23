@@ -153,7 +153,7 @@ class Browser(object):
         return webdriver.Safari(executable_path=OperaConfig.executable_path)
 
     def phone(self):
-        chrome_options = CH_Options()
+        chrome_options = ChromeOptions()
         chrome_options.add_experimental_option("mobileEmulation", {"deviceName": self.name})
         driver = webdriver.Chrome(chrome_options=chrome_options,
                                   executable_path=ChromeConfig.executable_path,
@@ -168,7 +168,7 @@ class Browser(object):
         return driver
 
     def pad(self):
-        chrome_options = CH_Options()
+        chrome_options = ChromeOptions()
         chrome_options.add_experimental_option("mobileEmulation", {"deviceName": self.name})
         driver = webdriver.Chrome(chrome_options=chrome_options,
                                   executable_path=ChromeConfig.executable_path,
