@@ -78,9 +78,11 @@ from selenium.webdriver import ChromeOptions
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
     chrome_options.add_argument('--ignore-certificate-errors')  # 忽略无效证书的问题
-    ChromeConfig.chrome_options = chrome_options
+    ChromeConfig.options = chrome_options
     seldom.main(browser="chrome")
 ```
+
+将要`ChromeOption`添加的设置赋值给`ChromeConfig`的`options`变量。
 
 ## 安装浏览器驱动
 
