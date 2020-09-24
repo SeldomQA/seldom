@@ -9,6 +9,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
+from selenium.common.exceptions import UnexpectedAlertPresentException
 
 
 LOCATOR_LIST = {
@@ -101,13 +102,13 @@ def show_element(elem):
     style_blue = 'arguments[0].style.border="2px solid #00FF00"'
     style_null = 'arguments[0].style.border=""'
     if Seldom.debug is True:
-        for _ in range(3):
+        for _ in range(2):
             Seldom.driver.execute_script(style_red, elem)
             time.sleep(0.2)
             Seldom.driver.execute_script(style_blue, elem)
             time.sleep(0.2)
         Seldom.driver.execute_script(style_blue, elem)
-        time.sleep(2)
+        time.sleep(0.2)
         Seldom.driver.execute_script(style_null, elem)
     else:
         for _ in range(2):
@@ -314,6 +315,21 @@ class WebDriver(object):
         elem = get_element(**kwargs)[index]
         show_element(elem)
         ActionChains(Seldom.driver).click_and_hold(elem).perform()
+
+    def drag_and_drop_by_offset(self, index=0, x=0, y=0, **kwargs):
+        """
+        Holds down the left mouse button on the source element,
+           then moves to the target offset and releases the mouse button.
+
+        :Args:
+         - source: The element to mouse down.
+         - x: X offset to move to.
+         - y: Y offset to move to.
+        """
+        elem = get_element(**kwargs)[index]
+        show_element(elem)
+        action = ActionChains(Seldom.driver)
+        action.drag_and_drop_by_offset(elem,  x, y).perform()
 
     def double_click(self, index=0, **kwargs):
         """
