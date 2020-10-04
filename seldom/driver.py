@@ -183,11 +183,17 @@ class Browser(object):
         return driver
 
 
-def app(command_executor, desired_capabilities):
+class Application(object):
     """
     Run class initialization method, Get App driver.
     :param command_executor: appium desktop url
     :param desired_capabilities: app info.
     :return:
     """
-    return appium.Remote(command_executor, desired_capabilities=desired_capabilities)
+    def __init__(self, command_executor, desired_capabilities):
+        self.command_executor = command_executor
+        self.desired_capabilities = desired_capabilities
+
+    @property
+    def driver(self):
+        return appium.Remote(self.command_executor, desired_capabilities=self.desired_capabilities)

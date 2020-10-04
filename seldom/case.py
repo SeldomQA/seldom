@@ -3,7 +3,7 @@ from time import sleep
 from seldom.webdriver import WebDriver
 from seldom.running.config import Seldom
 from seldom.logging import log
-from seldom.driver import app
+from seldom.driver import Application
 
 
 class BaseCase(unittest.TestCase, WebDriver):
@@ -198,7 +198,7 @@ class AppCase(BaseCase):
         """
         Start the App
         """
-        Seldom.driver = app(Seldom.command_executor, desired_capabilities=Seldom.desired_capabilities)
+        Seldom.driver = Application(Seldom.command_executor, desired_capabilities=Seldom.desired_capabilities).driver
         self.start()
 
     def tearDown(self):
