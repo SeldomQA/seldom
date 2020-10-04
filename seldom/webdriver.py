@@ -163,9 +163,9 @@ def show_element(elem):
                 time.sleep(0.1)
                 Seldom.driver.execute_script(style_blue, elem)
                 time.sleep(0.1)
-            Seldom.driver.execute_script(style_blue, elem)
-            time.sleep(0.3)
-            Seldom.driver.execute_script(style_null, elem)
+                Seldom.driver.execute_script(style_blue, elem)
+                time.sleep(0.3)
+                Seldom.driver.execute_script(style_null, elem)
 
 
 class WebDriver(object):
@@ -265,7 +265,7 @@ class WebDriver(object):
         """
         Seldom.driver.set_window_size(wide, high)
 
-    def type(self, text, clear=False, index=0, **kwargs):
+    def type(self, text, clear=False, enter=False, index=0, **kwargs):
         """
         Operation input box.
 
@@ -278,6 +278,8 @@ class WebDriver(object):
         show_element(elem)
         log.info("🖋 input '{text}'.".format(text=text))
         elem.send_keys(text)
+        if enter is True:
+            elem.send_keys(Keys.ENTER)
     
     def type_enter(self, text, clear=False, index=0, **kwargs):
         """
@@ -360,6 +362,21 @@ class WebDriver(object):
         elem = get_element(**kwargs)[index]
         show_element(elem)
         ActionChains(Seldom.driver).click_and_hold(elem).perform()
+
+    def drag_and_drop_by_offset(self, index=0, x=0, y=0, **kwargs):
+        """
+        Holds down the left mouse button on the source element,
+           then moves to the target offset and releases the mouse button.
+
+        :Args:
+         - source: The element to mouse down.
+         - x: X offset to move to.
+         - y: Y offset to move to.
+        """
+        elem = get_element(**kwargs)[index]
+        show_element(elem)
+        action = ActionChains(Seldom.driver)
+        action.drag_and_drop_by_offset(elem,  x, y).perform()
 
     def double_click(self, index=0, **kwargs):
         """
@@ -765,7 +782,7 @@ class WebDriver(object):
         else:
             log.warn("No elements were found.")
 
-    def get_elements(self, **kwargs):
+    def get_elements(self, index=None, **kwargs):
         """
         Get a set of elements
 
@@ -773,6 +790,9 @@ class WebDriver(object):
         ret = self.get_elements(css="#el")
         print(len(ret))
         """
+        if index is not None:
+            return get_element(**kwargs)[index]
+
         return get_element(**kwargs)
 
     def switch_to_app(self):

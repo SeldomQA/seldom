@@ -15,7 +15,6 @@ WebUI automation testing framework based on Selenium and unittest.
 * 定制化HTML测试报告，用例失败/错误自动截图。
 * 支持XML测试报告
 
-
 ### 安装
 
 ```shell
@@ -182,6 +181,11 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 * [test fixture](./docs/setupclass.md)
 
+## 项目实例
+
+如果你想快速的使用seldom开发自动化测试，请参考这个项目。
+
+https://github.com/BarryYBL/UIAutoDemo
 
 ## 感谢
 

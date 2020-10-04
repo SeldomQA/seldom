@@ -5,7 +5,7 @@ import unittest
 from xmlrunner import XMLTestRunner
 import inspect
 from seldom.logging import log
-from seldom.driver import browser as b
+from seldom.driver import Browser
 from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 
@@ -30,7 +30,6 @@ def main(path=None,
          debug=False,
          rerun=0,
          save_last_run=False,
-         driver_path=None,
          grid_url=None,
          timeout=10,
          xmlrunner=False):
@@ -44,7 +43,6 @@ def main(path=None,
     :param debug:
     :param rerun:
     :param save_last_run:
-    :param driver_path:
     :param grid_url:
     :param timeout:
     :param xmlrunner:
@@ -84,13 +82,6 @@ def main(path=None,
         BrowserConfig.name = browser
         BrowserConfig.grid_url = grid_url
 
-    # Set browser drive path
-    if driver_path is not None:
-        ret = os.path.exists(driver_path)
-        if ret is False:
-            raise ValueError("Browser - driven path error，Please check if the file exists. => {}".format(driver_path))
-        BrowserConfig.driver_path = driver_path
-
     # set timeout
     if isinstance(timeout, int):
         Seldom.timeout = timeout
@@ -103,8 +94,7 @@ def main(path=None,
     """
     Global launch browser
     """
-    Seldom.driver = b(BrowserConfig.name, BrowserConfig.driver_path, BrowserConfig.grid_url)
-    Seldom.driver.maximize_window()
+    Seldom.driver = Browser(BrowserConfig.name, BrowserConfig.grid_url).driver
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
@@ -122,8 +112,7 @@ def main(path=None,
                 report = os.path.join(os.getcwd(), "reports", now + ".xml")
                 BrowserConfig.report_path = report
         else:
-            report = os.path.join(os.getcwd(), "reports", report + ".html")
-            BrowserConfig.driver_path = driver_path
+            report = os.path.join(os.getcwd(), "reports", report)
 
         with(open(report, 'wb')) as fp:
             log.info(seldom_str)
