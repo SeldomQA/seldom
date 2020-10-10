@@ -55,9 +55,8 @@ class Browser(object):
     :return:
     """
 
-    def __init__(self, name=None, driver_path=None):
+    def __init__(self, name=None):
         self.name = name
-        self.driver_path = driver_path
 
     @property
     def driver(self):

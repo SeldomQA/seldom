@@ -17,7 +17,6 @@ if __name__ == '__main__':
               debug=False,
               rerun=0,
               save_last_run=False,
-              grid_url=None,
               timeout=None,
               xmlrunner=False
     )
@@ -33,6 +32,5 @@ if __name__ == '__main__':
 * debug ： debug模式，设置为True不生成测试HTML测试，默认为`False`。
 * rerun : 设置失败重新运行次数，默认为 `0`。
 * save_last_run : 设置只保存最后一次的结果，默认为`False`。
-* grid_url : 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
 * timeout : 设置超时时间，默认10秒
 * xmlrunner: 设置为 True ，生成XML格式的报告。不支持同时生成HTML和 XML 两种格式的报告。

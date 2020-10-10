@@ -126,19 +126,26 @@ if __name__ == '__main__':
 
 ```shell
 > java -jar selenium-server-standalone-3.141.59.jar
-```
 
-运行自动化测试，指定 `grid_url`。
+12:30:37.138 INFO [GridLauncherV3.parse] - Selenium server version: 3.141.59, revision: e82be7d358
+12:30:37.204 INFO [GridLauncherV3.lambda$buildLaunchers$3] - Launching a standalone Selenium Server on port 4444
+2020-10-10 12:30:37.245:INFO::main: Logging initialized @301ms to org.seleniumhq.jetty9.util.log.StdErrLog
+12:30:37.417 INFO [WebDriverServlet.<init>] - Initialising WebDriverServlet
+12:30:37.497 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
+```
 
 ```python
 import seldom
+from seldom import ChromeConfig
 
 # ……
 if __name__ == '__main__':
-    seldom.main(browser="chrome",
-                grid_url="http://127.0.0.1:4444/wd/hub")
+    ChromeConfig.executable_path = "http://127.0.0.1:4444/wd/hub"
+    seldom.main(browser="chrome")
 
 ```
+
+* 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
 
 ## 驱动下载地址
 
