@@ -1,7 +1,7 @@
 colorama==0.4.3
 selenium==3.141.0
-parameterized==0.7.0
-poium==0.6.1
+parameterized>=0.7.0
+poium==0.6.4
 openpyxl==3.0.3
 pyyaml>=3.13
 unittest-xml-reporting==3.0.4

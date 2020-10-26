@@ -30,7 +30,6 @@ def main(path=None,
          debug=False,
          rerun=0,
          save_last_run=False,
-         grid_url=None,
          timeout=10,
          xmlrunner=False):
     """
@@ -43,7 +42,6 @@ def main(path=None,
     :param debug:
     :param rerun:
     :param save_last_run:
-    :param grid_url:
     :param timeout:
     :param xmlrunner:
     :return:
@@ -79,7 +77,6 @@ def main(path=None,
         BrowserConfig.name = "chrome"
     else:
         BrowserConfig.name = browser
-        BrowserConfig.grid_url = grid_url
 
     # set timeout
     if isinstance(timeout, int):
@@ -93,7 +90,7 @@ def main(path=None,
     """
     Global launch browser
     """
-    Seldom.driver = Browser(BrowserConfig.name, BrowserConfig.grid_url).driver
+    Seldom.driver = Browser(BrowserConfig.name).driver
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
