@@ -632,7 +632,7 @@ class WebDriver(object):
             self.select(css="#nr", text='每页显示20条')
             self.select(css="#nr", index=2)
         """
-        elem = get_element(**kwargs)[index]
+        elem = get_element(**kwargs)[0]
         show_element(elem)
         if value is not None:
             Select(elem).select_by_value(value)
