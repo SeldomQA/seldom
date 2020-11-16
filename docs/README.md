@@ -31,3 +31,5 @@
 * [发邮件功能](./send_mail.md)
 
 * [setUp/setUpClass方法](./setupclass.md)
+
+* [优雅的解决用例依赖](./depend.md)
