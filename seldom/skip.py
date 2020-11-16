@@ -30,3 +30,19 @@ def skip_unless(condition, reason):
     :return:
     """
     return unittest.skipUnless(condition, reason)
+
+
+def depend(value):
+    """
+    Use case dependency
+    :param value:
+    :return:
+    """
+    def deco(function):
+        def wrapper(self, *args, **kwargs):
+            if not getattr(self, value):
+                self.skipTest('Dependent use case not passed')
+            else:
+                function(self, *args, **kwargs)
+        return wrapper
+    return deco
