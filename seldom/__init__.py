@@ -31,6 +31,8 @@ from .driver import SafariConfig
 from .skip import skip
 from .skip import skip_if
 from .skip import skip_unless
+from .skip import depend
+from .skip import if_depend
 from .logging.log import _print
 from .logging.log import info
 from .logging.log import error
