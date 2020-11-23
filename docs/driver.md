@@ -16,9 +16,6 @@ if __name__ == '__main__':
     seldom.main(browser="opera") # opera浏览器
     seldom.main(browser="edge") # edge浏览器
     seldom.main(browser="safari") # safari浏览器
-    seldom.main(browser="chrome_headless") # chrome浏览器headless模式
-    seldom.main(browser="firefox_headless") # Firefox浏览器headless模式
-
 ```
 
 在`main()`方法中通过`browser`参数设置不同的浏览器，默认为`Chrome`浏览器。
