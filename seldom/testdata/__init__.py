@@ -11,6 +11,9 @@ from .data import (
     first_names_male,
     first_names_female,
     last_names,
+    mobile,
+    unicom,
+    telecom,
 )
 
 
@@ -322,3 +325,26 @@ def get_date(day=None):
         date = (datetime.datetime.now() + datetime.timedelta(days=day)).strftime("%Y-%m-%d")
 
     return date
+
+
+def get_phone(operator=None):
+    """
+    get phone number
+    :return:
+    """
+
+    if operator is None:
+        all_operator = mobile + unicom + telecom
+        top_third = random.choice(all_operator)
+    elif operator == "mobile":
+        top_third = random.choice(mobile)
+    elif operator == "unicom":
+        top_third = random.choice(unicom)
+    elif operator == "telecom":
+        top_third = random.choice(telecom)
+    else:
+        raise TypeError("Please select the right operator：'mobile'，'unicom'，'telecom' ")
+
+    suffix = random.randint(9999999, 100000000)
+
+    return "{}{}".format(top_third, suffix)
