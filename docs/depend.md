@@ -30,7 +30,7 @@ if __name__ == '__main__':
     seldom.main(debug=True)
 ```
 
-`test_002` 依赖于 `test_001` , `test_002`又依赖于`test_001`。当被依赖的用例，错误、失败、跳过，那么依赖的用例自动跳过。当`test_001`用例失败时，结果是这样的：
+`test_002` 依赖于 `test_001` , `test_003`又依赖于`test_002`。当被依赖的用例，错误、失败、跳过，那么依赖的用例自动跳过。当`test_001`用例失败时，结果是这样的：
 
 ```shell
 test_001 (cc.TestDepend) ... 2020-11-16 23:47:30 [INFO] ✅ Find element: id=iframeResult
