@@ -1,0 +1,45 @@
+<div style="margin-left: 10px; margin-top: 30px;">
+    <p id='show_detail_line' >
+        <a href='javascript:showCase(0, {{ channel }})' class="btn btn-dark btn-sm">Summary</a>
+        <a href='javascript:showCase(1, {{ channel }})' class="btn btn-success btn-sm">Pass</a>
+        <a href='javascript:showCase(2, {{ channel }})' class="btn btn-warning btn-sm">Failed</a>
+        <a href='javascript:showCase(3, {{ channel }})' class="btn btn-danger btn-sm">Error</a>
+        <a href='javascript:showCase(4, {{ channel }})' class="btn btn-secondary btn-sm">Skip</a>
+        <a href='javascript:showCase(5, {{ channel }})' class="btn btn-info btn-sm">All</a>
+    </p>
+</div>
+
+<div class="col-12 d-flex">
+    <div class='card flex-fill'>
+        <div class="card-body my-2">
+            <h4 class="header-title">Result</h4>
+            <table class="table mb-0">
+                <thead>
+                    <tr id='header_row'>
+                        <td>Test Group/Test case</td>
+                        <td>description</td>
+                        <td>Duration</td>
+                        <td>Count</td>
+                        <td>Pass</td>
+                        <td>Fail</td>
+                        <td>Error</td>
+                        <td>View</td>
+                        <td>Screenshots</td>
+                    </tr>
+                </thead>
+                {{ test_list }}
+                <tr id='total_row'>
+                    <td>Total</td>
+                    <td> </td>
+                    <td> </td>
+                    <td>{{ count }}</td>
+                    <td class="text text-success">{{ Pass }}</td>
+                    <td class="text text-danger">{{ fail }}</td>
+                    <td class="text text-warning">{{ error }}</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

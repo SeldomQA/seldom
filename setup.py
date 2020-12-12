@@ -30,7 +30,8 @@ setup(
         'colorama>=0.4.3',
         'openpyxl>=3.0.3',
         'pyyaml>=3.13',
-        'unittest-xml-reporting==3.0.4'
+        'unittest-xml-reporting==3.0.4',
+        'jinja2>=2.11.2',
     ],
     classifiers=[
         'Intended Audience :: Developers',

@@ -5,3 +5,4 @@ poium==0.6.4
 openpyxl==3.0.3
 pyyaml>=3.13
 unittest-xml-reporting==3.0.4
+jinja2>=2.11.2

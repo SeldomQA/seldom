@@ -18,6 +18,7 @@
 # under the License.
 
 from .running.test_runner import main
+from .running.HTMLTestRunner import SMTP
 from .running.config import Seldom
 from .testdata.parameterized import data, file_data, data_class
 from .webdriver import WebDriver
