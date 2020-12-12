@@ -378,7 +378,7 @@ class HTMLTestRunner(Template_mixin):
         ]
 
     def generateReport(self, test, result):
-        template = env.get_template('teamplate.html')
+        template = env.get_template('template.html')
         stylesheet = env.get_template('stylesheet.html').render()
         report_attrs = self.getReportAttributes(result)
 
@@ -459,7 +459,7 @@ class HTMLTestRunner(Template_mixin):
         return report
 
     def _generate_chart(self, result):
-        chart = env.get_template('echarts_script.html').render(
+        chart = env.get_template('charts_script.html').render(
             Pass=str(result.success_count),
             fail=str(result.failure_count),
             error=str(result.error_count),
