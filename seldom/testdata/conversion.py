@@ -109,11 +109,11 @@ def yaml_to_list(file, key=None):
 
     if key is None:
         with open(file, "r", encoding="utf-8") as f:
-            dict_data = yaml.load(f)
+            dict_data = yaml.load(f, Loader=yaml.FullLoader)
     else:
         with open(file, "r", encoding="utf-8") as f:
             try:
-                dict_data = yaml.load(f)[key]
+                dict_data = yaml.load(f, Loader=yaml.FullLoader)[key]
             except KeyError:
                 raise ValueError("Check the test data, no '{}'".format(key))
 

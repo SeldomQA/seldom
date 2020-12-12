@@ -29,7 +29,7 @@ setup(
         'parameterized==0.7.0',
         'colorama>=0.4.3',
         'openpyxl>=3.0.3',
-        'pyyaml>=3.13',
+        'pyyaml>=5.1',
         'unittest-xml-reporting==3.0.4',
         'jinja2>=2.11.2',
     ],

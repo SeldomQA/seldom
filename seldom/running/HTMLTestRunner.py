@@ -302,7 +302,6 @@ class HTMLTestRunner(Template_mixin):
     """
 
     def __init__(self, stream=sys.stdout, verbosity=1, title=None, description=None, save_last_run=True):
-        log.info("------->"+title)
         self.stream = stream
         self.verbosity = verbosity
         self.save_last_run = save_last_run
