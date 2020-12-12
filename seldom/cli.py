@@ -106,21 +106,45 @@ def create_scaffold(project_name):
         msg = "created file: {}".format(path)
         log.info(msg)
 
-    test_sample = '''import seldom
+    test_data = '''{
+ "baidu":  [
+    ["case1", "seldom"],
+    ["case2", "poium"],
+    ["case3", "HTMLTestRunner"]
+ ]
+}
+
+'''
+    test_sample = '''import os
+import seldom
+from seldom import file_data
+CASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# data file path
+YAML_FILE = os.path.join(CASE_DIR, "data.json")
 
 
-class YouTest(seldom.TestCase):
+class SampleTest(seldom.TestCase):
 
     def test_case(self):
         """a simple test case """
-        self.open("https://www.baidu.com")
-        self.type(id_="kw", text="seldom")
+        self.get("http://www.itest.info")
+        self.assertInUrl("itest.info")
+
+
+class BaiduTest(seldom.TestCase):
+
+    @file_data(file=YAML_FILE, key="baidu")
+    def test_data_driver(self, _, keyword):
+        """ data driver case """
+        self.get("https://www.baidu.com")
+        self.type(id_="kw", text=keyword)
         self.click(css="#su")
-        self.assertInTitle("seldom")
+        self.assertInTitle(keyword)
 
 
 if __name__ == '__main__':
     seldom.main(debug=True)
+
 '''
     run_test = """import seldom
 
@@ -134,6 +158,7 @@ if __name__ == '__main__':
     create_folder(project_name)
     create_folder(os.path.join(project_name, "test_dir"))
     create_folder(os.path.join(project_name, "reports"))
+    create_file(os.path.join(project_name, "test_dir", "data.json"), test_data)
     create_file(os.path.join(project_name, "test_dir", "test_sample.py"), test_sample)
     create_file(os.path.join(project_name, "run.py"), run_test)
 
@@ -171,7 +196,7 @@ def chrome(_os=None, os_bit=None):
     :param os_bit: system bit
     :return:
     """
-    latest_version = '85.0.4183.87'
+    latest_version = '87.0.4280.88'
     base_download = "https://cdn.npm.taobao.org/dist/chromedriver/%s/chromedriver_%s%s.zip"
     download = base_download % (latest_version, _os, os_bit)
     return 'chromedriver', download, latest_version
