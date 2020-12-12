@@ -5,7 +5,7 @@
 
 ```python
 import seldom
-from seldom.mail import SMTP
+from seldom import SMTP
 
 
 class Test(seldom.TestCase):
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 ```python
 import seldom
-from seldom.mail import SMTP
+from seldom import SMTP
 
 # ……
 
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     report_path = "/you/path/to/report.html"
     seldom.main(report_name=report_path)
     smtp = SMTP(user="you@126.com", password="abc123", host="smtp.126.com")
-    smtp.sender(to="receive@mail.com", attachments=report_path)
+    smtp.sender(to="receive@mail.com",subject='Email title', attachments=report_path)
 
 ```
 

@@ -46,3 +46,4 @@ __testdata还提供了更多的方法:__
 * get_uuid()
 * get_word()
 * get_words()
+* get_phone()
