@@ -2,10 +2,10 @@
 
 seldom API的设计理念已经将元素操作和元素定位做了整合，本身不太适合实现Page objects设计模式。
 
-[poium](https://github.com/SeldomQA/poium)是Page objects设计模式最佳实践，如果想使用poium，需要单独安装。
+[poium](https://github.com/SeldomQA/poium) 是Page objects设计模式最佳实践，如果想使用poium，需要单独安装。
 
 ```shell
-> pip install poium
+> pip install poium==1.0.0
 ```
 
 将seldom与poium结合使用。
@@ -13,13 +13,13 @@ seldom API的设计理念已经将元素操作和元素定位做了整合，本�
 ```python
 import seldom
 from seldom import Seldom
-from poium import Page, PageElement
+from poium import Page, Element
 
 
 class BaiduPage(Page):
     """baidu page"""
-    search_input = PageElement(id_="kw")
-    search_button = PageElement(id_="su")
+    search_input = Element(id_="kw")
+    search_button = Element(id_="su")
 
 
 class BaiduTest(seldom.TestCase):
@@ -37,6 +37,6 @@ class BaiduTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main("test_po_demo.py")
+    seldom.main()
 
 ```
