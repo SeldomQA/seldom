@@ -41,7 +41,7 @@ def main():
         help="show version")
 
     parser.add_argument(
-        '--project',
+        '-project',
         help="Create an Seldom automation test project.")
 
     parser.add_argument(
@@ -55,7 +55,7 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        print("version {}".format(__version__))
+        print("seldom {}".format(__version__))
         return 0
 
     project_name = args.project
@@ -65,11 +65,13 @@ def main():
 
     run_file = args.r
     if run_file:
-        log.info("Run the python version:")
+        print("Runtime environment:")
+        print("---------------------")
         if PY3:
-            ret = os.system("python -V")
-            if ret != 0:
-                os.system("python3 -V")
+            ret = os.system("python3 -V")
+            os.system("seldom -v")
+            print("---------------------")
+            if ret == 0:
                 command = "python3 " + run_file
             else:
                 command = "python " + run_file
