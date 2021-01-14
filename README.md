@@ -184,6 +184,8 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 * [优雅的解决用例依赖](./docs/depend.md)
 
+* [版本更新](./docs/CHANGELOG.md)
+
 ## 项目实例
 
 如果你想快速的使用seldom开发自动化测试，请参考这个项目。
