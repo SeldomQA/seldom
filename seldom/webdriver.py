@@ -9,7 +9,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
-from selenium.common.exceptions import UnexpectedAlertPresentException
 
 
 LOCATOR_LIST = {
@@ -43,7 +42,6 @@ def find_element(elem):
     else:
         error_msg = "❌ Find 0 elements through: {by}={value}".format(
             by=elem[0], value=elem[1])
-        log.error(error_msg)
         raise NotFindElementError(error_msg)
 
 

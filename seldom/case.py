@@ -3,6 +3,7 @@ from time import sleep
 from seldom.webdriver import WebDriver
 from seldom.running.config import Seldom
 from seldom.logging import log
+from seldom.logging.exceptions import NotFindElementError
 
 
 class TestCase(unittest.TestCase, WebDriver):
@@ -160,6 +161,44 @@ class TestCase(unittest.TestCase, WebDriver):
             raise NameError("Alert text cannot be empty.")
         alert_text = self.get_alert_text()
         self.assertEqual(alert_text, text, msg=msg)
+
+    def assertElement(self, msg=None, **kwargs):
+        """
+        Asserts whether the element exists.
+
+        Usage:
+        self.assertElement("text")
+        """
+        if msg is None:
+            msg = "No elements found"
+        for _ in range(Seldom.timeout):
+            try:
+                log.info("👀 assertElement.")
+                self.get_elements(**kwargs)
+                break
+            except NotFindElementError:
+                sleep(1)
+        else:
+            print("time out")
+            self.assertTrue(False, msg=msg)
+
+    def assertNotElement(self, msg=None, **kwargs):
+        """
+        Asserts if the element does not exist.
+
+        Usage:
+        self.assertNotElement("text")
+        """
+        if msg is None:
+            msg = "Find the element"
+
+            try:
+                log.info("👀 assertNotElement.")
+                self.get_elements(**kwargs)
+            except NotFindElementError:
+                pass
+            else:
+                self.assertFalse(True, msg=msg)
 
     def xSkip(self, reason):
         """
