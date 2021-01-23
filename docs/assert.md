@@ -22,4 +22,10 @@ self.assertText("text")
 
 # 断言警告是否存在"text" 提示信息
 self.assertAlertText("text")
+
+# 断言元素是否存在
+self.assertElement(css="#kw")
+
+# 断言元素是否不存在
+self.assertNotElement(css="#kwasdfasdfa")
 ```
