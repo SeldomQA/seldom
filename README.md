@@ -1,6 +1,8 @@
 
 ![](seldom_logo.png)
 
+[![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
+
 WebUI automation testing framework based on Selenium and unittest.
 
 > 基于 selenium 和 unittest 的 Web UI自动化测试框架。
@@ -70,7 +72,7 @@ mypro/
 3、运行项目：
 
 ```shell
-python3 run.py
+> python3 run.py
 2020-05-16 11:34:36,014 INFO
             _      _
            | |    | |
