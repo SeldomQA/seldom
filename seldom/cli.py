@@ -49,6 +49,10 @@ def main():
         help="run test case")
 
     parser.add_argument(
+        '-m',
+        help="run tests modules, classes or even individual test methods from the command line ")
+
+    parser.add_argument(
         '-install',
         help="Install the browser driver, For example, 'chrome', 'firefox'. ")
 
@@ -75,6 +79,25 @@ def main():
                 command = "python3 " + run_file
             else:
                 command = "python " + run_file
+        else:
+            raise NameError("Does not support python2")
+        os.system(command)
+        return 0
+
+    run_case = args.m
+    if run_case:
+        print("Runtime environment:")
+        print("---------------------")
+        print("Note: This mode is suitable for debugging single test classes and methods.")
+        if PY3:
+            ret = os.system("python3 -V")
+            os.system("seldom -v")
+            print("Browser: Chrome(default)")
+            print("---------------------")
+            if ret == 0:
+                command = "python3 -m unittest " + run_case
+            else:
+                command = "python -m unittest " + run_case
         else:
             raise NameError("Does not support python2")
         os.system(command)

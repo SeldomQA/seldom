@@ -1,5 +1,6 @@
 import unittest
 from time import sleep
+from selenium.webdriver import Chrome
 from seldom.webdriver import WebDriver
 from seldom.running.config import Seldom
 from seldom.logging import log
@@ -22,10 +23,14 @@ class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
+        if Seldom.driver is None:
+            Seldom.driver = Chrome()
         cls().start_class()
 
     @classmethod
     def tearDownClass(cls):
+        if Seldom.driver is not None:
+            Seldom.driver.quit()
         cls().end_class()
 
     def start(self):

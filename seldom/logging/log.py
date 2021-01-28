@@ -27,7 +27,7 @@ if platform.system().lower() == "windows":
 else:
     _logger.addHandler(file_handler)
     _logger.addHandler(_handler)
-    _logger.removeHandler(_handler)
+    # _logger.removeHandler(_handler)
 
 
 def debug(msg):
