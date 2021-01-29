@@ -1,6 +1,7 @@
 """
 Seldom configuration file
 """
+from selenium import webdriver
 
 
 class Seldom:
@@ -8,8 +9,8 @@ class Seldom:
     Seldom browser driver
     """
     driver = None
-    timeout = None
-    debug = None
+    timeout = 10
+    debug = False
 
 
 class BrowserConfig:
