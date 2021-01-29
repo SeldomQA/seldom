@@ -35,23 +35,25 @@ If you want to keep up with the latest version, you can install with github repo
 
 ```shell
 > seldom -h
-usage: seldom [-h] [-v] [--project PROJECT] [-r R] [-install INSTALL]
+usage: seldom [-h] [-v] [-project PROJECT] [-r R] [-m M] [-install INSTALL]
 
 WebUI automation testing framework based on Selenium.
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -v, --version      show version
-  --project PROJECT  Create an Seldom automation test project.
-  -r R               run test case
-  -install INSTALL   Install the browser driver, For example, 'chrome',
-                     'firefox'.
+  -h, --help        show this help message and exit
+  -v, --version     show version
+  -project PROJECT  Create an Seldom automation test project.
+  -r R              run test case
+  -m M              run tests modules, classes or even individual test methods
+                    from the command line
+  -install INSTALL  Install the browser driver, For example, 'chrome',
+                    'firefox'.
 ```
 
 2、创建项目：
 
 ```shell
-> seldom --project mypro
+> seldom -project mypro
 ```
 
 目录结构如下：

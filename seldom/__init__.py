@@ -41,6 +41,6 @@ from .logging.log import debug
 
 __author__ = "bugmaster"
 
-__version__ = "1.9.0"
+__version__ = "1.10.0"
 
 __description__ = "WebUI automation testing framework based on Selenium."
