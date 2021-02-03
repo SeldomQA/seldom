@@ -78,19 +78,20 @@ def main(path=None,
     else:
         BrowserConfig.name = browser
 
-    # set timeout
-    if isinstance(timeout, int):
-        Seldom.timeout = timeout
-    else:
+    if isinstance(timeout, int) is False:
         raise TypeError("Timeout {} is not integer.".format(timeout))
 
-    # set debug
-    Seldom.debug = debug
+    if isinstance(debug, bool) is False:
+        raise TypeError("Debug {} is not Boolean type.".format(timeout))
 
     """
     Global launch browser
     """
-    Seldom.driver = Browser(BrowserConfig.name).driver
+    browser = Browser(BrowserConfig.name).driver
+    seldom = Seldom()
+    setattr(seldom, "driver", browser)
+    setattr(seldom, "timeout", timeout)
+    setattr(seldom, "debug", debug)
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):

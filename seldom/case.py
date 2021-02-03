@@ -51,6 +51,15 @@ class TestCase(unittest.TestCase, WebDriver):
     def tearDown(self):
         self.end()
 
+    @property
+    def driver(self):
+        """
+        browser driver
+        """
+        if Seldom.driver is None:
+            Seldom.driver = Chrome()
+        return Seldom.driver
+
     def assertTitle(self, title=None, msg=None):
         """
         Asserts whether the current title is in line with expectations.

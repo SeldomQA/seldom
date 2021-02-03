@@ -1,7 +1,6 @@
 """
 Seldom configuration file
 """
-from selenium import webdriver
 
 
 class Seldom:
