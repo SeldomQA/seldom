@@ -1,4 +1,4 @@
-coloram>=0.4.3
+colorama>=0.4.3
 selenium==3.141.0
 parameterized>=0.7.0
 poium==0.6.4
