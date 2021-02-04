@@ -85,13 +85,12 @@ def main(path=None,
         raise TypeError("Debug {} is not Boolean type.".format(timeout))
 
     """
-    Global launch browser
+    Global launch browser, timeout and debug.
     """
     browser = Browser(BrowserConfig.name).driver
-    seldom = Seldom()
-    setattr(seldom, "driver", browser)
-    setattr(seldom, "timeout", timeout)
-    setattr(seldom, "debug", debug)
+    Seldom.driver = browser
+    Seldom.timeout = timeout
+    Seldom.debug = timeout
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
