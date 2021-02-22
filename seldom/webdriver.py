@@ -10,7 +10,6 @@ from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
 
-
 LOCATOR_LIST = {
     'css': By.CSS_SELECTOR,
     'id_': By.ID,
@@ -23,100 +22,100 @@ LOCATOR_LIST = {
 }
 
 
-def find_element(elem):
-    """
-    Find if the element exists.
-    """
-    for i in range(Seldom.timeout):
-        elems = Seldom.driver.find_elements(by=elem[0], value=elem[1])
-        if len(elems) == 1:
-            log.info("✅ Find element: {by}={value} ".format(
-                by=elem[0], value=elem[1]))
-            break
-        elif len(elems) > 1:
-            log.info("❓ Find {n} elements through: {by}={value}".format(
-                n=len(elems), by=elem[0], value=elem[1]))
-            break
+class WebElement(object):
+
+    def __init__(self, **kwargs):
+        if not kwargs:
+            raise ValueError("Please specify a locator")
+        if len(kwargs) > 1:
+            raise ValueError("Please specify only one locator")
+
+        self.by, self.value = next(iter(kwargs.items()))
+        try:
+            LOCATOR_LIST[self.by]
+        except KeyError:
+            raise ValueError("Element positioning of type '{}' is not supported. ".format(self.by))
+
+    @staticmethod
+    def __find_element(elem):
+        """
+        Find if the element exists.
+        """
+        for _ in range(Seldom.timeout):
+            elems = Seldom.driver.find_elements(by=elem[0], value=elem[1])
+            if len(elems) >= 1:
+                log.info("✅ Find {number} element: {by}={value} ".format(
+                    number=str(len(elems)), by=elem[0], value=elem[1]))
+                break
+            else:
+                time.sleep(1)
         else:
-            time.sleep(1)
-    else:
-        error_msg = "❌ Find 0 elements through: {by}={value}".format(
-            by=elem[0], value=elem[1])
-        raise NotFindElementError(error_msg)
+            error_msg = "❌ Find 0 element through: {by}={value}".format(
+                by=elem[0], value=elem[1])
+            raise NotFindElementError(error_msg)
 
+    def get_elements(self):
+        """
+        Judge element positioning way, and returns the element.
+        """
 
-def get_element(**kwargs):
-    """
-    Judge element positioning way, and returns the element.
-    """
-    if not kwargs:
-        raise ValueError("Please specify a locator")
-    if len(kwargs) > 1:
-        raise ValueError("Please specify only one locator")
+        if self.by == "id_":
+            self.__find_element((By.ID, self.value))
+            elem = Seldom.driver.find_elements(By.ID, self.value)
+        elif self.by == "name":
+            self.__find_element((By.NAME, self.value))
+            elem = Seldom.driver.find_elements(By.NAME, self.value)
+        elif self.by == "class_name":
+            self.__find_element((By.CLASS_NAME, self.value))
+            elem = Seldom.driver.find_elements(By.CLASS_NAME, self.value)
+        elif self.by == "tag":
+            self.__find_element((By.TAG_NAME, self.value))
+            elem = Seldom.driver.find_elements(By.TAG_NAME, self.value)
+        elif self.by == "link_text":
+            self.__find_element((By.LINK_TEXT, self.value))
+            elem = Seldom.driver.find_elements(By.LINK_TEXT, self.value)
+        elif self.by == "partial_link_text":
+            self.__find_element((By.PARTIAL_LINK_TEXT, self.value))
+            elem = Seldom.driver.find_elements(By.PARTIAL_LINK_TEXT, self.value)
+        elif self.by == "xpath":
+            self.__find_element((By.XPATH, self.value))
+            elem = Seldom.driver.find_elements(By.XPATH, self.value)
+        elif self.by == "css":
+            self.__find_element((By.CSS_SELECTOR, self.value))
+            elem = Seldom.driver.find_elements(By.CSS_SELECTOR, self.value)
+        else:
+            raise NameError(
+                "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
 
-    by, value = next(iter(kwargs.items()))
-    try:
-        LOCATOR_LIST[by]
-    except KeyError:
-        raise ValueError("Element positioning of type '{}' is not supported. ".format(by))
+        return elem
 
-    if by == "id_":
-        find_element((By.ID, value))
-        elem = Seldom.driver.find_elements_by_id(value)
-    elif by == "name":
-        find_element((By.NAME, value))
-        elem = Seldom.driver.find_elements_by_name(value)
-    elif by == "class_name":
-        find_element((By.CLASS_NAME, value))
-        elem = Seldom.driver.find_elements_by_class_name(value)
-    elif by == "tag":
-        find_element((By.TAG_NAME, value))
-        elem = Seldom.driver.find_elements_by_tag_name(value)
-    elif by == "link_text":
-        find_element((By.LINK_TEXT, value))
-        elem = Seldom.driver.find_elements_by_link_text(value)
-    elif by == "partial_link_text":
-        find_element((By.PARTIAL_LINK_TEXT, value))
-        elem = Seldom.driver.find_elements_by_partial_link_text(value)
-    elif by == "xpath":
-        find_element((By.XPATH, value))
-        elem = Seldom.driver.find_elements_by_xpath(value)
-    elif by == "css":
-        find_element((By.CSS_SELECTOR, value))
-        elem = Seldom.driver.find_elements_by_css_selector(value)
-    else:
-        raise NameError(
-            "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
-
-    return elem
-
-
-def show_element(elem):
-    """
-    Show the elements of the operation
-    :param elem:
-    """
-    style_red = 'arguments[0].style.border="2px solid #FF0000"'
-    style_blue = 'arguments[0].style.border="2px solid #00FF00"'
-    style_null = 'arguments[0].style.border=""'
-    if Seldom.debug is True:
-        for _ in range(2):
-            Seldom.driver.execute_script(style_red, elem)
-            time.sleep(0.2)
+    @staticmethod
+    def show_element(elem):
+        """
+        Show the elements of the operation
+        :param elem:
+        """
+        style_red = 'arguments[0].style.border="2px solid #FF0000"'
+        style_blue = 'arguments[0].style.border="2px solid #00FF00"'
+        style_null = 'arguments[0].style.border=""'
+        if Seldom.debug is True:
+            for _ in range(2):
+                Seldom.driver.execute_script(style_red, elem)
+                time.sleep(0.2)
+                Seldom.driver.execute_script(style_blue, elem)
+                time.sleep(0.2)
             Seldom.driver.execute_script(style_blue, elem)
             time.sleep(0.2)
-        Seldom.driver.execute_script(style_blue, elem)
-        time.sleep(0.2)
-        Seldom.driver.execute_script(style_null, elem)
-    else:
-        for _ in range(2):
-            Seldom.driver.execute_script(style_red, elem)
-            time.sleep(0.1)
+            Seldom.driver.execute_script(style_null, elem)
+        else:
+            for _ in range(2):
+                Seldom.driver.execute_script(style_red, elem)
+                time.sleep(0.1)
+                Seldom.driver.execute_script(style_blue, elem)
+                time.sleep(0.1)
             Seldom.driver.execute_script(style_blue, elem)
-            time.sleep(0.1)
-        Seldom.driver.execute_script(style_blue, elem)
-        time.sleep(0.3)
-        Seldom.driver.execute_script(style_null, elem)
+            time.sleep(0.3)
+            Seldom.driver.execute_script(style_null, elem)
 
 
 class WebDriver(object):
@@ -135,8 +134,9 @@ class WebDriver(object):
         """
 
         def __init__(self, index=0, **kwargs):
-            self.elem = get_element(**kwargs)[index]
-            show_element(self.elem)
+            web_elem = WebElement(**kwargs)
+            self.elem = web_elem.get_elements()[index]
+            web_elem.show_element(self.elem)
 
         def input(self, text=""):
             self.elem.send_keys(text)
@@ -180,7 +180,8 @@ class WebDriver(object):
         def space(self):
             self.elem.send_keys(Keys.SPACE)
 
-    def get(self, url):
+    @staticmethod
+    def get(url):
         """
         get url.
 
@@ -198,7 +199,8 @@ class WebDriver(object):
         """
         self.get(url)
 
-    def max_window(self):
+    @staticmethod
+    def max_window():
         """
         Set browser window maximized.
 
@@ -207,7 +209,8 @@ class WebDriver(object):
         """
         Seldom.driver.maximize_window()
 
-    def set_window(self, wide, high):
+    @staticmethod
+    def set_window(wide, high):
         """
         Set browser window wide and high.
 
@@ -225,13 +228,14 @@ class WebDriver(object):
         """
         if clear is True:
             self.clear(index, **kwargs)
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         log.info("🖋 input '{text}'.".format(text=text))
         elem.send_keys(text)
         if enter is True:
             elem.send_keys(Keys.ENTER)
-    
+
     def type_enter(self, text, clear=False, index=0, **kwargs):
         """
         Enter text and enter directly.
@@ -241,24 +245,28 @@ class WebDriver(object):
         """
         if clear is True:
             self.clear(index, **kwargs)
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         log.info("🖋 ➕ 🖱 input '{text}' and enter.".format(text=text))
         elem.send_keys(text)
         elem.send_keys(Keys.ENTER)
 
-    def clear(self, index=0, **kwargs):
+    @staticmethod
+    def clear(index=0, **kwargs):
         """
         Clear the contents of the input box.
 
         Usage:
         self.clear(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         elem.clear()
 
-    def click(self, index=0, **kwargs):
+    @staticmethod
+    def click(index=0, **kwargs):
         """
         It can click any text / image can be clicked
         Connection, check box, radio buttons, and even drop-down box etc..
@@ -266,55 +274,66 @@ class WebDriver(object):
         Usage:
         self.click(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         log.info("🖱 click.")
         elem.click()
 
-    def slow_click(self, index=0, **kwargs):
+    @staticmethod
+    def slow_click(index=0, **kwargs):
         """
         Moving the mouse to the middle of an element. and click element.
         Usage:
         self.slow_click(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
+        log.info("🖱 slow click.")
         ActionChains(Seldom.driver).move_to_element(elem).click(elem).perform()
 
-    def right_click(self, index=0, **kwargs):
+    @staticmethod
+    def right_click(index=0, **kwargs):
         """
         Right click element.
 
         Usage:
         self.right_click(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         ActionChains(Seldom.driver).context_click(elem).perform()
 
-    def move_to_element(self, index=0, **kwargs):
+    @staticmethod
+    def move_to_element(index=0, **kwargs):
         """
         Mouse over the element.
 
         Usage:
         self.move_to_element(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         ActionChains(Seldom.driver).move_to_element(elem).perform()
 
-    def click_and_hold(self, index=0, **kwargs):
+    @staticmethod
+    def click_and_hold(index=0, **kwargs):
         """
         Mouse over the element.
 
         Usage:
         self.move_to_element(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         ActionChains(Seldom.driver).click_and_hold(elem).perform()
 
-    def drag_and_drop_by_offset(self, index=0, x=0, y=0, **kwargs):
+    @staticmethod
+    def drag_and_drop_by_offset(index=0, x=0, y=0, **kwargs):
         """
         Holds down the left mouse button on the source element,
            then moves to the target offset and releases the mouse button.
@@ -324,43 +343,51 @@ class WebDriver(object):
          - x: X offset to move to.
          - y: Y offset to move to.
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         action = ActionChains(Seldom.driver)
-        action.drag_and_drop_by_offset(elem,  x, y).perform()
+        action.drag_and_drop_by_offset(elem, x, y).perform()
 
-    def double_click(self, index=0, **kwargs):
+    @staticmethod
+    def double_click(index=0, **kwargs):
         """
         Double click element.
 
         Usage:
         self.double_click(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         ActionChains(Seldom.driver).double_click(elem).perform()
 
-    def click_text(self, text):
+    @staticmethod
+    def click_text(text, index=0):
         """
         Click the element by the link text
 
         Usage:
         self.click_text("新闻")
         """
-        find_element((By.LINK_TEXT, text))
-        Seldom.driver.find_element_by_link_text(text).click()
+        web_elem = WebElement(link_text=text)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
+        log.info("🖱 click link.")
+        elem.click()
 
-    def close(self):
+    @staticmethod
+    def close():
         """
-        Simulates the user clicking the "close" button in the titlebar of a popup
-        window or tab.
+        Closes the current window.
 
         Usage:
         self.close()
         """
         Seldom.driver.close()
 
-    def quit(self):
+    @staticmethod
+    def quit():
         """
         Quit the driver and close all the windows.
 
@@ -369,18 +396,21 @@ class WebDriver(object):
         """
         Seldom.driver.quit()
 
-    def submit(self, index=0, **kwargs):
+    @staticmethod
+    def submit(index=0, **kwargs):
         """
         Submit the specified form.
 
         Usage:
         driver.submit(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         elem.submit()
 
-    def refresh(self):
+    @staticmethod
+    def refresh():
         """
         Refresh the current page.
 
@@ -389,7 +419,8 @@ class WebDriver(object):
         """
         Seldom.driver.refresh()
 
-    def execute_script(self, script, *args):
+    @staticmethod
+    def execute_script(script, *args):
         """
         Execute JavaScript scripts.
 
@@ -426,7 +457,8 @@ class WebDriver(object):
         self.execute_script(scroll_life)
         self.execute_script(scroll_top)
 
-    def get_attribute(self, attribute=None, index=0, **kwargs):
+    @staticmethod
+    def get_attribute(attribute=None, index=0, **kwargs):
         """
         Gets the value of an element attribute.
 
@@ -435,30 +467,35 @@ class WebDriver(object):
         """
         if attribute is None:
             raise ValueError("attribute is not None")
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         return elem.get_attribute(attribute)
 
-    def get_text(self, index=0, **kwargs):
+    @staticmethod
+    def get_text(index=0, **kwargs):
         """
         Get element text information.
 
         Usage:
         self.get_text(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         return elem.text
 
-    def get_display(self, index=0, **kwargs):
+    @staticmethod
+    def get_display(index=0, **kwargs):
         """
         Gets the element to display,The return result is true or false.
 
         Usage:
         self.get_display(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         return elem.is_displayed()
 
     @property
@@ -491,7 +528,8 @@ class WebDriver(object):
         """
         return Seldom.driver.switch_to.alert.text
 
-    def wait(self, secs=10):
+    @staticmethod
+    def wait(secs=10):
         """
         Implicitly wait.All elements on the page.
 
@@ -500,7 +538,8 @@ class WebDriver(object):
         """
         Seldom.driver.implicitly_wait(secs)
 
-    def accept_alert(self):
+    @staticmethod
+    def accept_alert():
         """
         Accept warning box.
 
@@ -509,7 +548,8 @@ class WebDriver(object):
         """
         Seldom.driver.switch_to.alert.accept()
 
-    def dismiss_alert(self):
+    @staticmethod
+    def dismiss_alert():
         """
         Dismisses the alert available.
 
@@ -518,18 +558,21 @@ class WebDriver(object):
         """
         Seldom.driver.switch_to.alert.dismiss()
 
-    def switch_to_frame(self, index=0, **kwargs):
+    @staticmethod
+    def switch_to_frame(index=0, **kwargs):
         """
         Switch to the specified frame.
 
         Usage:
         self.switch_to_frame(css="#el")
         """
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         Seldom.driver.switch_to.frame(elem)
 
-    def switch_to_frame_out(self):
+    @staticmethod
+    def switch_to_frame_out():
         """
         Returns the current form machine form at the next higher level.
         Corresponding relationship with switch_to_frame () method.
@@ -539,7 +582,8 @@ class WebDriver(object):
         """
         Seldom.driver.switch_to.default_content()
 
-    def open_new_window(self, index=0, **kwargs):
+    @staticmethod
+    def open_new_window(index=0, **kwargs):
         """
         Open the new window and switch the handle to the newly opened window.
 
@@ -549,8 +593,9 @@ class WebDriver(object):
         warnings.warn("This method is not recommended",
                       DeprecationWarning, stacklevel=2)
         original_window = Seldom.driver.current_window_handle
-        elem = get_element(**kwargs)[index]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         elem.click()
         all_handles = Seldom.driver.window_handles
         for handle in all_handles:
@@ -589,7 +634,8 @@ class WebDriver(object):
         all_handles = Seldom.driver.window_handles
         return all_handles
 
-    def switch_to_window(self, window_name):
+    @staticmethod
+    def switch_to_window(window_name):
         """
         Switches focus to the specified window.
 
@@ -601,7 +647,8 @@ class WebDriver(object):
         """
         Seldom.driver.switch_to.window(window_name)
 
-    def screenshots(self, file_path):
+    @staticmethod
+    def screenshots(file_path):
         """
         Saves a screenshots of the current window to a PNG image file.
 
@@ -610,7 +657,8 @@ class WebDriver(object):
         """
         Seldom.driver.save_screenshot(file_path)
 
-    def select(self, value=None, text=None, index=None, **kwargs):
+    @staticmethod
+    def select(value=None, text=None, index=None, **kwargs):
         """
         Constructor. A check is made that the given element is, indeed, a SELECT tag. If it is not,
         then an UnexpectedTagNameException is thrown.
@@ -630,8 +678,9 @@ class WebDriver(object):
             self.select(css="#nr", text='每页显示20条')
             self.select(css="#nr", index=2)
         """
-        elem = get_element(**kwargs)[0]
-        show_element(elem)
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        web_elem.show_element(elem)
         if value is not None:
             Select(elem).select_by_value(value)
         elif text is not None:
@@ -642,7 +691,8 @@ class WebDriver(object):
             raise ValueError(
                 '"value" or "text" or "index" options can not be all empty.')
 
-    def get_cookies(self):
+    @staticmethod
+    def get_cookies():
         """
         Returns a set of dictionaries, corresponding to cookies visible in the current session.
         Usage:
@@ -650,7 +700,8 @@ class WebDriver(object):
         """
         return Seldom.driver.get_cookies()
 
-    def get_cookie(self, name):
+    @staticmethod
+    def get_cookie(name):
         """
         Returns information of cookie with ``name`` as an object.
         Usage:
@@ -658,7 +709,8 @@ class WebDriver(object):
         """
         return Seldom.driver.get_cookie(name)
 
-    def add_cookie(self, cookie_dict):
+    @staticmethod
+    def add_cookie(cookie_dict):
         """
         Adds a cookie to your current session.
         Usage:
@@ -669,7 +721,8 @@ class WebDriver(object):
         else:
             raise TypeError("Wrong cookie type.")
 
-    def add_cookies(self, cookie_list):
+    @staticmethod
+    def add_cookies(cookie_list):
         """
         Adds a cookie to your current session.
         Usage:
@@ -688,7 +741,8 @@ class WebDriver(object):
         else:
             raise TypeError("Wrong cookie type.")
 
-    def delete_cookie(self, name):
+    @staticmethod
+    def delete_cookie(name):
         """
         Deletes a single cookie with the given name.
         Usage:
@@ -696,7 +750,8 @@ class WebDriver(object):
         """
         Seldom.driver.delete_cookie(name)
 
-    def delete_all_cookies(self):
+    @staticmethod
+    def delete_all_cookies():
         """
         Delete all cookies in the scope of the session.
         Usage:
@@ -712,7 +767,8 @@ class WebDriver(object):
         """
         time.sleep(sec)
 
-    def check_element(self, css=None):
+    @staticmethod
+    def check_element(css=None):
         """
         Check that the element exists
 
@@ -733,7 +789,8 @@ class WebDriver(object):
         else:
             log.warn("No elements were found.")
 
-    def get_elements(self, index=None, **kwargs):
+    @staticmethod
+    def get_elements(**kwargs):
         """
         Get a set of elements
 
@@ -741,7 +798,19 @@ class WebDriver(object):
         ret = self.get_elements(css="#el")
         print(len(ret))
         """
-        if index is not None:
-            return get_element(**kwargs)[index]
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()
+        return elem
 
-        return get_element(**kwargs)
+    @staticmethod
+    def get_element(index=0, **kwargs):
+        """
+        Get a set of elements
+
+        Usage:
+        elem = self.get_element(index=1, css="#el")
+        elem.click()
+        """
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements()[index]
+        return elem
