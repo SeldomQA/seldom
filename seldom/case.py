@@ -23,13 +23,15 @@ class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
+        cls.flag = False
         if Seldom.driver is None:
+            cls.flag = True
             Seldom.driver = Chrome()
         cls().start_class()
 
     @classmethod
     def tearDownClass(cls):
-        if Seldom.driver is not None:
+        if cls.flag is True:
             Seldom.driver.quit()
         cls().end_class()
 
