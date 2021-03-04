@@ -1,3 +1,7 @@
+### 1.10.1
+* webdriver代码重构
+* 修复严重bug
+
 ### 1.10.0
 * 增加断言元素方法：`assertElement`、`assertNotElement`
 * 增加单个测试类、用例执行的方法
