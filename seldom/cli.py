@@ -221,7 +221,7 @@ def chrome(_os=None, os_bit=None):
     :param os_bit: system bit
     :return:
     """
-    latest_version = '87.0.4280.88'
+    latest_version = '89.0.4389.23'
     base_download = "https://cdn.npm.taobao.org/dist/chromedriver/%s/chromedriver_%s%s.zip"
     download = base_download % (latest_version, _os, os_bit)
     return 'chromedriver', download, latest_version
