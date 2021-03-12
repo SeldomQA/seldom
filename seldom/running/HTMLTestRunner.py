@@ -13,7 +13,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from seldom.logging import log
-from seldom.running.config import Seldom
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 HTML_DIR = os.path.join(BASE_DIR, "html")
@@ -25,7 +24,7 @@ env = Environment(loader=FileSystemLoader(HTML_DIR))
 
 
 class OutputRedirector(object):
-    """ 
+    """
     Wrapper to redirect stdout or stderr 
     """
 
@@ -56,10 +55,7 @@ class RunResult:
     skiped = 0
 
 
-# ----------------------------------------------------------------------
-# Template
-
-class Template_mixin(object):
+class CustomTemplate(object):
     """
     Define a HTML template for report customerization and generation.
     Overall structure of an HTML report
@@ -134,15 +130,15 @@ class Template_mixin(object):
 </tr>
 """  # variables: (tid, Class, style, desc, status)
 
-
     IMG_TMPL = r"""
 <a  onfocus='this.blur();' href="javacript:void(0);" onclick="show_img(this)">show</a>
 <div align="center" class="screenshots"  style="display:none">
-    <a class="close_shots"  onclick="hide_img(this)"></a>
-    {imgs}
+    <a class="close_shots"  onclick="hide_img(this)">❌</a>
+    {images}
     <div class="imgyuan"></div>
 </div>
 """
+
 
 # -------------------- The end of the Template class -------------------
 
@@ -151,8 +147,10 @@ TestResult = unittest.TestResult
 
 
 class _TestResult(TestResult):
-    # note: _TestResult is a pure representation of results.
-    # It lacks the output and reporting ability compares to unittest._TextTestResult.
+    """
+    note: _TestResult is a pure representation of results.
+    It lacks the output and reporting ability compares to unittest._TextTestResult.
+    """
 
     def __init__(self, verbosity=1, rerun=0, save_last_run=False):
         TestResult.__init__(self)
@@ -160,7 +158,7 @@ class _TestResult(TestResult):
         self.stderr0 = None
         self.success_count = 0
         self.failure_count = 0
-        self.error_count = 0        
+        self.error_count = 0
         self.skip_count = 0
         self.verbosity = verbosity
         self.rerun = rerun
@@ -173,7 +171,7 @@ class _TestResult(TestResult):
 
     def startTest(self, test):
         self.case_start_time = time.time()
-        test.imgs = getattr(test, "imgs", [])
+        test.images = getattr(test, "images", [])
         test.runtime = getattr(test, "runtime", None)
         self.outputBuffer = io.StringIO()
         stdout_redirector.fp = self.outputBuffer
@@ -251,11 +249,9 @@ class _TestResult(TestResult):
         _, _exc_str = self.errors[-1]
         output = self.complete_output()
         self.result.append((2, test, output, _exc_str))
-        if Seldom.driver is not None:
-            try:
-                test.imgs.append(Seldom.driver.get_screenshot_as_base64())
-            except BaseException as msg:
-                log.error(msg)
+        if type(getattr(test, "driver", "")).__name__ == 'WebDriver':
+            driver = getattr(test, "driver")
+            test.images.append(driver.get_screenshot_as_base64())
         if self.verbosity > 1:
             sys.stderr.write('E  ')
             sys.stderr.write(str(test))
@@ -270,11 +266,9 @@ class _TestResult(TestResult):
         _, _exc_str = self.failures[-1]
         output = self.complete_output()
         self.result.append((1, test, output, _exc_str))
-        if Seldom.driver is not None:
-            try:
-                test.imgs.append(Seldom.driver.get_screenshot_as_base64())
-            except BaseException as msg:
-                log.error(msg)
+        if type(getattr(test, "driver", "")).__name__ == 'WebDriver':
+            driver = getattr(test, "driver")
+            test.images.append(driver.get_screenshot_as_base64())
         if self.verbosity > 1:
             sys.stderr.write('F  ')
             sys.stderr.write(str(test))
@@ -296,7 +290,7 @@ class _TestResult(TestResult):
             sys.stderr.write('S')
 
 
-class HTMLTestRunner(Template_mixin):
+class HTMLTestRunner(CustomTemplate):
     """
     Run the test class
     """
@@ -325,10 +319,10 @@ class HTMLTestRunner(Template_mixin):
         test(result)
         self.stopTime = datetime.datetime.now()
         self.run_times += 1
-        self.generateReport(test, result)
+        self.generate_report(test, result)
         return result
 
-    def sortResult(self, result_list):
+    def sort_result(self, result_list):
         """
         unittest does not seems to run in any particular order.
         Here at least we want to group them together by class.
@@ -344,7 +338,7 @@ class HTMLTestRunner(Template_mixin):
         r = [(cls, rmap[cls]) for cls in classes]
         return r
 
-    def getReportAttributes(self, result):
+    def get_report_attributes(self, result):
         """
         Return report attributes as a list of (name, value).
         Override this to add custom attributes.
@@ -352,7 +346,7 @@ class HTMLTestRunner(Template_mixin):
         startTime = str(self.startTime)[:19]
         duration = str(self.stopTime - self.startTime)
         status = []
-        
+
         RunResult.passed = result.success_count
         RunResult.failed = result.failure_count
         RunResult.errors = result.error_count
@@ -376,16 +370,16 @@ class HTMLTestRunner(Template_mixin):
             {"name": "Status", "value": status},
         ]
 
-    def generateReport(self, test, result):
+    def generate_report(self, test, result):
         template = env.get_template('template.html')
         stylesheet = env.get_template('stylesheet.html').render()
-        report_attrs = self.getReportAttributes(result)
+        report_attrs = self.get_report_attributes(result)
 
         generator = 'HTMLTestRunner %s' % "1.0.0"
         heading = self._generate_heading(report_attrs)
         report = self._generate_report(result)
         chart = self._generate_chart(result)
-        
+
         html_content = template.render(
             title=saxutils.escape(self.title),
             generator=generator,
@@ -408,8 +402,8 @@ class HTMLTestRunner(Template_mixin):
 
     def _generate_report(self, result):
         rows = []
-        sortedResult = self.sortResult(result.result)
-        for cid, (cls, cls_results) in enumerate(sortedResult):
+        sorted_result = self.sort_result(result.result)
+        for cid, (cls, cls_results) in enumerate(sorted_result):
             # subtotal for a class
             np = nf = ne = ns = 0
             for n, t, o, e in cls_results:
@@ -502,14 +496,14 @@ class HTMLTestRunner(Template_mixin):
             output=saxutils.escape(uo + ue),
         )
         # add image
-        if getattr(t, 'imgs', []):
+        if getattr(t, 'images', []):
             tmp = ""
-            for i, img in enumerate(t.imgs):
+            for i, img in enumerate(t.images):
                 if i == 0:
                     tmp += """<img src="data:image/jpg;base64,{}" style="display: block;" class="img"/>\n""".format(img)
                 else:
                     tmp += """<img src="data:image/jpg;base64,{}" style="display: none;" class="img"/>\n""".format(img)
-            screenshots_html = self.IMG_TMPL.format(imgs=tmp)
+            screenshots_html = self.IMG_TMPL.format(images=tmp)
         else:
             screenshots_html = """"""
 
@@ -539,6 +533,7 @@ class SMTP(object):
     """
     Mail function based on SMTP protocol
     """
+
     def __init__(self, user, password, host, port=None):
         self.user = user
         self.password = password
@@ -553,12 +548,12 @@ class SMTP(object):
             subject = 'Unit Test Report'
         if contents is None:
             contents = env.get_template('mail.html').render(
-                mail_pass=str(RunResult.passed), 
+                mail_pass=str(RunResult.passed),
                 mail_fail=str(RunResult.failed),
                 mail_error=str(RunResult.errors),
                 mail_skip=str(RunResult.skiped)
             )
-        
+
         msg = MIMEMultipart()
         msg['Subject'] = Header(subject, 'utf-8')
         msg['From'] = self.user
