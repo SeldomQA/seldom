@@ -1,3 +1,7 @@
+### 1.10.2
+* HTMLTestRunner代码优化
+* 修复bug
+
 ### 1.10.1
 * webdriver代码重构
 * 修复严重bug
