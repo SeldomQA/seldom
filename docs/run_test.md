@@ -1,30 +1,26 @@
 ## seldom 运行
 
-seldom的给运行新手造成了困扰，强烈不建议你在`pycharm`里面运行。因为许多新手根本搞不明白 pycharm 的运行配置，引起的运行错误也不知道怎么解决。
-
 > Window建议使用cmder, mac/linux使用自带终端。
 
-### 运行说明
+### 在终端下运行（推荐）
 
-参考目录结构如下：
-
-```shell
-mypro/
-├── test_dir/
-│   ├── test_sample.py
-├── reports/
-└── run.py
-```
-
-seldom要运行的测试是由`main()`方法决定的，创建 `run.py` 文件
+创建 `run.py` 文件，在要文件中引用`main()`方法，如下：
 
 ```py
 import seldom
 
-seldom.main(path="./")
+# ...
+
+seldom.main()    # 默认运行当前文件中的用例。
+seldom.main(path="./")  # 指定当前文件所在目录下面的用例。
+seldom.main(path="./test_dir/) # 指定当前目录下面的test_dir/ 目录下面的用例。
+seldom.main(path="./test_dir/test_sample.py")  # 指定测试文件中的用例。
+seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")  # 指定文件的绝对路径。
 ```
 
-在cmder/终端下面运行 `run.py` 文件
+`main()`方法默认运行当前文件中的用例，显然当前文件中没有测试用例。可以通过`path`参数指定运行其他文件中的用例。
+
+打开在cmder/终端下面运行 `run.py` 文件
 
 ```shell
 > python run.py
@@ -36,15 +32,6 @@ seldom.main(path="./")
 > seldom -r run.py
 ```
 
-__要运行的用例由 `path` 参数控制__
-
-* `"./"` :  表示`run.py`文件所在目录下的所有以`test`开头的测试文件。
-
-* `"./test_dir/"` : 指定`test_dir/`目录下所有以`test`开头的测试文件。
-
-* `"./test_dir/test_sample.py"` : 指定`test_dir/`目录下的`test_samplepy`测试文件.
-
-* `"test_sample.py"` : 指定当前目录下的`test_sample.py`测试文件。
 
 ### 运行单个测试类、方法
 
@@ -77,3 +64,15 @@ OK
 ```
 
 备注：如果测试方法 使用了`@data`、`@file_data` 装饰器，则不支持指定测试方法执行。
+
+## 在pycharm中运行
+
+1. 配置测试用例通过 unittest 运行。
+
+![](./image/pycharm.png)
+
+2. 在文件中选择测试类或用例执行。
+
+![](./image/pycharm_run_case.png) 
+
+备注：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
