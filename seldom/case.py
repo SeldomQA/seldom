@@ -171,7 +171,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if text is None:
             raise NameError("Alert text cannot be empty.")
-        alert_text = self.get_alert_text()
+        alert_text = self.get_alert_text
         self.assertEqual(alert_text, text, msg=msg)
 
     def assertElement(self, msg=None, **kwargs):
