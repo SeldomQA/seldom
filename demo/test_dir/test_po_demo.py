@@ -3,18 +3,18 @@ page object model
 Using the poium Library
 https://github.com/SeldomQA/poium
 ```
-> pip install poium
+> pip install poium=1.0.0
 ```
 """
 import seldom
 from seldom import Seldom
-from poium import Page, PageElement
+from poium import Page, Element
 
 
 class BaiduPage(Page):
     """baidu page"""
-    search_input = PageElement(id_="kw")
-    search_button = PageElement(id_="su")
+    search_input = Element(id_="kw")
+    search_button = Element(id_="su")
 
 
 class BaiduTest(seldom.TestCase):
@@ -33,8 +33,4 @@ class BaiduTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main(
-        browser='chrome',
-        driver_path=r'/Users/yuanbaolei/work/GitHub/PoiumAutoTest/driver/chromedriver',
-        debug=True)
-
+    seldom.main(browser='chrome', debug=True)
