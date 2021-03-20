@@ -5,3 +5,4 @@ report
 build
 dist
 seldom.egg-info
+log/

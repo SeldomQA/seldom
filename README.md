@@ -104,13 +104,15 @@ mypro/
 
 ### simple demo
 
-请查看 `demo/test_sample.py` 文件
+[demo](/demo) 提供了丰富实例，帮你快速了解seldom的用法。
+
+简单的实例 `demo/test_dir/test_first_demo.py` 
 
 ```python
 import seldom
 
 
-class YouTest(seldom.TestCase):
+class BaiduTest(seldom.TestCase):
 
     def test_case(self):
         """a simple test case """
@@ -184,7 +186,7 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 * [发邮件功能](./docs/send_mail.md)
 
-* [test fixture](./docs/setupclass.md)
+* [test fixture](./docs/fixture.md)
 
 * [优雅的解决用例依赖](./docs/depend.md)
 

@@ -2,11 +2,10 @@ import seldom
 
 if __name__ == '__main__':
     seldom.main(path="./test_dir",
-                browser="firefox",
+                browser="chrome",
                 title="百度测试用例",
-                description="测试环境：Firefox",
-                rerun=0,
-                xmlrunner=True)
+                description="测试环境：Chrome",
+                rerun=0)
 
 '''
 说明：
