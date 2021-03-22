@@ -18,6 +18,7 @@
 # under the License.
 
 from .running.test_runner import main
+from .running.runner import run
 from .running.HTMLTestRunner import SMTP
 from .running.config import Seldom
 from .testdata.parameterized import data, file_data, data_class
@@ -38,6 +39,8 @@ from .logging.log import _print
 from .logging.log import info
 from .logging.log import error
 from .logging.log import debug
+
+from .request import HttpRequest
 
 __author__ = "bugmaster"
 
