@@ -2,11 +2,14 @@ import json
 import unittest
 import requests
 from jsonschema import validate
+from jsonschema.exceptions import SchemaError
+from seldom.utils import diff_json, AssertInfo
 
 
 def logger(func):
     def wrapper(*args, **kw):
-        print('Start sending the request: 👉 {} '.format(func.__name__))
+        func_name = func.__name__
+        print('Start sending the request: 👉 {} '.format(func_name.upper()))
 
         # running function
         r = func(*args, **kw)
@@ -15,7 +18,7 @@ def logger(func):
         print("🛬️ Result: --------------------------")
         try:
             print("(json)", r.json())
-            ResponseResult.response = json.loads(r.json())
+            ResponseResult.response = r.json()
         except BaseException as msg:
             print(msg)
             print("(text)", r.text)
@@ -62,7 +65,20 @@ class HttpRequest(unittest.TestCase):
         self.assertEqual(ResponseResult.status_code, status_code, msg=msg)
 
     def assertSchema(self, schema):
-        validate(instance=ResponseResult.response, schema=schema)
+        try:
+            validate(instance=ResponseResult.response, schema=schema)
+        except SchemaError as msg:
+            self.assertEqual("Response data", "Schema data", msg=msg)
+        else:
+            self.assertEqual(1, 1)
+
+    def assertJSON(self, assert_json):
+        AssertInfo.data = []
+        diff_json(ResponseResult.response, assert_json)
+        if len(AssertInfo.data) == 0:
+            self.assertEqual(1, 1)
+        else:
+            self.assertEqual("Response data", "Assert data", msg=AssertInfo.data)
 
 
 if __name__ == '__main__':
