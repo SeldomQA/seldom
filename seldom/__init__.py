@@ -44,6 +44,6 @@ from .request import HttpRequest
 
 __author__ = "bugmaster"
 
-__version__ = "1.10.3"
+__version__ = "2.0.0.beta"
 
 __description__ = "WebUI automation testing framework based on Selenium."
