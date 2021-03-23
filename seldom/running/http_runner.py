@@ -5,9 +5,8 @@ import unittest
 from xmlrunner import XMLTestRunner
 import inspect
 from seldom.logging import log
-from seldom.driver import Browser
 from seldom.running.HTMLTestRunner import HTMLTestRunner
-from seldom.running.config import Seldom, BrowserConfig
+from seldom.running.config import BrowserConfig
 
 
 seldom_str = """
@@ -22,20 +21,20 @@ seldom_str = """
 """
 
 
-def main(path=None,
-         browser=None,
-         report=None,
-         title="Seldom Test Report",
-         description="Test case execution",
-         debug=False,
-         rerun=0,
-         save_last_run=False,
-         timeout=10,
-         xmlrunner=False):
+def run(path=None,
+        base_url=None,
+        report=None,
+        title="Seldom Test Report",
+        description="Test case execution",
+        debug=False,
+        rerun=0,
+        save_last_run=False,
+        timeout=10,
+        xmlrunner=False):
     """
     runner test case
     :param path:
-    :param browser:
+    :param base_url:
     :param report:
     :param title:
     :param description:
@@ -72,25 +71,12 @@ def main(path=None,
                 suits = unittest.defaultTestLoader.discover(path)
         else:
             suits = unittest.defaultTestLoader.discover(path)
-    # set browser
-    if browser is None:
-        BrowserConfig.name = "chrome"
-    else:
-        BrowserConfig.name = browser
 
     if isinstance(timeout, int) is False:
         raise TypeError("Timeout {} is not integer.".format(timeout))
 
     if isinstance(debug, bool) is False:
         raise TypeError("Debug {} is not Boolean type.".format(timeout))
-
-    """
-    Global launch browser, timeout and debug.
-    """
-    browser = Browser(BrowserConfig.name).driver
-    Seldom.driver = browser
-    Seldom.timeout = timeout
-    Seldom.debug = debug
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
@@ -125,11 +111,6 @@ def main(path=None,
         log.info(seldom_str)
         runner.run(suits)
 
-    """
-    Close browser globally
-    """
-    Seldom.driver.quit()
-
 
 if __name__ == '__main__':
-    main()
+    run()
