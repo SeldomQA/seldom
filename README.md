@@ -3,9 +3,9 @@
 
 [![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
 
-WebUI automation testing framework based on Selenium and unittest.
+WebUI/HTTP automation testing framework based on Selenium and unittest.
 
-> 基于 selenium 和 unittest 的 Web UI自动化测试框架。
+> 基于 selenium 和 unittest 的 Web UI/HTTP自动化测试框架。
 
 ## 特点
 
@@ -16,6 +16,8 @@ WebUI automation testing framework based on Selenium and unittest.
 * 支持用例失败/错误重跑。
 * 定制化HTML测试报告，用例失败/错误自动截图。
 * 支持XML测试报告
+* 支持HTTP接口测试 （v 2.0）🔥🔥 
+
 
 ### 安装
 
@@ -150,6 +152,38 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 * 如果指定的目录，测试文件必须以`test` 开头。
 * 如果要运行子目录下的文件，必须在子目录下加 `__init__.py` 文件。
 
+### HTTP 测试
+
+seldom 2.0 支持HTTP测试
+
+```python
+import seldom
+
+
+class TestRequest(seldom.HttpRequest):
+
+    def test_put_method(self):
+        self.put('/put', data={'key': 'value'})
+        self.assertStatusCode(200)
+
+    def test_post_method(self):
+        self.post('/post', data={'key':'value'})
+        self.assertStatusCode(200)
+
+    def test_get_method(self):
+        payload = {'key1': 'value1', 'key2': 'value2'}
+        self.get("/get", params=payload)
+        self.assertStatusCode(200)
+
+    def test_delete_method(self):
+        self.delete('/delete')
+        self.assertStatusCode(200)
+
+
+if __name__ == '__main__':
+    seldom.run(base_url="http://httpbin.org")
+```
+
 ### seldom 文档
 
 请阅读下面的文档，帮助你快速学会Seldom。
@@ -190,7 +224,6 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 * [优雅的解决用例依赖](./docs/depend.md)
 
-* [版本更新](./docs/CHANGELOG.md)
 
 ## 项目实例
 
