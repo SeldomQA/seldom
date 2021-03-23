@@ -18,7 +18,7 @@
 # under the License.
 
 from .running.test_runner import main
-from .running.runner import run
+from .running.http_runner import run
 from .running.HTMLTestRunner import SMTP
 from .running.config import Seldom
 from .testdata.parameterized import data, file_data, data_class

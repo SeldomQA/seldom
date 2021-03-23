@@ -6,7 +6,7 @@ from xmlrunner import XMLTestRunner
 import inspect
 from seldom.logging import log
 from seldom.running.HTMLTestRunner import HTMLTestRunner
-from seldom.running.config import BrowserConfig
+from seldom.running.config import Seldom, BrowserConfig
 
 
 seldom_str = """
@@ -22,6 +22,7 @@ seldom_str = """
 
 
 def run(path=None,
+        base_url=None,
         report=None,
         title="Seldom Test Report",
         description="Test case execution",
@@ -33,6 +34,7 @@ def run(path=None,
     """
     runner test case
     :param path:
+    :param base_url:
     :param report:
     :param title:
     :param description:
@@ -75,6 +77,13 @@ def run(path=None,
 
     if isinstance(debug, bool) is False:
         raise TypeError("Debug {} is not Boolean type.".format(timeout))
+
+    """
+    Global base url, timeout and debug.
+    """
+    Seldom.base_url = base_url
+    Seldom.timeout = timeout
+    Seldom.debug = timeout
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
