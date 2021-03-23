@@ -90,7 +90,7 @@ def main(path=None,
     browser = Browser(BrowserConfig.name).driver
     Seldom.driver = browser
     Seldom.timeout = timeout
-    Seldom.debug = timeout
+    Seldom.debug = debug
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):

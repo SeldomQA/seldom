@@ -83,7 +83,7 @@ def run(path=None,
     """
     Seldom.base_url = base_url
     Seldom.timeout = timeout
-    Seldom.debug = timeout
+    Seldom.debug = debug
 
     if debug is False:
         for filename in os.listdir(os.getcwd()):
