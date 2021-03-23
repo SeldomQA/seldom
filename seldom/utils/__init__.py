@@ -19,7 +19,7 @@ def diff_json(response_data, assert_data):
                 """ recursion """
                 diff_json(response_data[key], assert_data[key])
             else:
-                info = "ℹ Assert data has not key: {}".format(key)
+                info = "💡 Assert data has not key: {}".format(key)
                 print(info)
     elif isinstance(response_data, list):
         """ list format """

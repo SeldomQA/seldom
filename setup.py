@@ -32,6 +32,7 @@ setup(
         'pyyaml>=5.1',
         'unittest-xml-reporting==3.0.4',
         'jinja2>=2.11.2',
+        'jsonschema>=3.2.0'
     ],
     classifiers=[
         'Intended Audience :: Developers',
