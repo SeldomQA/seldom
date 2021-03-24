@@ -81,10 +81,10 @@ class TestRespData(seldom.HttpRequest):
         Get the returned data
         """
         payload = {'key1': 'value1', 'key2': 'value2'}
-        self.get("/post", data=payload)
+        self.post("/post", data=payload)
         self.assertStatusCode(200)
         self.assertEqual(self.resp["form"]["key1"], "value1")
-        self.assertEqual(self.resp["form"]["key1"], "value2")
+        self.assertEqual(self.resp["form"]["key2"], "value2")
 
     def test_data_dependency(self):
         """
@@ -95,7 +95,7 @@ class TestRespData(seldom.HttpRequest):
         self.assertStatusCode(200)
 
         username = self.resp["headers"]["X-Account-Fullname"]
-        self.get("/post", data={'username': username})
+        self.post("/post", data={'username': username})
         self.assertStatusCode(200)
 
 
@@ -103,17 +103,18 @@ class TestDDT(seldom.HttpRequest):
 
     @data([
         ("key1", 'value1'),
-        ("key1", 'value1'),
-        ("key1", 'value1')
+        ("key2", 'value2'),
+        ("key3", 'value3')
     ])
     def test_data(self, key, value):
         """
         Data-Driver Tests
         """
-        self.get("/post", data={key, value})
+        payload = {key: value}
+        self.post("/post", data=payload)
         self.assertStatusCode(200)
         self.assertEqual(self.resp["form"][key], value)
 
 
 if __name__ == '__main__':
-    seldom.run(base_url="http://httpbin.org", debug=True)
+    seldom.run(base_url="http://httpbin.org", debug=False)
