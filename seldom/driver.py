@@ -149,7 +149,7 @@ class Browser(object):
         if SafariConfig.command_executor != "":
             return webdriver.Remote(command_executor=SafariConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.SAFARI.copy())
-        return webdriver.Safari(executable_path=OperaConfig.executable_path)
+        return webdriver.Safari(executable_path=SafariConfig.executable_path)
 
     def phone(self):
         chrome_options = ChromeOptions()
