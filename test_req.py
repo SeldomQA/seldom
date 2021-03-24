@@ -1,22 +1,38 @@
 import seldom
+from seldom import data
 
 
 class TestRequest(seldom.HttpRequest):
+    """
+    doc: https://requests.readthedocs.io/en/master/
+    """
 
     def test_put_method(self):
+        """
+        test put request
+        """
         self.put('/put', data={'key': 'value'})
         self.assertStatusCode(200)
 
     def test_post_method(self):
+        """
+        test post request
+        """
         self.post('/post', data={'key':'value'})
         self.assertStatusCode(200)
 
     def test_get_method(self):
+        """
+        test get request
+        """
         payload = {'key1': 'value1', 'key2': 'value2'}
         self.get("/get", params=payload)
         self.assertStatusCode(200)
 
     def test_delete_method(self):
+        """
+        test delete request
+        """
         self.delete('/delete')
         self.assertStatusCode(200)
 
@@ -24,14 +40,22 @@ class TestRequest(seldom.HttpRequest):
 class TestAssert(seldom.HttpRequest):
 
     def test_data_assert(self):
+        """
+        The JSON data returned by the assertion
+        :return:
+        """
         self.get("/get")
-        self.assertStatusCode(200)  # 状态验证
+        self.assertStatusCode(200)
         assert_data = {"headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.25.0"}}
-        self.assertJSON(assert_json=assert_data)
+        self.assertJSON(assert_data)
 
     def test_format_assert(self):
+        """
+        Assert json-schema
+        help doc: https://json-schema.org/
+        """
         self.get("/get")
-        self.assertStatusCode(200)  # 状态验证
+        self.assertStatusCode(200)
         # 数据校验
         schema = {
             "type": "object",
@@ -48,6 +72,47 @@ class TestAssert(seldom.HttpRequest):
             },
         }
         self.assertSchema(schema)
+
+
+class TestRespData(seldom.HttpRequest):
+
+    def test_resp_data(self):
+        """
+        Get the returned data
+        """
+        payload = {'key1': 'value1', 'key2': 'value2'}
+        self.get("/post", data=payload)
+        self.assertStatusCode(200)
+        self.assertEqual(self.resp["form"]["key1"], "value1")
+        self.assertEqual(self.resp["form"]["key1"], "value2")
+
+    def test_data_dependency(self):
+        """
+        Test for interface data dependencies
+        """
+        headers = {"X-Account-Fullname": "bugmaster"}
+        self.get("/get", headers=headers)
+        self.assertStatusCode(200)
+
+        username = self.resp["headers"]["X-Account-Fullname"]
+        self.get("/post", data={'username': username})
+        self.assertStatusCode(200)
+
+
+class TestDDT(seldom.HttpRequest):
+
+    @data([
+        ("key1", 'value1'),
+        ("key1", 'value1'),
+        ("key1", 'value1')
+    ])
+    def test_data(self, key, value):
+        """
+        Data-Driver Tests
+        """
+        self.get("/post", data={key, value})
+        self.assertStatusCode(200)
+        self.assertEqual(self.resp["form"][key], value)
 
 
 if __name__ == '__main__':
