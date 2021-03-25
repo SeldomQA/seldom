@@ -73,6 +73,15 @@ class TestAssert(seldom.HttpRequest):
         }
         self.assertSchema(schema)
 
+    def test_path_assert(self):
+        """
+        assert jmesPath
+        help doc: https://jmespath.org/
+        """
+        payload = {"foot": "bread"}
+        self.get('/get', params=payload)
+        self.assertPath("args.foot", "bread")
+
 
 class TestRespData(seldom.HttpRequest):
 
@@ -117,4 +126,4 @@ class TestDDT(seldom.HttpRequest):
 
 
 if __name__ == '__main__':
-    seldom.run(base_url="http://httpbin.org", debug=False)
+    seldom.run(base_url="http://httpbin.org", debug=True)

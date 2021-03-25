@@ -1,6 +1,7 @@
 import json
 import unittest
 import requests
+import jmespath
 from jsonschema import validate
 from jsonschema.exceptions import SchemaError
 from seldom.utils import diff_json, AssertInfo
@@ -99,7 +100,17 @@ class HttpRequest(unittest.TestCase):
         AssertInfo.data = []
         diff_json(ResponseResult.response, assert_json)
         if len(AssertInfo.data) == 0:
-            self.assertEqual(1, 1)
+            self.assertTrue(True)
         else:
             self.assertEqual("Response data", "Assert data", msg=AssertInfo.data)
 
+    def assertPath(self, path, value):
+        """
+        Assert path data
+        doc: https://jmespath.org/
+        """
+        search_value = jmespath.search(path, ResponseResult.response)
+        if search_value is None:
+            self.assertEqual(path, None, msg="{} No match".format(path))
+        else:
+            self.assertEqual(search_value, value)
