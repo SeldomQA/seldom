@@ -11,22 +11,24 @@ from seldom.running.config import Seldom
 def request(func):
     def wrapper(*args, **kw):
         func_name = func.__name__
-        print('\n🚀 Request:--------------------------')
-        print('method: {}'.format(func_name.upper()))
-        print('path: {}'.format(list(args)[1]))
+        print('\n----------- Request 🚀 ---------------')
+        url = list(args)[1]
+        if Seldom.base_url is not None:
+            url = Seldom.base_url + list(args)[1]
+        print('url: {u}         method: {m}'.format(u=url, m=func_name.upper()))
 
         # running function
         r = func(*args, **kw)
 
         ResponseResult.status_code = r.status_code
-        print("🛬️ Response:------------------------")
+        print("----------- Response 🛬️ -------------")
         try:
             print("type: {}".format("json"))
             print(r.json())
             ResponseResult.response = r.json()
         except BaseException as msg:
             print("warning: {}".format(msg))
-            print("type: {}".format("json"))
+            print("type: {}".format("text"))
             print(r.text)
             ResponseResult.response = {}
 
