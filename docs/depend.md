@@ -14,7 +14,7 @@ from seldom import depend
 class TestDepend(seldom.TestCase):
 
     def test_001(self):
-        self.get("https://www.runoob.com/try/try2.php?filename=bootstrap3-form-checkboxradio")
+        self.open("https://www.runoob.com/try/try2.php?filename=bootstrap3-form-checkboxradio")
         self.switch_to_frame(id_="iframeResult")
         self.click(css='[type=checkbox]--error')  # 元素定位错误
 
@@ -61,12 +61,12 @@ class TestIfDepend(seldom.TestCase):
     Test001 = True
 
     def test_001(self):
-        self.get("https://www.baidu.com")
+        self.open("https://www.baidu.com")
         TestIfDepend.Test001 = False  # 修改Test001为 False
 
     @if_depend("Test001")
     def test_002(self):
-        self.get("http://news.baidu.com/")
+        self.open("http://news.baidu.com/")
 
 
 if __name__ == '__main__':

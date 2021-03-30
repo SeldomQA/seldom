@@ -14,8 +14,8 @@ class TestCase(seldom.TestCase):
 
     def start(self):
         print("一条测试用例开始")
-        self.get("https://www.baidu.com")
-    
+        self.open("https://www.baidu.com")
+
     def end(self):
         print("一条测试结果")
         self.assertInTitle("百度搜索")
@@ -43,7 +43,7 @@ class TestCase(seldom.TestCase):
 
     def start_class(self):
         print("测试类开始执行")
-        self.get("https://www.baidu.com")
+        self.open("https://www.baidu.com")
 
     def end_class(self):
         print("测试类结束执行")

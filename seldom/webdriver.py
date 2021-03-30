@@ -181,12 +181,12 @@ class WebDriver(object):
             self.elem.send_keys(Keys.SPACE)
 
     @staticmethod
-    def get(url):
+    def visit(url):
         """
-        get url.
+        visit url.
 
         Usage:
-        self.get("https://www.baidu.com")
+        self.visit("https://www.baidu.com")
         """
         Seldom.driver.get(url)
 
@@ -197,7 +197,7 @@ class WebDriver(object):
         Usage:
         self.open("https://www.baidu.com")
         """
-        self.get(url)
+        self.visit(url)
 
     @staticmethod
     def max_window():

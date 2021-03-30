@@ -60,8 +60,8 @@ class TestCase(seldom.Seldom):
         # Setting width and height of element scroll bar.
         self.element_scroll(css=".class", width=300, height=500)
         
-        # get url.
-        self.get("https://www.baidu.com")
+        # open url.
+        self.open("https://www.baidu.com")
         
         # Gets the text of the Alert.
         self.get_alert_text()

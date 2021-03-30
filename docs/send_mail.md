@@ -11,7 +11,7 @@ from seldom import SMTP
 class Test(seldom.TestCase):
 
     def test_case(self):
-        self.get("http://www.baidu.com")
+        self.open("http://www.baidu.com")
         self.type(css="#kw", text="seldom")
         self.click(css="#su")
         self.wait(2)
@@ -36,7 +36,7 @@ from seldom import SMTP
 
 if __name__ == '__main__':
     report_path = "/you/path/to/report.html"
-    seldom.main(report_name=report_path)
+    seldom.main(report=report_path)
     smtp = SMTP(user="you@126.com", password="abc123", host="smtp.126.com")
     smtp.sender(to="receive@mail.com",subject='Email title', attachments=report_path)
 
