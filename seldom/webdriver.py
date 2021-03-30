@@ -124,11 +124,11 @@ class WebDriver(object):
     selenium provided by the method of the two packaging,
     making it easier to use.
     """
-    original_window = None
 
     class Keys:
         """
         Achieve keyboard shortcuts
+
         Usage:
             self.Keys(id_="kw").enter()
         """
@@ -186,7 +186,7 @@ class WebDriver(object):
         visit url.
 
         Usage:
-        self.visit("https://www.baidu.com")
+            self.visit("https://www.baidu.com")
         """
         Seldom.driver.get(url)
 
@@ -195,7 +195,7 @@ class WebDriver(object):
         open url.
 
         Usage:
-        self.open("https://www.baidu.com")
+            self.open("https://www.baidu.com")
         """
         self.visit(url)
 
@@ -205,7 +205,7 @@ class WebDriver(object):
         Set browser window maximized.
 
         Usage:
-        self.max_window()
+            self.max_window()
         """
         Seldom.driver.maximize_window()
 
@@ -215,7 +215,7 @@ class WebDriver(object):
         Set browser window wide and high.
 
         Usage:
-        self.set_window(wide,high)
+            self.set_window(wide,high)
         """
         Seldom.driver.set_window_size(wide, high)
 
@@ -224,7 +224,7 @@ class WebDriver(object):
         Operation input box.
 
         Usage:
-        self.type(css="#el", text="selenium")
+            self.type(css="#el", text="selenium")
         """
         if clear is True:
             self.clear(index, **kwargs)
@@ -241,7 +241,7 @@ class WebDriver(object):
         Enter text and enter directly.
 
         Usage:
-        self.type_enter(css="#el", text="selenium")
+            self.type_enter(css="#el", text="selenium")
         """
         if clear is True:
             self.clear(index, **kwargs)
@@ -258,7 +258,7 @@ class WebDriver(object):
         Clear the contents of the input box.
 
         Usage:
-        self.clear(css="#el")
+            self.clear(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -272,7 +272,7 @@ class WebDriver(object):
         Connection, check box, radio buttons, and even drop-down box etc..
 
         Usage:
-        self.click(css="#el")
+            self.click(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -284,8 +284,9 @@ class WebDriver(object):
     def slow_click(index=0, **kwargs):
         """
         Moving the mouse to the middle of an element. and click element.
+
         Usage:
-        self.slow_click(css="#el")
+            self.slow_click(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -299,7 +300,7 @@ class WebDriver(object):
         Right click element.
 
         Usage:
-        self.right_click(css="#el")
+            self.right_click(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -312,7 +313,7 @@ class WebDriver(object):
         Mouse over the element.
 
         Usage:
-        self.move_to_element(css="#el")
+            self.move_to_element(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -325,7 +326,7 @@ class WebDriver(object):
         Mouse over the element.
 
         Usage:
-        self.move_to_element(css="#el")
+            self.move_to_element(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -355,7 +356,7 @@ class WebDriver(object):
         Double click element.
 
         Usage:
-        self.double_click(css="#el")
+            self.double_click(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -368,7 +369,7 @@ class WebDriver(object):
         Click the element by the link text
 
         Usage:
-        self.click_text("新闻")
+            self.click_text("新闻")
         """
         web_elem = WebElement(link_text=text)
         elem = web_elem.get_elements()[index]
@@ -382,7 +383,7 @@ class WebDriver(object):
         Closes the current window.
 
         Usage:
-        self.close()
+            self.close()
         """
         Seldom.driver.close()
 
@@ -392,7 +393,7 @@ class WebDriver(object):
         Quit the driver and close all the windows.
 
         Usage:
-        self.quit()
+            self.quit()
         """
         Seldom.driver.quit()
 
@@ -402,7 +403,7 @@ class WebDriver(object):
         Submit the specified form.
 
         Usage:
-        driver.submit(css="#el")
+            driver.submit(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -415,7 +416,7 @@ class WebDriver(object):
         Refresh the current page.
 
         Usage:
-        self.refresh()
+            self.refresh()
         """
         Seldom.driver.refresh()
 
@@ -425,15 +426,16 @@ class WebDriver(object):
         Execute JavaScript scripts.
 
         Usage:
-        self.execute_script("window.scrollTo(200,1000);")
+            self.execute_script("window.scrollTo(200,1000);")
         """
         return Seldom.driver.execute_script(script, *args)
 
     def window_scroll(self, width=None, height=None):
         """
         Setting width and height of window scroll bar.
+
         Usage:
-        self.window_scroll(width=300, height=500)
+            self.window_scroll(width=300, height=500)
         """
         if width is None:
             width = "0"
@@ -445,8 +447,9 @@ class WebDriver(object):
     def element_scroll(self, css, width=None, height=None):
         """
         Setting width and height of element scroll bar.
+
         Usage:
-        self.element_scroll(css=".class", width=300, height=500)
+            self.element_scroll(css=".class", width=300, height=500)
         """
         if width is None:
             width = "0"
@@ -463,7 +466,7 @@ class WebDriver(object):
         Gets the value of an element attribute.
 
         Usage:
-        self.get_attribute(css="#el", attribute="type")
+            self.get_attribute(css="#el", attribute="type")
         """
         if attribute is None:
             raise ValueError("attribute is not None")
@@ -478,7 +481,7 @@ class WebDriver(object):
         Get element text information.
 
         Usage:
-        self.get_text(css="#el")
+            self.get_text(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -491,7 +494,7 @@ class WebDriver(object):
         Gets the element to display,The return result is true or false.
 
         Usage:
-        self.get_display(css="#el")
+            self.get_display(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -504,7 +507,7 @@ class WebDriver(object):
         Get window title.
 
         Usage:
-        self.get_title()
+            self.get_title()
         """
         return Seldom.driver.title
 
@@ -514,7 +517,7 @@ class WebDriver(object):
         Get the URL address of the current page.
 
         Usage:
-        self.get_url()
+            self.get_url()
         """
         return Seldom.driver.current_url
 
@@ -524,7 +527,7 @@ class WebDriver(object):
         Gets the text of the Alert.
 
         Usage:
-        self.get_alert_text()
+            self.get_alert_text()
         """
         return Seldom.driver.switch_to.alert.text
 
@@ -534,7 +537,7 @@ class WebDriver(object):
         Implicitly wait.All elements on the page.
 
         Usage:
-        self.wait(10)
+            self.wait(10)
         """
         Seldom.driver.implicitly_wait(secs)
 
@@ -544,7 +547,7 @@ class WebDriver(object):
         Accept warning box.
 
         Usage:
-        self.accept_alert()
+            self.accept_alert()
         """
         Seldom.driver.switch_to.alert.accept()
 
@@ -554,7 +557,7 @@ class WebDriver(object):
         Dismisses the alert available.
 
         Usage:
-        self.dismiss_alert()
+            self.dismiss_alert()
         """
         Seldom.driver.switch_to.alert.dismiss()
 
@@ -564,7 +567,7 @@ class WebDriver(object):
         Switch to the specified frame.
 
         Usage:
-        self.switch_to_frame(css="#el")
+            self.switch_to_frame(css="#el")
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
@@ -578,74 +581,23 @@ class WebDriver(object):
         Corresponding relationship with switch_to_frame () method.
 
         Usage:
-        self.switch_to_frame_out()
+            self.switch_to_frame_out()
         """
         Seldom.driver.switch_to.default_content()
 
     @staticmethod
-    def open_new_window(index=0, **kwargs):
-        """
-        Open the new window and switch the handle to the newly opened window.
-
-        Usage:
-        self.open_new_window(link_text="注册")
-        """
-        warnings.warn("This method is not recommended",
-                      DeprecationWarning, stacklevel=2)
-        original_window = Seldom.driver.current_window_handle
-        web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
-        web_elem.show_element(elem)
-        elem.click()
-        all_handles = Seldom.driver.window_handles
-        for handle in all_handles:
-            if handle != original_window:
-                Seldom.driver.switch_to.window(handle)
-
-    @property
-    def current_window_handle(self):
-        """
-        Returns the handle of the current window.
-
-        :Usage:
-            self.current_window_handle
-        """
-        return Seldom.driver.current_window_handle
-
-    @property
-    def new_window_handle(self):
-        """
-        Returns the handle of the new window.
-
-        :Usage:
-            self.new_window_handle
-        """
-        new_handle = self.window_handles
-        return new_handle[-1]
-
-    @property
-    def window_handles(self):
-        """
-        Returns the handles of all windows within the current session.
-
-        :Usage:
-            self.window_handles
-        """
-        all_handles = Seldom.driver.window_handles
-        return all_handles
-
-    @staticmethod
-    def switch_to_window(window_name):
+    def switch_to_window(window):
         """
         Switches focus to the specified window.
 
         :Args:
-         - window_name: The name or window handle of the window to switch to.
+         - window: window index. 1 represents a newly opened window (0 is the first one)
 
         :Usage:
-            self.switch_to_window('main')
+            self.switch_to_window(1)
         """
-        Seldom.driver.switch_to.window(window_name)
+        all_handles = Seldom.driver.window_handles
+        Seldom.driver.switch_to.window(all_handles[window])
 
     @staticmethod
     def screenshots(file_path):

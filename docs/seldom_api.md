@@ -6,7 +6,7 @@ seldom 简化了selenium中的API，将以最简单的方式操作Web页面。
 ```python
 import seldom
 
-class TestCase(seldom.Seldom):
+class TestCase(seldom.TestCase):
 
     def test_seldom_api(self):
         # Accept warning box.
@@ -99,9 +99,6 @@ class TestCase(seldom.Seldom):
         # open url.
         self.open("https://www.baidu.com")
         
-        # Open the new window and switch the handle to the newly opened window.
-        self.open_new_window(link_text="注册")
-        
         # Quit the driver and close all the windows.
         self.quit()
         
@@ -114,7 +111,7 @@ class TestCase(seldom.Seldom):
         # Saves a screenshots of the current window to a PNG image file.
         self.screenshots('/Screenshots/foo.png')
         
-        '''
+        """
         Constructor. A check is made that the given element is, indeed, a SELECT tag. If it is not,
         then an UnexpectedTagNameException is thrown.
         <select name="NR" id="nr">
@@ -122,7 +119,7 @@ class TestCase(seldom.Seldom):
             <option value="20">每页显示20条</option>
             <option value="50">每页显示50条</option>
         </select>
-        '''
+        """
         self.select(css="#nr", value='20')
         self.select(css="#nr", text='每页显示20条')
         self.select(css="#nr", index=2)
@@ -142,7 +139,8 @@ class TestCase(seldom.Seldom):
         
         
         # Switches focus to the specified window.
-        self.switch_to_window('main')
+        # This switches to the new windows/tab (0 is the first one)
+        self.switch_to_window(1)
         
         # Operation input box.
         self.type(css="#el", text="selenium")
@@ -153,15 +151,7 @@ class TestCase(seldom.Seldom):
         
         # Setting width and height of window scroll bar.
         self.window_scroll(width=300, height=500)
-        
-        # Returns the handle of the current window.
-        self.current_window_handle
-        
-        # Returns the handle of the new window.
-        self.new_window_handle
-        
-        # Returns the handles of all windows within the current session.
-        self.window_handles
+
 ```
 
 ##### 文件上传
