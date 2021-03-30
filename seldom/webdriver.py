@@ -44,7 +44,7 @@ class WebElement(object):
         for _ in range(Seldom.timeout):
             elems = Seldom.driver.find_elements(by=elem[0], value=elem[1])
             if len(elems) >= 1:
-                log.info("✅ Find {number} element: {by}={value} ".format(
+                log.info("🔍 Find {number} element: {by}={value} ".format(
                     number=str(len(elems)), by=elem[0], value=elem[1]))
                 break
             else:
@@ -188,6 +188,7 @@ class WebDriver(object):
         Usage:
             self.visit("https://www.baidu.com")
         """
+        log.info("📖 {}".format(url))
         Seldom.driver.get(url)
 
     def open(self, url):
@@ -231,7 +232,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
-        log.info("🖋 input '{text}'.".format(text=text))
+        log.info("✔️ input '{text}'.".format(text=text))
         elem.send_keys(text)
         if enter is True:
             elem.send_keys(Keys.ENTER)
@@ -248,7 +249,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
-        log.info("🖋 ➕ 🖱 input '{text}' and enter.".format(text=text))
+        log.info("✔️ input '{text}' and enter.".format(text=text))
         elem.send_keys(text)
         elem.send_keys(Keys.ENTER)
 
@@ -263,6 +264,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ clear input.")
         elem.clear()
 
     @staticmethod
@@ -277,7 +279,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
-        log.info("🖱 click.")
+        log.info("✔️ click.")
         elem.click()
 
     @staticmethod
@@ -291,7 +293,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
-        log.info("🖱 slow click.")
+        log.info("✔️ slow click.")
         ActionChains(Seldom.driver).move_to_element(elem).click(elem).perform()
 
     @staticmethod
@@ -305,6 +307,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ right click.")
         ActionChains(Seldom.driver).context_click(elem).perform()
 
     @staticmethod
@@ -318,6 +321,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ move to element.")
         ActionChains(Seldom.driver).move_to_element(elem).perform()
 
     @staticmethod
@@ -331,6 +335,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ click and hold.")
         ActionChains(Seldom.driver).click_and_hold(elem).perform()
 
     @staticmethod
@@ -348,6 +353,7 @@ class WebDriver(object):
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
         action = ActionChains(Seldom.driver)
+        log.info("✔️ drag and drop by offset.")
         action.drag_and_drop_by_offset(elem, x, y).perform()
 
     @staticmethod
@@ -361,6 +367,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ double click.")
         ActionChains(Seldom.driver).double_click(elem).perform()
 
     @staticmethod
@@ -374,7 +381,7 @@ class WebDriver(object):
         web_elem = WebElement(link_text=text)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
-        log.info("🖱 click link.")
+        log.info("✔️ click link.")
         elem.click()
 
     @staticmethod
@@ -408,6 +415,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ submit.")
         elem.submit()
 
     @staticmethod
@@ -418,6 +426,7 @@ class WebDriver(object):
         Usage:
             self.refresh()
         """
+        log.info("🔄️ refresh page.")
         Seldom.driver.refresh()
 
     @staticmethod
@@ -473,6 +482,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ get attribute：{}.".format(attribute))
         return elem.get_attribute(attribute)
 
     @staticmethod
@@ -486,6 +496,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ get text: {}.".format(elem.text))
         return elem.text
 
     @staticmethod
@@ -499,6 +510,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ element is display: {}.".format(elem.is_displayed()))
         return elem.is_displayed()
 
     @property
@@ -509,6 +521,7 @@ class WebDriver(object):
         Usage:
             self.get_title()
         """
+        log.info("✔️ get tile: {}.".format(Seldom.driver.title))
         return Seldom.driver.title
 
     @property
@@ -519,6 +532,7 @@ class WebDriver(object):
         Usage:
             self.get_url()
         """
+        log.info("✔️ get url: {}.".format(Seldom.driver.current_url))
         return Seldom.driver.current_url
 
     @property
@@ -529,6 +543,7 @@ class WebDriver(object):
         Usage:
             self.get_alert_text()
         """
+        log.info("✔️ alert text: {}.".format(Seldom.driver.switch_to.alert.text))
         return Seldom.driver.switch_to.alert.text
 
     @staticmethod
@@ -539,6 +554,7 @@ class WebDriver(object):
         Usage:
             self.wait(10)
         """
+        log.info("⌛️ implicitly wait: {}s.".format(str(secs)))
         Seldom.driver.implicitly_wait(secs)
 
     @staticmethod
@@ -549,6 +565,7 @@ class WebDriver(object):
         Usage:
             self.accept_alert()
         """
+        log.info("✔️ accept alert.")
         Seldom.driver.switch_to.alert.accept()
 
     @staticmethod
@@ -559,6 +576,7 @@ class WebDriver(object):
         Usage:
             self.dismiss_alert()
         """
+        log.info("✔️ dismiss alert.")
         Seldom.driver.switch_to.alert.dismiss()
 
     @staticmethod
@@ -572,6 +590,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ switch to frame.")
         Seldom.driver.switch_to.frame(elem)
 
     @staticmethod
@@ -583,6 +602,7 @@ class WebDriver(object):
         Usage:
             self.switch_to_frame_out()
         """
+        log.info("✔️ switch to frame out.")
         Seldom.driver.switch_to.default_content()
 
     @staticmethod
@@ -596,6 +616,7 @@ class WebDriver(object):
         :Usage:
             self.switch_to_window(1)
         """
+        log.info("✔️ switch to the {} window.".format(str(window)))
         all_handles = Seldom.driver.window_handles
         Seldom.driver.switch_to.window(all_handles[window])
 
@@ -607,6 +628,7 @@ class WebDriver(object):
         Usage:
         self.screenshots('/Screenshots/foo.png')
         """
+        log.info("📷️  screenshot.")
         Seldom.driver.save_screenshot(file_path)
 
     @staticmethod
@@ -633,6 +655,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements()[index]
         web_elem.show_element(elem)
+        log.info("✔️ select option.")
         if value is not None:
             Select(elem).select_by_value(value)
         elif text is not None:
@@ -717,6 +740,7 @@ class WebDriver(object):
         Usage:
             self.sleep(seconds)
         """
+        log.info("💤️  sleep: {}s.".format(str(sec)))
         time.sleep(sec)
 
     @staticmethod
