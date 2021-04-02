@@ -1,7 +1,10 @@
 seldom 文档
 ===========
 
--  `seldom安装 <./install.md>`__
+
+* `Installation <install.rst>`_
+
+-  `seldom安装 <./install.rst>`__
 
 -  `seldom创建项目 <./create_project.md>`__
 
