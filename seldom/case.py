@@ -69,15 +69,15 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion title cannot be empty.")
         for _ in range(Seldom.timeout):
             try:
-                self.assertEqual(title, self.get_title)
+                self.assertEqual(title, Seldom.driver.title)
                 log.info("👀 assert title: {title}.".format(
-                    title=self.get_title))
+                    title=Seldom.driver.title))
                 break
             except AssertionError:
                 sleep(1)
         else:
             log.warn("❌ assert fail: {title}.".format(title=title))
-            self.assertEqual(title, self.get_title, msg=msg)
+            self.assertEqual(title, Seldom.driver.title, msg=msg)
 
     def assertInTitle(self, title=None, msg=None):
         """
@@ -90,15 +90,15 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion title cannot be empty.")
         for _ in range(Seldom.timeout):
             try:
-                self.assertIn(title, self.get_title)
+                self.assertIn(title, Seldom.driver.title)
                 log.info("👀 assertIn title: {title}.".format(
-                    title=self.get_title))
+                    title=Seldom.driver.title))
                 break
             except AssertionError:
                 sleep(1)
         else:
             log.warn("❌ assertIn fail: {title}.".format(title=title))
-            self.assertIn(title, self.get_title, msg=msg)
+            self.assertIn(title, Seldom.driver.title, msg=msg)
 
     def assertUrl(self, url, msg=None):
         """
@@ -111,14 +111,14 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion URL cannot be empty.")
         for _ in range(Seldom.timeout):
             try:
-                self.assertEqual(url, self.get_url)
-                log.info("👀 assert url: {url}.".format(url=self.get_url))
+                self.assertEqual(url, Seldom.driver.current_url)
+                log.info("👀 assert url: {url}.".format(url=Seldom.driver.current_url))
                 break
             except AssertionError:
                 sleep(1)
         else:
             log.warn("❌ assert fail: {url}.".format(url=url))
-            self.assertEqual(url, self.get_url, msg=msg)
+            self.assertEqual(url, Seldom.driver.current_url, msg=msg)
 
     def assertInUrl(self, url=None, msg=None):
         """
@@ -131,14 +131,14 @@ class TestCase(unittest.TestCase, WebDriver):
             raise AssertionError("The assertion URL cannot be empty.")
         for _ in range(Seldom.timeout):
             try:
-                self.assertIn(url, self.get_url)
-                log.info("👀 assertIn url: {url}.".format(url=self.get_url))
+                self.assertIn(url, Seldom.driver.current_url)
+                log.info("👀 assertIn url: {url}.".format(url=Seldom.driver.current_url))
                 break
             except AssertionError:
                 sleep(1)
         else:
             log.warn("❌ assertIn fail: {url}.".format(url=url))
-            self.assertIn(url, self.get_url, msg=msg)
+            self.assertIn(url, Seldom.driver.current_url, msg=msg)
 
     def assertText(self, text=None, msg=None):
         """
@@ -171,7 +171,7 @@ class TestCase(unittest.TestCase, WebDriver):
         """
         if text is None:
             raise NameError("Alert text cannot be empty.")
-        alert_text = self.get_alert_text
+        alert_text = Seldom.driver.switch_to.alert.text
         self.assertEqual(alert_text, text, msg=msg)
 
     def assertElement(self, msg=None, **kwargs):
