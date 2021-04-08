@@ -1,3 +1,22 @@
+### 2.0.0 
+
+done
+* webdriver API 修改
+  * 移除 `self.get()`
+  * 增加 `self.visit()`
+  * 移除 `self.open_new_window()`
+  * 移除 `self.current_window_handle()`
+  * 移除 `self.new_window_handle()`
+  * 移除 `self.window_handles()`
+  * 修改 `self.switch_to_window()` 用法
+* webdriver API 优化打印日志  
+* 运行完成自动通过浏览器打开HTML报告
+
+todo
+* 上线 readthedocs 文档，整理中...
+* 整合 webdriver/request， 未开始
+
+
 ### 2.0.0.beta
 * 支持 HTTP接口测试
 
