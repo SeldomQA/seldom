@@ -1,12 +1,10 @@
-seldom文档
-=================================
+seldom 文档
+===============
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   install/contents.rst
-
+   rst_docs/installation
 
 
 Indices and tables
