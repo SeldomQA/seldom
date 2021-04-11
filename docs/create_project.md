@@ -21,7 +21,7 @@ class YouTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main("test_sample.py")
+    seldom.main()
 ```
 
 seldom提供的有命令，可以快速的帮助我们创建。
@@ -34,17 +34,19 @@ seldom 通过`seldom`命令提供了脚手架，可以快速的帮我们创建We
 
 ```shell
 > seldom -h
-usage: seldom [-h] [-v] [--project PROJECT] [-r R] [-install INSTALL]
+usage: seldom [-h] [-v] [-project PROJECT] [-r R] [-m M] [-install INSTALL]
 
 WebUI automation testing framework based on Selenium.
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -v, --version      show version
-  --project PROJECT  Create an Seldom automation test project.
-  -r R               run test case
-  -install INSTALL   Install the browser driver, For example, 'chrome',
-                     'firefox'.
+  -h, --help        show this help message and exit
+  -v, --version     show version
+  -project PROJECT  Create an Seldom automation test project.
+  -r R              run test case
+  -m M              run tests modules, classes or even individual test methods
+                    from the command line
+  -install INSTALL  Install the browser driver, For example, 'chrome',
+                    'firefox'.
 ```
 
 2、创建项目：
@@ -58,11 +60,12 @@ optional arguments:
 ```shell
 mypro/
 ├── test_dir/
+│   ├── data.json
 │   ├── test_sample.py
 ├── reports/
 └── run.py
 ```
 
-* `test_dir/`目录实现用例编写。
+* `test_dir/` 目录实现用例编写。
 * `reports/` 目录存放生成的测试报告。
 * `run.py` 文件运行测试用例。

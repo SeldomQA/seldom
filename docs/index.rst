@@ -22,6 +22,8 @@ User guide
    :maxdepth: 2
 
    rst_docs/installation
+   rst_docs/create_project
+   rst_docs/run_test
 
 
 Indices and tables

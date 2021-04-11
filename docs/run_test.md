@@ -1,4 +1,4 @@
-## seldom 运行
+## 运行自动化项目
 
 > Window建议使用cmder, mac/linux使用自带终端。
 
@@ -13,7 +13,7 @@ import seldom
 
 seldom.main()    # 默认运行当前文件中的用例。
 seldom.main(path="./")  # 指定当前文件所在目录下面的用例。
-seldom.main(path="./test_dir/) # 指定当前目录下面的test_dir/ 目录下面的用例。
+seldom.main(path="./test_dir/")  # 指定当前目录下面的test_dir/ 目录下面的用例。
 seldom.main(path="./test_dir/test_sample.py")  # 指定测试文件中的用例。
 seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")  # 指定文件的绝对路径。
 ```
@@ -63,7 +63,7 @@ OK
 > seldom -m test_sample.SampleTest.test_case # 运行 test_case 测试方法
 ```
 
-备注：如果测试方法 使用了`@data`、`@file_data` 装饰器，则不支持指定测试方法执行。
+> 警告：如果测试方法 使用了`@data`、`@file_data` 装饰器，则不支持指定测试方法执行。
 
 ## 在pycharm中运行
 
