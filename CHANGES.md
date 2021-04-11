@@ -9,7 +9,8 @@ done
   * 移除 `self.new_window_handle()`
   * 移除 `self.window_handles()`
   * 修改 `self.switch_to_window()` 用法
-* 增加`expected_failure`，用于标记一条用例失败 
+* 增加`expected_failure`，用于标记一条用例失败
+* 增加 `file_dir（）`, 返回当前文件所在目录的绝对路径。
 * webdriver API 优化打印日志  
 * 运行完成自动通过浏览器打开HTML报告
 

@@ -1,3 +1,15 @@
+import os
+import inspect
+
+
+def file_dir() -> str:
+    """
+    Returns the absolute path to the directory where the current file resides
+    """
+    stack_t = inspect.stack()
+    ins = inspect.getframeinfo(stack_t[1][0])
+    return os.path.dirname(os.path.abspath(ins.filename))
+
 
 class AssertInfo:
     data = []
@@ -33,3 +45,5 @@ def diff_json(response_data, assert_data):
             info = "❌ Value are not equal: {}".format(response_data)
             print(info)
             AssertInfo.data.append(info)
+
+
