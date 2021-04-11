@@ -1,6 +1,10 @@
 import unittest
 import functools
 
+__all__ = [
+    "skip", "skip_if", "skip_unless", "expected_failure", "depend", "if_depend"
+]
+
 
 def skip(reason=None):
     """
@@ -31,6 +35,15 @@ def skip_unless(condition, reason):
     :return:
     """
     return unittest.skipUnless(condition, reason)
+
+
+def expected_failure(test_item):
+    """
+    Expect the test case to failure
+    :param test_item:
+    :return:
+    """
+    return unittest.expectedFailure(test_item)
 
 
 def depend(case=None):
