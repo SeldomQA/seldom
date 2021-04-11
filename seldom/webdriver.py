@@ -9,6 +9,9 @@ from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
 
+__all__ = ["WebDriver"]
+
+
 LOCATOR_LIST = {
     'css': By.CSS_SELECTOR,
     'id_': By.ID,

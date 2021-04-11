@@ -6,6 +6,11 @@ import platform
 import logging.handlers
 from colorama import Fore, Style
 
+__all__ = [
+    "debug", "info", "error", "warn", "_print",
+    "set_level", "set_level_to_debug", "set_level_to_info", "set_level_to_warn", "set_level_to_error"
+]
+
 stack_t = inspect.stack()
 ins = inspect.getframeinfo(stack_t[1][0])
 file_dir = os.path.dirname(os.path.abspath(ins.filename))

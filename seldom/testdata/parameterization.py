@@ -11,6 +11,10 @@ from parameterized import parameterized_class
 from seldom.testdata import conversion
 from seldom.logging.exceptions import FileTypeError
 
+__all__ = [
+    "file_data", "data", "data_class"
+]
+
 
 def file_data(file, line=1, sheet="Sheet1", key=None):
     """
