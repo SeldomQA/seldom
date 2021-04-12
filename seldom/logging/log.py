@@ -6,6 +6,8 @@ import platform
 import logging.handlers
 from colorama import Fore, Style
 
+os.system('')
+
 __all__ = [
     "debug", "info", "error", "warn", "_print",
     "set_level", "set_level_to_debug", "set_level_to_info", "set_level_to_warn", "set_level_to_error"
