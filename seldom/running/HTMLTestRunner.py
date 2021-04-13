@@ -131,7 +131,7 @@ class CustomTemplate(object):
 """  # variables: (tid, Class, style, desc, status)
 
     IMG_TMPL = r"""
-<a  onfocus='this.blur();' href="javacript:void(0);" onclick="show_img(this)">show</a>
+<a  onfocus='this.blur();' href="javascript:void(0);" onclick="show_img(this)">show</a>
 <div align="center" class="screenshots"  style="display:none">
     <a class="close_shots"  onclick="hide_img(this)">❌</a>
     {images}
