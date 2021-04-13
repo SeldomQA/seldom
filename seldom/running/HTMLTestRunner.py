@@ -576,7 +576,7 @@ class SMTP(object):
 
         smtp = smtplib.SMTP()
         try:
-            smtp.connect(self.host)
+            smtp.connect(self.host, self.port)
             smtp.login(self.user, self.password)
             smtp.sendmail(self.user, to, msg.as_string())
             log.info(" 📧 Email sent successfully!!")
