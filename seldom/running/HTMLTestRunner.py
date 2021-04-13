@@ -52,7 +52,7 @@ class RunResult:
     passed = 0
     failed = 0
     errors = 0
-    skiped = 0
+    skipped = 0
 
 
 class CustomTemplate(object):
@@ -350,7 +350,7 @@ class HTMLTestRunner(CustomTemplate):
         RunResult.passed = result.success_count
         RunResult.failed = result.failure_count
         RunResult.errors = result.error_count
-        RunResult.Skiped = result.skip_count
+        RunResult.skipped = result.skip_count
         if result.success_count:
             status.append('Passed:%s' % result.success_count)
         if result.failure_count:
@@ -358,7 +358,7 @@ class HTMLTestRunner(CustomTemplate):
         if result.error_count:
             status.append('Errors:%s' % result.error_count)
         if result.skip_count:
-            status.append('Skiped:%s' % result.skip_count)
+            status.append('Skipped:%s' % result.skip_count)
         if status:
             status = ' '.join(status)
         else:
@@ -480,13 +480,13 @@ class HTMLTestRunner(CustomTemplate):
 
         # o and e should be byte string because they are collected from stdout and stderr?
         if isinstance(o, str):
-            # TODO: some problem with 'string_escape': it escape \n and mess up formating
+            # TODO: some problem with 'string_escape': it escape \n and mess up formatting
             # uo = unicode(o.encode('string_escape'))
             uo = o
         else:
             uo = o
         if isinstance(e, str):
-            # TODO: some problem with 'string_escape': it escape \n and mess up formating
+            # TODO: some problem with 'string_escape': it escape \n and mess up formatting
             # ue = unicode(e.encode('string_escape'))
             ue = e
         else:
@@ -551,7 +551,7 @@ class SMTP(object):
                 mail_pass=str(RunResult.passed),
                 mail_fail=str(RunResult.failed),
                 mail_error=str(RunResult.errors),
-                mail_skip=str(RunResult.skiped)
+                mail_skip=str(RunResult.skipped)
             )
 
         msg = MIMEMultipart()

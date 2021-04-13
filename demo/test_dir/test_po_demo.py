@@ -18,7 +18,7 @@ class BaiduPage(Page):
 
 
 class BaiduTest(seldom.TestCase):
-    """Baidu serach test case"""
+    """Baidu search test case"""
 
     def test_case(self):
         """
