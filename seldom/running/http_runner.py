@@ -77,7 +77,7 @@ def run(path=None,
         raise TypeError("Timeout {} is not integer.".format(timeout))
 
     if isinstance(debug, bool) is False:
-        raise TypeError("Debug {} is not Boolean type.".format(timeout))
+        raise TypeError("Debug {} is not Boolean type.".format(debug))
 
     """
     Global base url, timeout and debug.
