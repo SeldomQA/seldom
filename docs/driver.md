@@ -1,8 +1,56 @@
 ## 浏览器与驱动
 
-我们运行的自动化测试不可能只在一个浏览器下运行，我们分别需要在chrome、firefox浏览器下运行，有时候甚至需要无界面模式。
+在运行seldom自动化测试之前，需要先安装不同浏览器对应的驱动，这一步非常重要。
 
-在seldom中需要只需要修改一个配置即可。
+### 下载浏览器驱动
+
+__自动下载__
+
+seldom 提供了`chrome/firefox`浏览器驱动的下载
+
+```shell
+seldom -install chrome
+seldom -install firefox
+```
+
+> 默认下载到当前的`lib/` 目录下面。 
+> 众所周知的原因，`chromedriver`使用的taobao的镜像。 
+> seldom无法判断你当前浏览器的版本，默认下载最浏览器版本对应的驱动，所以，推荐手动下载。
+
+__手动下载__
+
+* Firefox: [geckodriver](https://github.com/mozilla/geckodriver/releases)
+
+* Chrome: [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/home)
+
+* IE: [IEDriverServer](http://selenium-release.storage.googleapis.com/index.html)
+
+* Opera: [operadriver](https://github.com/operasoftware/operachromiumdriver/releases)
+
+* Edge: [MicrosoftWebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver)
+
+* Safari: safaridriver (macOS系统自带，默认路径：`/usr/bin/safaridriver`)
+
+### 使用浏览器驱动
+
+你需要针对浏览器驱动配置环境变量`path`。 如果你连添加环境变量`path`都不会，没关系！你可以在seldom中指定浏览器驱动文件目录的绝对路径。
+
+```python
+import seldom
+from seldom.driver import ChromeConfig
+
+# ……
+if __name__ == '__main__':
+    ChromeConfig.executable_path = "D:\git\seldom\lib\chromedriver.exe"
+    seldom.main(browser="chrome")
+```
+
+注：浏览器要`browser`与驱动`executable_path` 要保持对应关系。
+
+
+### 指定不同的浏览器
+
+我们运行的自动化测试不可能只在一个浏览器下运行，我们分别需要在chrome、firefox浏览器下运行。在seldom中需要只需要修改一个配置即可。
 
 ```python
 import seldom
@@ -45,7 +93,7 @@ PAD_LIST = ['iPad', 'iPad Pro']
 
 ## 开启headless模式
 
-Firefox和 Chrome浏览器支持`headless` 模式，即将浏览器置于后台运行，这样不会影响到我们在测试机上完成其他工作。
+Firefox和Chrome浏览器支持`headless`模式，即将浏览器置于后台运行，这样不会影响到我们在测试机上完成其他工作。
 
 ```python
 import seldom
@@ -60,9 +108,9 @@ if __name__ == '__main__':
 
 只需要将 ChromeConfig 类中的 headless 设置为 `True`即可， Firefox浏览器配置方法类似。
 
-## 开放Chrome浏览器配置能力
+## 开放浏览器配置能力
 
-seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，但架不住部分个性化的需求，比如禁用浏览器插件，设置浏览器代理等。所以，通过ChromeConfig类的参数来开放这些能力。
+seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，为了满足个性化的需求，比如禁用浏览器插件，设置浏览器代理等。所以，通过ChromeConfig类的参数来开放这些能力。
 
 例如，浏览器忽略无效证书的问题。
 
@@ -81,41 +129,6 @@ if __name__ == '__main__':
 
 将要`ChromeOption`添加的设置赋值给`ChromeConfig`的`options`变量。
 
-## 安装浏览器驱动
-
-虽然说安装浏览及驱动是做Web UI 自动化的前提，但是，浏览器驱动的下载安装和设置总是难倒了一部分新手。
-
-seldom 提供了下载浏览器驱动的命令。
-
-__下载`Chrome`浏览器驱动：__
-
-```shell
-seldom -install chrome
-```
-
-注：众所周知的原因，chromedriver使用的taobao的镜像。
-
-__下载`Firefox`浏览器驱动：__
-
-```shell
-seldom -install firefox
-```
-
-默认下载到当前的`lib/` 目录下面，将`lib/` 目录添加环境变量`path`。
-
-如果你连添加环境变量`path`都不会，没关系！你可以在seldom中指定浏览器驱动文件目录的绝对路径。
-
-```python
-import seldom
-from seldom.driver import ChromeConfig
-
-# ……
-if __name__ == '__main__':
-    ChromeConfig.executable_path = "D:\git\seldom\lib\chromedriver.exe"
-    seldom.main(browser="chrome")
-```
-
-注：浏览器要`browser`与驱动`driver_path` 要保持对应关系。
 
 ## 支持远程节点（Selenium Grid）
 
@@ -143,17 +156,3 @@ if __name__ == '__main__':
 ```
 
 * 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
-
-## 驱动下载地址
-
-当然，你也可以手动下载不同浏览器驱动：
-
-geckodriver(Firefox):https://github.com/mozilla/geckodriver/releases
-
-Chromedriver(Chrome):https://sites.google.com/a/chromium.org/chromedriver/home
-
-IEDriverServer(IE):http://selenium-release.storage.googleapis.com/index.html
-
-operadriver(Opera):https://github.com/operasoftware/operachromiumdriver/releases
-
-MicrosoftWebDriver(Edge):https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver
