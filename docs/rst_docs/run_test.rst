@@ -82,6 +82,8 @@ Run Test
 .. figure:: ../image/pycharm_run_case.png
    :alt: 
 
+
 ::
 
-    > 警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
+    警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
+

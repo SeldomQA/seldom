@@ -1,4 +1,4 @@
-## 用例失败重跑&自动截图
+## Rerun & Screenshot
 
 Web自动化测试常常因为各种原因导致用例失败，而重跑机制可以进一步帮我们确定用例确实是失败了。在seldom中设置失败重跑非常简单。
 
@@ -17,65 +17,53 @@ class YouTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main(path="test_sample.py",
-                rerun=3,
-                save_last_run=False,
-    )
+    seldom.main(rerun=3, save_last_run=False)
 ```
 
-说明：
+__说明__
 
 * rerun: 指定重跑的次数，默认为 `0`。
 * save_last_run: 是否保存保存最后一次运行结果，默认为`False`。
 
-运行日志：
+__运行日志__
 
 ```shell
-seldom -r test_sample.py
-2020-01-04 11:25:53,265 INFO Run the python version:
-2020-01-04 11:25:53,265 - INFO - INFO Run the python version:
+> seldom -r test_sample.py
+
+2021-04-14 11:25:53,265 INFO Run the python version:
+2021-04-14 11:25:53,265 - INFO - INFO Run the python version:
 Python 3.7.1
 
-            _      _
-           | |    | |
- ___   ___ | |  __| |  ___   _ __ ___
-/ __| / _ \| | / _` | / _ \ | '_ ` _ \
-\__ \|  __/| || (_| || (_) || | | | | |
-|___/ \___||_| \__,_| \___/ |_| |_| |_|
+              __    __
+   ________  / /___/ /___  ____ ____
+  / ___/ _ \/ / __  / __ \/ __ ` ___/
+ (__  )  __/ / /_/ / /_/ / / / / / /
+/____/\___/_/\__,_/\____/_/ /_/ /_/
 -----------------------------------------
                              @itest.info
 
 
 DevTools listening on ws://127.0.0.1:12699/devtools/browser/301751bd-a833-44d1-8669-aa85d418b302
-2020-01-04 11:26:00,705 INFO Find element: id=kw
-2020-01-04 11:26:00,705 - INFO - INFO Find element: id=kw
-2020-01-04 11:26:10,917 ERROR Find 0 elements through：css selector=#su_error
-2020-01-04 11:26:10,917 - ERROR - ERROR Find 0 elements through：css selector=#su_err or
-ERetesting... test_case (test_sample.YouTest)..1
-2020-01-04 11:26:11,466 INFO Find element: id=kw
-2020-01-04 11:26:11,466 - INFO - INFO Find element: id=kw
-2020-01-04 11:26:21,647 ERROR Find 0 elements through：css selector=#su_error
-2020-01-04 11:26:21,647 - ERROR - ERROR Find 0 elements through：css selector=#su_err or
-ERetesting... test_case (test_sample.YouTest)..2
-2020-01-04 11:26:22,158 INFO Find element: id=kw
-2020-01-04 11:26:22,158 - INFO - INFO Find element: id=kw
-2020-01-04 11:26:32,343 ERROR Find 0 elements through：css selector=#su_error
-2020-01-04 11:26:32,343 - ERROR - ERROR Find 0 elements through：css selector=#su_err or
-ERetesting... test_case (test_sample.YouTest)..3
-2020-01-04 11:26:33,559 INFO Find element: id=kw
-2020-01-04 11:26:33,559 - INFO - INFO Find element: id=kw
-2020-01-04 11:26:43,757 ERROR Find 0 elements through：css selector=#su_error
-2020-01-04 11:26:43,757 - ERROR - ERROR Find 0 elements through：css selector=#su_err or
-generated html file: file:///D:\git\seldom\reports\2020_01_04_11_25_53_result.html
+2021-04-14 23:31:54 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+ERetesting... test_case (test_demo.YouTest)..1
+2021-04-14 23:32:05 [INFO] 📖 https://www.baidu.com
+2021-04-14 23:32:06 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+ERetesting... test_case (test_demo.YouTest)..2
+2021-04-14 23:32:17 [INFO] 📖 https://www.baidu.com
+2021-04-14 23:32:22 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+ERetesting... test_case (test_demo.YouTest)..3
+2021-04-14 23:32:32 [INFO] 📖 https://www.baidu.com
+2021-04-14 23:32:36 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+2021-04-14 23:32:47 [INFO] generated html file: file:///D:\github\seldom\reports\2021_04_14_23_31_51_result.html
 E
 ```
 
-测试报告：
+__测试报告__
 
 ![](image/report.png)
 
 
-__说明：__
+__说明__
 
 1、如果只想查看最后一次的结果，`save_last_run` 设置为`True`。
 

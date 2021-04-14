@@ -26,6 +26,8 @@ if __name__ == '__main__':
     # markdown_to_rst("main.md", "rst_docs/main.rst")
     # markdown_to_rst("reports.md", "rst_docs/reports.rst")
 
-    markdown_to_rst("find_element.md", "rst_docs/find_element.rst")
-    markdown_to_rst("seldom_api.md", "rst_docs/seldom_api.rst")
-    markdown_to_rst("assertion.md", "rst_docs/assertion.rst")
+    # markdown_to_rst("find_element.md", "rst_docs/find_element.rst")
+    # markdown_to_rst("seldom_api.md", "rst_docs/seldom_api.rst")
+    # markdown_to_rst("assertion.md", "rst_docs/assertion.rst")
+
+    markdown_to_rst("rerun_screenshot.md", "rst_docs/rerun_screenshot.rst")
