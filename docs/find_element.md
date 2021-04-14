@@ -1,4 +1,4 @@
-## seldom 定位元素
+## Find Element
 
 seldom 提供了8中定位方式，与Selenium保持一致。
 
@@ -11,7 +11,7 @@ seldom 提供了8中定位方式，与Selenium保持一致。
 * css
 * xpath
 
-### 8种定位用法
+### 使用方式
 
 ```html
 <form id="form" class="fm" action="/s" name="f">
@@ -41,27 +41,8 @@ __帮助信息：__
 * [CSS选择器](https://www.w3school.com.cn/cssref/css_selectors.asp)
 * [xpath语法](https://www.w3school.com.cn/xpath/xpath_syntax.asp)
 
-### 使用方式
 
-```py
-import seldom
-
-
-class YouTest(seldom.TestCase):
-
-    def test_case(self):
-        """a simple test case """
-        self.open("https://www.baidu.com")
-        self.type(id_="kw", text="seldom")
-        self.click(css="#su")
-        self.assertTitle("seldom_百度搜索")
-
-```
-
-点击`click()`和输入`type()`的时候直接使用。
-
-
-### 定位一组元素
+### find elements
 
 有时候我们通过一种定位写法不能找到单个元素，需要在一种定位方式中使用下标，在seldom中可以通过`index`指定下标。
 

@@ -1,6 +1,6 @@
 # seldom 文档
 
-* [seldom安装](./install.md)
+* [seldom安装](./installation.md)
 
 * [seldom创建项目](./create_project.md)
 
@@ -16,7 +16,7 @@
 
 * [seldom API](./seldom_api.md)
 
-* [seldom 断言](./assert.md)
+* [seldom 断言](./assertion.md)
 
 * [用例失败重跑&自动截图](./rerun_screenshot.md)
 

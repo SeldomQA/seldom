@@ -1,5 +1,5 @@
-运行自动化项目
---------------
+Run Test
+--------
 
     Window建议使用cmder, mac/linux使用自带终端。
 
@@ -38,33 +38,31 @@
 ~~~~~~~~~~~~~~~~~~~~
 
 在调试阶段，需要运行单个测试类或方法。
+::
 
-.. code:: shell
-
-    > cd test\_dir/ 
-    > seldom -m test\_sample.SampleTest.test\_case Runtime environment:
+    > cd test_dir 
+    > seldom -m test\_sample.SampleTest.test\_case 
+    Runtime environment:
     --------------------- 
     Note: This mode is suitable for debugging single test classes and methods. 
     Python 3.7.9 
-    seldom 1.10.0 Browser:
-    Chrome(default) 
-    --------------------- 2021-01-29 18:59:53 [INFO] 👀
-    assertIn url: http://www.itest.info/. 
-    .
+    seldom 1.10.0 
+    Browser:Chrome(default) 
+    --------------------- 
+    2021-01-29 18:59:53 [INFO] 👀
+    assertIn url: http://www.itest.info/. .
     ----------------------------------------------------------------------
     Ran 1 test in 18.497s
 
-    OK
-
+    OK 
 
 -  运行粒度
 
-.. code:: shell
+::
 
-    > seldom -m test_sample # 运行test_sample.py 文件 
+    > seldom -m test_sample # 运行 test_sample.py 文件 
     > seldom -m test_sample.SampleTest # 运行 SampleTest 测试类 
     > seldom -m test_sample.SampleTest.test_case # 运行 test_case 测试方法``
-
 
 ::
 
@@ -72,7 +70,7 @@
     装饰器，则不支持指定测试方法执行。
 
 在pycharm中运行
----------------
+~~~~~~~~~~~~~~~
 
 1. 配置测试用例通过 unittest 运行。
 
@@ -86,4 +84,4 @@
 
 ::
 
-    警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
+    > 警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。

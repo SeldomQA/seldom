@@ -1,6 +1,6 @@
-## seldom 断言
+## Assertion
 
-seldom 提供了更加简单的断言方法。
+seldom 提供了一组针对Web页面的断言方法。
 
 断言方法如下：
 

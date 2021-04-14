@@ -1,5 +1,5 @@
-浏览器与驱动
-------------
+Browser and Driver
+------------------
 
 在运行seldom自动化测试之前，需要先安装不同浏览器对应的驱动，这一步非常重要。
 
@@ -14,8 +14,6 @@ seldom 提供了\ ``chrome/firefox``\ 浏览器驱动的下载
 
     seldom -install chrome
     seldom -install firefox
-
-::
 
     默认下载到当前的\ ``lib/`` 目录下面。
     众所周知的原因，\ ``chromedriver``\ 使用的taobao的镜像。
@@ -103,7 +101,7 @@ seldom 提供了\ ``chrome/firefox``\ 浏览器驱动的下载
     PAD_LIST = ['iPad', 'iPad Pro']
 
 开启headless模式
-----------------
+~~~~~~~~~~~~~~~~
 
 Firefox和Chrome浏览器支持\ ``headless``\ 模式，即将浏览器置于后台运行，这样不会影响到我们在测试机上完成其他工作。
 
@@ -122,7 +120,7 @@ Firefox和Chrome浏览器支持\ ``headless``\ 模式，即将浏览器置于后
 Firefox浏览器配置方法类似。
 
 开放浏览器配置能力
-------------------------
+~~~~~~~~~~~~~~~~~~
 
 seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，为了满足个性化的需求，比如禁用浏览器插件，设置浏览器代理等。所以，通过ChromeConfig类的参数来开放这些能力。
 
@@ -143,8 +141,8 @@ seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，为了�
 
 将要\ ``ChromeOption``\ 添加的设置赋值给\ ``ChromeConfig``\ 的\ ``options``\ 变量。
 
-支持远程节点（Selenium Grid）
------------------------------
+Selenium Grid
+~~~~~~~~~~~~~
 
 首先，安装Java环境，然后下载 ``selenium-server``\ 。
 

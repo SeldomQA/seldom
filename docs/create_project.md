@@ -1,8 +1,8 @@
-## seldom 创建项目
+## Create Project
 
 seldom已经安装完成，那么现在已经迫不及待的想体验seldom的使用。
 
-### 创建测试文件
+### Create test cases
 
 创建一个python文件`test_sample.py`。
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
 seldom提供的有命令，可以快速的帮助我们创建。
 
-### 快速生成自动化项目
+### Automated project creation
 
 seldom 通过`seldom`命令提供了脚手架，可以快速的帮我们创建Web UI自动化项目。
 

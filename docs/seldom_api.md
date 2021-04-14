@@ -1,7 +1,8 @@
 ### seldom API
 
-seldom 简化了selenium中的API，将以最简单的方式操作Web页面。
-所有API如下：
+seldom简化了selenium中的API，使你操作Web页面更加简单。
+
+大部分API都由`WebDriver`类提供：
 
 ```python
 import seldom
@@ -154,19 +155,3 @@ class TestCase(seldom.TestCase):
 
 ```
 
-##### 文件上传
-
-```python
-import seldom
-
-class TestCase(seldom.Seldom):
-
-    def test_file_upload(self):
-        # Single file upload
-        filePath = r'C:\Users\admin\Desktop\test.txt'
-        self.type(css='.upload-button>input', text=filePath)
-        
-        # Multiple files upload
-        filePath2 = r'C:\Users\admin\Desktop\test1.txt'+'\n'+r'C:\Users\admin\Desktop\test2.txt'
-        self.type(css='.upload-button>input', text=filePath2)
-```

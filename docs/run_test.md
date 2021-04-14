@@ -1,4 +1,4 @@
-## 运行自动化项目
+## Run Test
 
 > Window建议使用cmder, mac/linux使用自带终端。
 
@@ -38,7 +38,7 @@ seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")  # 指定文件的�
 在调试阶段，需要运行单个测试类或方法。
 
 ```shell script
-> cd test_dir/
+> cd test_dir
 > seldom -m test_sample.SampleTest.test_case
 Runtime environment:
 ---------------------
@@ -65,7 +65,7 @@ OK
 
 > 警告：如果测试方法 使用了`@data`、`@file_data` 装饰器，则不支持指定测试方法执行。
 
-## 在pycharm中运行
+### 在pycharm中运行
 
 1. 配置测试用例通过 unittest 运行。
 
@@ -75,4 +75,4 @@ OK
 
 ![](./image/pycharm_run_case.png) 
 
-备注：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
+警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。

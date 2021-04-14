@@ -27,6 +27,9 @@ User guide
    rst_docs/run_test
    rst_docs/main
    rst_docs/reports
+   rst_docs/find_element
+   rst_docs/seldom_api
+   rst_docs/assertion
 
 
 Indices and tables
