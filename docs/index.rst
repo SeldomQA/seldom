@@ -25,6 +25,8 @@ User guide
    rst_docs/create_project
    rst_docs/run_test
    rst_docs/driver.rst
+   rst_docs/main.rst
+   rst_docs/reports.rst
 
 
 Indices and tables
