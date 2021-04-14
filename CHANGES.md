@@ -9,13 +9,16 @@ done
   * 移除 `self.new_window_handle()`
   * 移除 `self.window_handles()`
   * 修改 `self.switch_to_window()` 用法
-* 增加`expected_failure`，用于标记一条用例失败
+  * 优化打印日志，为每种操作加上 emoji
+* 增加`expected_failure`用例装饰器，用于标记一条用例失败
 * 增加 `file_dir（）`, 返回当前文件所在目录的绝对路径。
-* webdriver API 优化打印日志  
 * 运行完成自动通过浏览器打开HTML报告
+* `main()`方法修改
+  * 修复`debug`参数类型错误异常提示
+  * 控制台更换字符logo
 
 todo
-* 上线 readthedocs 文档，整理中...
+* 上线 readthedocs 文档，整理60%
 * 整合 webdriver/request， 未开始
 
 
