@@ -1,4 +1,4 @@
-Assertion
+断言
 ---------
 
 seldom 提供了一组针对Web页面的断言方法。

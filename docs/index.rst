@@ -30,6 +30,7 @@ User guide
    rst_docs/find_element
    rst_docs/seldom_api
    rst_docs/assertion
+   rst_docs/rerun_screenshot
 
 
 Indices and tables

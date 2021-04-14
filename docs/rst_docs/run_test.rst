@@ -1,4 +1,4 @@
-Run Test
+运行测试
 --------
 
     Window建议使用cmder, mac/linux使用自带终端。
