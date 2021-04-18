@@ -1,13 +1,19 @@
 import unittest
+import jmespath
 from time import sleep
+from jsonschema import validate
+from jsonschema.exceptions import SchemaError
 from selenium.webdriver import Chrome
 from seldom.webdriver import WebDriver
+from seldom.request import HttpRequest
 from seldom.running.config import Seldom
 from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
+from seldom.utils import diff_json, AssertInfo
+from seldom.request import ResponseResult
 
 
-class TestCase(unittest.TestCase, WebDriver):
+class TestCase(unittest.TestCase, WebDriver, HttpRequest):
 
     def start_class(self):
         """
@@ -23,8 +29,6 @@ class TestCase(unittest.TestCase, WebDriver):
 
     @classmethod
     def setUpClass(cls):
-        if Seldom.driver is None:
-            Seldom.driver = Chrome()
         cls().start_class()
 
     @classmethod
@@ -211,6 +215,46 @@ class TestCase(unittest.TestCase, WebDriver):
                 pass
             else:
                 self.assertFalse(True, msg=msg)
+
+    def assertStatusCode(self, status_code, msg=None):
+        """
+        Asserts the HTTP status code
+        """
+        self.assertEqual(ResponseResult.status_code, status_code, msg=msg)
+
+    def assertSchema(self, schema):
+        """
+        Assert JSON Schema
+        doc: https://json-schema.org/
+        """
+        try:
+            validate(instance=ResponseResult.response, schema=schema)
+        except SchemaError as msg:
+            self.assertEqual("Response data", "Schema data", msg=msg)
+        else:
+            self.assertEqual(1, 1)
+
+    def assertJSON(self, assert_json):
+        """
+        Assert JSON data
+        """
+        AssertInfo.data = []
+        diff_json(ResponseResult.response, assert_json)
+        if len(AssertInfo.data) == 0:
+            self.assertTrue(True)
+        else:
+            self.assertEqual("Response data", "Assert data", msg=AssertInfo.data)
+
+    def assertPath(self, path, value):
+        """
+        Assert path data
+        doc: https://jmespath.org/
+        """
+        search_value = jmespath.search(path, ResponseResult.response)
+        if search_value is None:
+            self.assertEqual(path, None, msg="{} No match".format(path))
+        else:
+            self.assertEqual(search_value, value)
 
     def xSkip(self, reason):
         """

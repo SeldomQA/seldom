@@ -2,7 +2,7 @@ import seldom
 from seldom import data
 
 
-class TestRequest(seldom.HttpRequest):
+class TestRequest(seldom.TestCase):
     """
     doc: https://requests.readthedocs.io/en/master/
     """
@@ -37,7 +37,7 @@ class TestRequest(seldom.HttpRequest):
         self.assertStatusCode(200)
 
 
-class TestAssert(seldom.HttpRequest):
+class TestAssert(seldom.TestCase):
 
     def test_data_assert(self):
         """
@@ -83,7 +83,7 @@ class TestAssert(seldom.HttpRequest):
         self.assertPath("args.foot", "bread")
 
 
-class TestRespData(seldom.HttpRequest):
+class TestRespData(seldom.TestCase):
 
     def test_resp_data(self):
         """
@@ -92,8 +92,8 @@ class TestRespData(seldom.HttpRequest):
         payload = {'key1': 'value1', 'key2': 'value2'}
         self.post("/post", data=payload)
         self.assertStatusCode(200)
-        self.assertEqual(self.resp["form"]["key1"], "value1")
-        self.assertEqual(self.resp["form"]["key2"], "value2")
+        self.assertEqual(self.response["form"]["key1"], "value1")
+        self.assertEqual(self.response["form"]["key2"], "value2")
 
     def test_data_dependency(self):
         """
@@ -103,12 +103,12 @@ class TestRespData(seldom.HttpRequest):
         self.get("/get", headers=headers)
         self.assertStatusCode(200)
 
-        username = self.resp["headers"]["X-Account-Fullname"]
+        username = self.response["headers"]["X-Account-Fullname"]
         self.post("/post", data={'username': username})
         self.assertStatusCode(200)
 
 
-class TestDDT(seldom.HttpRequest):
+class TestDDT(seldom.TestCase):
 
     @data([
         ("key1", 'value1'),
@@ -122,7 +122,7 @@ class TestDDT(seldom.HttpRequest):
         payload = {key: value}
         self.post("/post", data=payload)
         self.assertStatusCode(200)
-        self.assertEqual(self.resp["form"][key], value)
+        self.assertEqual(self.response["form"][key], value)
 
 
 if __name__ == '__main__':
