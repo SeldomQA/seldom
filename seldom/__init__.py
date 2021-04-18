@@ -21,6 +21,7 @@ from .case import TestCase
 from .running.config import Seldom
 from .running.test_runner import main
 from .running.http_runner import run
+from .running.next_runner import main2
 from .running.HTMLTestRunner import SMTP
 
 from .skip import *
