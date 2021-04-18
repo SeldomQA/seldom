@@ -30,4 +30,10 @@ if __name__ == '__main__':
     # markdown_to_rst("seldom_api.md", "rst_docs/seldom_api.rst")
     # markdown_to_rst("assertion.md", "rst_docs/assertion.rst")
 
-    markdown_to_rst("rerun_screenshot.md", "rst_docs/rerun_screenshot.rst")
+    # markdown_to_rst("rerun_screenshot.md", "rst_docs/rerun_screenshot.rst")
+    markdown_to_rst("parameterized.md", "rst_docs/parameterized.rst")
+    markdown_to_rst("poium.md", "rst_docs/poium.rst")
+    markdown_to_rst("testdata.md", "rst_docs/testdata.rst")
+    markdown_to_rst("skip.md", "rst_docs/skip.rst")
+    markdown_to_rst("send_mail.md", "rst_docs/send_mail.rst")
+    markdown_to_rst("depend.md", "rst_docs/depend.rst")

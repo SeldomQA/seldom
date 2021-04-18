@@ -31,6 +31,12 @@ User guide
    rst_docs/seldom_api
    rst_docs/assertion
    rst_docs/rerun_screenshot
+   rst_docs/parameterized
+   rst_docs/poium
+   rst_docs/testdata
+   rst_docs/skip
+   rst_docs/send_mail
+   rst_docs/depend
 
 
 Indices and tables

@@ -12,24 +12,24 @@
 
 * [生成测试报告](./reports.md)
 
-* [seldom 元素定位](./find_element.md)
+* [查找元素](./find_element.md)
 
 * [seldom API](./seldom_api.md)
 
-* [seldom 断言](./assertion.md)
+* [断言](./assertion.md)
 
-* [用例失败重跑&自动截图](./rerun_screenshot.md)
+* [失败重跑&自动截图](./rerun_screenshot.md)
 
 * [数据驱动最佳实践](./parameterized.md)
 
-* [实现Page Objects设计模式](./poium.md)
+* [Page Objects设计模式](./poium.md)
 
-* [生成测试数据](./testdata.md)
+* [测试数据](./testdata.md)
 
 * [跳过测试用例](./skip.md)
 
-* [发邮件功能](./send_mail.md)
+* [自动发邮件](./send_mail.md)
 
-* [setUp/setUpClass方法](./fixture.md)
+* [fixture](./fixture.md)
 
-* [优雅的解决用例依赖](./depend.md)
+* [用例依赖](./depend.md)

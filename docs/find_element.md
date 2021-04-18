@@ -1,4 +1,4 @@
-## Find Element
+## 查找元素
 
 seldom 提供了8中定位方式，与Selenium保持一致。
 
@@ -42,7 +42,7 @@ __帮助信息：__
 * [xpath语法](https://www.w3school.com.cn/xpath/xpath_syntax.asp)
 
 
-### find elements
+### 查找多个元素
 
 有时候我们通过一种定位写法不能找到单个元素，需要在一种定位方式中使用下标，在seldom中可以通过`index`指定下标。
 

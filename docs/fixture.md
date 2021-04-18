@@ -1,8 +1,8 @@
-## 如何设置前置步骤
+## fixture
 
 在编写自动化测试用例的过程中，我们需要设置前置步骤。这时候就需要将一些前置动作放到`start()/start_class()`中，将一些前置动作放到`end()/end_class()`中。
 
-### start/end使用
+### start & end
 
 当你想在每条用例开始之前执行的动作，放到`start()/end()`方法中。
 
@@ -31,7 +31,7 @@ class TestCase(seldom.TestCase):
 
 ```
 
-### start_class/end_class使用
+### start_class & end_class
 
 有些用例需要在测试类开始之前执行一些动作，这个时候就会用到`start_class()/end_class()`类方法。
 

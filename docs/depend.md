@@ -1,6 +1,6 @@
-## 实现用例的依赖
+## 用例的依赖
 
-在编写用例的时候不推荐你编写依赖的用例，但是，有些时候我们并不能完全消除这些依赖。seldom 增加了用例依赖的方法。
+在编写用例的时候不推荐你编写依赖的用例，但是，有些时候我们并不能完全消除这些依赖。seldom增加了用例依赖的方法。
 
 * depend
 
@@ -30,7 +30,9 @@ if __name__ == '__main__':
     seldom.main(debug=True)
 ```
 
-`test_002` 依赖于 `test_001` , `test_003`又依赖于`test_002`。当被依赖的用例，错误、失败、跳过，那么依赖的用例自动跳过。当`test_001`用例失败时，结果是这样的：
+`test_002` 依赖于 `test_001` , `test_003`又依赖于`test_002`。当被依赖的用例，错误、失败、跳过，那么依赖的用例自动跳过。
+
+当`test_001`用例失败时，结果是这样的：
 
 ```shell
 test_001 (cc.TestDepend) ... 2020-11-16 23:47:30 [INFO] ✅ Find element: id=iframeResult
@@ -78,6 +80,7 @@ if __name__ == '__main__':
 3. 在`test_002`用例中，通过`id_depend`装饰器来判断`Test001`的值，如果为为`False`， 那么装饰的用例跳过，否则执行。
 
 执行结果：
+
 ```shell
 test_001 (cc.TestIfDepend) ... ok
 test_002 (cc.TestIfDepend) ... skipped 'Dependent use case not passed'
@@ -86,4 +89,4 @@ test_002 (cc.TestIfDepend) ... skipped 'Dependent use case not passed'
 Ran 2 tests in 0.497s
 
 OK (skipped=1)
-``` 
+```

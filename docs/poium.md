@@ -1,8 +1,8 @@
-### 实现Page objects设计模式
+### Page objects设计模式
 
-seldom API的设计理念已经将元素操作和元素定位做了整合，本身不太适合实现Page objects设计模式。
+seldom API的设计理念是将元素操作和元素定位放到起，本身不太适合实现`Page objects`设计模式。
 
-[poium](https://github.com/SeldomQA/poium) 是Page objects设计模式最佳实践，如果想使用poium，需要单独安装。
+[poium](https://github.com/SeldomQA/poium) 是`Page objects`设计模式最佳实践，如果想使用poium，需要单独安装。
 
 ```shell
 > pip install poium==1.0.0
@@ -37,5 +37,4 @@ class BaiduTest(seldom.TestCase):
 
 if __name__ == '__main__':
     seldom.main()
-
 ```
