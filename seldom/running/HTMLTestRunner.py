@@ -350,7 +350,7 @@ class HTMLTestRunner(CustomTemplate):
         RunResult.passed = result.success_count
         RunResult.failed = result.failure_count
         RunResult.errors = result.error_count
-        RunResult.Skiped = result.skip_count
+        RunResult.skiped = result.skip_count
         if result.success_count:
             status.append('Passed:%s' % result.success_count)
         if result.failure_count:
