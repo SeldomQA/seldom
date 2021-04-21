@@ -58,29 +58,27 @@ class Browser(object):
     :return:
     """
 
-    def __init__(self, name=None):
-        self.name = name
+    def __new__(cls, name=None):
+        cls.name = name
 
-    @property
-    def driver(self):
-        if (self.name is None) or (self.name in ["chrome", "google chrome", "gc"]):
-            return self.chrome()
-        elif self.name in ["firefox", "ff"]:
-            return self.firefox()
-        elif self.name in ["internet explorer", "ie", "IE"]:
-            return self.ie()
-        elif self.name == "edge":
-            return self.edge()
-        elif self.name == "opera":
-            return self.opera()
-        elif self.name == "safari":
-            return self.safari()
-        elif self.name in PHONE_LIST:
-            return self.phone()
-        elif self.name in PAD_LIST:
-            return self.pad()
+        if (cls.name is None) or (cls.name in ["chrome", "google chrome", "gc"]):
+            return cls.chrome()
+        elif cls.name in ["firefox", "ff"]:
+            return cls.firefox()
+        elif cls.name in ["internet explorer", "ie", "IE"]:
+            return cls.ie()
+        elif cls.name == "edge":
+            return cls.edge()
+        elif cls.name == "opera":
+            return cls.opera()
+        elif cls.name == "safari":
+            return cls.safari()
+        elif cls.name in PHONE_LIST:
+            return cls.phone(name)
+        elif cls.name in PAD_LIST:
+            return cls.pad(name)
         raise NameError(
-            "Not found '{}' browser, See the help doc: https://github.com/SeldomQA/seldom/blob/master/docs/driver.md'.".format(self.name))
+            "Not found '{}' browser, See the help doc: https://github.com/SeldomQA/seldom/blob/master/docs/driver.md'.".format(cls.name))
 
     @staticmethod
     def chrome():
@@ -154,9 +152,10 @@ class Browser(object):
                                     desired_capabilities=DesiredCapabilities.SAFARI.copy())
         return webdriver.Safari(executable_path=SafariConfig.executable_path)
 
-    def phone(self):
+    @staticmethod
+    def phone(name):
         chrome_options = ChromeOptions()
-        chrome_options.add_experimental_option("mobileEmulation", {"deviceName": self.name})
+        chrome_options.add_experimental_option("mobileEmulation", {"deviceName": name})
         driver = webdriver.Chrome(chrome_options=chrome_options,
                                   executable_path=ChromeConfig.executable_path,
                                   options=ChromeConfig.options)
@@ -169,9 +168,10 @@ class Browser(object):
         })
         return driver
 
-    def pad(self):
+    @staticmethod
+    def pad(name):
         chrome_options = ChromeOptions()
-        chrome_options.add_experimental_option("mobileEmulation", {"deviceName": self.name})
+        chrome_options.add_experimental_option("mobileEmulation", {"deviceName": name})
         driver = webdriver.Chrome(chrome_options=chrome_options,
                                   executable_path=ChromeConfig.executable_path,
                                   options=ChromeConfig.options)

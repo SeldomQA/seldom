@@ -9,6 +9,7 @@ from seldom.logging import log
 from seldom.driver import Browser
 from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
+from selenium.webdriver.remote.webdriver import WebDriver
 
 seldom_str = """
               __    __              
@@ -92,15 +93,15 @@ class TestMain(object):
             raise TypeError("Debug {} is not Boolean type.".format(debug))
 
         # Global launch browser, timeout and debug.
-        browser = Browser(BrowserConfig.name).driver
-        Seldom.driver = browser
+        Seldom.driver = Browser(BrowserConfig.name)
         Seldom.timeout = timeout
         Seldom.debug = debug
 
         self._run_test_case(suits)
 
         # Close browser globally
-        Seldom.driver.quit()
+        if Seldom.driver is WebDriver:
+            Seldom.driver.quit()
 
     def _run_test_case(self, suits):
         if self.debug is False:
@@ -119,7 +120,7 @@ class TestMain(object):
 
             with(open(report_path, 'wb')) as fp:
                 log.info(seldom_str)
-                if self.report.split(".")[-1] == "xml":
+                if report_path.split(".")[-1] == "xml":
                     runner = XMLTestRunner(output=fp)
                     runner.run(suits)
                 else:

@@ -9,7 +9,7 @@ from seldom.logging import log
 from seldom.driver import Browser
 from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
-
+from selenium.webdriver.remote.webdriver import WebDriver
 
 seldom_str = """
               __    __              
@@ -87,8 +87,7 @@ def main(path=None,
     """
     Global launch browser, timeout and debug.
     """
-    browser = Browser(BrowserConfig.name).driver
-    Seldom.driver = browser
+    Seldom.driver = Browser(BrowserConfig.name)
     Seldom.timeout = timeout
     Seldom.debug = debug
 
@@ -129,7 +128,8 @@ def main(path=None,
     """
     Close browser globally
     """
-    Seldom.driver.quit()
+    if Seldom.driver is WebDriver:
+        Seldom.driver.quit()
 
 
 if __name__ == '__main__':
