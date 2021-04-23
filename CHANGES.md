@@ -1,6 +1,4 @@
-### 2.0.0 
-
-done
+### 2.0.0
 * webdriver API 修改
   * 移除 `self.get()`
   * 增加 `self.visit()`
@@ -15,11 +13,9 @@ done
 * 运行完成自动通过浏览器打开HTML报告
 * `main()`方法修改
   * 修复`debug`参数类型错误异常提示
-  * 控制台更换字符logo
-
-todo
-* 上线 readthedocs 文档，整理60%
-* 整合 webdriver/request， 未开始
+  * 控制台更换字符logo* 
+* 整合 webdriver/request
+* 上线 readthedocs 文档
 
 
 ### 2.0.0.beta
