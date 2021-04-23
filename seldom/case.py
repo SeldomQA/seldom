@@ -4,6 +4,7 @@ from time import sleep
 from jsonschema import validate
 from jsonschema.exceptions import SchemaError
 from selenium.webdriver import Chrome
+from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.webdriver import WebDriver
 from seldom.request import HttpRequest
 from seldom.running.config import Seldom
@@ -58,7 +59,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         browser driver
         """
-        if isinstance(Seldom.driver, WebDriver) is False:
+        if isinstance(Seldom.driver, SeleniumWebDriver) is False:
             Seldom.driver = Chrome()
         return Seldom.driver
 

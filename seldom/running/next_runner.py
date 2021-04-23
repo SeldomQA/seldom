@@ -9,7 +9,7 @@ from seldom.logging import log
 from seldom.driver import Browser
 from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
-from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 
 seldom_str = """
               __    __              
@@ -94,7 +94,7 @@ class TestMain(object):
         self._run_test_case(suits)
 
         # Close browser globally
-        if isinstance(Seldom.driver, WebDriver):
+        if isinstance(Seldom.driver, SeleniumWebDriver):
             Seldom.driver.quit()
 
     def _run_test_case(self, suits):

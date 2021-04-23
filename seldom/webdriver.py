@@ -2,6 +2,7 @@
 import time
 import platform
 from selenium.webdriver import Chrome
+from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
@@ -206,7 +207,7 @@ class WebDriver(object):
             self.visit("https://www.baidu.com")
         """
         log.info("📖 {}".format(url))
-        if isinstance(Seldom.driver, WebDriver) is False:
+        if isinstance(Seldom.driver, SeleniumWebDriver) is False:
             Seldom.driver = Chrome()
         Seldom.driver.get(url)
 
