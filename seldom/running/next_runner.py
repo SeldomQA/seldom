@@ -24,15 +24,16 @@ seldom_str = """
 
 class TestMain(object):
     """
-    seldom 2.0 runner, development...
+    Reimplemented Seldom Runner, Support for Web and API
     """
-    def __init__(self, path=None, browser=None, debug=False, timeout=10,
+    def __init__(self, path=None, browser=None, base_url=None, debug=False, timeout=10,
                  report=None, title="Seldom Test Report", description="Test case execution",
                  rerun=0, save_last_run=False):
         """
         runner test case
         :param path:
         :param browser:
+        :param base_url:
         :param report:
         :param title:
         :param description:
@@ -85,6 +86,7 @@ class TestMain(object):
 
         Seldom.timeout = timeout
         Seldom.debug = debug
+        Seldom.base_url = base_url
 
         # Global launch browser
         if browser is not None:
@@ -133,7 +135,8 @@ class TestMain(object):
             runner.run(suits)
 
 
-main2 = TestMain
+main = TestMain
+
 
 if __name__ == '__main__':
-    main2()
+    main()
