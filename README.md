@@ -160,7 +160,7 @@ seldom 2.0 支持HTTP测试
 import seldom
 
 
-class TestRequest(seldom.HttpRequest):
+class TestRequest(seldom.TestCase):
 
     def test_put_method(self):
         self.put('/put', data={'key': 'value'})
@@ -181,7 +181,7 @@ class TestRequest(seldom.HttpRequest):
 
 
 if __name__ == '__main__':
-    seldom.run(base_url="http://httpbin.org")
+    seldom.main(base_url="http://httpbin.org")
 ```
 
 ### seldom 文档
