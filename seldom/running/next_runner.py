@@ -49,7 +49,6 @@ class TestMain(object):
             print(ins.filename)
             file_dir = os.path.dirname(os.path.abspath(ins.filename))
             file_path = ins.filename
-            print("abc", file_path)
             if "\\" in file_path:
                 this_file = file_path.split("\\")[-1]
             elif "/" in file_path:
@@ -71,20 +70,12 @@ class TestMain(object):
             else:
                 suits = unittest.defaultTestLoader.discover(self.path)
 
-        self.browser = browser
         self.report = report
         self.title = title
         self.description = description
         self.debug = debug
         self.rerun = rerun
         self.save_last_run = save_last_run
-        self.timeout = timeout
-
-        # set browser
-        if browser is None:
-            BrowserConfig.name = "chrome"
-        else:
-            BrowserConfig.name = browser
 
         if isinstance(timeout, int) is False:
             raise TypeError("Timeout {} is not integer.".format(timeout))
@@ -92,18 +83,24 @@ class TestMain(object):
         if isinstance(debug, bool) is False:
             raise TypeError("Debug {} is not Boolean type.".format(debug))
 
-        # Global launch browser, timeout and debug.
-        Seldom.driver = Browser(BrowserConfig.name)
         Seldom.timeout = timeout
         Seldom.debug = debug
+
+        # Global launch browser
+        if browser is not None:
+            BrowserConfig.name = browser
+            Seldom.driver = Browser(BrowserConfig.name)
 
         self._run_test_case(suits)
 
         # Close browser globally
-        if Seldom.driver is WebDriver:
+        if isinstance(Seldom.driver, WebDriver):
             Seldom.driver.quit()
 
     def _run_test_case(self, suits):
+        """
+        run test case
+        """
         if self.debug is False:
             for filename in os.listdir(os.getcwd()):
                 if filename == "reports":

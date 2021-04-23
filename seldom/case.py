@@ -58,7 +58,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         browser driver
         """
-        if Seldom.driver is None:
+        if isinstance(Seldom.driver, WebDriver) is False:
             Seldom.driver = Chrome()
         return Seldom.driver
 
