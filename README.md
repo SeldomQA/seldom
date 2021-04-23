@@ -16,7 +16,7 @@ WebUI/HTTP automation testing framework based on Selenium and unittest.
 * 支持用例失败/错误重跑。
 * 定制化HTML测试报告，用例失败/错误自动截图。
 * 支持XML测试报告
-* 支持HTTP接口测试 （v 2.0）🔥🔥 
+* 支持HTTP接口测试 （v 2.0）
 
 
 ### 安装
@@ -184,46 +184,9 @@ if __name__ == '__main__':
     seldom.main(base_url="http://httpbin.org")
 ```
 
-### seldom 文档
+## Read the docs
 
-请阅读下面的文档，帮助你快速学会Seldom。
-
-* [seldom安装](./docs/install.md)
-
-* [seldom创建项目](./docs/create_project.md)
-
-* [浏览器&驱动](./docs/driver.md)
-
-* [运行测试](./docs/run_test.md)
-
-* [main()方法](./docs/main.md)
-
-* [生成测试报告](./docs/reports.md)
-
-* [seldom 元素定位](./docs/find_element.md)
-
-* [seldom API](./docs/seldom_api.md)
-
-* [keys键盘操作](./docs/keys.md)
-
-* [seldom 断言](./docs/assert.md)
-
-* [用例失败重跑&自动截图](./docs/rerun_screenshot.md)
-
-* [数据驱动最佳实践](./docs/parameterized.md)
-
-* [实现Page Objects设计模式](./docs/poium.md)
-
-* [生成测试数据](./docs/testdata.md)
-
-* [跳过测试用例](./docs/skip.md)
-
-* [发邮件功能](./docs/send_mail.md)
-
-* [test fixture](./docs/fixture.md)
-
-* [优雅的解决用例依赖](./docs/depend.md)
-
+https://seldomqa.readthedocs.io/en/latest/index.html
 
 ## 项目实例
 
