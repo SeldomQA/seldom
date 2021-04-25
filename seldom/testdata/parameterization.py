@@ -1,3 +1,5 @@
+import os
+import inspect as sys_inspect
 import warnings
 from functools import wraps
 from parameterized.parameterized import inspect
@@ -34,15 +36,31 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
     ...     print(username)
     ...     print(password)
     """
+    if file is None:
+        raise FileExistsError("Please specify the CSV file to convert.")
+    stack_t = sys_inspect.stack()
+    ins = sys_inspect.getframeinfo(stack_t[1][0])
+    file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
+
+    file_path = None
+    for root, dirs, files in os.walk(file_dir, topdown=False):
+        for f in files:
+            if f == file:
+                file_path = os.path.join(root, file)
+                break
+        else:
+            continue
+        break
+
     suffix = file.split(".")[-1]
     if suffix == "csv":
-        data_list = conversion.csv_to_list(file, line=line)
+        data_list = conversion.csv_to_list(file_path, line=line)
     elif suffix == "xlsx":
-        data_list = conversion.excel_to_list(file, sheet=sheet, line=line)
+        data_list = conversion.excel_to_list(file_path, sheet=sheet, line=line)
     elif suffix == "json":
-        data_list = conversion.json_to_list(file, key=key)
+        data_list = conversion.json_to_list(file_path, key=key)
     elif suffix == "yaml":
-        data_list = conversion.yaml_to_list(file, key=key)
+        data_list = conversion.yaml_to_list(file_path, key=key)
     else:
         raise FileTypeError("Your file is not supported: {}".format(file))
 

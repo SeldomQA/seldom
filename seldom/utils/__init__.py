@@ -2,6 +2,30 @@ import os
 import inspect
 
 
+class FindFilePath:
+
+    def __new__(cls, name) -> str:
+        if name is None:
+            raise NameError("Please specify filename")
+        stack_t = inspect.stack()
+        ins = inspect.getframeinfo(stack_t[1][0])
+        cls.file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
+
+        file_path = None
+        for root, dirs, files in os.walk(cls.file_dir, topdown=False):
+            for file in files:
+                if file == name:
+                    file_path = os.path.join(root, file)
+                    break
+            else:
+                continue
+            break
+        return file_path
+
+
+find_file_path = FindFilePath
+
+
 def file_dir() -> str:
     """
     Returns the absolute path to the directory where the current file resides
