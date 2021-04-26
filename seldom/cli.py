@@ -140,12 +140,8 @@ def create_scaffold(project_name):
 }
 
 '''
-    test_sample = '''import os
-import seldom
+    test_sample = '''import seldom
 from seldom import file_data
-CASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# data file path
-YAML_FILE = os.path.join(CASE_DIR, "data.json")
 
 
 class SampleTest(seldom.TestCase):
@@ -158,7 +154,7 @@ class SampleTest(seldom.TestCase):
 
 class BaiduTest(seldom.TestCase):
 
-    @file_data(file=YAML_FILE, key="baidu")
+    @file_data(file="data.json", key="baidu")
     def test_data_driver(self, _, keyword):
         """ data driver case """
         self.open("https://www.baidu.com")
@@ -175,15 +171,17 @@ if __name__ == '__main__':
 
 
 if __name__ == '__main__':
-    # run test
+    # run test file
+    # seldom.main("./test_dir/test_sample.py")
+    # run test dir
     seldom.main("./test_dir/")
-    #seldom.main("./test_dir/test_sample.py")
 
 """
     create_folder(project_name)
     create_folder(os.path.join(project_name, "test_dir"))
     create_folder(os.path.join(project_name, "reports"))
-    create_file(os.path.join(project_name, "test_dir", "data.json"), test_data)
+    create_folder(os.path.join(project_name, "test_data"))
+    create_file(os.path.join(project_name, "test_data", "data.json"), test_data)
     create_file(os.path.join(project_name, "test_dir", "test_sample.py"), test_sample)
     create_file(os.path.join(project_name, "run.py"), run_test)
 
