@@ -15,6 +15,5 @@ title ： 指定测试项目标题。
 description ： 指定测试环境描述。
 debug ： debug模式，设置为True不生成测试用例。
 rerun ： 测试失败重跑
-xmlrunner: 设置为 True ，生成XML格式的报告
 '''
 

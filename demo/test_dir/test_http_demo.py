@@ -4,6 +4,7 @@ from seldom import data
 
 class TestRequest(seldom.TestCase):
     """
+    http api test demo
     doc: https://requests.readthedocs.io/en/master/
     """
 
@@ -126,4 +127,4 @@ class TestDDT(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.run(base_url="http://httpbin.org", debug=True)
+    seldom.main(base_url="http://httpbin.org", debug=True)

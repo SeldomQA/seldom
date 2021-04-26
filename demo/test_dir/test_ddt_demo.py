@@ -1,8 +1,9 @@
 import os
 import seldom
 from seldom import data, file_data
+from seldom.utils import file_dir
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+DATA_PATH = os.path.join(os.path.dirname(file_dir()), "test_data")
 JSON_DATA = os.path.join(DATA_PATH, "json_data.json")
 YAML_DATA = os.path.join(DATA_PATH, "yaml_data.yaml")
 CSV_DATA = os.path.join(DATA_PATH, "csv_data.csv")
