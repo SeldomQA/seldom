@@ -42,20 +42,10 @@ User guide
 
    rst_docs/installation
    rst_docs/create_project
-   rst_docs/driver
-   rst_docs/run_test
-   rst_docs/main
-   rst_docs/reports
-   rst_docs/find_element
+   rst_docs/quickstart
    rst_docs/seldom_api
-   rst_docs/assertion
-   rst_docs/rerun_screenshot
-   rst_docs/parameterized
-   rst_docs/poium
-   rst_docs/testdata
-   rst_docs/send_mail
-   rst_docs/fixture
-   rst_docs/depend
+   rst_docs/advanced
+   rst_docs/other
 
 
 Indices and tables
