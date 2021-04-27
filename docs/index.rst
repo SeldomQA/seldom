@@ -44,8 +44,6 @@ User guide
    rst_docs/create_project
    rst_docs/quickstart
    rst_docs/seldom_api
-   rst_docs/advanced
-   rst_docs/other
 
 
 Indices and tables
