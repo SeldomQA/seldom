@@ -1,3 +1,172 @@
+seledom API
+-----------
+
+查找元素
+~~~~~~~~
+
+seldom 提供了8中定位方式，与Selenium保持一致。
+
+-  id\_
+-  name
+-  class\_name
+-  tag
+-  link\_text
+-  partial\_link\_text
+-  css
+-  xpath
+
+**使用方式**
+
+.. code:: python
+
+    self.type(id_="kw", text="seldom")
+    self.type(name="wd", text="seldom")
+    self.type(class_name="s_ipt", text="seldom")
+    self.type(tag="input", text="seldom")
+    self.type(xpath="//input[@id='kw']", text="seldom")
+    self.type(css="#kw", text="seldom")
+
+    self.click(link_text="hao123", text="seldom")
+    self.click(partial_link_text="hao", text="seldom")
+
+**帮助信息**
+
+-  `CSS选择器 <https://www.w3school.com.cn/cssref/css_selectors.asp>`__
+-  `xpath语法 <https://www.w3school.com.cn/xpath/xpath_syntax.asp>`__
+
+**使用下标**
+
+有时候无法通过一种定位找到单个元素，那么可以通过\ ``index``\ 指定一组元素中的第几个。
+
+.. code:: py
+
+    self.type(tag="input", index=7, text="seldom")
+
+通过\ ``tag="input"``\ 匹配出一组元素， ``index=7``
+指定这一组元素中的第8个，\ ``index``\ 默认下标为\ ``0``\ 。
+
+fixture
+~~~~~~~
+
+有时自动化测试用例的运行需要一些前置&后置步骤，seldom提供了相应的方法。
+
+**start & end**
+
+针对每条用例的fixture，可以放到\ ``start()/end()``\ 方法中。
+
+.. code:: python
+
+    import seldom
+
+
+    class TestCase(seldom.TestCase):
+
+        def start(self):
+            print("一条测试用例开始")
+
+        def end(self):
+            print("一条测试结果")
+
+        def test_search_seldom(self):
+            self.open("https://www.baidu.com")
+            self.type_enter(id_="kw", text="seldom")
+
+        def test_search_poium(self):
+            self.open("https://www.baidu.com")
+            self.type_enter(id_="kw", text="poium")
+
+**start\_class & end\_class**
+
+针对每个测试类的fixture，可以放到\ ``start_class()/end_class()``\ 方法中。
+
+.. code:: python
+
+    import seldom
+
+
+    class TestCase(seldom.TestCase):
+
+        def start_class(self):
+            print("测试类开始执行")
+
+        def end_class(self):
+            print("测试类结束执行")
+
+        def test_search_seldom(self):
+            self.open("https://www.baidu.com")
+            self.type_enter(id_="kw", text="seldom", clear=True)
+
+        def test_search_poium(self):
+            self.open("https://www.baidu.com")
+            self.type_enter(id_="kw", text="poium", clear=True)
+
+    警告：不要把用例的操作步骤写到fixture方法中!
+    因为它不属于某条用例的一部分，一旦里面的操作步骤运行失败，测试报告都不会生成。
+
+断言
+~~~~
+
+seldom 提供了一组针对Web页面的断言方法。
+
+**使用方法**
+
+.. code:: python
+
+    # 断言标题是否等于"title"
+    self.assertTitle("title")
+
+    # 断言标题是否包含"title"
+    self.assertInTitle("title")
+
+    # 断言URL是否等于
+    self.assertUrl("url")
+
+    # 断言URL是否包含
+    self.assertInUrl("url")
+
+    # 断言页面是否存在“text”
+    self.assertText("text")
+
+    # 断言警告是否存在"text" 提示信息
+    self.assertAlertText("text")
+
+    # 断言元素是否存在
+    self.assertElement(css="#kw")
+
+    # 断言元素是否不存在
+    self.assertNotElement(css="#kwasdfasdfa")
+
+
+跳过测试用例
+~~~~~~~~~~~~
+
+seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例。
+
+**装饰器**
+
+-  skip: 无条件地跳过一个测试。
+-  skip\_if： 如果条件为真，则跳过测试。
+-  skip\_unless: 跳过一个测试，除非条件为真。
+-  expected\_failure: 预期测试用例会失败。
+
+**使用方法**
+
+.. code:: python
+
+    import seldom
+
+    @seldom.skip()  # 跳过测试类
+    class YouTest(seldom.TestCase):
+
+        @seldom.skip()  # 跳过测试用例
+        def test_case(self):
+            # ...
+
+
+    if __name__ == '__main__':
+        seldom.main()
+
+
 seldom API
 ~~~~~~~~~~
 
@@ -154,3 +323,46 @@ seldom简化了selenium中的API，使你操作Web页面更加简单。
             
             # Setting width and height of window scroll bar.
             self.window_scroll(width=300, height=500)
+
+
+键盘操作
+~~~~~~~~
+
+有时候我们需要用到键盘操作，比如\ ``Enter``\ ，\ ``Backspace``\ ，\ ``TAB``\ ，或者\ ``ctrl/command + a``\ 、\ ``ctrl/command + c``\ 组合键操作，seldom提供了一组键盘操作。
+
+**使用方法**
+
+.. code:: py
+
+    import seldom
+
+
+    class Test(seldom.TestCase):
+
+        def test_key(self):
+            self.open("https://www.baidu.com")
+
+            # 输入 seldomm
+            self.Keys(css="#kw").input("seldomm")
+
+            # 删除多输入的一个m
+            self.Keys(id_="kw").backspace()
+
+            # 输入“教程”
+            self.Keys(id_="kw").input("教程")
+
+            # ctrl+a 全选输入框内容
+            self.Keys(id_="kw").select_all()
+
+            # ctrl+x 剪切输入框内容
+            self.Keys(id_="kw").cut()
+
+            # ctrl+v 粘贴内容到输入框
+            self.Keys(id_="kw").paste()
+
+            # 通过回车键来代替单击操作
+            self.Keys(id_="kw").enter()
+
+
+    if __name__ == '__main__':
+        seldom.main(browser="firefox", debug=True)

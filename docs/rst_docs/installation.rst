@@ -26,12 +26,17 @@ requirements.txt 文件里面看到这些依赖。
 
 .. code:: shell
 
-    colorama==0.4.3
+    colorama>=0.4.3
     selenium==3.141.0
-    parameterized==0.7.0
-    poium==0.6.1
+    parameterized>=0.7.0
+    poium==1.0.0
     openpyxl==3.0.3
-    pyyaml>=3.13
+    pyyaml>=5.1
+    unittest-xml-reporting==3.0.4
+    jinja2>=2.11.2
+    requests>=2.22.0
+    jsonschema>=3.2.0
+    jmespath>=0.10.0
 
 先通过 ``pip`` 命令安装这些依赖库，可以加快seldom的这安装。
 
@@ -48,7 +53,7 @@ requirements.txt 文件里面看到这些依赖。
     > pip show seldom
 
     Name: seldom
-    Version: 1.5.5
+    Version: 2.0.0
     Summary: WebUI automation testing framework based on Selenium and unittest.
     Home-page: https://github.com/seldomQA/seldom/
     Author: bugmaster

@@ -4,32 +4,33 @@
 
 * [seldom创建项目](./create_project.md)
 
-* [浏览器&驱动](./driver.md)
+* [快速上手](./quickstart.md)
+  * 下载浏览器驱动
+  * `main()` 方法
+  * 运行测试
+  * 失败重跑 & 截图
+  * 测试报告
 
-* [运行测试](./run_test.md)
+* [seledom API](./seldom_api.md)
+  * 查找元素
+  * fixture
+  * 断言
+  * 跳过测试用例
+  * seldom API
+  * 键盘操作
 
-* [学习main()方法](./main.md)
+* [高级用法](./advanced.md)
+  * 使用随机测试数据
+  * 数据驱动最佳实践
+  * Page objects设计模式
+  * 自动发邮件
+  * 用例的依赖
 
-* [生成测试报告](./reports.md)
-
-* [查找元素](./find_element.md)
-
-* [seldom API](./seldom_api.md)
-
-* [断言](./assertion.md)
-
-* [失败重跑&自动截图](./rerun_screenshot.md)
-
-* [数据驱动最佳实践](./parameterized.md)
-
-* [Page Objects设计模式](./poium.md)
-
-* [测试数据](./testdata.md)
-
-* [跳过测试用例](./skip.md)
-
-* [自动发邮件](./send_mail.md)
-
-* [fixture](./fixture.md)
-
-* [用例依赖](./depend.md)
+* [其他](./other.md)
+  * 指定浏览器驱动
+  * 指定不同的浏览器
+  * Mobile web 模式
+  * 开启headless模式
+  * 开放浏览器配置能力
+  * Selenium Grid
+  * 在pycharm中运行测试

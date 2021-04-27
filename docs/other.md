@@ -1,37 +1,6 @@
-## Browser and Driver
+## 其他
 
-在运行seldom自动化测试之前，需要先安装不同浏览器对应的驱动，这一步非常重要。
-
-### 下载浏览器驱动
-
-__自动下载__
-
-seldom 提供了`chrome/firefox`浏览器驱动的下载
-
-```shell
-seldom -install chrome
-seldom -install firefox
-```
-
-> 默认下载到当前的`lib/` 目录下面。 
-> 众所周知的原因，`chromedriver`使用的taobao的镜像。 
-> seldom无法判断你当前浏览器的版本，默认下载最浏览器版本对应的驱动，所以，推荐手动下载。
-
-__手动下载__
-
-* Firefox: [geckodriver](https://github.com/mozilla/geckodriver/releases)
-
-* Chrome: [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/home)
-
-* IE: [IEDriverServer](http://selenium-release.storage.googleapis.com/index.html)
-
-* Opera: [operadriver](https://github.com/operasoftware/operachromiumdriver/releases)
-
-* Edge: [MicrosoftWebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver)
-
-* Safari: safaridriver (macOS系统自带，默认路径：`/usr/bin/safaridriver`)
-
-### 使用浏览器驱动
+### 指定浏览器驱动
 
 你需要针对浏览器驱动配置环境变量`path`。 如果你连添加环境变量`path`都不会，没关系！你可以在seldom中指定浏览器驱动文件目录的绝对路径。
 
@@ -68,7 +37,10 @@ if __name__ == '__main__':
 
 在`main()`方法中通过`browser`参数设置不同的浏览器，默认为`Chrome`浏览器。
 
-除此之外，还支持 Mobile web 模式：
+
+### Mobile web 模式
+
+seldom 还支持 Mobile web 模式：
 
 ```python
 import seldom
@@ -156,3 +128,16 @@ if __name__ == '__main__':
 ```
 
 * 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
+
+
+### 在pycharm中运行测试
+
+1. 配置测试用例通过 unittest 运行。
+
+![](./image/pycharm.png)
+
+2. 在文件中选择测试类或用例执行。
+
+![](./image/pycharm_run_case.png) 
+
+> 警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
