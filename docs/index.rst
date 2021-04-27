@@ -42,7 +42,7 @@ User guide
 
    rst_docs/installation
    rst_docs/create_project
-   rst_docs/quickstart
+   rst_docs/quickstarts
    rst_docs/seldom_api
 
 
