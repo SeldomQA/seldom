@@ -6,7 +6,7 @@ In this chapter we will quickly experience the `seldom` project
 Create case
 ~~~~~~~~~~~~~~
 
-Create a Python file: ``test_sample.py`` 。
+Create a Python file: `test_sample.py` .
 
 .. code:: py
 

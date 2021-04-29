@@ -4,9 +4,9 @@
 使用随机测试数据
 ~~~~~~~~~~~~~~~~
 
-测试数据是测试用例的重要部分，有时不能把测试数据写死在测试用例中，比如注册新用户，一旦执行过用例那么测试数据就已经存在了，所以每次执行注册新用户的数据不能是一样的，这就需要随机生成一些测试数据。
+测试数据是测试用例的重要部分,有时不能把测试数据写死在测试用例中,比如注册新用户,一旦执行过用例那么测试数据就已经存在了,所以每次执行注册新用户的数据不能是一样的,这就需要随机生成一些测试数据.
 
-seldom提供了随机获取测试数据的方法。
+seldom提供了随机获取测试数据的方法.
 
 .. code:: python
 
@@ -28,7 +28,7 @@ seldom提供了随机获取测试数据的方法。
     if __name__ == '__main__':
         seldom.main()
 
-通过\ ``get_word()`` 随机获取一个单词，然后对这个单词进行搜索。
+通过\ ``get_word()`` 随机获取一个单词,然后对这个单词进行搜索.
 
 **更多的方法**
 
@@ -56,9 +56,9 @@ seldom提供了随机获取测试数据的方法。
 数据驱动最佳实践
 ~~~~~~~~~~~~~~~~
 
-如果自动化某个功能时，测试数据不一样而操作步骤是一样的，那么就可以使用参数化来节省测试代码。
+如果自动化某个功能时,测试数据不一样而操作步骤是一样的,那么就可以使用参数化来节省测试代码.
 
-seldom集成了参数化功能。
+seldom集成了参数化功能.
 
 **参数化测试用例**
 
@@ -85,7 +85,7 @@ seldom集成了参数化功能。
             self.click(css="#su")
             self.assertTitle(keyword+"_百度搜索")
 
-通过\ ``@data()`` 装饰器来参数化测试用例。
+通过\ ``@data()`` 装饰器来参数化测试用例.
 
 **参数化测试类**
 
@@ -112,7 +112,7 @@ seldom集成了参数化功能。
 
 **csv文件参数化**
 
-seldom支持将\ ``csv``\ 文件的参数化。
+seldom支持将\ ``csv``\ 文件的参数化.
 
 表格内容如下（data.csv）：
 
@@ -139,14 +139,14 @@ seldom支持将\ ``csv``\ 文件的参数化。
             print(password)
             # ...
 
-``csv_to_list()`` 方法csv文件内容转化为list。
+``csv_to_list()`` 方法csv文件内容转化为list.
 
--  file: 指定csv文件的路径。
--  line: 指定从第几行开始读取，默认第1行。
+-  file: 指定csv文件的路径.
+-  line: 指定从第几行开始读取,默认第1行.
 
 **excel文件参数化**
 
-seldom支持将\ ``excel``\ 文件的参数化。
+seldom支持将\ ``excel``\ 文件的参数化.
 
 .. code:: python
 
@@ -163,15 +163,15 @@ seldom支持将\ ``excel``\ 文件的参数化。
             print(password)
             # ...
 
-``excel_to_list()`` 方法excel文件数据转化为list。
+``excel_to_list()`` 方法excel文件数据转化为list.
 
--  file : 指定excel文件的路径。
--  sheet: 指定excel的标签页，默认名称为 Sheet1。
--  line : 指定从第几行开始读取，默认第1行。
+-  file : 指定excel文件的路径.
+-  sheet: 指定excel的标签页,默认名称为 Sheet1.
+-  line : 指定从第几行开始读取,默认第1行.
 
 **JSON文件参数化**
 
-seldom支持将\ ``JSON``\ 文件的参数化。
+seldom支持将\ ``JSON``\ 文件的参数化.
 
 json 文件：
 
@@ -199,12 +199,12 @@ json 文件：
             print(password)
             # ...
 
--  file : 指定JSON文件的路径。
--  key: 指定字典的key，默认不指定解析整个JSON文件。
+-  file : 指定JSON文件的路径.
+-  key: 指定字典的key,默认不指定解析整个JSON文件.
 
 **YAML文件参数化**
 
-seldom支持\ ``YAML``\ 文件的参数化。
+seldom支持\ ``YAML``\ 文件的参数化.
 
 data.yaml 文件：
 
@@ -231,12 +231,12 @@ data.yaml 文件：
             print(password)
             # ...
 
--  file : 指定YAML文件的路径。
--  key: 指定字典的key，默认不指定解析整个YAML文件。
+-  file : 指定YAML文件的路径.
+-  key: 指定字典的key,默认不指定解析整个YAML文件.
 
 **支持第三方ddt库**
 
-seldom支持第三方参数化库：\ `ddt <https://github.com/datadriventests/ddt>`__\ 。
+seldom支持第三方参数化库：\ `ddt <https://github.com/datadriventests/ddt>`__\ .
 
 安装：
 
@@ -244,7 +244,7 @@ seldom支持第三方参数化库：\ `ddt <https://github.com/datadriventests/d
 
     > pip install ddt
 
-创建测试文件\ ``test_data.json``\ ：
+创建测试文件\ ``test_data.json``\:
 
 .. code:: json
 
@@ -260,7 +260,7 @@ seldom支持第三方参数化库：\ `ddt <https://github.com/datadriventests/d
         }
     }
 
-在 seldom 使用\ ``ddt``\ 。
+在 seldom 使用\ ``ddt``\ .
 
 .. code:: python
 
@@ -290,16 +290,16 @@ Page objects设计模式
 ~~~~~~~~~~~~~~~~~~~~
 
 seldom
-API的设计理念是将元素操作和元素定位放到起，本身不太适合实现\ ``Page objects``\ 设计模式。
+API的设计理念是将元素操作和元素定位放到起,本身不太适合实现\ ``Page objects``\ 设计模式.
 
 `poium <https://github.com/SeldomQA/poium>`__
-是\ ``Page objects``\ 设计模式最佳实践，如果想使用poium，需要单独安装。
+是\ ``Page objects``\ 设计模式最佳实践,如果想使用poium,需要单独安装.
 
 .. code:: shell
 
     > pip install poium==1.0.0
 
-将seldom与poium结合使用。
+将seldom与poium结合使用.
 
 .. code:: python
 
@@ -334,7 +334,7 @@ API的设计理念是将元素操作和元素定位放到起，本身不太适�
 自动发邮件
 ~~~~~~~~~~
 
-如果你想将测试完成的报告发送到指定邮箱，那么可以调用发邮件的方法实现。
+如果你想将测试完成的报告发送到指定邮箱,那么可以调用发邮件的方法实现.
 
 .. code:: python
 
@@ -348,10 +348,10 @@ API的设计理念是将元素操作和元素定位放到起，本身不太适�
         smtp = SMTP(user="send@126.com", password="abc123", host="smtp.126.com")
         smtp.sender(to="receive@mail.com", subject='Email title')
 
--  ``subject``\ 邮件标题 默认：\ ``Seldom Test Report``\ 。
--  ``to``\ 添加多个收件人 逗号\ ``,``\ 分隔。
+-  ``subject``\ 邮件标题 默认：\ ``Seldom Test Report``\ .
+-  ``to``\ 添加多个收件人 逗号\ ``,``\ 分隔.
 
-如果你自定义了报告的名称，那么需要指定报告名称。
+如果你自定义了报告的名称,那么需要指定报告名称.
 
 .. code:: python
 
@@ -366,18 +366,18 @@ API的设计理念是将元素操作和元素定位放到起，本身不太适�
         smtp = SMTP(user="you@126.com", password="abc123", host="smtp.126.com")
         smtp.sender(to="receive@mail.com", subject='Email title', attachments=report_path)
 
-    ``debug``\ 模式不会生成测试报告， 自动化发邮件不支持\ ``debug``
-    模式，自然也无法将报告发送到指定邮箱了。
+    ``debug``\ 模式不会生成测试报告, 自动化发邮件不支持\ ``debug``
+    模式,自然也无法将报告发送到指定邮箱了.
 
 
 用例的依赖
 ~~~~~~~~~~
 
-在编写用例的时候不推荐你编写依赖的用例，但是，有些时候我们并不能完全消除这些依赖。seldom增加了用例依赖的方法。
+在编写用例的时候不推荐你编写依赖的用例,但是,有些时候我们并不能完全消除这些依赖.seldom增加了用例依赖的方法.
 
 **depend**
 
-``depend`` 装饰器用来设置依赖的用例。
+``depend`` 装饰器用来设置依赖的用例.
 
 .. code:: python
 
@@ -402,12 +402,12 @@ API的设计理念是将元素操作和元素定位放到起，本身不太适�
         seldom.main(debug=True)
 
 ``test_002`` 依赖于 ``test_001`` ,
-``test_003``\ 又依赖于\ ``test_002``\ 。当被依赖的用例，错误、失败、跳过，那么依赖的用例自动跳过。
+``test_003``\ 又依赖于\ ``test_002``\ .当被依赖的用例,错误、失败、跳过,那么依赖的用例自动跳过.
 
 **if\_depend**
 
 ``id_depend``
-装饰器不会依赖用例的执行状态，可以自己定义是否要跳过依赖的用例。
+装饰器不会依赖用例的执行状态,可以自己定义是否要跳过依赖的用例.
 
 .. code:: python
 
@@ -429,8 +429,8 @@ API的设计理念是将元素操作和元素定位放到起，本身不太适�
     if __name__ == '__main__':
         seldom.main(debug=True)
 
-1. 首先，定义变量 ``Test001``\ ，默认值为\ ``True``\ 。
-2. 在\ ``test_001``\ 用例中，可以根据一些条件来选择是否修改\ ``Test001``\ 的值，如果改为\ ``False``\ ，
-   那么依赖的用例将被跳过。
-3. 在\ ``test_002``\ 用例中，通过\ ``id_depend``\ 装饰器来判断\ ``Test001``\ 的值，如果为为\ ``False``\ ，
-   那么装饰的用例跳过，否则执行。
+1. 首先,定义变量 ``Test001``\ ,默认值为\ ``True``\ .
+2. 在\ ``test_001``\ 用例中,可以根据一些条件来选择是否修改\ ``Test001``\ 的值,如果改为\ ``False``\ ,
+   那么依赖的用例将被跳过.
+3. 在\ ``test_002``\ 用例中,通过\ ``id_depend``\ 装饰器来判断\ ``Test001``\ 的值,如果为为\ ``False``\ ,
+   那么装饰的用例跳过,否则执行.

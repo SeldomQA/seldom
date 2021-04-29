@@ -4,8 +4,8 @@
 指定浏览器驱动
 ~~~~~~~~~~~~~~
 
-你需要针对浏览器驱动配置环境变量\ ``path``\ 。
-如果你连添加环境变量\ ``path``\ 都不会，没关系！你可以在seldom中指定浏览器驱动文件目录的绝对路径。
+你需要针对浏览器驱动配置环境变量\ ``path``\ .
+如果你连添加环境变量\ ``path``\ 都不会,没关系！你可以在seldom中指定浏览器驱动文件目录的绝对路径.
 
 .. code:: python
 
@@ -17,12 +17,12 @@
         ChromeConfig.executable_path = "D:\git\seldom\lib\chromedriver.exe"
         seldom.main(browser="chrome")
 
-注：浏览器要\ ``browser``\ 与驱动\ ``executable_path`` 要保持对应关系。
+注：浏览器要\ ``browser``\ 与驱动\ ``executable_path`` 要保持对应关系.
 
 指定不同的浏览器
 ~~~~~~~~~~~~~~~~
 
-我们运行的自动化测试不可能只在一个浏览器下运行，我们分别需要在chrome、firefox浏览器下运行。在seldom中需要只需要修改一个配置即可。
+我们运行的自动化测试不可能只在一个浏览器下运行,我们分别需要在chrome、firefox浏览器下运行.在seldom中需要只需要修改一个配置即可.
 
 .. code:: python
 
@@ -38,7 +38,7 @@
         seldom.main(browser="edge") # edge浏览器
         seldom.main(browser="safari") # safari浏览器
 
-在\ ``main()``\ 方法中通过\ ``browser``\ 参数设置不同的浏览器，默认为\ ``Chrome``\ 浏览器。
+在\ ``main()``\ 方法中通过\ ``browser``\ 参数设置不同的浏览器,默认为\ ``Chrome``\ 浏览器.
 
 Mobile web 模式
 ~~~~~~~~~~~~~~~
@@ -54,7 +54,7 @@ seldom 还支持 Mobile web 模式：
     if __name__ == '__main__':
         seldom.main(browser="iPhone 6") # iPhone 6 手机浏览器展示
 
-支持的设备类型，如下：
+支持的设备类型,如下：
 
 .. code:: python
 
@@ -68,7 +68,7 @@ seldom 还支持 Mobile web 模式：
 开启headless模式
 ~~~~~~~~~~~~~~~~
 
-Firefox和Chrome浏览器支持\ ``headless``\ 模式，即将浏览器置于后台运行，这样不会影响到我们在测试机上完成其他工作。
+Firefox和Chrome浏览器支持\ ``headless``\ 模式,即将浏览器置于后台运行,这样不会影响到我们在测试机上完成其他工作.
 
 .. code:: python
 
@@ -81,15 +81,15 @@ Firefox和Chrome浏览器支持\ ``headless``\ 模式，即将浏览器置于后
         ChromeConfig.headless = True
         seldom.main(browser="chrome")
 
-只需要将 ChromeConfig 类中的 headless 设置为 ``True``\ 即可，
-Firefox浏览器配置方法类似。
+只需要将 ChromeConfig 类中的 headless 设置为 ``True``\ 即可,
+Firefox浏览器配置方法类似.
 
 开放浏览器配置能力
 ~~~~~~~~~~~~~~~~~~
 
-seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，为了满足个性化的需求，比如禁用浏览器插件，设置浏览器代理等。所以，通过ChromeConfig类的参数来开放这些能力。
+seldom为了更加方便的使用驱动,屏蔽了浏览器的配置,为了满足个性化的需求,比如禁用浏览器插件,设置浏览器代理等.所以,通过ChromeConfig类的参数来开放这些能力.
 
-例如，浏览器忽略无效证书的问题。
+例如,浏览器忽略无效证书的问题.
 
 .. code:: python
 
@@ -104,12 +104,12 @@ seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，为了�
         ChromeConfig.options = chrome_options
         seldom.main(browser="chrome")
 
-将要\ ``ChromeOption``\ 添加的设置赋值给\ ``ChromeConfig``\ 的\ ``options``\ 变量。
+将要\ ``ChromeOption``\ 添加的设置赋值给\ ``ChromeConfig``\ 的\ ``options``\ 变量.
 
 Selenium Grid
 ~~~~~~~~~~~~~
 
-首先，安装Java环境，然后下载 ``selenium-server``\ 。
+首先,安装Java环境,然后下载 ``selenium-server``\ .
 
 .. code:: shell
 
@@ -131,24 +131,24 @@ Selenium Grid
         ChromeConfig.command_executor = "http://127.0.0.1:4444/wd/hub"
         seldom.main(browser="chrome")
 
--  设置远程节点，\ `selenium Grid
-   doc <https://www.selenium.dev/documentation/en/grid/>`__\ 。
+-  设置远程节点,\ `selenium Grid
+   doc <https://www.selenium.dev/documentation/en/grid/>`__\ .
 
 在pycharm中运行测试
 ~~~~~~~~~~~~~~~~~~~
 
-1. 配置测试用例通过 unittest 运行。
+1. 配置测试用例通过 unittest 运行.
 
 .. figure:: ../image/pycharm.png
    :alt: 
 
-2. 在文件中选择测试类或用例执行。
+2. 在文件中选择测试类或用例执行.
 
 .. figure:: ../image/pycharm_run_case.png
    :alt: 
 
 ::
 
-    警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
+    警告：运行用例打开的浏览器,需要手动关闭, seldom不做用例关闭操作.
 
 

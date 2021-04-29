@@ -4,7 +4,7 @@ seledom API
 查找元素
 ~~~~~~~~
 
-seldom 提供了8中定位方式，与Selenium保持一致。
+seldom 提供了8中定位方式,与Selenium保持一致.
 
 -  id\_
 -  name
@@ -36,23 +36,23 @@ seldom 提供了8中定位方式，与Selenium保持一致。
 
 **使用下标**
 
-有时候无法通过一种定位找到单个元素，那么可以通过\ ``index``\ 指定一组元素中的第几个。
+有时候无法通过一种定位找到单个元素,那么可以通过\ ``index``\ 指定一组元素中的第几个.
 
 .. code:: py
 
     self.type(tag="input", index=7, text="seldom")
 
-通过\ ``tag="input"``\ 匹配出一组元素， ``index=7``
-指定这一组元素中的第8个，\ ``index``\ 默认下标为\ ``0``\ 。
+通过\ ``tag="input"``\ 匹配出一组元素, ``index=7``
+指定这一组元素中的第8个,\ ``index``\ 默认下标为\ ``0``\ .
 
 fixture
 ~~~~~~~
 
-有时自动化测试用例的运行需要一些前置&后置步骤，seldom提供了相应的方法。
+有时自动化测试用例的运行需要一些前置&后置步骤,seldom提供了相应的方法.
 
 **start & end**
 
-针对每条用例的fixture，可以放到\ ``start()/end()``\ 方法中。
+针对每条用例的fixture,可以放到\ ``start()/end()``\ 方法中.
 
 .. code:: python
 
@@ -77,7 +77,7 @@ fixture
 
 **start\_class & end\_class**
 
-针对每个测试类的fixture，可以放到\ ``start_class()/end_class()``\ 方法中。
+针对每个测试类的fixture,可以放到\ ``start_class()/end_class()``\ 方法中.
 
 .. code:: python
 
@@ -101,12 +101,12 @@ fixture
             self.type_enter(id_="kw", text="poium", clear=True)
 
     警告：不要把用例的操作步骤写到fixture方法中!
-    因为它不属于某条用例的一部分，一旦里面的操作步骤运行失败，测试报告都不会生成。
+    因为它不属于某条用例的一部分,一旦里面的操作步骤运行失败,测试报告都不会生成.
 
 断言
 ~~~~
 
-seldom 提供了一组针对Web页面的断言方法。
+seldom 提供了一组针对Web页面的断言方法.
 
 **使用方法**
 
@@ -140,14 +140,14 @@ seldom 提供了一组针对Web页面的断言方法。
 跳过测试用例
 ~~~~~~~~~~~~
 
-seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例。
+seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例.
 
 **装饰器**
 
--  skip: 无条件地跳过一个测试。
--  skip\_if： 如果条件为真，则跳过测试。
--  skip\_unless: 跳过一个测试，除非条件为真。
--  expected\_failure: 预期测试用例会失败。
+-  skip: 无条件地跳过一个测试.
+-  skip\_if： 如果条件为真,则跳过测试.
+-  skip\_unless: 跳过一个测试,除非条件为真.
+-  expected\_failure: 预期测试用例会失败.
 
 **使用方法**
 
@@ -170,7 +170,7 @@ seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例。
 seldom API
 ~~~~~~~~~~
 
-seldom简化了selenium中的API，使你操作Web页面更加简单。
+seldom简化了selenium中的API,使你操作Web页面更加简单.
 
 大部分API都由\ ``WebDriver``\ 类提供：
 
@@ -328,7 +328,7 @@ seldom简化了selenium中的API，使你操作Web页面更加简单。
 键盘操作
 ~~~~~~~~
 
-有时候我们需要用到键盘操作，比如\ ``Enter``\ ，\ ``Backspace``\ ，\ ``TAB``\ ，或者\ ``ctrl/command + a``\ 、\ ``ctrl/command + c``\ 组合键操作，seldom提供了一组键盘操作。
+有时候我们需要用到键盘操作,比如\ ``Enter``\ ,\ ``Backspace``\ ,\ ``TAB``\ ,或者\ ``ctrl/command + a``\ 、\ ``ctrl/command + c``\ 组合键操作,seldom提供了一组键盘操作.
 
 **使用方法**
 

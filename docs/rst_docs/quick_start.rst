@@ -10,7 +10,7 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
 
 **Automatically download**
 
-`Seldom` provides automatic download driven by `Chrome/Firefox` browser.。
+`Seldom` provides automatic download driven by `Chrome/Firefox` browser.
 
 .. code:: shell
 
@@ -45,7 +45,7 @@ By default, download to the current 'lib/' directory.
    `MicrosoftWebDriver <https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver>`__
 
 -  Safari: safaridriver
-   (macOS，default path:`/usr/bin/safaridriver`)
+   (macOS,default path:`/usr/bin/safaridriver`)
 
 Configure the environment variables for the downloaded driver file.Different operating systems (Windows/MacOS/Linux) are configured differently.
 

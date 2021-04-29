@@ -1,14 +1,14 @@
 HTTP接口测试
 ------------
 
-seldom做接口测试有很多优势。
+seldom做接口测试有很多优势.
 
 -  支持HTML/XML测试报告
 -  支持参数化
 -  支持生成随机数据
 
-这些是seldom支持的功能，我们只需要集成HTTP接口库，并提供强大的断言即可。\ ``seldom 2.0``
-加入了HTTP接口自动化测试支持。
+这些是seldom支持的功能,我们只需要集成HTTP接口库,并提供强大的断言即可.\ ``seldom 2.0``
+加入了HTTP接口自动化测试支持.
 
 Seldom 兼容 `Requests <https://docs.python-requests.org/en/master/>`__
 API 如下:
@@ -47,7 +47,7 @@ seldom vs request+unittest
     if __name__ == '__main__':
         unittest.main()
 
-这其实已经非常简洁了。同样的用例，用seldom实现。
+这其实已经非常简洁了.同样的用例,用seldom实现.
 
 .. code:: python
 
@@ -66,12 +66,12 @@ seldom vs request+unittest
     if __name__ == '__main__':
         seldom.main()
 
-主要简化点在，接口的返回数据的处理。当然，seldom真正的优势在断言、日志和报告。
+主要简化点在,接口的返回数据的处理.当然,seldom真正的优势在断言、日志和报告.
 
 运行测试
 ~~~~~~~~
 
-打开debug模式\ ``seldom.run(debug=True)`` 运行上面的用例。
+打开debug模式\ ``seldom.run(debug=True)`` 运行上面的用例.
 
 .. code:: shell
 
@@ -99,7 +99,7 @@ seldom vs request+unittest
 
     OK
 
-通过日志/报告都可以清楚的看到。
+通过日志/报告都可以清楚的看到.
 
 -  请求的方法
 -  请求url
@@ -109,7 +109,7 @@ seldom vs request+unittest
 更强大的断言
 ~~~~~~~~~~~~
 
-断言接口返回的数据是我们在做接口自动化很重要的工作。
+断言接口返回的数据是我们在做接口自动化很重要的工作.
 
 **assertJSON**
 
@@ -128,7 +128,7 @@ seldom vs request+unittest
     }
 
 我的目标是断言\ ``name`` 和 ``hobby``
-部分的内容。seldom可以针对\ ``JSON``\ 文件进行断言。
+部分的内容.seldom可以针对\ ``JSON``\ 文件进行断言.
 
 .. code:: python
 
@@ -163,7 +163,7 @@ seldom vs request+unittest
 
     OK
 
-seldom还会提示你还有哪些字段没有断言。
+seldom还会提示你还有哪些字段没有断言.
 
 **assertPath**
 
@@ -193,12 +193,12 @@ seldom中可以通过path进行断言：
             self.assertPath("name", "tom")
             self.assertPath("args.hobby[0]", "basketball")
 
-是否再次感受到了seldom提供的断言非常灵活，强大。
+是否再次感受到了seldom提供的断言非常灵活,强大.
 
 接口数据依赖
 ------------
 
-在场景测试中，我们需要利用上一个接口的数据，调用下一个接口。
+在场景测试中,我们需要利用上一个接口的数据,调用下一个接口.
 
 .. code:: python
 
@@ -218,12 +218,12 @@ seldom中可以通过path进行断言：
             self.post("/post", data={'username': username})
             self.assertStatusCode(200)
 
-seldom提供了\ ``self.response``\ 用于记录上个接口返回的结果，直接拿来用即可。
+seldom提供了\ ``self.response``\ 用于记录上个接口返回的结果,直接拿来用即可.
 
 数据驱动
 --------
 
-seldom本来就提供的有强大的数据驱动，拿来做接口测试非常方便。
+seldom本来就提供的有强大的数据驱动,拿来做接口测试非常方便.
 
 **@data**
 
@@ -262,7 +262,7 @@ seldom本来就提供的有强大的数据驱动，拿来做接口测试非常�
      ]
     }
 
-通过\ ``file_data``\ 实现数据驱动。
+通过\ ``file_data``\ 实现数据驱动.
 
 .. code:: python
 
@@ -282,12 +282,12 @@ seldom本来就提供的有强大的数据驱动，拿来做接口测试非常�
             self.assertStatusCode(200)
             self.assertEqual(self.response["form"][username], password)
 
-更过数据文件(csv/excel/yaml)，\ `参考 <https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md>`__
+更过数据文件(csv/excel/yaml),\ `参考 <https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md>`__
 
 随机生成测试数据
 ~~~~~~~~~~~~~~~~
 
-seldom提供随机生成测试数据方法，可以生成一些常用的数据。
+seldom提供随机生成测试数据方法,可以生成一些常用的数据.
 
 .. code:: python
 
@@ -303,4 +303,4 @@ seldom提供随机生成测试数据方法，可以生成一些常用的数据�
             self.get("http://httpbin.org/get", params=payload)
             self.assertPath("args.phone", phone)
 
-更过类型的测试数据，\ `参考 <https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md>`__
+更过类型的测试数据, `参考 <https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md>`__
