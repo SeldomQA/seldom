@@ -1,17 +1,16 @@
-创建自动化项目
+Create project
 --------------
 
-seldom已经安装完成，那么现在已经迫不及待的想体验seldom的使用。
+In this chapter we will quickly experience the `seldom` project
 
-创建用例
-~~~~~~~~~~~~~~~~~
+Create case
+~~~~~~~~~~~~~~
 
-创建一个python文件\ ``test_sample.py``\ 。
+Create a Python file: ``test_sample.py`` 。
 
 .. code:: py
 
     import seldom
-
 
     class YouTest(seldom.TestCase):
 
@@ -20,21 +19,25 @@ seldom已经安装完成，那么现在已经迫不及待的想体验seldom的�
             self.open("https://www.baidu.com")
             self.type(id_="kw", text="seldom")
             self.click(css="#su")
-            self.assertTitle("seldom_百度搜索")
-
+            self.assertInTitle("seldom")
 
     if __name__ == '__main__':
         seldom.main()
 
-seldom提供的有命令，可以快速的帮助我们创建。
 
-自动生成项目
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+If you have an environment for `Selenium`, you can now run this use case.
 
-seldom 通过\ ``seldom``\ 命令提供了脚手架，可以快速的帮我们创建Web
-UI自动化项目。
 
-1、查看帮助：
+Automated project creation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`seldom` provides scaffolding to help us quickly create Web UI automation projects.
+
+
+
+1. view the help:
+
+
 
 .. code:: shell
 
@@ -53,13 +56,22 @@ UI自动化项目。
       -install INSTALL  Install the browser driver, For example, 'chrome',
                         'firefox'.
 
-2、创建项目：
+
+
+
+2. Create project:
+
+
 
 .. code:: shell
 
     > seldom --project mypro
 
-目录结构如下：
+
+
+
+3. View directory structure：
+
 
 .. code:: shell
 
@@ -70,6 +82,6 @@ UI自动化项目。
     ├── reports/
     └── run.py
 
--  ``test_dir/`` 目录实现用例编写。
--  ``reports/`` 目录存放生成的测试报告。
--  ``run.py`` 文件运行测试用例。
+-  ``test_dir/`` Test case directory.
+-  ``reports/``  Test Report directory.
+-  ``run.py`` Run the test file.

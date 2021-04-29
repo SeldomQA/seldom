@@ -1,25 +1,33 @@
-快速上手
---------
+Quick Start
+-------------
 
-下载浏览器驱动
-~~~~~~~~~~~~~~
+Download Browser Driver
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-和Selenium一样，在使用seldom运行自动化测试之前，需要先配置浏览器驱动，这一步非常重要。
 
-**自动下载**
+As with `Selenium`, before you can run automated tests using `seldom`, you need to configure the browser driver, This step is very important.
 
-seldom 提供了\ ``chrome/firefox``\ 浏览器驱动的自动下载。
+
+**Automatically download**
+
+`Seldom` provides automatic download driven by `Chrome/Firefox` browser.。
 
 .. code:: shell
 
     > seldom -install chrome
     > seldom -install firefox
 
-    默认下载到当前的\ ``lib/`` 目录下面。
-    众所周知的原因，\ ``chromedriver``\ 使用的taobao的镜像。
-    seldom无法判断你当前浏览器的版本，默认下载最浏览器版本对应的驱动，所以，推荐手动下载。
 
-**手动下载**
+
+By default, download to the current 'lib/' directory.
+
+
+'ChromeDriver' Mirror image of Taobao used.
+
+** Manually download **
+
+`seldom` cannot determine the version of your current browser, so it is recommended to download it manually.
+
 
 -  Firefox:
    `geckodriver <https://github.com/mozilla/geckodriver/releases>`__
@@ -37,15 +45,17 @@ seldom 提供了\ ``chrome/firefox``\ 浏览器驱动的自动下载。
    `MicrosoftWebDriver <https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver>`__
 
 -  Safari: safaridriver
-   (macOS系统自带，默认路径:``/usr/bin/safaridriver``)
+   (macOS，default path:`/usr/bin/safaridriver`)
 
-然后，对下载的驱动文件配置环境变量。不同的操作系统（Windows/MacOS/Linux）配置不一样。
+Configure the environment variables for the downloaded driver file.Different operating systems (Windows/MacOS/Linux) are configured differently.
 
-``main()`` 方法
-~~~~~~~~~~~~~~~
 
-``main()``\ 方法是seldom运行测试的入口,
-它提供了一些最基本也是重要的配置。
+``main()`` Method
+~~~~~~~~~~~~~~~~~~~
+
+
+`main()` method is `seldom` run test entry method, It provides some of the most basic and important configurations.
+
 
 .. code:: python
 
@@ -59,37 +69,38 @@ seldom 提供了\ ``chrome/firefox``\ 浏览器驱动的自动下载。
                     browser="chrome",
                     base_url="",
                     report=None,
-                    title="百度测试用例",
-                    description="测试环境:chrome",
+                    title="project name",
+                    description="Environment description",
                     debug=False,
                     rerun=0,
                     save_last_run=False,
                     timeout=None,
         )
 
-**参数说明**
 
--  path : 指定测试目录或文件。
--  browser : 指定测试浏览器，默认\ ``Chrome``\ 。
--  base\_url : 针对HTTP接口测试的参数，设置全局的URL。
--  report :
-   自定义测试报告的名称，默认格式为\ ``2020_04_04_11_55_20_result.html``\ 。
--  title : 指定测试报告标题。
--  description : 指定测试报告描述。
--  debug :
-   debug模式，设置为True不生成测试HTML测试，默认为\ ``False``\ 。
--  rerun : 设置失败重新运行次数，默认为 ``0``\ 。
--  save\_last\_run : 设置只保存最后一次的结果，默认为\ ``False``\ 。
--  timeout : 设置超时时间，默认\ ``10``\ 秒
 
-运行测试
-~~~~~~~~
+**Parameter specification**
 
-**在终端下运行（推荐）**
+-  path : Specifies the test directory or file.
+-  browser : Run browser name, default `Chrome`.
+-  base\_url : A parameter to test the HTTP interface testing, setting the global URL.
+-  report : The name of the custom test report, The default format is `YYYY_mm_dd_HH_MM_SS_result.html`.
+-  title : Test report title.
+-  description : Test report description.
+-  debug : Debug mode,  set to True does not generate test HTML tests, default is `False`.
+-  rerun : Sets the number of failed reruns, Default is `0`.
+-  save\_last\_run : Sets to save only the last result, default to `False`.
+-  timeout : Sets the timeout, Default `10` seconds.
 
-在终端下运行（推荐）
 
-创建 ``run.py`` 文件，在要文件中引用\ ``main()``\ 方法，如下：
+Run Test
+~~~~~~~~~~
+
+**Run under a terminal (recommended)**
+
+
+Create the file `run.py`, And import `main()` method.
+
 
 .. code:: py
 
@@ -97,45 +108,52 @@ seldom 提供了\ ``chrome/firefox``\ 浏览器驱动的自动下载。
 
     # ...
 
-    seldom.main()    # 默认运行当前文件中的用例。
+    seldom.main()    # 
 
-``main()``\ 方法默认运行当前文件中的所有用例。
+
+`main()` Method Run the use case in the current file by default.
+
 
 .. code:: shell
 
-    > python run.py      # 通过python命令运行
-    > seldom -r run.py   # 通过seldom命令运行
+    > python run.py      # Run with the Python command
+    > seldom -r run.py   # Run with the Seldom command
 
-**设置运行目录、文件**
 
-可以通过\ ``path``\ 参数指定要运行的目录或文件。
+**Set the running directory, file**
+
+
+You can specify the directory or file to run with the `path` parameter.
+
 
 .. code:: py
 
-    seldom.main(path="./")  # 指定当前文件所在目录下面的用例。
-    seldom.main(path="./test_dir/")  # 指定当前目录下面的test_dir/ 目录下面的用例。
-    seldom.main(path="./test_dir/test_sample.py")  # 指定测试文件中的用例。
-    seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")  # 指定文件的绝对路径。
+    seldom.main(path="./")  
+    seldom.main(path="./test_dir/")
+    seldom.main(path="./test_dir/test_sample.py")
+    seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")
 
-**运行类或方法**
 
-``seldom -m``\ 命令可以提供更细粒度的运行。
+**Run a class or method**
+
+
+The `seldom -m` command can provide a more granular run.
 
 .. code:: shell
 
-    > seldom -m test_sample # 运行 test_sample.py 文件
-    > seldom -m test_sample.SampleTest # 运行 SampleTest 测试类
-    > seldom -m test_sample.SampleTest.test_case # 运行 test_case 测试方法
+    > seldom -m test_sample     #  test_sample.py file
+    > seldom -m test_sample.SampleTest      #  SampleTest Class
+    > seldom -m test_sample.SampleTest.test_case    # test_case method
 
-失败重跑 & 截图
-~~~~~~~~~~~~~~~
 
-Seldom支持失败重跑，以及截图功能。
+Failed Restart
+~~~~~~~~~~~~~~~~
+
+`seldom` support failed reruns, as well as screenshots.
 
 .. code:: python
 
     import seldom
-
 
     class YouTest(seldom.TestCase):
 
@@ -150,13 +168,15 @@ Seldom支持失败重跑，以及截图功能。
     if __name__ == '__main__':
         seldom.main(rerun=3, save_last_run=False)
 
-**说明**
 
--  rerun: 指定重跑的次数，默认为 ``0``\ 。
--  save\_last\_run:
-   设置是否只保存最后一次运行结果，默认为\ ``False``\ 。
 
-**运行日志**
+**Parameters**
+
+-  rerun : Sets the number of failed reruns, Default is `0`.
+-  save\_last\_run : Sets to save only the last result, default to `False`.
+
+
+**Run logs**
 
 .. code:: shell
 
@@ -189,27 +209,30 @@ Seldom支持失败重跑，以及截图功能。
     2021-04-14 23:32:47 [INFO] generated html file: file:///D:\github\seldom\reports\2021_04_14_23_31_51_result.html
     E
 
-**测试报告**
+
+
+**The test report**
 
 .. figure:: ../image/report.png
    :alt: 
 
-点击报告中的\ ``show``\ 按钮刻意查看截图。
 
-测试报告
-~~~~~~~~
+To view the screenshots, click the `show` button in the report.
 
-seldom
-默认生成HTML测试报告，在运行测试文件下自动创建\ ``reports``\ 目录。
 
--  运行测试用例前
+Test Report
+~~~~~~~~~~~~~
+
+`seldom` automatically generates HTML test reports by default.
+
+-  Befor running the test case
 
 .. code:: shell
 
     mypro/
     └── test_sample.py
 
--  运行测试用例后
+-  After running the test case
 
 .. code:: shell
 
@@ -218,12 +241,14 @@ seldom
     │   ├── 2020_01_01_11_20_33_result.html
     └── test_sample.py
 
-通过浏览器打开 ``2020_01_01_11_20_33_result.html``
-测试报告，查看测试结果。
 
-**debug模式**
+Open the `2020_01_01_11_20_33_result.html` test report through a browser, View the test results.
 
-如果不想每次运行都生成HTML报告，可以打开\ ``debug``\ 模式。
+
+**Debug mode**
+
+
+if you don't want to generate and HTML report every time you run, You can opent the `debug` mode.
 
 .. code:: py
 
@@ -231,26 +256,30 @@ seldom
     if __name__ == '__main__':
         seldom.main(debug=True)
 
-**定义测试报告**
+
+**Define Test Reports**
 
 .. code:: py
 
 
     if __name__ == '__main__':
         seldom.main(report="./report.html",
-                    title="百度测试用例",
-                    description="测试环境：windows 10/ chrome")
+                    title="xxxx",
+                    description="run evn：windows 10/ chrome")
 
--  report: 配置报告名称和路径。
--  title: 自定义报告的标题。
--  description: 添加报告信息。
 
-**XML测试报告**
+-  report: Configure the report name and path.
+-  title: Customize the title of the report.
+-  description: Add report information.
 
-如果需要生成XML格式的报告，只需要修改报告的后缀名为\ ``.xml``\ 即可。
+
+**XML Test Reoprt**
+
+If you want to generate a report in XML format, just change the suffix name `.xml` of the report.
 
 .. code:: py
 
 
     if __name__ == '__main__':
         seldom.main(report="./report.xml")
+
