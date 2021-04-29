@@ -34,3 +34,11 @@
   * 开放浏览器配置能力
   * Selenium Grid
   * 在pycharm中运行测试
+
+* [HTTP接口测试](./http.md)
+  * seldom vs request+unittest
+  * 运行测试
+  * 更强大的断言
+  * 接口数据依赖
+  * 数据驱动
+  * 随机生成测试数据

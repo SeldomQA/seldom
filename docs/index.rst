@@ -42,8 +42,11 @@ User guide
 
    rst_docs/installation
    rst_docs/create_project
-   rst_docs/quickstarts
+   rst_docs/quick_start
    rst_docs/seldom_api
+   rst_docs/advanced
+   rst_docs/other
+   rst_docs/http
 
 
 Indices and tables
