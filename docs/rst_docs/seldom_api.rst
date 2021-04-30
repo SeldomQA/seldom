@@ -1,10 +1,11 @@
-seledom API
+seldom API
 -----------
 
-查找元素
-~~~~~~~~
+Find Element
+~~~~~~~~~~~~~~
 
-seldom 提供了8中定位方式,与Selenium保持一致.
+Selenium provides 8 ways of find element, which are consistent with Selenium.
+
 
 -  id\_
 -  name
@@ -15,7 +16,7 @@ seldom 提供了8中定位方式,与Selenium保持一致.
 -  css
 -  xpath
 
-**使用方式**
+**Demo**
 
 .. code:: python
 
@@ -29,30 +30,33 @@ seldom 提供了8中定位方式,与Selenium保持一致.
     self.click(link_text="hao123", text="seldom")
     self.click(partial_link_text="hao", text="seldom")
 
-**帮助信息**
+**Help Information**
 
--  `CSS选择器 <https://www.w3school.com.cn/cssref/css_selectors.asp>`__
--  `xpath语法 <https://www.w3school.com.cn/xpath/xpath_syntax.asp>`__
+-  `CSS Selectors <https://www.w3school.com.cn/cssref/css_selectors.asp>`__
+-  `xpath Syntax <https://www.w3school.com.cn/xpath/xpath_syntax.asp>`__
 
-**使用下标**
+**Index**
 
-有时候无法通过一种定位找到单个元素,那么可以通过\ ``index``\ 指定一组元素中的第几个.
+Sometimes a single element cannot be found by a single location, then you can specify the index of an element via `index`.
 
 .. code:: py
 
     self.type(tag="input", index=7, text="seldom")
 
-通过\ ``tag="input"``\ 匹配出一组元素, ``index=7``
-指定这一组元素中的第8个,\ ``index``\ 默认下标为\ ``0``\ .
+
+`tag="input"` Matches a set of elements, `index=7` Specifies the eighth element in the set, `index` default subscript `0`.
+
 
 fixture
-~~~~~~~
+~~~~~~~~~
 
-有时自动化测试用例的运行需要一些前置&后置步骤,seldom提供了相应的方法.
+A test fixture represents the preparation needed to perform one or more tests, and any associated cleanup actions.
+
+`seldom` provides a way to implement fixtures.
 
 **start & end**
 
-针对每条用例的fixture,可以放到\ ``start()/end()``\ 方法中.
+Fixture for each test case.
 
 .. code:: python
 
@@ -62,10 +66,10 @@ fixture
     class TestCase(seldom.TestCase):
 
         def start(self):
-            print("一条测试用例开始")
+            print("start case")
 
         def end(self):
-            print("一条测试结果")
+            print("end case")
 
         def test_search_seldom(self):
             self.open("https://www.baidu.com")
@@ -75,9 +79,11 @@ fixture
             self.open("https://www.baidu.com")
             self.type_enter(id_="kw", text="poium")
 
+
+
 **start\_class & end\_class**
 
-针对每个测试类的fixture,可以放到\ ``start_class()/end_class()``\ 方法中.
+Fixture for each test class.
 
 .. code:: python
 
@@ -87,10 +93,10 @@ fixture
     class TestCase(seldom.TestCase):
 
         def start_class(self):
-            print("测试类开始执行")
+            print("start test class")
 
         def end_class(self):
-            print("测试类结束执行")
+            print("end test class")
 
         def test_search_seldom(self):
             self.open("https://www.baidu.com")
@@ -100,65 +106,74 @@ fixture
             self.open("https://www.baidu.com")
             self.type_enter(id_="kw", text="poium", clear=True)
 
-    警告：不要把用例的操作步骤写到fixture方法中!
-    因为它不属于某条用例的一部分,一旦里面的操作步骤运行失败,测试报告都不会生成.
 
-断言
-~~~~
+    Warning: Don't write the use case steps into the fixture method!
+    Because it is not part of a use case, the test report will not be generated if the steps in it fail to run.
 
-seldom 提供了一组针对Web页面的断言方法.
 
-**使用方法**
+Assertion
+~~~~~~~~~~~
+
+
+`seldom` provides a set of assertion methods for Web pages.
+
+
+**Deom**
 
 .. code:: python
 
-    # 断言标题是否等于"title"
+    # Asserts is equals to "title"
     self.assertTitle("title")
 
-    # 断言标题是否包含"title"
+    # Asserts contains "title"
     self.assertInTitle("title")
 
-    # 断言URL是否等于
+    # Asserts is equals to "title"
     self.assertUrl("url")
 
-    # 断言URL是否包含
+    # Asserts contains "url"
     self.assertInUrl("url")
 
-    # 断言页面是否存在“text”
+    # Asserts that the page contains "text"
     self.assertText("text")
 
-    # 断言警告是否存在"text" 提示信息
+    # Assert that the warning message is equal to "text"
     self.assertAlertText("text")
 
-    # 断言元素是否存在
+    # Asserts whether an element exists
     self.assertElement(css="#kw")
 
-    # 断言元素是否不存在
+    # Asserts if the element does not exist
     self.assertNotElement(css="#kwasdfasdfa")
 
 
-跳过测试用例
-~~~~~~~~~~~~
+Skipping tests and expected failures
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例.
+The following decorators and exception implement test skipping and expected failures:
 
-**装饰器**
 
--  skip: 无条件地跳过一个测试.
--  skip\_if： 如果条件为真,则跳过测试.
--  skip\_unless: 跳过一个测试,除非条件为真.
--  expected\_failure: 预期测试用例会失败.
+**Method**
 
-**使用方法**
+- @seldom.skip(reason) : Unconditionally skip the decorated test. reason should describe why the test is being skipped.
+
+- @seldom.skip\_if(condition, reason) : Skip the decorated test if condition is true.
+
+- @seldom.skip\_unless(condition, reason) : Skip the decorated test unless condition is true.
+
+- @seldom.expected\_failure : Mark the test as an expected failure or error. If the test fails or errors it will be considered a success. If the test passes, it will be considered a failure.
+
+
+**Demo**
 
 .. code:: python
 
     import seldom
 
-    @seldom.skip()  # 跳过测试类
+    @seldom.skip("skip this use test class")
     class YouTest(seldom.TestCase):
 
-        @seldom.skip()  # 跳过测试用例
+        @seldom.skip("skip this case")
         def test_case(self):
             # ...
 
@@ -170,9 +185,9 @@ seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例.
 seldom API
 ~~~~~~~~~~
 
-seldom简化了selenium中的API,使你操作Web页面更加简单.
+`Seldom` simplifies the API, Make it easier for you to navigate Web pages.
 
-大部分API都由\ ``WebDriver``\ 类提供：
+Most APIs are provided by `WebDriver` class:
 
 .. code:: python
 
@@ -287,13 +302,13 @@ seldom简化了selenium中的API,使你操作Web页面更加简单.
             Constructor. A check is made that the given element is, indeed, a SELECT tag. If it is not,
             then an UnexpectedTagNameException is thrown.
             <select name="NR" id="nr">
-                <option value="10" selected="">每页显示10条</option>
-                <option value="20">每页显示20条</option>
-                <option value="50">每页显示50条</option>
+                <option value="10" selected="">10 dollar</option>
+                <option value="20">20 dollar</option>
+                <option value="50">50 dollar</option>
             </select>
             """
             self.select(css="#nr", value='20')
-            self.select(css="#nr", text='每页显示20条')
+            self.select(css="#nr", text='20 dollar')
             self.select(css="#nr", index=2)
             
             # Set browser window wide and high.
@@ -325,12 +340,14 @@ seldom简化了selenium中的API,使你操作Web页面更加简单.
             self.window_scroll(width=300, height=500)
 
 
-键盘操作
-~~~~~~~~
+Keys
+~~~~~~
 
-有时候我们需要用到键盘操作,比如\ ``Enter``\ ,\ ``Backspace``\ ,\ ``TAB``\ ,或者\ ``ctrl/command + a``\ 、\ ``ctrl/command + c``\ 组合键操作,seldom提供了一组键盘操作.
+Sometimes we need to use the keyboard, For example:`Enter` ,`Backspace` ,`TAB` ,`ctrl/command + a`, `ctrl/command + c` and so on.
 
-**使用方法**
+`sedom` provides a set of keyboard operations.
+
+**Demo**
 
 .. code:: py
 
@@ -342,27 +359,20 @@ seldom简化了selenium中的API,使你操作Web页面更加简单.
         def test_key(self):
             self.open("https://www.baidu.com")
 
-            # 输入 seldomm
             self.Keys(css="#kw").input("seldomm")
 
-            # 删除多输入的一个m
             self.Keys(id_="kw").backspace()
 
-            # 输入“教程”
-            self.Keys(id_="kw").input("教程")
+            self.Keys(id_="kw").input("github")
 
-            # ctrl+a 全选输入框内容
             self.Keys(id_="kw").select_all()
 
-            # ctrl+x 剪切输入框内容
             self.Keys(id_="kw").cut()
 
-            # ctrl+v 粘贴内容到输入框
             self.Keys(id_="kw").paste()
 
-            # 通过回车键来代替单击操作
             self.Keys(id_="kw").enter()
 
 
     if __name__ == '__main__':
-        seldom.main(browser="firefox", debug=True)
+        seldom.main()

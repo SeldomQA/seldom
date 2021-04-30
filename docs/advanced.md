@@ -126,7 +126,7 @@ from seldom import file_data
 
 class YouTest(seldom.TestCase):
 
-    @file_data("./data.csv", line=2)
+    @file_data("data.csv", line=2)
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -134,8 +134,6 @@ class YouTest(seldom.TestCase):
         # ...
 
 ```
-
-`csv_to_list()` 方法csv文件内容转化为list。
 
 * file: 指定csv文件的路径。
 * line: 指定从第几行开始读取，默认第1行。
@@ -151,7 +149,7 @@ from seldom import file_data
 
 class YouTest(seldom.TestCase):
 
-    @file_data("./data.xlsx", sheet="Sheet1", line=2)
+    @file_data("data.xlsx", sheet="Sheet1", line=2)
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -159,8 +157,6 @@ class YouTest(seldom.TestCase):
         # ...
 
 ```
-
-`excel_to_list()` 方法excel文件数据转化为list。
 
 * file : 指定excel文件的路径。
 * sheet: 指定excel的标签页，默认名称为 Sheet1。

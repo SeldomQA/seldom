@@ -24,7 +24,7 @@ By default, download to the current 'lib/' directory.
 
 'ChromeDriver' Mirror image of Taobao used.
 
-** Manually download **
+**Manually download**
 
 `seldom` cannot determine the version of your current browser, so it is recommended to download it manually.
 
@@ -146,7 +146,7 @@ The `seldom -m` command can provide a more granular run.
     > seldom -m test_sample.SampleTest.test_case    # test_case method
 
 
-Failed Restart
+Failed Rerun
 ~~~~~~~~~~~~~~~~
 
 `seldom` support failed reruns, as well as screenshots.
