@@ -70,7 +70,7 @@ Automated project creation
 
 
 
-3. View directory structure：
+3. View directory structure:
 
 
 .. code:: shell

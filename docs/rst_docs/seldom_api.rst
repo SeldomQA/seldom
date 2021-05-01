@@ -47,7 +47,7 @@ Sometimes a single element cannot be found by a single location, then you can sp
 `tag="input"` Matches a set of elements, `index=7` Specifies the eighth element in the set, `index` default subscript `0`.
 
 
-fixture
+Fixture
 ~~~~~~~~~
 
 A test fixture represents the preparation needed to perform one or more tests, and any associated cleanup actions.
@@ -343,7 +343,7 @@ Most APIs are provided by `WebDriver` class:
 Keys
 ~~~~~~
 
-Sometimes we need to use the keyboard, For example:`Enter` ,`Backspace` ,`TAB` ,`ctrl/command + a`, `ctrl/command + c` and so on.
+Sometimes we need to use the keyboard, For example: ``enter`` ,``backspace`` ,``TAB`` ,``ctrl/command + a``, ``ctrl/command + c`` and so on.
 
 `sedom` provides a set of keyboard operations.
 

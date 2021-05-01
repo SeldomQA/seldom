@@ -265,7 +265,7 @@ if you don't want to generate and HTML report every time you run, You can opent 
     if __name__ == '__main__':
         seldom.main(report="./report.html",
                     title="xxxx",
-                    description="run evn：windows 10/ chrome")
+                    description="run evn:windows 10/ chrome")
 
 
 -  report: Configure the report name and path.

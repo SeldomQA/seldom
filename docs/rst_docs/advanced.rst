@@ -57,7 +57,7 @@ Get a random word by `get_word()` and search for that word.
 -  get\_phone()
 
 
-Data-driven best practices
+Data-driven Best Practices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you automate a function when the test data is different but the steps are the same, you can use parameterization to save test code.
@@ -119,7 +119,7 @@ Parameterizes a test class by setting attributes on the class.
 
 `seldom` support for parameterization of `CSV` files.
 
-`data.csv` file contents：
+`data.csv` file contents:
 
 +------------+------------+
 | username   | password   |
@@ -177,7 +177,7 @@ Parameterizes a test class by setting attributes on the class.
 
 `seldom` support for parameterization of `JSON` files.
 
-json file：
+json file:
 
 .. code:: json
 
@@ -214,7 +214,7 @@ python code:
 
 `seldom` support for parameterization of `YAML` files.
 
-data.yaml file：
+data.yaml file:
 
 .. code:: yaml
 
@@ -248,7 +248,7 @@ python code:
 
 **ddt library**
 
-Seldom supports third party parameterized libraries：\ `ddt <https://github.com/datadriventests/ddt>`__\ .
+Seldom supports third party parameterized libraries:\ `ddt <https://github.com/datadriventests/ddt>`__\ .
 
 installation:
 
@@ -298,7 +298,7 @@ In `seldom` use `ddt`.
         seldom.main()
 
 
-See the ddt documentation for more usage：https://ddt.readthedocs.io/en/latest/example.html
+See the ddt documentation for more usage:https://ddt.readthedocs.io/en/latest/example.html
 
 
 Page Objects Design Patterns

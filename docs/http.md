@@ -188,7 +188,7 @@ class TestAPI(seldom.TestCase):
 是否再次感受到了seldom提供的断言非常灵活，强大。
 
 
-## 接口数据依赖
+### 接口数据依赖
 
 在场景测试中，我们需要利用上一个接口的数据，调用下一个接口。
 
@@ -213,7 +213,7 @@ class TestRespData(seldom.TestCase):
 seldom提供了`self.response`用于记录上个接口返回的结果，直接拿来用即可。
 
 
-## 数据驱动
+### 数据驱动
 
 seldom本来就提供的有强大的数据驱动，拿来做接口测试非常方便。
 

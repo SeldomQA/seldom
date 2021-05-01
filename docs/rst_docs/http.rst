@@ -1,17 +1,16 @@
-HTTP接口测试
-------------
+HTTP Interface Testing
+-------------------------
 
-seldom做接口测试有很多优势.
+`seodm` has many advantages in doing interface testing.
 
--  支持HTML/XML测试报告
--  支持参数化
--  支持生成随机数据
+- Support HTML/XML test reports
+- Support parameterization
+- Support generating random data
 
-这些是seldom支持的功能,我们只需要集成HTTP接口库,并提供强大的断言即可.\ ``seldom 2.0``
-加入了HTTP接口自动化测试支持.
+`seldom 2.0` added support for automated testing of HTTP interfaces..
 
-Seldom 兼容 `Requests <https://docs.python-requests.org/en/master/>`__
-API 如下:
+`Seldom` compatible  `Requests <https://docs.python-requests.org/en/master/>`__ API.
+
 
 +-----------------+---------------------+
 | seldom          | requests            |
@@ -25,10 +24,10 @@ API 如下:
 | self.delete()   | requests.delete()   |
 +-----------------+---------------------+
 
-seldom vs request+unittest
+Seldom VS Request+unittest
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-先来看看unittest + requests是如何来做接口自动化的：
+Let's take a look at how unittest + requests automate interfaces:
 
 .. code:: python
 
@@ -47,7 +46,9 @@ seldom vs request+unittest
     if __name__ == '__main__':
         unittest.main()
 
-这其实已经非常简洁了.同样的用例,用seldom实现.
+
+This is actually pretty neat.The same use case, implemented in `seldom`.
+
 
 .. code:: python
 
@@ -66,12 +67,14 @@ seldom vs request+unittest
     if __name__ == '__main__':
         seldom.main()
 
-主要简化点在,接口的返回数据的处理.当然,seldom真正的优势在断言、日志和报告.
+The advantages of `seldom` are assertions, logging, and reporting.
 
-运行测试
-~~~~~~~~
 
-打开debug模式\ ``seldom.run(debug=True)`` 运行上面的用例.
+Run Test
+~~~~~~~~~~
+
+Open Debug mode \ ``seldom.run(debug=True)`` Run use cases.
+
 
 .. code:: shell
 
@@ -87,11 +90,11 @@ seldom vs request+unittest
                                  @itest.info
 
     test_get_method (test_req.TestAPI) ...
-    ----------- Request ---------------
+    ----------- Request 🚀 ---------------
     url: http://httpbin.org/get         method: GET
-    ----------- Response -------------
+    ----------- Response 🛬️ -------------
     type: json
-    {'args': {'key1': 'value1', 'key2': 'value2'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.22.0', 'X-Amzn-Trace-Id': 'Root=1-608a883c-7b355ba81fcd0d287566405a'}, 'origin': '183.178.27.36', 'url': 'http://httpbin.org/get?key1=value1&key2=value2'}
+    {'args': {'key1': 'value1', 'key2': 'value2'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-608d67ba-7948c8610ccaac8c77284b7e'}, 'origin': '113.89.239.34', 'url': 'http://httpbin.org/get?key1=value1&key2=value2'}
     ok
 
     ----------------------------------------------------------------------
@@ -99,21 +102,21 @@ seldom vs request+unittest
 
     OK
 
-通过日志/报告都可以清楚的看到.
+This can be clearly seen through the logs/reports.
+- The method requested
+- request url
+- Type of response
+- Data for the response
 
--  请求的方法
--  请求url
--  响应的类型
--  响应的数据
 
-更强大的断言
-~~~~~~~~~~~~
+Assertion
+~~~~~~~~~~~
 
-断言接口返回的数据是我们在做接口自动化很重要的工作.
+Asserting the data returned by the interface is an important part of our work in interface automation.
 
 **assertJSON**
 
-接口返回结果如下：
+The interface returns the result:
 
 .. code:: json
 
@@ -127,8 +130,8 @@ seldom vs request+unittest
       }
     }
 
-我的目标是断言\ ``name`` 和 ``hobby``
-部分的内容.seldom可以针对\ ``JSON``\ 文件进行断言.
+
+My goal is to assert the values of the 'name' and 'hobby' parts..
 
 .. code:: python
 
@@ -143,7 +146,9 @@ seldom vs request+unittest
             assert_json = {'args': {'hobby': ['swim', 'basketball'], 'name': 'tom'}}
             self.assertJSON(assert_json)
 
-运行日志
+
+Running logs
+
 
 .. code:: shell
 
@@ -153,9 +158,9 @@ seldom vs request+unittest
     ----------- Response -------------
     type: json
     {'args': {'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.22.0', 'X-Amzn-Trace-Id': 'Root=1-608a896d-48fac4f6139912ba01d2626f'}, 'origin': '183.178.27.36', 'url': 'http://httpbin.org/get?name=tom&hobby=basketball&hobby=swim'}
-    ? Assert data has not key: headers
-    ? Assert data has not key: origin
-    ? Assert data has not key: url
+    💡 Assert data has not key: headers
+    💡 Assert data has not key: origin
+    💡 Assert data has not key: url
     ok
 
     ----------------------------------------------------------------------
@@ -163,11 +168,12 @@ seldom vs request+unittest
 
     OK
 
-seldom还会提示你还有哪些字段没有断言.
+`seldom` will also prompt you for fields that have not been asserted.
+
 
 **assertPath**
 
-接口返回数据如下：
+The interface returns the result:
 
 .. code:: json
 
@@ -178,7 +184,9 @@ seldom还会提示你还有哪些字段没有断言.
       }
     }
 
-seldom中可以通过path进行断言：
+
+Assertion using PATH:
+
 
 .. code:: python
 
@@ -193,12 +201,14 @@ seldom中可以通过path进行断言：
             self.assertPath("name", "tom")
             self.assertPath("args.hobby[0]", "basketball")
 
-是否再次感受到了seldom提供的断言非常灵活,强大.
 
-接口数据依赖
-------------
+Again, the assertions provided by `seldom` are very flexible and powerful
 
-在场景测试中,我们需要利用上一个接口的数据,调用下一个接口.
+
+Interface Data Dependency
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In scenario testing, we need to call the next interface using data from the previous interface.
 
 .. code:: python
 
@@ -218,12 +228,14 @@ seldom中可以通过path进行断言：
             self.post("/post", data={'username': username})
             self.assertStatusCode(200)
 
-seldom提供了\ ``self.response``\ 用于记录上个接口返回的结果,直接拿来用即可.
 
-数据驱动
---------
+\ ``self.response``\ Used to record the result returned by the last interface, just use it.
 
-seldom本来就提供的有强大的数据驱动,拿来做接口测试非常方便.
+
+Data-Driver
+~~~~~~~~~~~~~
+
+`seldom` has a strong data-driven nature and is very convenient for interface testing.
 
 **@data**
 
@@ -251,7 +263,7 @@ seldom本来就提供的有强大的数据驱动,拿来做接口测试非常方�
 
 **@file\_data**
 
-创建\ ``data.json``\ 数据文件
+data file:
 
 .. code:: json
 
@@ -262,7 +274,8 @@ seldom本来就提供的有强大的数据驱动,拿来做接口测试非常方�
      ]
     }
 
-通过\ ``file_data``\ 实现数据驱动.
+
+code file:
 
 .. code:: python
 
@@ -282,12 +295,13 @@ seldom本来就提供的有强大的数据驱动,拿来做接口测试非常方�
             self.assertStatusCode(200)
             self.assertEqual(self.response["form"][username], password)
 
-更过数据文件(csv/excel/yaml),\ `参考 <https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md>`__
+More like data files(csv/excel/yaml),\ `View <https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md>`__
 
-随机生成测试数据
-~~~~~~~~~~~~~~~~
 
-seldom提供随机生成测试数据方法,可以生成一些常用的数据.
+Random Test Data
+~~~~~~~~~~~~~~~~~~
+
+SELDOM provides a method of randomly generating test data to generate some commonly used data.
 
 .. code:: python
 
@@ -303,4 +317,5 @@ seldom提供随机生成测试数据方法,可以生成一些常用的数据.
             self.get("http://httpbin.org/get", params=payload)
             self.assertPath("args.phone", phone)
 
-更过类型的测试数据, `参考 <https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md>`__
+
+For more types of test data, `View <https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md>`__
