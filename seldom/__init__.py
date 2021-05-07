@@ -31,6 +31,6 @@ from .request import HttpRequest
 
 __author__ = "bugmaster"
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
-__description__ = "WebUI automation testing framework based on Selenium."
+__description__ = "WebUI/HTTP automation testing framework based on unittest."
