@@ -177,10 +177,11 @@ The interface returns the result:
 
 .. code:: json
 
-    {"args": 
-      {"hobby": 
-        ["basketball", "swim"], 
-       "name": "tom"
+    {
+      "args":{
+        "hobby":
+          ["basketball", "swim"],
+        "name": "tom"
       }
     }
 
@@ -202,7 +203,61 @@ Assertion using PATH:
             self.assertPath("args.hobby[0]", "basketball")
 
 
-Again, the assertions provided by `seldom` are very flexible and powerful
+**assertSchema**
+
+Sometimes you don't care what the data itself is, but you need to assert the type of the data.
+'assertSchema' is an assertion method based on 'JSONSchema'.
+
+jsonschema: https://json-schema.org/learn/
+
+The interface returns the result:
+
+.. code:: json
+
+    {
+      "args": {
+        "hobby":
+          ["basketball", "swim"],
+        "name": "tom",
+        "age": "18"
+      }
+    }
+
+
+Assertion using `assertSchema`:
+
+.. code:: python
+
+    import seldom
+
+
+    class TestAPI(seldom.TestCase):
+
+        def test_assert_schema(self):
+            payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
+            self.get("/get", params=payload)
+            schema = {
+                "type": "object",
+                "properties": {
+                    "args": {
+                        "type": "object",
+                        "properties": {
+                            "age": {"type": "string"},
+                            "name": {"type": "string"},
+                            "hobby": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                            }
+                        }
+                    }
+                },
+            }
+            self.assertSchema(schema)
+
+
+Again, the assertions provided by `seldom` are very flexible and powerful.
 
 
 Interface Data Dependency

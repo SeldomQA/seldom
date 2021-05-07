@@ -161,10 +161,11 @@ __assertPath__
 接口返回数据如下：
 
 ```json
-{"args": 
-  {"hobby": 
-    ["basketball", "swim"], 
-   "name": "tom"
+{
+  "args": {
+    "hobby": 
+      ["basketball", "swim"], 
+    "name": "tom"
   }
 }
 ```
@@ -183,6 +184,58 @@ class TestAPI(seldom.TestCase):
         self.assertPath("name", "tom")
         self.assertPath("args.hobby[0]", "basketball")
 
+```
+
+
+__assertSchema__
+
+有时并不关心数据本身是什么，而是需要断言数据的类型。 `assertSchema` 是基于 `jsonschema` 实现的断言方法。
+
+jsonschema: https://json-schema.org/learn/
+
+接口返回数据如下：
+
+```json
+{
+  "args": {
+    "hobby": 
+      ["basketball", "swim"], 
+    "name": "tom", 
+    "age": "18"
+  }
+}
+```
+
+seldom中可以通过利用`jsonschema` 进行断言：
+
+```python
+import seldom
+
+
+class TestAPI(seldom.TestCase):
+
+    def test_assert_schema(self):
+        payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
+        self.get("/get", params=payload)
+        schema = {
+            "type": "object",
+            "properties": {
+                "args": {
+                    "type": "object",
+                    "properties": {
+                        "age": {"type": "string"},
+                        "name": {"type": "string"},
+                        "hobby": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                        }
+                    }
+                }
+            },
+        }
+        self.assertSchema(schema)
 ```
 
 是否再次感受到了seldom提供的断言非常灵活，强大。
