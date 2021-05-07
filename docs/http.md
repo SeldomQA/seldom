@@ -17,7 +17,7 @@ Seldom 兼容 [Requests](https://docs.python-requests.org/en/master/) API 如下
 | self.put()  | requests.put() |
 | self.delete()  | requests.delete() |
 
-### seldom vs request+unittest
+### Seldom VS Request+unittest
 
 先来看看unittest + requests是如何来做接口自动化的：
 

@@ -38,7 +38,7 @@ if __name__ == '__main__':
 在`main()`方法中通过`browser`参数设置不同的浏览器，默认为`Chrome`浏览器。
 
 
-### Mobile web 模式
+### Mobile Web 模式
 
 seldom 还支持 Mobile web 模式：
 
