@@ -1,4 +1,4 @@
-# seldom 文档
+# seldom 中文文档
 
 * [seldom安装](./installation.md)
 

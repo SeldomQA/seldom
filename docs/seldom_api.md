@@ -22,9 +22,8 @@ self.type(class_name="s_ipt", text="seldom")
 self.type(tag="input", text="seldom")
 self.type(xpath="//input[@id='kw']", text="seldom")
 self.type(css="#kw", text="seldom")
-
-self.click(link_text="hao123", text="seldom")
-self.click(partial_link_text="hao", text="seldom")
+self.click(link_text="hao123")
+self.click(partial_link_text="hao")
 ```
 
 __帮助信息__
@@ -163,9 +162,9 @@ if __name__ == '__main__':
 ```
 
 
-### seldom API
+### WebDriver API
 
-seldom简化了selenium中的API，使你操作Web页面更加简单。
+seldom简化了selenium中的API，使操作Web页面更加简单。
 
 大部分API都由`WebDriver`类提供：
 

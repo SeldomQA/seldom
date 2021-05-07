@@ -26,9 +26,8 @@ Selenium provides 8 ways of find element, which are consistent with Selenium.
     self.type(tag="input", text="seldom")
     self.type(xpath="//input[@id='kw']", text="seldom")
     self.type(css="#kw", text="seldom")
-
-    self.click(link_text="hao123", text="seldom")
-    self.click(partial_link_text="hao", text="seldom")
+    self.click(link_text="hao123")
+    self.click(partial_link_text="hao")
 
 **Help Information**
 
@@ -182,7 +181,7 @@ The following decorators and exception implement test skipping and expected fail
         seldom.main()
 
 
-seldom API
+WebDriver API
 ~~~~~~~~~~
 
 `Seldom` simplifies the API, Make it easier for you to navigate Web pages.

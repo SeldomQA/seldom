@@ -183,9 +183,11 @@ if __name__ == '__main__':
     seldom.main(base_url="http://httpbin.org")
 ```
 
-## Read the docs
+## Document
 
-https://seldomqa.readthedocs.io/en/latest/index.html
+[中文文档](/docs)
+
+[English document(readthedocs)](https://seldomqa.readthedocs.io/en/latest/index.html)
 
 ## 项目实例
 
