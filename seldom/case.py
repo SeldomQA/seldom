@@ -2,7 +2,7 @@ import unittest
 import jmespath
 from time import sleep
 from jsonschema import validate
-from jsonschema.exceptions import SchemaError
+from jsonschema.exceptions import ValidationError
 from selenium.webdriver import Chrome
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.webdriver import WebDriver
@@ -230,10 +230,10 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         try:
             validate(instance=ResponseResult.response, schema=schema)
-        except SchemaError as msg:
-            self.assertEqual("Response data", "Schema data", msg=msg)
+        except ValidationError as msg:
+            self.assertEqual("Response data", "Schema data", msg)
         else:
-            self.assertEqual(1, 1)
+            self.assertTrue(True)
 
     def assertJSON(self, assert_json):
         """
