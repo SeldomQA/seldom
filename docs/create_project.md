@@ -52,7 +52,7 @@ optional arguments:
 2、创建项目：
 
 ```shell
-> seldom --project mypro
+> seldom -project mypro
 ```
 
 目录结构如下：
@@ -60,12 +60,14 @@ optional arguments:
 ```shell
 mypro/
 ├── test_dir/
-│   ├── data.json
 │   ├── test_sample.py
+├── test_data/
+│   ├── data.json
 ├── reports/
 └── run.py
 ```
 
-* `test_dir/` 目录实现用例编写。
-* `reports/` 目录存放生成的测试报告。
-* `run.py` 文件运行测试用例。
+* `test_dir/` 测试用例目录。
+* `test_data/` 测试数据文件目录。
+* `reports/` 测试报告目录。
+* `run.py` 运行测试用例主文件。

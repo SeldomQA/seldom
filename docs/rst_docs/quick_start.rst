@@ -106,9 +106,7 @@ Create the file `run.py`, And import `main()` method.
 
     import seldom
 
-    # ...
-
-    seldom.main()    # 
+    seldom.main()
 
 
 `main()` Method Run the use case in the current file by default.
@@ -127,6 +125,7 @@ You can specify the directory or file to run with the `path` parameter.
 
 
 .. code:: py
+    import seldom
 
     seldom.main(path="./")  
     seldom.main(path="./test_dir/")
@@ -252,20 +251,20 @@ if you don't want to generate and HTML report every time you run, You can opent 
 
 .. code:: py
 
+    import seldom
 
-    if __name__ == '__main__':
-        seldom.main(debug=True)
+    seldom.main(debug=True)
 
 
 **Define Test Reports**
 
 .. code:: py
 
+    import seldom
 
-    if __name__ == '__main__':
-        seldom.main(report="./report.html",
-                    title="xxxx",
-                    description="run evn:windows 10/ chrome")
+    seldom.main(report="./report.html",
+                title="xxxx",
+                description="run evn:windows 10/ chrome")
 
 
 -  report: Configure the report name and path.
@@ -279,7 +278,7 @@ If you want to generate a report in XML format, just change the suffix name `.xm
 
 .. code:: py
 
+    import seldom
 
-    if __name__ == '__main__':
-        seldom.main(report="./report.xml")
+    seldom.main(report="./report.xml")
 

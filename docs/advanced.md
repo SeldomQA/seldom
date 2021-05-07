@@ -183,7 +183,7 @@ from seldom import file_data
 
 class YouTest(seldom.TestCase):
 
-    @file_data("./data.json", key="login")
+    @file_data("data.json", key="login")
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -216,7 +216,7 @@ from seldom import file_data
 
 class YouTest(seldom.TestCase):
 
-    @file_data("./data.yaml", key="login")
+    @file_data("data.yaml", key="login")
     def test_login(self, username, password):
         """a simple test case """
         print(username)

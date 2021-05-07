@@ -3,9 +3,9 @@
 
 [![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
 
-WebUI/HTTP automation testing framework based on Selenium and unittest.
+WebUI/HTTP automation testing framework based on unittest.
 
-> 基于 selenium 和 unittest 的 Web UI/HTTP自动化测试框架。
+> 基于unittest 的 Web UI/HTTP自动化测试框架。
 
 ## 特点
 
@@ -62,37 +62,49 @@ optional arguments:
 ```shell
 mypro/
 ├── test_dir/
-│   ├── data.json
 │   ├── test_sample.py
+├── test_data/
+│   ├── data.json
 ├── reports/
 └── run.py
 ```
 
-* `test_dir/` 目录实现用例编写。
-* `reports/` 目录存放生成的测试报告。
-* `run.py` 文件运行测试用例。
+* `test_dir/` 测试用例目录。
+* `test_data/` 测试数据文件目录。
+* `reports/` 测试报告目录。
+* `run.py` 运行测试用例主文件。
 
 3、运行项目：
 
 ```shell
 > python3 run.py
-2020-05-16 11:34:36,014 INFO
-            _      _
-           | |    | |
- ___   ___ | |  __| |  ___   _ __ ___
-/ __| / _ \| | / _` | / _ \ | '_ ` _ \
-\__ \|  __/| || (_| || (_) || | | | | |
-|___/ \___||_| \__,_| \___/ |_| |_| |_|
+2021-05-07 17:51:48 [INFO]
+              __    __
+   ________  / /___/ /___  ____ ____
+  / ___/ _ \/ / __  / __ \/ __ ` ___/
+ (__  )  __/ / /_/ / /_/ / / / / / /
+/____/\___/_/\__,_/\____/_/ /_/ /_/
 -----------------------------------------
                              @itest.info
 
-2020-05-16 11:34:38,798 INFO ✅ Find element: id=kw
-2020-05-16 11:34:38,813 INFO 🖋 input 'seldom'.
-2020-05-16 11:34:38,991 INFO ✅ Find element: css selector=#su
-2020-05-16 11:34:39,004 INFO 🖱 click.
-2020-05-16 11:34:40,091 INFO 👀 assertIn title: seldom_百度搜索.
-2020-05-16 11:34:40,092 INFO generated html file: file:////Users/tech/mypro/reports/2020_05_16_11_34_36_result.html
-.1%
+2021-05-07 17:51:48 [INFO] 📖 https://www.baidu.com
+
+DevTools listening on ws://127.0.0.1:59657/devtools/browser/f518d762-2e96-41d8-8bcc-80d6dd8ca124
+2021-05-07 17:51:50 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+2021-05-07 17:51:51 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-05-07 17:51:52 [INFO] 👀 assertIn title: seldom_百度搜索.
+2021-05-07 17:51:52 [INFO] 📖 https://www.baidu.com
+2021-05-07 17:51:53 [INFO] ✅ Find 1 element: id=kw , input 'poium'.
+2021-05-07 17:51:54 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-05-07 17:51:55 [INFO] 👀 assertIn title: poium_百度搜索.
+2021-05-07 17:51:55 [INFO] 📖 https://www.baidu.com
+2021-05-07 17:51:56 [INFO] ✅ Find 1 element: id=kw , input 'HTMLTestRunner'.
+2021-05-07 17:51:57 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-05-07 17:51:58 [INFO] 👀 assertIn title: HTMLTestRunner_百度搜索.
+2021-05-07 17:51:58 [INFO] 📖 http://www.itest.info
+2021-05-07 17:52:05 [INFO] 👀 assertIn url: http://www.itest.info/.
+2021-05-07 17:52:05 [INFO] generated html file: file:///D:\mypro\reports\2021_05_07_17_51_48_result.html
+.1.2.3.4
 ```
 
 4、查看报告
@@ -101,7 +113,7 @@ mypro/
 
 ![test report](./test_report.png)
 
-## Documents
+## Demo
 
 ### simple demo
 
@@ -134,23 +146,6 @@ __说明：__
 * 测试用例文件命名必须以 `test` 开头。
 * seldom的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
 
-
-### Run the test
-
-```python
-import seldom
-
-seldom.main()  # 默认运行当前测试文件
-seldom.main(path="./")  # 当前目录下的所有测试文件
-seldom.main(path="./test_dir/")  # 指定目录下的所有测试文件
-seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
-```
-
-说明：
-
-* 如果指定的目录，测试文件必须以`test` 开头。
-* 如果要运行子目录下的文件，必须在子目录下加 `__init__.py` 文件。
-
 ### HTTP 测试
 
 seldom 2.0 支持HTTP测试
@@ -182,6 +177,18 @@ class TestRequest(seldom.TestCase):
 if __name__ == '__main__':
     seldom.main(base_url="http://httpbin.org")
 ```
+
+### Run the test
+
+```python
+import seldom
+
+seldom.main()  # 默认运行当前测试文件
+seldom.main(path="./")  # 当前目录下的所有测试文件
+seldom.main(path="./test_dir/")  # 指定目录下的所有测试文件
+seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
+```
+
 
 ## Document
 

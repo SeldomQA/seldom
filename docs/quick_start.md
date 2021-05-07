@@ -85,8 +85,6 @@ __在终端下运行（推荐）__
 ```py
 import seldom
 
-# ...
-
 seldom.main()    # 默认运行当前文件中的用例。
 ```
 
@@ -102,6 +100,8 @@ __设置运行目录、文件__
 可以通过`path`参数指定要运行的目录或文件。
 
 ```py
+import seldom
+
 seldom.main(path="./")  # 指定当前文件所在目录下面的用例。
 seldom.main(path="./test_dir/")  # 指定当前目录下面的test_dir/ 目录下面的用例。
 seldom.main(path="./test_dir/test_sample.py")  # 指定测试文件中的用例。
@@ -213,20 +213,20 @@ __debug模式__
 如果不想每次运行都生成HTML报告，可以打开`debug`模式。
 
 ```py
+import seldom
 
-if __name__ == '__main__':
-    seldom.main(debug=True)
+seldom.main(debug=True)
 ```
 
 __定义测试报告__
 
 
 ```py
+import seldom
 
-if __name__ == '__main__':
-    seldom.main(report="./report.html",
-                title="百度测试用例",
-                description="测试环境：windows 10/ chrome")
+seldom.main(report="./report.html",
+            title="百度测试用例",
+            description="测试环境：windows 10/ chrome")
 ```
 
 * report: 配置报告名称和路径。
@@ -238,8 +238,8 @@ __XML测试报告__
 如果需要生成XML格式的报告，只需要修改报告的后缀名为`.xml`即可。
 
 ```py
+import seldom
 
-if __name__ == '__main__':
-    seldom.main(report="./report.xml")
+seldom.main(report="./report.xml")
 ```
 

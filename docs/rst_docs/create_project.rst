@@ -65,7 +65,7 @@ Automated project creation
 
 .. code:: shell
 
-    > seldom --project mypro
+    > seldom -project mypro
 
 
 
@@ -77,11 +77,13 @@ Automated project creation
 
     mypro/
     ├── test_dir/
-    │   ├── data.json
     │   ├── test_sample.py
+    ├── test_data/
+    │   ├── data.json
     ├── reports/
     └── run.py
 
 -  ``test_dir/`` Test case directory.
+-  ``test_dir/`` Test data file directory.
 -  ``reports/``  Test Report directory.
 -  ``run.py`` Run the test file.
