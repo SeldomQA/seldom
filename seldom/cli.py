@@ -152,7 +152,7 @@ class SampleTest(seldom.TestCase):
         self.assertInUrl("itest.info")
 
 
-class BaiduTest(seldom.TestCase):
+class DDTTest(seldom.TestCase):
 
     @file_data(file="data.json", key="baidu")
     def test_data_driver(self, _, keyword):
