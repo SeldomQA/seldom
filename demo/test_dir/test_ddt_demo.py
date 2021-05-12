@@ -1,13 +1,5 @@
-import os
 import seldom
 from seldom import data, file_data
-from seldom.utils import file_dir
-
-DATA_PATH = os.path.join(os.path.dirname(file_dir()), "test_data")
-JSON_DATA = os.path.join(DATA_PATH, "json_data.json")
-YAML_DATA = os.path.join(DATA_PATH, "yaml_data.yaml")
-CSV_DATA = os.path.join(DATA_PATH, "csv_data.csv")
-EXCEL_DATA = os.path.join(DATA_PATH, "excel_data.xlsx")
 
 
 class BaiduTest(seldom.TestCase):
@@ -33,50 +25,53 @@ class BaiduTest(seldom.TestCase):
 class FileDataTest(seldom.TestCase):
     """form input test case"""
 
-    @file_data(file=JSON_DATA,  key="name")
+    def start(self):
+        self.test_url = "https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit"
+
+    @file_data("json_data.json", key="name")
     def test_json(self, firstname, lastname):
         """
         used file_data test
         """
-        self.open("https://www.w3school.com.cn/tiy/t.asp?f=html_form_text")
+        self.open(self.test_url)
         self.switch_to_frame(id_="iframeResult")
-        self.type(name="firstname", text=firstname)
-        self.type(name="lastname", text=lastname)
+        self.type(name="firstname", text=firstname, clear=True)
+        self.type(name="lastname", text=lastname, clear=True)
         self.sleep(1)
 
-    @file_data(file=YAML_DATA,  key="name")
+    @file_data("yaml_data.yaml", key="name")
     def test_yaml(self, firstname, lastname):
         """
         used file_data test
         """
-        self.open("https://www.w3school.com.cn/tiy/t.asp?f=html_form_text")
+        self.open(self.test_url)
         self.switch_to_frame(id_="iframeResult")
-        self.type(name="firstname", text=firstname)
-        self.type(name="lastname", text=lastname)
+        self.type(name="firstname", text=firstname, clear=True)
+        self.type(name="lastname", text=lastname, clear=True)
         self.sleep(1)
 
-    @file_data(file=CSV_DATA,  line=2)
+    @file_data("csv_data.csv", line=2)
     def test_csv(self, firstname, lastname):
         """
         used file_data test
         """
-        self.open("https://www.w3school.com.cn/tiy/t.asp?f=html_form_text")
+        self.open(self.test_url)
         self.switch_to_frame(id_="iframeResult")
-        self.type(name="firstname", text=firstname)
-        self.type(name="lastname", text=lastname)
+        self.type(name="firstname", text=firstname, clear=True)
+        self.type(name="lastname", text=lastname, clear=True)
         self.sleep(1)
 
-    @file_data(file=EXCEL_DATA, sheet="Sheet1", line=2)
+    @file_data(file="excel_data.xlsx", sheet="Sheet1", line=2)
     def test_excel(self, firstname, lastname):
         """
         used file_data test
         """
-        self.open("https://www.w3school.com.cn/tiy/t.asp?f=html_form_text")
+        self.open(self.test_url)
         self.switch_to_frame(id_="iframeResult")
-        self.type(name="firstname", text=firstname)
-        self.type(name="lastname", text=lastname)
+        self.type(name="firstname", text=firstname, clear=True)
+        self.type(name="lastname", text=lastname, clear=True)
         self.sleep(1)
 
 
 if __name__ == '__main__':
-    seldom.main(debug=True)
+    seldom.main(browser="ff", debug=True)

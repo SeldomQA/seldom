@@ -1,6 +1,16 @@
 {
- "name":  [
+ "name": [
     ["Wayne", "Burch"],
     ["Jamie-louise", "Wong"]
- ]
+  ],
+  "login":[
+    {
+      "username": "admin",
+      "password": "admin123"
+    },
+    {
+      "username": "admin",
+      "password": "admin123"
+    }
+  ]
 }
