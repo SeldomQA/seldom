@@ -1,13 +1,13 @@
 Welcome to seldom documentation!
 ============================================
 
-Web UI/HTTP automated testing framework based on Selenium and Unittest.
+Web UI/HTTP automated testing framework based on unittest.
 
 Features:
 
 * Provide scaffolding to quickly generate automated test items
 * Start and close the browser globally, reducing the number of browser launches
-* Provides support for multiple data file parameterizations
+* Provides support for multiple data file parameterization
 * Support for use case failure/error reruns
 * Automatically generate HTML test reports
 * Support for HTTP interface testing (v 2.0)

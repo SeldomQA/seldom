@@ -38,19 +38,22 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
     """
     if file is None:
         raise FileExistsError("File name does not exist.")
-    stack_t = sys_inspect.stack()
-    ins = sys_inspect.getframeinfo(stack_t[1][0])
-    file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
+    if os.path.isfile(file) is True:
+        file_path = file
+    else:
+        stack_t = sys_inspect.stack()
+        ins = sys_inspect.getframeinfo(stack_t[1][0])
+        file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
 
-    file_path = None
-    for root, dirs, files in os.walk(file_dir, topdown=False):
-        for f in files:
-            if f == file:
-                file_path = os.path.join(root, file)
-                break
-        else:
-            continue
-        break
+        file_path = None
+        for root, dirs, files in os.walk(file_dir, topdown=False):
+            for f in files:
+                if f == file:
+                    file_path = os.path.join(root, file)
+                    break
+            else:
+                continue
+            break
 
     suffix = file.split(".")[-1]
     if suffix == "csv":
