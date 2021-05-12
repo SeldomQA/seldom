@@ -31,13 +31,13 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
      ]
     }
     ```
-    >>  @file_data(file="./d.json", key="login")
+    >>  @file_data(file="d.json", key="login")
     ... def test_case(self, username, password):
     ...     print(username)
     ...     print(password)
     """
     if file is None:
-        raise FileExistsError("Please specify the CSV file to convert.")
+        raise FileExistsError("File name does not exist.")
     stack_t = sys_inspect.stack()
     ins = sys_inspect.getframeinfo(stack_t[1][0])
     file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
