@@ -54,7 +54,8 @@ class MySQLDB:
         data_list = []
         sql = """select * from {} ;""".format(table)
         with self.connection.cursor() as cursor:
-            rows = cursor.execute(sql)
+            cursor.execute(sql)
+            rows = cursor.fetchall()
             for row in rows:
                 data_list.append(row)
             return data_list
