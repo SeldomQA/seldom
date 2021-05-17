@@ -25,4 +25,5 @@ if __name__ == '__main__':
     # markdown_to_rst("seldom_api.md", "rst_docs/seldom_api.rst")
     # markdown_to_rst("advanced.md", "rst_docs/advanced.rst")
     # markdown_to_rst("other.md", "rst_docs/other.rst")
-    markdown_to_rst("http.md", "rst_docs/http.rst")
+    # markdown_to_rst("http.md", "rst_docs/http.rst")
+    markdown_to_rst("db_operation.md", "rst_docs/db_operation.rst")
