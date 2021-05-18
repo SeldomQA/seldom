@@ -19,13 +19,16 @@ class MySQLDB(SQLBase):
                                           charset='utf8mb4',
                                           cursorclass=pymysql.cursors.DictCursor)
 
-    def delete_table(self, table):
+    def delete_data(self, table, where=None):
         """
         delete table data
         """
+        sql = """delete from {}""".format(table)
+        if where is not None:
+            sql += ' where {};'.format(self.dict_to_str_and(where))
         with self.connection.cursor() as cursor:
             cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
-            cursor.execute("delete from  {};".format(table))
+            cursor.execute(sql)
         self.connection.commit()
 
     def close(self):
@@ -62,12 +65,24 @@ class MySQLDB(SQLBase):
                 data_list.append(row)
             return data_list
 
+    def update_data(self, table, data, where):
+        """
+        update sql statement
+        """
+        sql = """update {} set """.format(table)
+        sql += self.dict_to_str(data)
+        if where:
+            sql += ' where {};'.format(self.dict_to_str_and(where))
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql)
+        self.connection.commit()
+
     def init_table(self, table_data):
         """
         init table data
         """
-        for table, data in table_data.items():
-            self.delete_table(table)
-            for d in data:
-                self.insert_data(table, d)
+        for table, data_list in table_data.items():
+            self.delete_data(table)
+            for data in data_list:
+                self.insert_data(table, data)
         self.close()
