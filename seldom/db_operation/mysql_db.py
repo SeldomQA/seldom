@@ -1,11 +1,11 @@
-# coding=utf8
 try:
     import pymysql.cursors
 except ModuleNotFoundError:
     raise ModuleNotFoundError("Please install the library. https://pypi.org/project/PyMySQL/")
+from seldom.db_operation.base_db import SQLBase
 
 
-class MySQLDB:
+class MySQLDB(SQLBase):
 
     def __init__(self, host, port, user, password, database):
         """
@@ -47,12 +47,14 @@ class MySQLDB:
             cursor.execute(sql)
         self.connection.commit()
 
-    def select_table(self, table):
+    def select_data(self, table, where=None):
         """
         select sql statement
         """
         data_list = []
-        sql = """select * from {} ;""".format(table)
+        sql = """select * from {} """.format(table)
+        if where is not None:
+            sql += 'where {};'.format(self.dict_to_str_and(where))
         with self.connection.cursor() as cursor:
             cursor.execute(sql)
             rows = cursor.fetchall()

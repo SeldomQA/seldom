@@ -1,7 +1,8 @@
 import sqlite3
+from seldom.db_operation.base_db import SQLBase
 
 
-class SQLiteDB:
+class SQLiteDB(SQLBase):
 
     def __init__(self, db_path):
         """
@@ -35,12 +36,14 @@ class SQLiteDB:
         self.cursor.execute(sql)
         self.connection.commit()
 
-    def select_table(self, table):
+    def select_data(self, table, where=None):
         """
         select sql statement
         """
         data_list = []
-        sql = """select * from {} ;""".format(table)
+        sql = """select * from {} """.format(table)
+        if where is not None:
+            sql += 'where {};'.format(self.dict_to_str_and(where))
         rows = self.cursor.execute(sql)
         for row in rows:
             data_list.append(row)
