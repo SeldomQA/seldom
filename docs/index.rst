@@ -48,6 +48,7 @@ User guide
    rst_docs/advanced
    rst_docs/other
    rst_docs/http
+   rst_docs/db_operation
 
 
 Indices and tables
