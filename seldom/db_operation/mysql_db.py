@@ -27,6 +27,7 @@ class MySQLDB(SQLBase):
         if where is not None:
             sql += ' where {};'.format(self.dict_to_str_and(where))
         with self.connection.cursor() as cursor:
+            self.connection.ping(reconnect=True)
             cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
             cursor.execute(sql)
         self.connection.commit()
@@ -47,6 +48,7 @@ class MySQLDB(SQLBase):
         value = ','.join(data.values())
         sql = """INSERT INTO {t} ({k}) VALUES ({v})""".format(t=table, k=key, v=value)
         with self.connection.cursor() as cursor:
+            self.connection.ping(reconnect=True)
             cursor.execute(sql)
         self.connection.commit()
 
@@ -59,6 +61,7 @@ class MySQLDB(SQLBase):
         if where is not None:
             sql += 'where {};'.format(self.dict_to_str_and(where))
         with self.connection.cursor() as cursor:
+            self.connection.ping(reconnect=True)
             cursor.execute(sql)
             rows = cursor.fetchall()
             for row in rows:
@@ -74,6 +77,7 @@ class MySQLDB(SQLBase):
         if where:
             sql += ' where {};'.format(self.dict_to_str_and(where))
         with self.connection.cursor() as cursor:
+            self.connection.ping(reconnect=True)
             cursor.execute(sql)
         self.connection.commit()
 
