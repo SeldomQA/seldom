@@ -1,5 +1,6 @@
 import re
 import sys
+import time
 import uuid
 import random
 import hashlib
@@ -274,7 +275,8 @@ def get_birthday(as_str=False, start_age=18, stop_age=100):
 
 def get_past_datetime(now=None):
     """
-    return a datetime guaranteed to be in the past from now
+    a datetime guaranteed to be in the past from now.
+    return: 2001-06-13 00:11:33.168502
     """
     if not now:
         now = datetime.datetime.now()
@@ -290,7 +292,8 @@ def get_past_datetime(now=None):
 
 def get_future_datetime(now=None):
     """
-    return a datetime guaranteed to be in the future from now
+    a datetime guaranteed to be in the future from now
+    return: 2034-02-23 04:59:41.168502
     """
     if not now:
         now = datetime.datetime.now()
@@ -307,11 +310,31 @@ def get_future_datetime(now=None):
 
 def get_now_time():
     """
-    Get date, default to current day。
+    Get date time, default to current day。
     :return:
     """
     date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return date
+
+
+def get_past_time():
+    """
+    Gets the past date time
+    :return: 2019-05-16 00:34:30
+    """
+    number = random.randint(100000, 99999999)
+    date_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() - number))
+    return date_time
+
+
+def get_future_time():
+    """
+    Gets the future date time.
+    :return: 2022-10-24 19:52:21
+    """
+    number = random.randint(100000, 99999999)
+    date_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + number))
+    return date_time
 
 
 def get_date(day=None):
