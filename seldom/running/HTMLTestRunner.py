@@ -574,13 +574,12 @@ class SMTP(object):
             att["Content-Disposition"] = 'attachment; filename="{}"'.format(att_name)
             msg.attach(att)
 
-        smtp = smtplib.SMTP()
+        smtp = smtplib.SMTP_SSL(self.host, self.port)
         try:
-            smtp.connect(self.host, self.port)
             smtp.login(self.user, self.password)
             smtp.sendmail(self.user, to, msg.as_string())
             log.info(" 📧 Email sent successfully!!")
         except BaseException as msg:
-            log.error('❌ Email failed to send!!' + str(msg))
+            log.error('❌ Email failed to send!!' + msg.__str__())
         finally:
             smtp.quit()
