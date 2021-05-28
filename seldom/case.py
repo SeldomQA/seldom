@@ -73,7 +73,8 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
-        for _ in range(Seldom.timeout):
+        for _ in range(Seldom.timeout + 1):
+            print("不走循环？？")
             try:
                 self.assertEqual(title, Seldom.driver.title)
                 log.info("👀 assert title: {title}.".format(
@@ -82,6 +83,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             except AssertionError:
                 sleep(1)
         else:
+            print("abc")
             log.warn("❌ assert fail: {title}.".format(title=title))
             self.assertEqual(title, Seldom.driver.title, msg=msg)
 
@@ -94,7 +96,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
-        for _ in range(Seldom.timeout):
+        for _ in range(Seldom.timeout + 1):
             try:
                 self.assertIn(title, Seldom.driver.title)
                 log.info("👀 assertIn title: {title}.".format(
@@ -115,7 +117,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
-        for _ in range(Seldom.timeout):
+        for _ in range(Seldom.timeout + 1):
             try:
                 self.assertEqual(url, Seldom.driver.current_url)
                 log.info("👀 assert url: {url}.".format(url=Seldom.driver.current_url))
@@ -135,7 +137,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
-        for _ in range(Seldom.timeout):
+        for _ in range(Seldom.timeout + 1):
             try:
                 self.assertIn(url, Seldom.driver.current_url)
                 log.info("👀 assertIn url: {url}.".format(url=Seldom.driver.current_url))
@@ -157,7 +159,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             raise AssertionError("The assertion text cannot be empty.")
 
         elem = Seldom.driver.find_element_by_tag_name("html")
-        for _ in range(Seldom.timeout):
+        for _ in range(Seldom.timeout + 1):
             if elem.is_displayed():
                 try:
                     self.assertIn(text, elem.text)
@@ -189,7 +191,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         if msg is None:
             msg = "No elements found"
-        for _ in range(Seldom.timeout):
+        for _ in range(Seldom.timeout + 1):
             try:
                 log.info("👀 assertElement.")
                 self.get_elements(**kwargs)
