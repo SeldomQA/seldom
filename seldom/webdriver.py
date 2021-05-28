@@ -641,8 +641,7 @@ class WebDriver(object):
         all_handles = Seldom.driver.window_handles
         Seldom.driver.switch_to.window(all_handles[window])
 
-    @staticmethod
-    def screenshots(file_path):
+    def screenshots(self, file_path=None):
         """
         Saves a screenshots of the current window to a PNG image file.
 
@@ -650,7 +649,10 @@ class WebDriver(object):
         self.screenshots('/Screenshots/foo.png')
         """
         log.info("📷️  screenshot.")
-        Seldom.driver.save_screenshot(file_path)
+        if file_path is None:
+            self.images.append(Seldom.driver.get_screenshot_as_base64())
+        else:
+            Seldom.driver.save_screenshot(file_path)
 
     @staticmethod
     def select(value=None, text=None, index=None, **kwargs):

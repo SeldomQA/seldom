@@ -49,6 +49,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         pass
 
     def setUp(self):
+        self.images = []
         self.start()
 
     def tearDown(self):
