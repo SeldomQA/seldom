@@ -7,7 +7,7 @@ def request(func):
         func_name = func.__name__
         print('\n----------- Request 🚀 ---------------')
         url = list(args)[1]
-        if Seldom.base_url is not None:
+        if (Seldom.base_url is not None) and ("http" not in url):
             url = Seldom.base_url + list(args)[1]
         print('url: {u}         method: {m}'.format(u=url, m=func_name.upper()))
 
@@ -38,25 +38,25 @@ class HttpRequest(object):
 
     @request
     def get(self, url, params=None, **kwargs):
-        if Seldom.base_url is not None:
+        if (Seldom.base_url is not None) and ("http" not in url):
             url = Seldom.base_url + url
         return requests.get(url, params=params, **kwargs)
 
     @request
     def post(self, url, data=None, json=None, **kwargs):
-        if Seldom.base_url is not None:
+        if (Seldom.base_url is not None) and ("http" not in url):
             url = Seldom.base_url + url
         return requests.post(url, data=data, json=json, **kwargs)
 
     @request
     def put(self, url, data=None, **kwargs):
-        if Seldom.base_url is not None:
+        if (Seldom.base_url is not None) and ("http" not in url):
             url = Seldom.base_url + url
         return requests.put(url, data=data, **kwargs)
 
     @request
     def delete(self, url, **kwargs):
-        if Seldom.base_url is not None:
+        if (Seldom.base_url is not None) and ("http" not in url):
             url = Seldom.base_url + url
         return requests.delete(url, **kwargs)
 
