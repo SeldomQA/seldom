@@ -45,5 +45,5 @@
   * [随机生成测试数据](./http.md#随机生成测试数据)
 
 * [数据库操作](./db_operation.md)
-  * [连接数据库](./http.md#连接数据库)
-  * [操作方法](./http.md#操作方法)
+  * [连接数据库](./db_operation.md#连接数据库)
+  * [操作方法](./db_operation.md#操作方法)
