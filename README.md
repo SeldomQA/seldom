@@ -198,9 +198,13 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 ## 项目实例
 
-如果你想快速的使用seldom开发自动化测试，请参考这个项目。
+基于seldom的web UI自动化项目：
 
 https://github.com/BarryYBL/UIAutoDemo
+
+基于seldom的接口自动化项目:
+
+https://github.com/defnngj/pyrequest2
 
 ## 感谢
 
