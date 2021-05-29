@@ -67,3 +67,21 @@ class HttpRequest(object):
         :return: response
         """
         return ResponseResult.response
+
+    @property
+    def session(self):
+        """
+        A Requests session.
+        """
+        s = requests.Session()
+        return s
+
+    @staticmethod
+    def request(method=None, url=None, headers=None, files=None, data=None,
+                params=None, auth=None, cookies=None, hooks=None, json=None):
+        """
+        A user-created :class:`Request <Request>` object.
+        """
+        req = requests.Request(method, url, headers, files, data,
+                               params, auth, cookies, hooks, json)
+        return req
