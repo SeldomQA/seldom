@@ -1,4 +1,3 @@
-import json
 import os
 from seldom.logging import log
 from seldom.har2case import utils
@@ -103,12 +102,11 @@ if __name__ == '__main__':
         log.info("Start to generate testcase.")
         testcase = self._make_testcase()
 
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        self.create_file(os.path.join(BASE_DIR, output_testcase_file), testcase)
+        har_path = os.path.dirname(os.path.abspath(har_file))
+        self.create_file(os.path.join(har_path, output_testcase_file), testcase)
 
 
 if __name__ == '__main__':
-
-    hp = HarParser("./rest_get.har")
+    hp = HarParser("./demo.har")
     hp.gen_testcase()
 

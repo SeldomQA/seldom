@@ -12,6 +12,7 @@ from os.path import join, isfile, basename
 from os.path import isdir, dirname, abspath
 from urllib.request import urlopen
 from seldom.logging import log
+from seldom.har2case.core import HarParser
 
 from seldom import __description__, __version__
 
@@ -45,6 +46,10 @@ def main():
         help="Create an Seldom automation test project.")
 
     parser.add_argument(
+        '-h2c',
+        help="HAR file converts an interface test case.")
+
+    parser.add_argument(
         '-r',
         help="run test case")
 
@@ -65,6 +70,12 @@ def main():
     project_name = args.project
     if project_name:
         create_scaffold(project_name)
+        return 0
+
+    har_file = args.h2c
+    if har_file:
+        hp = HarParser(har_file)
+        hp.gen_testcase()
         return 0
 
     run_file = args.r
