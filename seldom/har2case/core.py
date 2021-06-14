@@ -8,8 +8,7 @@ class HarParser(object):
 
     def __init__(self, har_file_path):
         self.har_file_path = har_file_path
-        self.case_template = """
-import seldom
+        self.case_template = """import seldom
 
 
 class TestRequest(seldom.TestCase):
@@ -21,26 +20,12 @@ class TestRequest(seldom.TestCase):
         headers = {header}
         cookies = {cookie}
         self.{method}(self.url, {params}, headers=headers, cookies=cookies)
-        self.assertStatusCode(200)
+        self.assertStatusCode({resp_status})
 
 
 if __name__ == '__main__':
     seldom.main()
 """
-
-    def list_to_dict_str(self, data: list) -> str:
-        """
-        list -> dict -> string
-        """
-        data_dict = {}
-        for param in data:
-            data_dict[param["name"]] = param["value"]
-
-        if len(data_dict) == 0:
-            data_dict_str = "{}"
-        else:
-            data_dict_str = json.dumps(data_dict)
-        return data_dict_str
 
     def _make_testcase(self):
         """
@@ -56,34 +41,48 @@ if __name__ == '__main__':
             headers = entry_json["request"].get("headers")
             cookies = entry_json["request"].get("cookies")
 
-            headers_str = self.list_to_dict_str(headers)
-            cookies_str = self.list_to_dict_str(cookies)
-            data_str = "data={}"
-            if method == "post":
+            response_status = entry_json["response"].get("status")
+
+            headers_str = utils.list_to_dict_str(headers)
+            cookies_str = utils.list_to_dict_str(cookies)
+            if "?" in url:
+                url = url.split("?")[0]
+
+            data_str = ""
+            if method == "post" or method == "put" or method == "delete":
                 # from-data
                 params = entry_json["request"]["postData"].get("params")
                 if params is not None:
-                    params_dict = self.list_to_dict_str(params)
+                    params_dict = utils.list_to_dict_str(params)
                     data_str = "data=" + params_dict
-
+                else:
+                    data_str = "data={}"
                 # json
                 text = entry_json["request"]["postData"].get("text")
                 mime_type = entry_json["request"]["postData"].get("mimeType")
                 if mime_type is not None:
                     if mime_type == "application/json":
                         data_str = "json=" + text
+                else:
+                    data_str = "json={}"
 
             elif method == "get":
-                # developing
-                pass
-            elif method == "put":
-                # developing
-                pass
-            elif method == "delete":
-                # developing
-                pass
+                # params
+                query_string = entry_json["request"].get("queryString")
+                if query_string is not None:
+                    query_string_str = utils.list_to_dict_str(query_string)
+                    data_str = "params=" + query_string_str
+                else:
+                    data_str = "params={}"
+            else:
+                raise TypeError("Only POST/GET/PUT/DELETE methods are supported。")
 
-            testcase = self.case_template.format(header=headers_str, cookie=cookies_str,method=method, url=url, params=data_str)
+            testcase = self.case_template.format(header=headers_str,
+                                                 cookie=cookies_str,
+                                                 method=method,
+                                                 url=url,
+                                                 params=data_str,
+                                                 resp_status=response_status)
 
         return testcase
 
@@ -110,6 +109,6 @@ if __name__ == '__main__':
 
 if __name__ == '__main__':
 
-    hp = HarParser("./post_json.har")
+    hp = HarParser("./rest_get.har")
     hp.gen_testcase()
 

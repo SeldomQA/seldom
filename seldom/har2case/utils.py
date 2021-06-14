@@ -127,3 +127,18 @@ def dump_json(testcase, json_file):
         outfile.write(my_json_str)
 
     logging.info("Generate JSON testcase successfully: {}".format(json_file))
+
+
+def list_to_dict_str(data: list) -> str:
+    """
+    list -> dict -> string
+    """
+    data_dict = {}
+    for param in data:
+        data_dict[param["name"]] = param["value"]
+
+    if len(data_dict) == 0:
+        data_dict_str = "{}"
+    else:
+        data_dict_str = json.dumps(data_dict)
+    return data_dict_str
