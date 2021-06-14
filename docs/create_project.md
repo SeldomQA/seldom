@@ -42,6 +42,7 @@ optional arguments:
   -h, --help        show this help message and exit
   -v, --version     show version
   -project PROJECT  Create an Seldom automation test project.
+  -h2c H2C          HAR file converts an interface test case.
   -r R              run test case
   -m M              run tests modules, classes or even individual test methods
                     from the command line

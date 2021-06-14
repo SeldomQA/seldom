@@ -59,6 +59,53 @@ if __name__ == '__main__':
 
 主要简化点在，接口的返回数据的处理。当然，seldom真正的优势在断言、日志和报告。
 
+### HAR TO CASE
+
+对于不熟悉 Requests 库的人来说，通过Seldom来写接口测试用例还是会有一点难度。于是，seldom提供了`har` 文件转 `case` 的命令。
+
+首先，打开fiddler 工具进行抓包，选中某一个请求。
+
+然后，选择菜单栏：`file` -> `Export Sessions` -> `Selected Sessions...`
+
+![](./image/fiddler.png)
+
+选择导出的文件格式。
+
+![](./image/fiddler2.png)
+
+点击`next` 保存为`demo.har` 文件。
+
+最后，通过`seldom -h2c` 转为`demo.py` 脚本文件。
+
+```shell
+> seldom -h2c .\demo.har
+.\demo.py
+2021-06-14 18:05:50 [INFO] Start to generate testcase.
+2021-06-14 18:05:50 [INFO] created file: D:\.\demo.py
+```
+
+`demo.py` 文件。
+
+```python
+import seldom
+
+
+class TestRequest(seldom.TestCase):
+
+    def start(self):
+        self.url = "http://httpbin.org/post"
+
+    def test_case(self):
+        headers = {"User-Agent": "python-requests/2.25.0", "Accept-Encoding": "gzip, deflate", "Accept": "application/json", "Connection": "keep-alive", "Host": "httpbin.org", "Content-Length": "36", "Origin": "http://httpbin.org", "Content-Type": "application/json", "Cookie": "lang=zh"}
+        cookies = {"lang": "zh"}
+        self.post(self.url, json={"key1": "value1", "key2": "value2"}, headers=headers, cookies=cookies)
+        self.assertStatusCode(200)
+
+
+if __name__ == '__main__':
+    seldom.main()
+
+```
 
 ### 运行测试
 

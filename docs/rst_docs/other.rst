@@ -12,7 +12,7 @@ For browser drivers, If you don't want to configure the environment variable `PA
     import seldom
     from seldom.driver import ChromeConfig
 
-    # ……
+    # ...
     if __name__ == '__main__':
         ChromeConfig.executable_path = "D:\git\seldom\lib\chromedriver.exe"
         seldom.main(browser="chrome")
@@ -30,7 +30,7 @@ Runs On More Browsers
 
     import seldom
 
-    # ……
+    # ...
 
     if __name__ == '__main__':
         seldom.main(browser="chrome") # chrome,The default
@@ -50,7 +50,7 @@ Mobile Web Mode
 
     import seldom
 
-    #...
+    # ...
 
     if __name__ == '__main__':
         seldom.main(browser="iPhone 6") # iPhone 6
@@ -99,7 +99,7 @@ In order to meet the personalized requirements, such as disabling the browser pl
     from seldom import ChromeConfig
     from selenium.webdriver import ChromeOptions
 
-
+    # ...
     if __name__ == '__main__':
         chrome_options = ChromeOptions()
         chrome_options.add_argument('--ignore-certificate-errors')
@@ -129,7 +129,7 @@ Selenium Grid
     import seldom
     from seldom import ChromeConfig
 
-    # ……
+    # ...
     if __name__ == '__main__':
         ChromeConfig.command_executor = "http://127.0.0.1:4444/wd/hub"
         seldom.main(browser="chrome")

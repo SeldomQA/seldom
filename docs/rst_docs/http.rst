@@ -1,7 +1,7 @@
 HTTP Interface Testing
 -------------------------
 
-`seodm` has many advantages in doing interface testing.
+`seldom` has many advantages in doing interface testing.
 
 - Support HTML/XML test reports
 - Support parameterization
@@ -68,6 +68,61 @@ This is actually pretty neat.The same use case, implemented in `seldom`.
         seldom.main()
 
 The advantages of `seldom` are assertions, logging, and reporting.
+
+HAR TO CASE
+~~~~~~~~~~~~~
+
+For those unfamiliar with the Requests library, writing interface test cases through `seldom` can still be a bit difficult.
+Thus, Cement provided the order for `har` file to turn `case`.
+
+First, open the Fiddler tool to grab the packet and select a particular request.
+
+Then, select the menu bar:`file` -> `Export Sessions` -> `Selected Sessions...`
+
+.. figure:: ../image/fiddler.png
+   :alt:
+
+
+Select the file format to export.
+
+.. figure:: ../image/fiddler2.png
+   :alt:
+
+Click on the `next` save as the `demo.har` file.
+
+Finally, the script file `demo.py` is converted by 'seldom -h2c'.
+
+
+.. code:: shell
+
+    > seldom -h2c .\demo.har
+    .\demo.py
+    2021-06-14 18:05:50 [INFO] Start to generate testcase.
+    2021-06-14 18:05:50 [INFO] created file: D:\.\demo.py
+
+
+
+`demo.py` file.
+
+.. code:: python
+
+    import seldom
+
+
+    class TestRequest(seldom.TestCase):
+
+        def start(self):
+            self.url = "http://httpbin.org/post"
+
+        def test_case(self):
+            headers = {"User-Agent": "python-requests/2.25.0", "Accept-Encoding": "gzip, deflate", "Accept": "application/json", "Connection": "keep-alive", "Host": "httpbin.org", "Content-Length": "36", "Origin": "http://httpbin.org", "Content-Type": "application/json", "Cookie": "lang=zh"}
+            cookies = {"lang": "zh"}
+            self.post(self.url, json={"key1": "value1", "key2": "value2"}, headers=headers, cookies=cookies)
+            self.assertStatusCode(200)
+
+
+    if __name__ == '__main__':
+        seldom.main()
 
 
 Run Test
