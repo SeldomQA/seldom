@@ -1,3 +1,7 @@
+### 2.2.0
+* 增加接口测试方法`session`、`request`。
+* 增加`seldom -h2c`参数，用于将har文件转成测试用例。
+
 ### 2.1.1
 * 增加随机生成时间方法`get_past_time()`、`get_future_time()`
 * 优化：截图方法`screenshots()`，可以在任意位置使用该方法生成截图，并显示在HTML测试报告中。
