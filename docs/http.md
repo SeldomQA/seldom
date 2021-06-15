@@ -1,10 +1,28 @@
 ## HTTP接口测试
 
-seldom做接口测试有很多优势。
+## 前言
 
-* 支持HTML/XML测试报告
-* 支持参数化
+HTTP接口测试很简单，不管工具、框架、还是平台，只要很的好的几个点就是好工具。
+
+1. 测试数据问题：比如删除接口，重复执行还能保持结果一致，必定要做数据初始化。
+2. 接口依赖问题：B接口依赖A的返回值，C接口依赖B接口的返回值。
+3. 加密问题：不同的接口加密规则不一样。有些用到时间戳、md5、base64、AES，如何提供种能力。
+4. 断言问题：有些接口返回的结构体很复杂，如何灵活的做到断言。
+
+对于以上问题，工具和平台要么不支持，要么很麻烦，然而框架是最灵活的。 
+
+> unittest/pytest + requests/https 直接上手写代码就好了，既简单又灵活。
+
+那么同样是写代码，A框架需要10行，B框架只需要5行，然而又不失灵活性，那我当然是选择更少的了，毕竟，人生苦短嘛。
+
+seldom适合个人接口自动化项目，它有以下优势。
+
+* 可以写更少的代码
+* 自动生成HTML/XML测试报告
+* 支持参数化，减少重复的代码
 * 支持生成随机数据
+* 支持har文件转case
+* 支持数据库操作
 
 这些是seldom支持的功能，我们只需要集成HTTP接口库，并提供强大的断言即可。`seldom 2.0` 加入了HTTP接口自动化测试支持。
 
@@ -59,7 +77,7 @@ if __name__ == '__main__':
 
 主要简化点在，接口的返回数据的处理。当然，seldom真正的优势在断言、日志和报告。
 
-### HAR TO CASE
+### har to case
 
 对于不熟悉 Requests 库的人来说，通过Seldom来写接口测试用例还是会有一点难度。于是，seldom提供了`har` 文件转 `case` 的命令。
 
@@ -376,7 +394,7 @@ class TestDDT(seldom.TestCase):
 
 ```
 
-更过数据文件(csv/excel/yaml)，[参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md)
+更多数据文件(csv/excel/yaml)，[参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md)
 
 ### 随机生成测试数据
 
