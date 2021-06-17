@@ -228,6 +228,10 @@ Running logs
 
 **assertPath**
 
+'assertPath' is an assertion method based on 'jmespath', very powerful.
+
+jmespath:https://jmespath.org/specification.html
+
 The interface returns the result:
 
 .. code:: json

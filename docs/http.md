@@ -223,6 +223,10 @@ seldom还会提示你还有哪些字段没有断言。
 
 __assertPath__
 
+`assertPath` 是基于 `jmespath` 实现的断言，功能非常强大。
+
+jmespath:https://jmespath.org/specification.html
+
 接口返回数据如下：
 
 ```json
