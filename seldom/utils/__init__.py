@@ -59,9 +59,21 @@ def diff_json(response_data, assert_data):
                 print(info)
     elif isinstance(response_data, list):
         """ list format """
+        if len(response_data) == 0:
+            print("response is []")
         if len(response_data) != len(assert_data):
             print("list len: '{}' != '{}'".format(len(response_data), len(assert_data)))
-        for src_list, dst_list in zip(sorted(response_data), sorted(assert_data)):
+
+        if isinstance(response_data[0], dict):
+            response_data = sorted(response_data, key=lambda x: x[list(response_data[0].keys())[0]])
+        else:
+            response_data = sorted(response_data)
+        if isinstance(assert_data[0], dict):
+            assert_data = sorted(assert_data, key=lambda x: x[list(assert_data[0].keys())[0]])
+        else:
+            assert_data = sorted(assert_data)
+
+        for src_list, dst_list in zip(response_data, assert_data):
             """ recursion """
             diff_json(src_list, dst_list)
     else:
