@@ -56,7 +56,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         self.end()
 
     @property
-    def driver(self):
+    def sdriver(self):
         """
         browser driver
         """
@@ -74,7 +74,6 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
         for _ in range(Seldom.timeout + 1):
-            print("不走循环？？")
             try:
                 self.assertEqual(title, Seldom.driver.title)
                 log.info("👀 assert title: {title}.".format(
