@@ -1,3 +1,10 @@
+### 2.2.1
+* webdriver文件增加类型。
+* 删除utils 错误代码。
+* 修复：`diff_json()` 函数处理复杂数据报错 #66
+* 修复：运行接口测试用例报 driver 错误 #68
+* 修复：测试报告`popper.min.js` CDN 太慢的问题
+
 ### 2.2.0
 * 增加接口测试方法`session`、`request`。
 * 增加`seldom -h2c`参数，用于将har文件转成测试用例。

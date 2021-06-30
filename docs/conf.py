@@ -20,7 +20,7 @@ project = 'seldom'
 year = '2015-2021'
 author = 'bugmaster'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '2.1.1'
+version = release = '2.2.1'
 
 pygments_style = 'trac'
 templates_path = ['.']
