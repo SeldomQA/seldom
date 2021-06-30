@@ -56,12 +56,10 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         self.end()
 
     @property
-    def sdriver(self):
+    def driver(self):
         """
-        browser driver
+        return browser driver
         """
-        if isinstance(Seldom.driver, SeleniumWebDriver) is False:
-            Seldom.driver = Chrome()
         return Seldom.driver
 
     def assertTitle(self, title=None, msg=None):
