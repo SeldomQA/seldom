@@ -17,5 +17,6 @@ class BrowserConfig:
     """
     Define run browser config
     """
-    name = None
-    report_path = None
+    NAME = None
+    REPORT_PATH = None
+    LOG_PATH = None

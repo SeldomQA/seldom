@@ -1,6 +1,5 @@
 # coding=utf-8
 import os
-import time
 import unittest
 import webbrowser
 from xmlrunner import XMLTestRunner
@@ -90,8 +89,8 @@ class TestMain(object):
 
         # Global launch browser
         if browser is not None:
-            BrowserConfig.name = browser
-            Seldom.driver = Browser(BrowserConfig.name)
+            BrowserConfig.NAME = browser
+            Seldom.driver = Browser(BrowserConfig.NAME)
 
         self._run_test_case(suits)
 
@@ -110,10 +109,8 @@ class TestMain(object):
             else:
                 os.mkdir(os.path.join(os.getcwd(), "reports"))
 
-            if self.report is None:
-                now = time.strftime("%Y_%m_%d_%H_%M_%S")
-                report_path = os.path.join(os.getcwd(), "reports", now + "_result.html")
-                BrowserConfig.report_path = report_path
+            if self.report is None and BrowserConfig.REPORT_PATH is not None:
+                report_path = BrowserConfig.REPORT_PATH
             else:
                 report_path = os.path.join(os.getcwd(), "reports", self.report)
 
@@ -127,12 +124,14 @@ class TestMain(object):
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
             log.info("generated html file: file:///{}".format(report_path))
+            log.info("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
             webbrowser.open_new("file:///{}".format(report_path))
         else:
             runner = unittest.TextTestRunner(verbosity=2)
             log.info("A run the test in debug mode without generating HTML report!")
             log.info(seldom_str)
             runner.run(suits)
+            log.info("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
 
 
 main = TestMain

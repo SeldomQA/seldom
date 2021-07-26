@@ -5,6 +5,7 @@ import inspect
 import platform
 import logging.handlers
 from colorama import Fore, Style
+from seldom.running.config import BrowserConfig
 
 __all__ = [
     "debug", "info", "error", "warn", "_print",
@@ -14,12 +15,19 @@ __all__ = [
 stack_t = inspect.stack()
 ins = inspect.getframeinfo(stack_t[1][0])
 file_dir = os.path.dirname(os.path.abspath(ins.filename))
-log_dir = os.path.join(file_dir, "logs")
-if os.path.exists(log_dir) is False:
-    os.mkdir(log_dir)
+report_dir = os.path.join(file_dir, "reports")
+if os.path.exists(report_dir) is False:
+    os.mkdir(report_dir)
 
-now_time = str(time.time()).split('.')[0]
-file_handler = logging.FileHandler(os.path.join(file_dir, "logs", now_time + ".log"), encoding='utf-8')
+
+now_time = time.strftime("%Y_%m_%d_%H_%M_%S")
+if BrowserConfig.LOG_PATH is None:
+    BrowserConfig.LOG_PATH = os.path.join(os.getcwd(), "reports", now_time + "_log.log")
+if BrowserConfig.REPORT_PATH is None:
+    BrowserConfig.REPORT_PATH = os.path.join(os.getcwd(), "reports", now_time + "_result.html")
+
+file_handler = logging.FileHandler(BrowserConfig.LOG_PATH, encoding='utf-8')
+
 
 _logger = logging.getLogger('seldom')
 _logger.setLevel(logging.DEBUG)
