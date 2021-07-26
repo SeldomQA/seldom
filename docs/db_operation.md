@@ -4,10 +4,10 @@ seldom 支持sqlite3、MySQL数据库操作。
 
 |  sqlite3   | MySQL  |
 |  ----  | ----  |
-| delete_data()  | delete_data() |
-| insert_data()  | insert_data() |
-| select_data()  | select_data() |
-| update_data()  | update_data() |
+| delete()  | delete() |
+| insert()  | insert() |
+| select()  | select() |
+| update()  | update() |
 | init_table()  | init_table() |
 | close()  | close() |
 
@@ -43,21 +43,21 @@ db = MySQLDB(host="127.0.0.1",
 
 ### 操作方法
 
-* delete_data
+* delete
 
 删除表数据。
 
 ```py
-db.delete_data(table="user", where={"id":1})
+db.delete(table="user", where={"id":1})
 ```
 
-* insert_data
+* insert
 
 插入一条数据。
 
 ```py
 data = {'id': 1, 'username': 'admin', 'password': "123"},
-db.insert_data(table="user", data=data)
+db.insert(table="user", data=data)
 ```
 
 * select_data
@@ -65,16 +65,16 @@ db.insert_data(table="user", data=data)
 查询表数据。
 
 ```py
-result = db.select_data(table="user", where={"id":1, "name": "tom"})
+result = db.select(table="user", where={"id":1, "name": "tom"})
 print(result)
 ```
 
-* update_data
+* update
 
 更新表数据。
 
 ```py
-db.update_data(table="user", data={"name":"new tom"}, where={"name": "tom"})
+db.update(table="user", data={"name":"new tom"}, where={"name": "tom"})
 ```
 
 

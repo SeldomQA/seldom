@@ -6,13 +6,13 @@ Database Operation
 +-------------------+-------------------+
 | sqlite3           | MySQL             |
 +===================+===================+
-| delete\_data()    | delete\_data()    |
+| delete()          | delete()          |
 +-------------------+-------------------+
-| insert\_data()    | insert\_data()    |
+| insert()          | insert()          |
 +-------------------+-------------------+
-| select\_data()    | select\_data()    |
+| select()          | select()          |
 +-------------------+-------------------+
-| update\_data()    | update\_data()    |
+| update()          | update()          |
 +-------------------+-------------------+
 | init\_table()     | init\_table()     |
 +-------------------+-------------------+
@@ -54,42 +54,42 @@ Connecting DB
 Operation Method
 ~~~~~~~~~~~~~~~~~~
 
--  delete\_data
+-  delete
 
 Delete table data.
 
 .. code:: py
 
-    db.delete_data(table="user", where={"id":1})
+    db.delete(table="user", where={"id":1})
 
 
--  insert\_data
+-  insert
 
 Insert a data.
 
 .. code:: py
 
     data = {'id': 1, 'username': 'admin', 'password': "123"},
-    db.insert_data(table="user", data=data)
+    db.insert(table="user", data=data)
 
 
--  select\_data
+-  select
 
 Query data in the table.
 
 .. code:: py
 
-    result = db.select_data(table="user", where={"id":1, "name": "tom"})
+    result = db.select(table="user", where={"id":1, "name": "tom"})
     print(result)
 
 
--  update\_data
+-  update
 
 Update table data.
 
 .. code:: py
 
-    db.update_data(table="user", data={"name":"new tom"}, where={"name": "tom"})
+    db.update(table="user", data={"name":"new tom"}, where={"name": "tom"})
 
 
 -  init\_table
