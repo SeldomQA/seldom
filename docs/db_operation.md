@@ -4,6 +4,8 @@ seldom 支持sqlite3、MySQL数据库操作。
 
 |  sqlite3   | MySQL  |
 |  ----  | ----  |
+| execute_sql()  | execute_sql() |
+| query_sql()  | query_sql() |
 | delete()  | delete() |
 | insert()  | insert() |
 | select()  | select() |
@@ -42,6 +44,25 @@ db = MySQLDB(host="127.0.0.1",
 ```
 
 ### 操作方法
+
+* execute_sql
+
+执行sql语句，无返回结果。
+
+```python
+db.execute_sql("INSERT INTO table_name (id, name) VALUES (1, 'tom') ")
+db.execute_sql("UPDATE table_name SET name = 'jack' WHERE id=1")
+db.execute_sql("DELETE FROM table_name WHERE id = 1")
+```
+
+* query_sql
+
+执行查询sql语句，返回查询结果。
+
+```python
+ret = db.query_sql("select * from table_name")
+print(ret)
+```
 
 * delete
 

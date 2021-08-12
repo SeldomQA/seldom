@@ -6,6 +6,10 @@ Database Operation
 +-------------------+-------------------+
 | sqlite3           | MySQL             |
 +===================+===================+
+| execute_sql()     | execute_sql()     |
++-------------------+-------------------+
+| query_sql()       | query_sql()       |
++-------------------+-------------------+
 | delete()          | delete()          |
 +-------------------+-------------------+
 | insert()          | insert()          |
@@ -53,6 +57,27 @@ Connecting DB
 
 Operation Method
 ~~~~~~~~~~~~~~~~~~
+
+-  execute_sql
+
+The SQL statement was executed, but no result was returned.
+
+.. code:: py
+
+    db.execute_sql("INSERT INTO table_name (id, name) VALUES (1, 'tom') ")
+    db.execute_sql("UPDATE table_name SET name = 'jack' WHERE id=1")
+    db.execute_sql("DELETE FROM table_name WHERE id = 1")
+
+
+-  query_sql
+
+The query SQL statement is executed and the query result is returned.
+
+.. code:: py
+
+    ret = db.query_sql("select * from table_name")
+    print(ret)
+
 
 -  delete
 
