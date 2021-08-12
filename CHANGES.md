@@ -1,3 +1,7 @@
+### 2.2.2
+* 优化db操作方法，[查看](https://github.com/SeldomQA/seldom/blob/master/docs/db_operation.md)
+* 打印`logs`合并到 `reports` 目录。
+
 ### 2.2.1
 * webdriver文件增加类型。
 * 删除utils 错误代码。
