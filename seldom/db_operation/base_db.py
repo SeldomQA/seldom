@@ -8,7 +8,12 @@ class SQLBase:
         """
         tmp_list = []
         for key, value in data.items():
-            tmp = "{k}='{v}'".format(k=key, v=value)
+            if value is None:
+                tmp = "{k}={v}".format(k=key, v='null')
+            elif isinstance(value, int):
+                tmp = "{k}={v}".format(k=key, v=str(value))
+            else:
+                tmp = "{k}='{v}'".format(k=key, v=value)
             tmp_list.append(tmp)
         return ','.join(tmp_list)
 
@@ -19,7 +24,12 @@ class SQLBase:
         """
         tmp_list = []
         for key, value in conditions.items():
-            tmp = "{k}='{v}'".format(k=key, v=value)
+            if value is None:
+                tmp = "{k}={v}".format(k=key, v='null')
+            elif isinstance(value, int):
+                tmp = "{k}={v}".format(k=key, v=str(value))
+            else:
+                tmp = "{k}='{v}'".format(k=key, v=value)
             tmp_list.append(tmp)
         return ' and '.join(tmp_list)
 
