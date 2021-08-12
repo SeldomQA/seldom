@@ -19,24 +19,36 @@ class MySQLDB(SQLBase):
                                           charset='utf8mb4',
                                           cursorclass=pymysql.cursors.DictCursor)
 
-    def delete_data(self, table, where=None):
-        """
-        delete table data
-        """
-        sql = """delete from {}""".format(table)
-        if where is not None:
-            sql += ' where {};'.format(self.dict_to_str_and(where))
-        with self.connection.cursor() as cursor:
-            self.connection.ping(reconnect=True)
-            cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
-            cursor.execute(sql)
-        self.connection.commit()
-
     def close(self):
         """
         Close the database connection
         """
         self.connection.close()
+
+    def execute_sql(self, sql):
+        """
+        Execute SQL
+        """
+        with self.connection.cursor() as cursor:
+            self.connection.ping(reconnect=True)
+            if "delete" in sql.lower()[0:6]:
+                cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
+            cursor.execute(sql)
+        self.connection.commit()
+
+    def query_sql(self, sql):
+        """
+        Query SQL
+        return: query data
+        """
+        data_list = []
+        with self.connection.cursor() as cursor:
+            self.connection.ping(reconnect=True)
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            for row in rows:
+                data_list.append(row)
+            return data_list
 
     def insert_data(self, table, data):
         """
@@ -47,26 +59,16 @@ class MySQLDB(SQLBase):
         key = ','.join(data.keys())
         value = ','.join(data.values())
         sql = """INSERT INTO {t} ({k}) VALUES ({v})""".format(t=table, k=key, v=value)
-        with self.connection.cursor() as cursor:
-            self.connection.ping(reconnect=True)
-            cursor.execute(sql)
-        self.connection.commit()
+        self.execute_sql(sql)
 
     def select_data(self, table, where=None):
         """
         select sql statement
         """
-        data_list = []
         sql = """select * from {} """.format(table)
         if where is not None:
             sql += 'where {};'.format(self.dict_to_str_and(where))
-        with self.connection.cursor() as cursor:
-            self.connection.ping(reconnect=True)
-            cursor.execute(sql)
-            rows = cursor.fetchall()
-            for row in rows:
-                data_list.append(row)
-            return data_list
+        return self.query_sql(sql)
 
     def update_data(self, table, data, where):
         """
@@ -76,10 +78,16 @@ class MySQLDB(SQLBase):
         sql += self.dict_to_str(data)
         if where:
             sql += ' where {};'.format(self.dict_to_str_and(where))
-        with self.connection.cursor() as cursor:
-            self.connection.ping(reconnect=True)
-            cursor.execute(sql)
-        self.connection.commit()
+        self.execute_sql(sql)
+
+    def delete_data(self, table, where=None):
+        """
+        delete table data
+        """
+        sql = """delete from {}""".format(table)
+        if where is not None:
+            sql += ' where {};'.format(self.dict_to_str_and(where))
+        self.execute_sql(sql)
 
     def init_table(self, table_data):
         """

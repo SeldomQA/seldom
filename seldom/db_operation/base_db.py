@@ -43,7 +43,7 @@ class SQLBase:
         """
         insert sql statement
         """
-        return self.insert_data(self, table, data)
+        return self.insert_data(table, data)
 
     def select(self, table, where=None):
         """
@@ -55,4 +55,4 @@ class SQLBase:
         """
         update sql statement
         """
-        return self.update_data(self, table, data, where)
+        return self.update_data(table, data, where)
