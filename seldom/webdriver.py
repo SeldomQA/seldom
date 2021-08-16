@@ -40,6 +40,7 @@ class WebElement(object):
         except KeyError:
             raise ValueError("Element positioning of type '{}' is not supported. ".format(self.by))
         self.find_elem_info = None
+        self.find_elem_warn = None
 
     def __find_element(self, elem: tuple) -> None:
         """
@@ -54,9 +55,8 @@ class WebElement(object):
             else:
                 time.sleep(1)
         else:
-            error_msg = "❌ Find 0 element through: {by}={value}".format(
+            self.find_elem_warn = "❌ Find 0 element through: {by}={value}".format(
                 by=elem[0], value=elem[1])
-            raise NotFindElementError(error_msg)
 
     def get_elements(self):
         """
@@ -124,6 +124,10 @@ class WebElement(object):
     @property
     def info(self):
         return self.find_elem_info
+
+    @property
+    def warn(self):
+        return self.find_elem_warn
 
 
 class WebDriver(object):
@@ -791,11 +795,14 @@ class WebDriver(object):
         """
         web_elem = WebElement(**kwargs)
         elems = web_elem.get_elements()
-        log.info("✅ {}.".format(web_elem.info))
+        if len(elems) == 0:
+            log.warn("{}.".format(web_elem.warn))
+        else:
+            log.info("✅ {}.".format(web_elem.info))
         return elems
 
     @staticmethod
-    def get_element(index: int = 0, **kwargs):
+    def get_element(index: int=0, **kwargs):
         """
         Get a set of elements
 
