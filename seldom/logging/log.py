@@ -6,9 +6,10 @@ import platform
 import logging.handlers
 from colorama import Fore, Style
 from seldom.running.config import BrowserConfig
+from seldom.running.config import Seldom
 
 __all__ = [
-    "debug", "info", "error", "warn", "_print",
+    "debug", "info", "error", "warn", "printf",
     "set_level", "set_level_to_debug", "set_level_to_info", "set_level_to_warn", "set_level_to_error"
 ]
 
@@ -48,43 +49,59 @@ colorLog = True
 def debug(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
     if colorLog is True:
+        if Seldom.debug is False:
+            print(now + " [DEBUG] " + str(msg))
         _logger.debug(now + " [DEBUG] " + str(msg))
     else:
         msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        if Seldom.debug is False:
+            print(now + str(msg))
         _logger.debug(now + " [DEBUG] " + str(msg))
 
 
 def info(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
     if colorLog is True:
+        if Seldom.debug is False:
+            print(now + " [INFO] " + str(msg))
         _logger.info(Fore.GREEN + now + " [INFO] " + str(msg) + Style.RESET_ALL)
     else:
         msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        if Seldom.debug is False:
+            print(now + str(msg))
         _logger.info(now + " [INFO] " + str(msg))
 
 
 def error(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
     if colorLog is True:
+        if Seldom.debug is False:
+            print(now + " [ERROR] " + str(msg))
         _logger.error(Fore.RED + now + " [ERROR] " + str(msg) + Style.RESET_ALL)
     else:
         msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        if Seldom.debug is False:
+            print(now + str(msg))
         _logger.info(now + " [ERROR] " + str(msg))
 
 
 def warn(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
     if colorLog is True:
+        if Seldom.debug is True:
+            print(now + " [WARNING] " + str(msg))
         _logger.warning(Fore.YELLOW + now + " [WARNING] " + str(msg) + Style.RESET_ALL)
     else:
         msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        if Seldom.debug is False:
+            print(now + str(msg))
         _logger.info(now + " [WARNING] " + str(msg))
 
 
-def _print(msg):
+def printf(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
     if colorLog is True:
-        _logger.debug(Fore.BLUE + now + " [PRINT] " + str(msg) + Style.RESET_ALL)
+        _logger.debug(Fore.CYAN + now + " [PRINT] " + str(msg) + Style.RESET_ALL)
     else:
         msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
         _logger.info(now + " [PRINT] " + str(msg))

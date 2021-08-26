@@ -123,15 +123,15 @@ class TestMain(object):
                     runner = HTMLTestRunner(stream=fp, title=self.title, description=self.description)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
-            log.info("generated html file: file:///{}".format(report_path))
-            log.info("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            log.printf("generated html file: file:///{}".format(report_path))
+            log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
             webbrowser.open_new("file:///{}".format(report_path))
         else:
             runner = unittest.TextTestRunner(verbosity=2)
-            log.info("A run the test in debug mode without generating HTML report!")
+            log.printf("A run the test in debug mode without generating HTML report!")
             log.info(seldom_str)
             runner.run(suits)
-            log.info("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
 
 
 main = TestMain
