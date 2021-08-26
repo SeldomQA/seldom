@@ -42,30 +42,52 @@ else:
     _logger.addHandler(_handler)
     # _logger.removeHandler(_handler)
 
+colorLog = True
+
 
 def debug(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
-    _logger.debug(now + " [DEBUG] " + str(msg))
+    if colorLog is True:
+        _logger.debug(now + " [DEBUG] " + str(msg))
+    else:
+        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        _logger.debug(now + " [DEBUG] " + str(msg))
 
 
 def info(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
-    _logger.info(Fore.GREEN + now + " [INFO] " + str(msg) + Style.RESET_ALL)
+    if colorLog is True:
+        _logger.info(Fore.GREEN + now + " [INFO] " + str(msg) + Style.RESET_ALL)
+    else:
+        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        _logger.info(now + " [INFO] " + str(msg))
 
 
 def error(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
-    _logger.error(Fore.RED + now + " [ERROR] " + str(msg) + Style.RESET_ALL)
+    if colorLog is True:
+        _logger.error(Fore.RED + now + " [ERROR] " + str(msg) + Style.RESET_ALL)
+    else:
+        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        _logger.info(now + " [ERROR] " + str(msg))
 
 
 def warn(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
-    _logger.warning(Fore.YELLOW + now + " [WARNING] " + str(msg) + Style.RESET_ALL)
+    if colorLog is True:
+        _logger.warning(Fore.YELLOW + now + " [WARNING] " + str(msg) + Style.RESET_ALL)
+    else:
+        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        _logger.info(now + " [WARNING] " + str(msg))
 
 
 def _print(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
-    _logger.debug(Fore.BLUE + now + " [PRINT] " + str(msg) + Style.RESET_ALL)
+    if colorLog is True:
+        _logger.debug(Fore.BLUE + now + " [PRINT] " + str(msg) + Style.RESET_ALL)
+    else:
+        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
+        _logger.info(now + " [PRINT] " + str(msg))
 
 
 def set_level(level):
