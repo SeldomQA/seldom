@@ -1,3 +1,8 @@
+### 2.2.3
+* 支持控制台操作步骤显示在HTML报告中。[42](https://github.com/SeldomQA/seldom/issues/42)
+* 修改`get_elements()`返回空列表。[69](https://github.com/SeldomQA/seldom/issues/69)
+* 修复因为`colorama`/`emoji`导致的编码错误。[70](https://github.com/SeldomQA/seldom/issues/70)
+
 ### 2.2.2
 * 优化db操作方法，[查看](https://github.com/SeldomQA/seldom/blob/master/docs/db_operation.md)
 * 打印`logs`合并到 `reports` 目录。
