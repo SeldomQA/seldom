@@ -207,7 +207,7 @@ def firefox(_os=None, os_bit=None):
     base_url = 'https://github.com/mozilla/geckodriver/releases/latest'
     try:
         resp = urlopen(base_url, timeout=15)
-    except Exception:
+    except Exception as e:
         return False
     c_type = resp.headers.get_content_charset()
     c_type = c_type if c_type else 'utf-8'
@@ -230,7 +230,7 @@ def chrome(_os=None, os_bit=None):
     :param os_bit: system bit
     :return:
     """
-    latest_version = '91.0.4472.19'
+    latest_version = '92.0.4515.107'
     base_download = "https://cdn.npm.taobao.org/dist/chromedriver/%s/chromedriver_%s%s.zip"
     download = base_download % (latest_version, _os, os_bit)
     return 'chromedriver', download, latest_version
@@ -245,7 +245,7 @@ def install_driver(browser=None, file_directory='./lib/'):
     :return: The absolute path of the downloaded driver, or None if something failed.
     """
     if not current_os:
-        raise Exception('Cannot determine OS version! [%s]' % platform.system())
+        raise Exception('Cannot determine OS version! [{}]'.format(platform.system()))
 
     if browser is None:
         browser = "chrome"
@@ -261,11 +261,11 @@ def install_driver(browser=None, file_directory='./lib/'):
         driver = basename(driver_path)
         exts = [e for e in ['.zip', '.tar.gz', '.tar.bz2'] if url.endswith(e)]
         if len(exts) != 1:
-            raise Exception("Unable to locate file extension in URL: %s (%s)" % (url, ','.join(exts)))
+            raise Exception("Unable to locate file extension in URL:{0} ({1})".format(url, ','.join(exts)))
         archive = exts[0]
 
-        archive_path = join(abspath(file_directory), '%s_%s%s%s' % (driver, current_os, os_bit, archive))
-        file_path = join(abspath(file_directory), '%s%s' % (driver, ext))
+        archive_path = join(abspath(file_directory), '{0}_{1}{2}{3}'.format(driver, current_os, os_bit, archive))
+        file_path = join(abspath(file_directory), '{0}{1}'.format(driver, ext))
 
         if isfile(file_path):
             log.info('{} is already installed.'.format(driver))
@@ -318,7 +318,7 @@ def extract(path, driver_pattern, out_file):
     out_file = abspath(out_file)
     if not isfile(path):
         return None
-    tmp_path = join(dirname(out_file), 'tmp_dl_dir_%s' % basename(path))
+    tmp_path = join(dirname(out_file), 'tmp_dl_dir_{}'.format(basename(path)))
     zip_ref, namelist = None, None
     if path.endswith('.zip'):
         zip_ref = zipfile.ZipFile(path, "r")
