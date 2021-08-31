@@ -290,7 +290,7 @@ seldom API的设计理念是将元素操作和元素定位放到起，本身不�
 [poium](https://github.com/SeldomQA/poium) 是`Page objects`设计模式最佳实践，如果想使用poium，需要单独安装。
 
 ```shell
-> pip install poium==1.0.0
+> pip install poium==1.0.2
 ```
 
 将seldom与poium结合使用。
@@ -315,7 +315,7 @@ class BaiduTest(seldom.TestCase):
         """
         page = BaiduPage(self.driver)
         page.get("https://www.baidu.com")
-        page.search_input = "seldom"
+        page.search_input.send_keys("seldom")
         page.search_button.click()
         self.assertTitle("seldom_百度搜索")
 
