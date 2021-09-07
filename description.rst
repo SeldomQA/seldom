@@ -1,7 +1,7 @@
 seldom
 ---------------
 
-WebUI automation testing framework based on Selenium and unittest.
+WebUI/HTTP automation testing framework based on unittest.
 
 Installation
 ------------

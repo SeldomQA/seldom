@@ -2,6 +2,7 @@
 import re
 import ast
 from setuptools import setup, find_packages
+from os.path import dirname, join, abspath
 
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 
@@ -9,8 +10,6 @@ with open('seldom/__init__.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
-with open("description.rst", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
 
 setup(
     name='seldom',
@@ -19,8 +18,8 @@ setup(
     license='BSD',
     author='bugmaster',
     author_email='fnngj@126.com',
-    description='WebUI automation testing framework based on Selenium and unittest.',
-    long_description=long_description,
+    description='WebUI/HTTP automation testing framework based on unittest.',
+    long_description=open(join(abspath(dirname(__file__)), "description.rst")).read(),
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
