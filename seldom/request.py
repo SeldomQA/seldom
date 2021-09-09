@@ -6,7 +6,10 @@ def request(func):
     def wrapper(*args, **kw):
         func_name = func.__name__
         print('\n----------- Request 🚀 ---------------')
-        url = list(args)[1]
+        try:
+            url = list(args)[1]
+        except IndexError:
+            url = kw.get("url", "")
         if (Seldom.base_url is not None) and ("http" not in url):
             url = Seldom.base_url + list(args)[1]
         print('url: {u}         method: {m}'.format(u=url, m=func_name.upper()))
