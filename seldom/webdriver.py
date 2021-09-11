@@ -58,7 +58,7 @@ class WebElement(object):
             self.find_elem_warn = "❌ Find 0 element through: {by}={value}".format(
                 by=elem[0], value=elem[1])
 
-    def get_elements(self):
+    def get_elements(self, index: int = None):
         """
         Judge element positioning way, and returns the element.
         """
@@ -90,8 +90,12 @@ class WebElement(object):
         else:
             raise NameError(
                 "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
-
-        return elem
+        if index is None:
+            return elem
+        elif len(elem) == 0:
+            raise NotFindElementError(self.find_elem_warn)
+        else:
+            return elem[index]
 
     @staticmethod
     def show_element(elem):
@@ -254,7 +258,7 @@ class WebDriver(object):
         if clear is True:
             self.clear(index, **kwargs)
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {info}, input '{text}'.".format(info=web_elem.info, text=text))
         elem.send_keys(text)
@@ -271,7 +275,7 @@ class WebDriver(object):
         if clear is True:
             self.clear(index, **kwargs)
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {info}, input '{text}' and enter.".format(info=web_elem.info, text=text))
         elem.send_keys(text)
@@ -286,7 +290,7 @@ class WebDriver(object):
             self.clear(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, clear input.".format(web_elem.info))
         elem.clear()
@@ -301,7 +305,7 @@ class WebDriver(object):
             self.click(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, click.".format(web_elem.info))
         elem.click()
@@ -315,7 +319,7 @@ class WebDriver(object):
             self.slow_click(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, slow click.".format(web_elem.info))
         ActionChains(Seldom.driver).move_to_element(elem).click(elem).perform()
@@ -329,7 +333,7 @@ class WebDriver(object):
             self.right_click(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, right click.".find(web_elem.info))
         ActionChains(Seldom.driver).context_click(elem).perform()
@@ -343,7 +347,7 @@ class WebDriver(object):
             self.move_to_element(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, move to element.".format(web_elem.info))
         ActionChains(Seldom.driver).move_to_element(elem).perform()
@@ -357,7 +361,7 @@ class WebDriver(object):
             self.move_to_element(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, click and hold.".format(web_elem.info))
         ActionChains(Seldom.driver).click_and_hold(elem).perform()
@@ -374,7 +378,7 @@ class WebDriver(object):
          - y: Y offset to move to.
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         action = ActionChains(Seldom.driver)
         log.info("✅ {}, drag and drop by offset.".format(web_elem.info))
@@ -389,7 +393,7 @@ class WebDriver(object):
             self.double_click(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, double click.".format(web_elem.info))
         ActionChains(Seldom.driver).double_click(elem).perform()
@@ -403,7 +407,7 @@ class WebDriver(object):
             self.click_text("新闻")
         """
         web_elem = WebElement(link_text=text)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, click link.".format(web_elem.info))
         elem.click()
@@ -437,7 +441,7 @@ class WebDriver(object):
             driver.submit(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, submit.".format(web_elem.info))
         elem.submit()
@@ -496,7 +500,7 @@ class WebDriver(object):
         if attribute is None:
             raise ValueError("attribute is not None")
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {info}, get attribute：{att}.".format(info=web_elem.info, att=attribute))
         return elem.get_attribute(attribute)
@@ -510,7 +514,7 @@ class WebDriver(object):
             self.get_text(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {info}, get text: {text}.".format(info=web_elem.info, text=elem.text))
         return elem.text
@@ -524,7 +528,7 @@ class WebDriver(object):
             self.get_display(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         result = elem.is_displayed()
         log.info("✅ {info}, element is display: {r}.".format(info=web_elem.info, r=result))
@@ -605,7 +609,7 @@ class WebDriver(object):
             self.switch_to_frame(css="#el")
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, switch to frame.".format(web_elem.info))
         Seldom.driver.switch_to.frame(elem)
@@ -672,7 +676,7 @@ class WebDriver(object):
             self.select(css="#nr", index=2)
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("✅ {}, select option.".format(web_elem.info))
         if value is not None:
@@ -811,6 +815,6 @@ class WebDriver(object):
         elem.click()
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements()[index]
+        elem = web_elem.get_elements(index)
         log.info("✅ {}.".format(web_elem.info))
         return elem
