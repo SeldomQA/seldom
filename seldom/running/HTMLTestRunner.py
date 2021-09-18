@@ -544,6 +544,12 @@ class SMTP(object):
         if to is None:
             raise ValueError("Please specify the email address to send")
 
+        if isinstance(to, str):
+            to = [to]
+
+        if isinstance(to, list) is False:
+            raise ValueError("Received mail type error")
+
         if subject is None:
             subject = 'Unit Test Report'
         if contents is None:
@@ -557,7 +563,7 @@ class SMTP(object):
         msg = MIMEMultipart()
         msg['Subject'] = Header(subject, 'utf-8')
         msg['From'] = self.user
-        msg['To'] = to
+        msg['To'] = ",".join(to)
 
         text = MIMEText(contents, 'html', 'utf-8')
         msg.attach(text)
