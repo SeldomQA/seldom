@@ -3,8 +3,6 @@ import jmespath
 from time import sleep
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
-from selenium.webdriver import Chrome
-from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.webdriver import WebDriver
 from seldom.request import HttpRequest
 from seldom.running.config import Seldom

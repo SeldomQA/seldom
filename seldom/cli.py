@@ -217,7 +217,7 @@ def firefox(_os=None, os_bit=None):
 
     urls = ['https://github.com%s' % u for u in re.findall(r'\"(.+?/download.+?)\"', html)]
     for u in urls:
-        target = '%s%s' % (_os, os_bit) if _os is not 'mac' else 'macos'
+        target = '%s%s' % (_os, os_bit) if _os != 'mac' else 'macos'
         if target in u:
             ver = re.search(r'v(\d{1,2}\.\d{1,2}\.\d{1,2})', u).group(1)
             return 'geckodriver', u, ver
