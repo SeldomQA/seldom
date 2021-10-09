@@ -2,11 +2,11 @@ from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.opera import OperaDriverManager
+from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 
 __all__ = [
     "ChromeConfig", "FirefoxConfig", "IEConfig", "EdgeConfig", "OperaConfig", "SafariConfig", "Browser"
