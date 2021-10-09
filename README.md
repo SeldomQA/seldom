@@ -76,6 +76,8 @@ mypro/
 
 3、运行项目：
 
+> ⚠️ seldom不支持在`pyCharm`中右键执行，请使用cmd/终端。
+
 ```shell
 > python3 run.py
 2021-05-07 17:51:48 [INFO]
