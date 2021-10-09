@@ -1,5 +1,7 @@
 # coding=utf-8
 import os
+import re
+import ast
 import unittest
 import webbrowser
 from xmlrunner import XMLTestRunner
@@ -10,15 +12,21 @@ from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 
+INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
+_version_re = re.compile(r'__version__\s+=\s+(.*)')
+with open(INIT_FILE, 'rb') as f:
+    version = str(ast.literal_eval(_version_re.search(
+        f.read().decode('utf-8')).group(1)))
+
 seldom_str = """
               __    __              
    ________  / /___/ /___  ____ ____ 
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/ 
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v{v}
 -----------------------------------------
                              @itest.info
-"""
+""".format(v=version)
 
 
 class TestMain(object):
@@ -115,7 +123,7 @@ class TestMain(object):
                 report_path = os.path.join(os.getcwd(), "reports", self.report)
 
             with(open(report_path, 'wb')) as fp:
-                log.info(seldom_str)
+                print(seldom_str)
                 if report_path.split(".")[-1] == "xml":
                     runner = XMLTestRunner(output=fp)
                     runner.run(suits)
@@ -129,7 +137,7 @@ class TestMain(object):
         else:
             runner = unittest.TextTestRunner(verbosity=2)
             log.printf("A run the test in debug mode without generating HTML report!")
-            log.info(seldom_str)
+            print(seldom_str)
             runner.run(suits)
             log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
 
