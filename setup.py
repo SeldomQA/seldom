@@ -33,7 +33,8 @@ setup(
         'jinja2>=2.11.2',
         'requests>=2.22.0',
         'jsonschema>=3.2.0',
-        'jmespath>=0.10.0'
+        'jmespath>=0.10.0',
+        'webdriver-manager>=3.4.2',
     ],
     classifiers=[
         'Intended Audience :: Developers',

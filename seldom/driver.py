@@ -2,6 +2,11 @@ from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import IEDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from webdriver_manager.opera import OperaDriverManager
 
 __all__ = [
     "ChromeConfig", "FirefoxConfig", "IEConfig", "EdgeConfig", "OperaConfig", "SafariConfig", "Browser"
@@ -16,30 +21,25 @@ PAD_LIST = ['iPad', 'iPad Pro']
 
 class ChromeConfig:
     headless = False
-    executable_path = "chromedriver"
     options = None
     command_executor = ""
 
 
 class FirefoxConfig:
     headless = False
-    executable_path = "geckodriver"
     options = None
     command_executor = ""
 
 
 class IEConfig:
-    executable_path = "IEDriverServer.exe"
     command_executor = ""
 
 
 class EdgeConfig:
-    executable_path = "MicrosoftWebDriver.exe"
     command_executor = ""
 
 
 class OperaConfig:
-    executable_path = "operadriver"
     command_executor = ""
 
 
@@ -96,7 +96,7 @@ class Browser(object):
                 chrome_options.add_argument('--headless')
 
         driver = webdriver.Chrome(options=chrome_options,
-                                  executable_path=ChromeConfig.executable_path)
+                                  executable_path=ChromeDriverManager().install())
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
             Object.defineProperty(navigator, 'webdriver', {
@@ -121,7 +121,7 @@ class Browser(object):
                 firefox_options.headless = True
 
         driver = webdriver.Firefox(options=firefox_options,
-                                   executable_path=FirefoxConfig.executable_path)
+                                   executable_path=GeckoDriverManager().install())
         return driver
 
     @staticmethod
@@ -129,21 +129,21 @@ class Browser(object):
         if IEConfig.command_executor != "":
             return webdriver.Remote(command_executor=IEConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.INTERNETEXPLORER.copy())
-        return webdriver.Ie(executable_path=IEConfig.executable_path)
+        return webdriver.Ie(executable_path=IEDriverManager().install())
 
     @staticmethod
     def edge():
         if EdgeConfig.command_executor != "":
             return webdriver.Remote(command_executor=EdgeConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.EDGE.copy())
-        return webdriver.Edge(executable_path=EdgeConfig.executable_path)
+        return webdriver.Edge(executable_path=EdgeChromiumDriverManager().install())
 
     @staticmethod
     def opera():
         if OperaConfig.command_executor != "":
             return webdriver.Remote(command_executor=OperaConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.OPERA.copy())
-        return webdriver.Opera(executable_path=OperaConfig.executable_path)
+        return webdriver.Opera(executable_path=OperaDriverManager().install())
 
     @staticmethod
     def safari():
@@ -157,7 +157,7 @@ class Browser(object):
         chrome_options = ChromeOptions()
         chrome_options.add_experimental_option("mobileEmulation", {"deviceName": name})
         driver = webdriver.Chrome(chrome_options=chrome_options,
-                                  executable_path=ChromeConfig.executable_path,
+                                  executable_path=ChromeDriverManager().install(),
                                   options=ChromeConfig.options)
         driver.set_window_size(width=480, height=900)
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
@@ -173,7 +173,7 @@ class Browser(object):
         chrome_options = ChromeOptions()
         chrome_options.add_experimental_option("mobileEmulation", {"deviceName": name})
         driver = webdriver.Chrome(chrome_options=chrome_options,
-                                  executable_path=ChromeConfig.executable_path,
+                                  executable_path=ChromeDriverManager().install(),
                                   options=ChromeConfig.options)
         driver.set_window_size(width=1100, height=900)
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
