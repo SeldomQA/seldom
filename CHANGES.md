@@ -1,3 +1,9 @@
+### 2.2.4
+* 修复HTTP接口测试，指定`url`参数错误的问题(https://github.com/SeldomQA/seldom/issues/71)。
+* 支持发送多人邮件。[72](https://github.com/SeldomQA/seldom/issues/72)
+* 优化HTMLTestRunner, 重跑次数不记录为用例数。
+* 修复pip安装缺少`description.rst` 问题。
+
 ### 2.2.3
 * 支持控制台操作步骤显示在HTML报告中。[42](https://github.com/SeldomQA/seldom/issues/42)
 * 修改`get_elements()`返回空列表。[69](https://github.com/SeldomQA/seldom/issues/69)

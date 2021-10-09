@@ -168,14 +168,16 @@ class _TestResult(TestResult):
         self.result = []
         self.case_start_time = None
         self.case_end_time = None
+        self.output_buffer = None
+        self.test_obj = None
 
     def startTest(self, test):
         self.case_start_time = time.time()
         test.images = getattr(test, "images", [])
         test.runtime = getattr(test, "runtime", None)
-        self.outputBuffer = io.StringIO()
-        stdout_redirector.fp = self.outputBuffer
-        stderr_redirector.fp = self.outputBuffer
+        self.output_buffer = io.StringIO()
+        stdout_redirector.fp = self.output_buffer
+        stderr_redirector.fp = self.output_buffer
         self.stdout0 = sys.stdout
         self.stderr0 = sys.stderr
         sys.stdout = stdout_redirector
@@ -191,7 +193,7 @@ class _TestResult(TestResult):
             sys.stderr = self.stderr0
             self.stdout0 = None
             self.stderr0 = None
-        return self.outputBuffer.getvalue()
+        return self.output_buffer.getvalue()
 
     def stopTest(self, test):
         """
@@ -212,11 +214,11 @@ class _TestResult(TestResult):
                     test = copy.copy(test)
                     sys.stderr.write("Retesting... ")
                     sys.stderr.write(str(test))
-                    sys.stderr.write('..%d \n' % self.runs)
+                    sys.stderr.write(f"..{self.runs} \n")
                     doc = getattr(test, '_testMethodDoc', u"") or u''
                     if doc.find('->rerun') != -1:
                         doc = doc[:doc.find('->rerun')]
-                    desc = "%s->rerun:%d" % (doc, self.runs)
+                    desc = f"{doc} ->rerun: {self.runs}"
                     if isinstance(desc, str):
                         desc = desc
                     test._testMethodDoc = desc
@@ -227,7 +229,7 @@ class _TestResult(TestResult):
         self.complete_output()
         self.case_end_time = time.time()
         case_run_time = self.case_end_time - self.case_start_time
-        test.runtime = "%.2f" % case_run_time
+        test.runtime = round(case_run_time, 2)
 
     def addSuccess(self, test):
         self.success_count += 1
@@ -243,7 +245,11 @@ class _TestResult(TestResult):
             sys.stderr.write('.' + str(self.success_count))
 
     def addError(self, test, err):
-        self.error_count += 1
+        if self.test_obj != test:
+            self.test_obj = test
+            self.error_count += 1
+        else:
+            self.error_count += 0
         self.status = 1
         TestResult.addError(self, test, err)
         _, _exc_str = self.errors[-1]
@@ -260,7 +266,11 @@ class _TestResult(TestResult):
             sys.stderr.write('E')
 
     def addFailure(self, test, err):
-        self.failure_count += 1
+        if self.test_obj != test:
+            self.test_obj = test
+            self.failure_count += 1
+        else:
+            self.failure_count += 0
         self.status = 1
         TestResult.addFailure(self, test, err)
         _, _exc_str = self.failures[-1]
@@ -310,6 +320,7 @@ class HTMLTestRunner(CustomTemplate):
             self.description = description
 
         self.startTime = datetime.datetime.now()
+        self.test_obj = None
 
     def run(self, test, rerun=0, save_last_run=False):
         """
@@ -327,15 +338,15 @@ class HTMLTestRunner(CustomTemplate):
         unittest does not seems to run in any particular order.
         Here at least we want to group them together by class.
         """
-        rmap = {}
+        run_map = {}
         classes = []
-        for n, t, o, e in result_list:
-            cls = t.__class__
-            if not cls in rmap:
-                rmap[cls] = []
+        for num, test, out, error in result_list:
+            cls = test.__class__
+            if cls not in run_map:
+                run_map[cls] = []
                 classes.append(cls)
-            rmap[cls].append((n, t, o, e))
-        r = [(cls, rmap[cls]) for cls in classes]
+            run_map[cls].append((num, test, out, error))
+        r = [(cls, run_map[cls]) for cls in classes]
         return r
 
     def get_report_attributes(self, result):
@@ -352,13 +363,13 @@ class HTMLTestRunner(CustomTemplate):
         RunResult.errors = result.error_count
         RunResult.skipped = result.skip_count
         if result.success_count:
-            status.append('Passed:%s' % result.success_count)
+            status.append(f"Passed:{result.success_count}")
         if result.failure_count:
-            status.append('Failed:%s' % result.failure_count)
+            status.append(f"Failed:{result.failure_count}")
         if result.error_count:
-            status.append('Errors:%s' % result.error_count)
+            status.append(f"Errors:{result.error_count}")
         if result.skip_count:
-            status.append('Skipped:%s' % result.skip_count)
+            status.append(f"Skipped:{result.skip_count}")
         if status:
             status = ' '.join(status)
         else:
@@ -375,7 +386,7 @@ class HTMLTestRunner(CustomTemplate):
         stylesheet = env.get_template('stylesheet.html').render()
         report_attrs = self.get_report_attributes(result)
 
-        generator = 'HTMLTestRunner %s' % "1.0.0"
+        generator = 'HTMLTestRunner 1.0.0'
         heading = self._generate_heading(report_attrs)
         report = self._generate_report(result)
         chart = self._generate_chart(result)
@@ -405,39 +416,47 @@ class HTMLTestRunner(CustomTemplate):
         sorted_result = self.sort_result(result.result)
         for cid, (cls, cls_results) in enumerate(sorted_result):
             # subtotal for a class
-            np = nf = ne = ns = 0
-            for n, t, o, e in cls_results:
-                if n == 0:
-                    np += 1
-                elif n == 1:
-                    nf += 1
-                elif n == 2:
-                    ne += 1
+            num_pass = num_fail = num_error = num_skip = 0
+            for num, test, out, error in cls_results:
+                if num == 0:
+                    num_pass += 1
+                elif num == 1:
+                    if self.test_obj != test:
+                        self.test_obj = test
+                        num_fail += 1
+                    else:
+                        num_fail += 0
+                elif num == 2:
+                    if self.test_obj != test:
+                        self.test_obj = test
+                        num_error += 1
+                    else:
+                        num_error += 0
                 else:
-                    ns += 1
+                    num_skip += 1
 
             # format class description
             if cls.__module__ == "__main__":
                 name = cls.__name__
             else:
-                name = "%s.%s" % (cls.__module__, cls.__name__)
+                name = f"{cls.__module__}.{ cls.__name__}"
             doc = cls.__doc__ or ""
             # desc = doc and '%s: %s' % (name, doc) or name
 
             row = self.REPORT_CLASS_TMPL % dict(
-                style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or 'passClass',
+                style=num_error > 0 and 'errorClass' or num_fail > 0 and 'failClass' or 'passClass',
                 name=name,
                 desc=doc,
-                count=np + nf + ne,
-                Pass=np,
-                fail=nf,
-                error=ne,
-                cid='c%s.%s' % (self.run_times, cid + 1),
+                count=num_pass + num_fail + num_error,
+                Pass=num_pass,
+                fail=num_fail,
+                error=num_error,
+                cid='c{}.{}'.format(self.run_times, cid + 1),
             )
             rows.append(row)
 
-            for tid, (n, t, o, e) in enumerate(cls_results):
-                self._generate_report_test(rows, cid, tid, n, t, o, e)
+            for tid, (num, test, out, error) in enumerate(cls_results):
+                self._generate_report_test(rows, cid, tid, num, test, out, error)
 
         report = env.get_template('report.html').render(
             test_list=''.join(rows),
@@ -460,45 +479,45 @@ class HTMLTestRunner(CustomTemplate):
         )
         return chart
 
-    def _generate_report_test(self, rows, cid, tid, n, t, o, e):
+    def _generate_report_test(self, rows, cid, tid, num, test, out, error):
         # e.g. 'pt1.1', 'ft1.1','et1.1', 'st1.1' etc
-        has_output = bool(o or e)
-        if n == 0:
+        has_output = bool(out or error)
+        if num == 0:
             tmp = "p"
-        elif n == 1:
+        elif num == 1:
             tmp = "f"
-        elif n == 2:
+        elif num == 2:
             tmp = "e"
         else:
             tmp = "s"
-        tid = tmp + 't%d.%d.%d' % (self.run_times, cid + 1, tid + 1)
+        tid = tmp + 't{}.{}.{}'.format(self.run_times, cid + 1, tid + 1)
         # tid = (n == 0 and 'p' or 'f') + 't%s.%s' % (cid + 1, tid + 1)
-        name = t.id().split('.')[-1]
-        doc = t.shortDescription() or ""
+        name = test.id().split('.')[-1]
+        doc = test.shortDescription() or ""
         # desc = doc and ('%s: %s' % (name, doc)) or name
         tmpl = has_output and self.REPORT_TEST_WITH_OUTPUT_TMPL or self.REPORT_TEST_NO_OUTPUT_TMPL
 
         # o and e should be byte string because they are collected from stdout and stderr?
-        if isinstance(o, str):
-            # TODO: some problem with 'string_escape': it escape \n and mess up formating
+        if isinstance(out, str):
+            # TODO: some problem with 'string_escape': it escape \n and mess up formatting
             # uo = unicode(o.encode('string_escape'))
-            uo = o
+            uo = out
         else:
-            uo = o
-        if isinstance(e, str):
-            # TODO: some problem with 'string_escape': it escape \n and mess up formating
+            uo = out
+        if isinstance(error, str):
+            # TODO: some problem with 'string_escape': it escape \n and mess up formatting
             # ue = unicode(e.encode('string_escape'))
-            ue = e
+            ue = error
         else:
-            ue = e
-        script = """%(id)s: %(output)s""" % dict(
+            ue = error
+        script = """{id}: {output}""".format(
             id=tid,
             output=saxutils.escape(uo + ue),
         )
         # add image
-        if getattr(t, 'images', []):
+        if getattr(test, 'images', []):
             tmp = ""
-            for i, img in enumerate(t.images):
+            for i, img in enumerate(test.images):
                 if i == 0:
                     tmp += """<img src="data:image/jpg;base64,{}" style="display: block;" class="img"/>\n""".format(img)
                 else:
@@ -508,20 +527,20 @@ class HTMLTestRunner(CustomTemplate):
             screenshots_html = """"""
 
         # add runtime
-        if getattr(t, 'runtime', []):
-            runtime = t.runtime
+        if getattr(test, 'runtime', []):
+            runtime = test.runtime
         else:
             runtime = "0.00"
 
         row = tmpl % dict(
             tid=tid,
-            Class=(n == 0 and 'hiddenRow' or 'none'),
-            style=n == 2 and 'errorCase' or (n == 1 and 'failCase' or 'passCase'),
+            Class=(num == 0 and 'hiddenRow' or 'none'),
+            style=num == 2 and 'errorCase' or (num == 1 and 'failCase' or 'passCase'),
             casename=name,
             desc=doc,
             runtime=runtime,
             script=script,
-            status=self.STATUS[n],
+            status=self.STATUS[num],
             img=screenshots_html
         )
         rows.append(row)
@@ -544,6 +563,12 @@ class SMTP(object):
         if to is None:
             raise ValueError("Please specify the email address to send")
 
+        if isinstance(to, str):
+            to = [to]
+
+        if isinstance(to, list) is False:
+            raise ValueError("Received mail type error")
+
         if subject is None:
             subject = 'Unit Test Report'
         if contents is None:
@@ -557,7 +582,7 @@ class SMTP(object):
         msg = MIMEMultipart()
         msg['Subject'] = Header(subject, 'utf-8')
         msg['From'] = self.user
-        msg['To'] = to
+        msg['To'] = ",".join(to)
 
         text = MIMEText(contents, 'html', 'utf-8')
         msg.attach(text)
