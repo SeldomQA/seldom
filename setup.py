@@ -34,7 +34,7 @@ setup(
         'requests>=2.22.0',
         'jsonschema>=3.2.0',
         'jmespath>=0.10.0',
-        'webdriver-manager>=3.4.2',
+        'webdriver-manager>=3.5.0',
     ],
     classifiers=[
         'Intended Audience :: Developers',
