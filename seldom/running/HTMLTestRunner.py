@@ -319,7 +319,8 @@ class HTMLTestRunner(CustomTemplate):
         else:
             self.description = description
 
-        self.startTime = datetime.datetime.now()
+        self.start_time = datetime.datetime.now()
+        self.end_time = None
         self.test_obj = None
 
     def run(self, test, rerun=0, save_last_run=False):
@@ -328,7 +329,7 @@ class HTMLTestRunner(CustomTemplate):
         """
         result = _TestResult(self.verbosity, rerun=rerun, save_last_run=save_last_run)
         test(result)
-        self.stopTime = datetime.datetime.now()
+        self.end_time = datetime.datetime.now()
         self.run_times += 1
         self.generate_report(test, result)
         return result
@@ -354,8 +355,8 @@ class HTMLTestRunner(CustomTemplate):
         Return report attributes as a list of (name, value).
         Override this to add custom attributes.
         """
-        startTime = str(self.startTime)[:19]
-        duration = str(self.stopTime - self.startTime)
+        start_time_format = str(self.start_time)[:19]
+        duration = str(self.end_time - self.start_time)
         status = []
 
         RunResult.passed = result.success_count
@@ -376,7 +377,7 @@ class HTMLTestRunner(CustomTemplate):
             status = 'none'
 
         return [
-            {"name": "Start Time", "value": startTime},
+            {"name": "Start Time", "value": start_time_format},
             {"name": "Duration", "value": duration},
             {"name": "Status", "value": status},
         ]
@@ -408,7 +409,6 @@ class HTMLTestRunner(CustomTemplate):
             parameters=report_attrs,
             description=self.description,
         )
-
         return heading
 
     def _generate_report(self, result):
@@ -470,7 +470,8 @@ class HTMLTestRunner(CustomTemplate):
         )
         return report
 
-    def _generate_chart(self, result):
+    @staticmethod
+    def _generate_chart(result):
         chart = env.get_template('charts_script.html').render(
             Pass=str(result.success_count),
             fail=str(result.failure_count),
