@@ -1,26 +1,6 @@
 Other
 -------
 
-Browser-Driven
-~~~~~~~~~~~~~~~~
-
-For browser drivers, If you don't want to configure the environment variable `PATH`, You can specify the path of the driver
-
-
-.. code:: python
-
-    import seldom
-    from seldom.driver import ChromeConfig
-
-    # ...
-    if __name__ == '__main__':
-        ChromeConfig.executable_path = "D:\git\seldom\lib\chromedriver.exe"
-        seldom.main(browser="chrome")
-
-
-Note: Browser requirements 'browser' and driver 'executable_path' 'must be the same
-
-
 Runs On More Browsers
 ~~~~~~~~~~~~~~~~~~~~~~~
 

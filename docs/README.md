@@ -28,7 +28,6 @@
   * [用例的依赖](./advanced.md#用例的依赖)
 
 * [其他](./other.md)
-  * [指定浏览器驱动](./other.md#指定浏览器驱动)
   * [指定不同的浏览器](./other.md#指定不同的浏览器)
   * [Mobile web 模式](./other.md#MobileWeb模式)
   * [开启headless模式](./other.md#开启headless模式)

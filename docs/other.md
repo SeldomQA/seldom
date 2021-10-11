@@ -1,21 +1,5 @@
 ## 其他
 
-### 指定浏览器驱动
-
-你需要针对浏览器驱动配置环境变量`path`。 如果你连添加环境变量`path`都不会，没关系！你可以在seldom中指定浏览器驱动文件目录的绝对路径。
-
-```python
-import seldom
-from seldom.driver import ChromeConfig
-
-# ……
-if __name__ == '__main__':
-    ChromeConfig.executable_path = "D:\git\seldom\lib\chromedriver.exe"
-    seldom.main(browser="chrome")
-```
-
-注：浏览器要`browser`与驱动`executable_path` 要保持对应关系。
-
 
 ### 指定不同的浏览器
 
