@@ -1,32 +1,19 @@
 import os
-import re
 import sys
 import ssl
-import shutil
-import zipfile
-import tarfile
 import argparse
-import platform
-from os import makedirs
-from os.path import join, isfile, basename
-from os.path import isdir, dirname, abspath
-from urllib.request import urlopen
 from seldom.logging import log
 from seldom.har2case.core import HarParser
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import IEDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from webdriver_manager.opera import OperaDriverManager
+from seldom.utils.webdriver_manager_extend import ChromeDriverManager
+
 
 from seldom import __description__, __version__
 
 PY3 = sys.version_info[0] == 3
-
-versions = sorted(['32', '64'], key=lambda v: not platform.machine().endswith(v))
-os_opts = [('win', 'win', '.exe'), ('darwin', 'mac', ''), ('linux', 'linux', '')]
-
-current_os = None
-ext = ''
-for o in os_opts:
-    if o[0] in platform.system().lower():
-        current_os = o[1]
-        ext = o[2]
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -59,7 +46,7 @@ def main():
 
     parser.add_argument(
         '-install',
-        help="Install the browser driver, For example, 'chrome', 'firefox'. ")
+        help="Install the browser driver, For example, 'chrome', 'firefox', 'ie', 'edge', 'opera'. ")
 
     args = parser.parse_args()
 
@@ -197,151 +184,26 @@ if __name__ == '__main__':
     create_file(os.path.join(project_name, "run.py"), run_test)
 
 
-def firefox(_os=None, os_bit=None):
-    """
-    chrome driver info
-    :param _os: system
-    :param os_bit: system bit
-    :return:
-    """
-    base_url = 'https://github.com/mozilla/geckodriver/releases/latest'
-    try:
-        resp = urlopen(base_url, timeout=15)
-    except Exception as e:
-        return False
-    c_type = resp.headers.get_content_charset()
-    c_type = c_type if c_type else 'utf-8'
-    html = resp.read().decode(c_type, errors='ignore')
-    if not html:
-        raise Exception("Unable to download geckodriver version: latest")
-
-    urls = ['https://github.com%s' % u for u in re.findall(r'\"(.+?/download.+?)\"', html)]
-    for u in urls:
-        target = '%s%s' % (_os, os_bit) if _os != 'mac' else 'macos'
-        if target in u:
-            ver = re.search(r'v(\d{1,2}\.\d{1,2}\.\d{1,2})', u).group(1)
-            return 'geckodriver', u, ver
-
-
-def chrome(_os=None, os_bit=None):
-    """
-    chrome driver info
-    :param _os: system
-    :param os_bit: system bit
-    :return:
-    """
-    latest_version = '92.0.4515.107'
-    base_download = "https://cdn.npm.taobao.org/dist/chromedriver/%s/chromedriver_%s%s.zip"
-    download = base_download % (latest_version, _os, os_bit)
-    return 'chromedriver', download, latest_version
-
-
-def install_driver(browser=None, file_directory='./lib/'):
+def install_driver(browser=None):
     """
     Download and install the browser driver
 
-    :param browser: The Driver to download. Pass as `chrome/firefox`. Default Chrome.
-    :param file_directory: The directory to save the driver.
-    :return: The absolute path of the downloaded driver, or None if something failed.
+    :param browser: The Driver to download. Pass as `chrome/firefox/ie/edge/opera`. Default Chrome.
+    :return:
     """
-    if not current_os:
-        raise Exception('Cannot determine OS version! [{}]'.format(platform.system()))
 
     if browser is None:
         browser = "chrome"
 
-    for os_bit in versions:
-        if browser == "chrome":
-            data = chrome(_os=current_os, os_bit=os_bit)
-        elif browser == "firefox":
-            data = firefox(_os=current_os, os_bit=os_bit)
-        else:
-            raise NameError("Currently only 'chrome/firefox' browser drivers are supported")
-        driver_path, url, ver = data
-        driver = basename(driver_path)
-        exts = [e for e in ['.zip', '.tar.gz', '.tar.bz2'] if url.endswith(e)]
-        if len(exts) != 1:
-            raise Exception("Unable to locate file extension in URL:{0} ({1})".format(url, ','.join(exts)))
-        archive = exts[0]
-
-        archive_path = join(abspath(file_directory), '{0}_{1}{2}{3}'.format(driver, current_os, os_bit, archive))
-        file_path = join(abspath(file_directory), '{0}{1}'.format(driver, ext))
-
-        if isfile(file_path):
-            log.info('{} is already installed.'.format(driver))
-            return file_path
-
-        if not download(url, archive_path):
-            log.info('Download for {} version failed; Trying alternates.'.format(os_bit))
-            continue
-
-        out = extract(archive_path, driver_path, file_path)
-        if out:
-            mode = os.stat(out).st_mode
-            mode |= (mode & 0o444) >> 2  # copy R bits to X
-            os.chmod(out, mode)
-
-        return out
-    raise Exception('Unable to locate a valid Web Driver.')
-
-
-def download(url, path):
-    """
-    download driver file
-    :param url:
-    :param path:
-    :return:
-    """
-    log.info('\tDownloading from: {}'.format(url))
-    log.info('\tTo: {}'.format(path))
-    file = abspath(path)
-    if not isdir(dirname(file)):
-        makedirs(dirname(file), exist_ok=True)
-    try:
-        req = urlopen(url, timeout=100)
-    except Exception:
-        return False
-    with open(file, 'wb') as fp:
-        shutil.copyfileobj(req, fp, 16 * 1024)
-    return True
-
-
-def extract(path, driver_pattern, out_file):
-    """
-    Extracts zip files, or tar.gz files.
-    :param path: Path to the archive file, absolute.
-    :param driver_pattern:
-    :param out_file:
-    :return:
-    """
-    path = abspath(path)
-    out_file = abspath(out_file)
-    if not isfile(path):
-        return None
-    tmp_path = join(dirname(out_file), 'tmp_dl_dir_{}'.format(basename(path)))
-    zip_ref, namelist = None, None
-    if path.endswith('.zip'):
-        zip_ref = zipfile.ZipFile(path, "r")
-        namelist = zip_ref.namelist()
-    elif path.endswith('.tar.gz'):
-        zip_ref = tarfile.open(path, "r:gz")
-        namelist = zip_ref.getnames()
-    elif path.endswith('.tar.bz2'):
-        zip_ref = tarfile.open(path, "r:bz2")
-        namelist = zip_ref.getnames()
-    if not zip_ref:
-        return None
-    ret = None
-    for n in namelist:
-        if re.match(driver_pattern, n):
-            zip_ref.extract(n, tmp_path)
-            ret = join(tmp_path, n)
-    zip_ref.close()
-    if ret:
-        if isfile(out_file):
-            os.remove(out_file)
-        os.rename(ret, out_file)
-        shutil.rmtree(tmp_path)
-        ret = out_file
-    os.remove(path)
-    return ret
+    if browser == "chrome":
+        ChromeDriverManager().install()
+    elif browser == "firefox":
+        GeckoDriverManager().install()
+    elif browser == "ie":
+        IEDriverManager().install()
+    elif browser == "edge":
+        EdgeChromiumDriverManager().install()
+    elif browser == "opera":
+        OperaDriverManager().install()
+    else:
+        raise NameError(f"Not found '{browser}' browser driver.")
