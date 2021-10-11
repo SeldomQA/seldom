@@ -9,10 +9,10 @@ class FindFilePath:
             raise NameError("Please specify filename")
         stack_t = inspect.stack()
         ins = inspect.getframeinfo(stack_t[1][0])
-        cls.file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
+        this_file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
 
         file_path = None
-        for root, dirs, files in os.walk(cls.file_dir, topdown=False):
+        for root, dirs, files in os.walk(this_file_dir, topdown=False):
             for file in files:
                 if file == name:
                     file_path = os.path.join(root, file)
