@@ -36,19 +36,21 @@ If you want to keep up with the latest version, you can install with github repo
 
 ```shell
 > seldom -h
-usage: seldom [-h] [-v] [-project PROJECT] [-r R] [-m M] [-install INSTALL]
+usage: seldom [-h] [-v] [-project PROJECT] [-h2c H2C] [-r R] [-m M]
+              [-install INSTALL]
 
-WebUI automation testing framework based on Selenium.
+WebUI/HTTP automation testing framework based on unittest.
 
 optional arguments:
   -h, --help        show this help message and exit
   -v, --version     show version
   -project PROJECT  Create an Seldom automation test project.
+  -h2c H2C          HAR file converts an interface test case.
   -r R              run test case
   -m M              run tests modules, classes or even individual test methods
                     from the command line
-  -install INSTALL  Install the browser driver, For example, 'chrome',
-                    'firefox'.
+  -install INSTALL  Install the browser driver, For example, 'chrome', 'firefox',
+                    'ie', 'edge', 'opera'.
 ```
 
 2、创建项目：
@@ -80,32 +82,32 @@ mypro/
 
 ```shell
 > python3 run.py
-2021-05-07 17:51:48 [INFO]
+
+
               __    __
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.3.0
 -----------------------------------------
                              @itest.info
 
-2021-05-07 17:51:48 [INFO] 📖 https://www.baidu.com
-
-DevTools listening on ws://127.0.0.1:59657/devtools/browser/f518d762-2e96-41d8-8bcc-80d6dd8ca124
-2021-05-07 17:51:50 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-2021-05-07 17:51:51 [INFO] ✅ Find 1 element: css selector=#su , click.
-2021-05-07 17:51:52 [INFO] 👀 assertIn title: seldom_百度搜索.
-2021-05-07 17:51:52 [INFO] 📖 https://www.baidu.com
-2021-05-07 17:51:53 [INFO] ✅ Find 1 element: id=kw , input 'poium'.
-2021-05-07 17:51:54 [INFO] ✅ Find 1 element: css selector=#su , click.
-2021-05-07 17:51:55 [INFO] 👀 assertIn title: poium_百度搜索.
-2021-05-07 17:51:55 [INFO] 📖 https://www.baidu.com
-2021-05-07 17:51:56 [INFO] ✅ Find 1 element: id=kw , input 'HTMLTestRunner'.
-2021-05-07 17:51:57 [INFO] ✅ Find 1 element: css selector=#su , click.
-2021-05-07 17:51:58 [INFO] 👀 assertIn title: HTMLTestRunner_百度搜索.
-2021-05-07 17:51:58 [INFO] 📖 http://www.itest.info
-2021-05-07 17:52:05 [INFO] 👀 assertIn url: http://www.itest.info/.
-2021-05-07 17:52:05 [INFO] generated html file: file:///D:\mypro\reports\2021_05_07_17_51_48_result.html
+2021-10-12 00:47:33 [INFO] 📖 https://www.baidu.com
+2021-10-12 00:47:37 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+2021-10-12 00:47:38 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-10-12 00:47:40 [INFO] 👀 assertIn title: seldom_百度搜索.
+2021-10-12 00:47:40 [INFO] 📖 https://www.baidu.com
+2021-10-12 00:47:41 [INFO] ✅ Find 1 element: id=kw , input 'poium'.
+2021-10-12 00:47:42 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-10-12 00:47:43 [INFO] 👀 assertIn title: poium_百度搜索.
+2021-10-12 00:47:43 [INFO] 📖 https://www.baidu.com
+2021-10-12 00:47:44 [INFO] ✅ Find 1 element: id=kw , input 'HTMLTestRunner'.
+2021-10-12 00:47:45 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-10-12 00:47:46 [INFO] 👀 assertIn title: HTMLTestRunner_百度搜索.
+2021-10-12 00:47:46 [INFO] 📖 http://www.itest.info
+2021-10-12 00:47:53 [INFO] 👀 assertIn url: http://www.itest.info/.
+2021-10-12 00:47:53 [PRINT] generated html file: file:///D:\mypro\reports\2021_10_12_00_47_32_result.html
+2021-10-12 00:47:53 [PRINT] generated log file: file:///D:\mypro\reports\2021_10_12_00_47_32_log.log
 .1.2.3.4
 ```
 

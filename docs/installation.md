@@ -34,6 +34,7 @@ jinja2>=2.11.2
 requests>=2.22.0
 jsonschema>=3.2.0
 jmespath>=0.10.0
+webdriver-manager>=3.5.0
 ```
 
 先通过 `pip` 命令安装这些依赖库，可以加快seldom的这安装。
@@ -50,13 +51,13 @@ jmespath>=0.10.0
 > pip show seldom
 
 Name: seldom
-Version: 2.0.0
+Version: 2.2.4
 Summary: WebUI automation testing framework based on Selenium and unittest.
 Home-page: https://github.com/seldomQA/seldom/
 Author: bugmaster
 Author-email: fnngj@126.com
 License: BSD
-Location: c:\python37\lib\site-packages
+Location: c:\python38\lib\site-packages
 Requires: selenium, colorama, openpyxl, pyyaml, parameterized
 Required-by:
 

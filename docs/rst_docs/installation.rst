@@ -37,6 +37,7 @@ You can see the dependent libraries in the `requires.txt` file.
     requests>=2.22.0
     jsonschema>=3.2.0
     jmespath>=0.10.0
+    webdriver-manager>=3.5.0
 
 
 
@@ -45,4 +46,4 @@ Finally, used the `seldom -v` command to view the version.
 .. code:: shell
 
     > seldom -v
-    seldom 2.0.0
+    seldom 2.2.4

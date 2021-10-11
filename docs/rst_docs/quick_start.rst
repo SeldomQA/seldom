@@ -10,44 +10,21 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
 
 **Automatically download**
 
-`Seldom` provides automatic download driven by `Chrome/Firefox` browser.
+`Seldom` provides automatic download driven by `chrome/firefox/ie/edge/opera` browser.
 
 .. code:: shell
 
     > seldom -install chrome
     > seldom -install firefox
+    > seldom -install ie
+    > seldom -install edge
+    > seldom -install opera
 
+- By default, download to the current `C://Users/username/.wdm/drivers/` directory.
 
+- Chrome: `ChromeDriver` Mirror image of Taobao used.
 
-By default, download to the current 'lib/' directory.
-
-
-'ChromeDriver' Mirror image of Taobao used.
-
-**Manually download**
-
-`seldom` cannot determine the version of your current browser, so it is recommended to download it manually.
-
-
--  Firefox:
-   `geckodriver <https://github.com/mozilla/geckodriver/releases>`__
-
--  Chrome:
-   `Chromedriver <https://sites.google.com/a/chromium.org/chromedriver/home>`__
-
--  IE:
-   `IEDriverServer <http://selenium-release.storage.googleapis.com/index.html>`__
-
--  Opera:
-   `operadriver <https://github.com/operasoftware/operachromiumdriver/releases>`__
-
--  Edge:
-   `MicrosoftWebDriver <https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver>`__
-
--  Safari: safaridriver
-   (macOS,default path:`/usr/bin/safaridriver`)
-
-Configure the environment variables for the downloaded driver file.Different operating systems (Windows/MacOS/Linux) are configured differently.
+- Safari: `safaridriver` (macOS,default path:`/usr/bin/safaridriver`)
 
 
 ``main()`` Method

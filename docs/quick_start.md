@@ -7,33 +7,19 @@
 
 __自动下载__
 
-seldom 提供了`chrome/firefox`浏览器驱动的自动下载。
+seldom 集成 [webdriver_manager](https://github.com/SergeyPirogov/webdriver_manager) ，提供了`chrome/firefox/ie/edge/opera`浏览器驱动的自动下载。
 
 ```shell
 > seldom -install chrome
 > seldom -install firefox
+> seldom -install ie
+> seldom -install edge
+> seldom -install opera
 ```
 
-> 默认下载到当前的`lib/` 目录下面。 
-> 众所周知的原因，`chromedriver`使用的taobao的镜像。 
-> seldom无法判断你当前浏览器的版本，默认下载最浏览器版本对应的驱动，所以，推荐手动下载。
-
-__手动下载__
-
-* Firefox: [geckodriver](https://github.com/mozilla/geckodriver/releases)
-
-* Chrome: [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/home)
-
-* IE: [IEDriverServer](http://selenium-release.storage.googleapis.com/index.html)
-
-* Opera: [operadriver](https://github.com/operasoftware/operachromiumdriver/releases)
-
-* Edge: [MicrosoftWebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver)
-
-* Safari: safaridriver (macOS系统自带，默认路径:`/usr/bin/safaridriver`)
-
-
-然后，对下载的驱动文件配置环境变量。不同的操作系统（Windows/MacOS/Linux）配置不一样。
+1. 默认下载到当前的`C:\Users\username\.wdm\drivers\` 目录下面。
+2. Chrome: `chromedriver` （众所周知的原因，使用的taobao的镜像）。
+3. Safari: `safaridriver` （macOS系统自带，默认路径:`/usr/bin/safaridriver`）
 
 
 ### `main()` 方法
