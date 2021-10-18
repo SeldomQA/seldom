@@ -12,7 +12,7 @@
   * [失败重跑 & 截图](./quick_start.md#失败重跑&截图)
   * [测试报告](./quick_start.md#测试报告)
 
-* [seledom API](./seldom_api.md)
+* [seldom API](./seldom_api.md)
   * [查找元素](./seldom_api.md#查找元素)
   * [fixture](./seldom_api.md#fixture)
   * [断言](./seldom_api.md#断言)
