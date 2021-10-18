@@ -1,5 +1,10 @@
+### 2.3.0
+* 集成 `webdriver-manager`，不需要再单独安装浏览器驱动。
+* seldom logo 显示版本号。
+* 固定`selenium`版本号，暂没做`4.0.0`适配。
+
 ### 2.2.4
-* 修复HTTP接口测试，指定`url`参数错误的问题(https://github.com/SeldomQA/seldom/issues/71)。
+* 修复HTTP接口测试，指定`url`参数错误的问题。[71](https://github.com/SeldomQA/seldom/issues/71) 
 * 支持发送多人邮件。[72](https://github.com/SeldomQA/seldom/issues/72)
 * 优化HTMLTestRunner, 重跑次数不记录为用例数。
 * 修复pip安装缺少`description.rst` 问题。
