@@ -2,6 +2,7 @@ import seldom
 
 if __name__ == '__main__':
     seldom.main(path="./test_dir",
+                base_url="http://httpbin.org",  # test_http_demo.py
                 browser="chrome",
                 title="百度测试用例",
                 description="测试环境：Chrome",

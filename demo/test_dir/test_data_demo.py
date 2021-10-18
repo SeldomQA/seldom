@@ -11,7 +11,7 @@ class FileDataTest(seldom.TestCase):
         """
         used testdata test
         """
-        self.open("https://www.w3school.com.cn/tiy/t.asp?f=html_form_text")
+        self.open("https://www.runoob.com/try/try.php?filename=tryhtml_input")
         self.switch_to_frame(id_="iframeResult")
         self.type(name="firstname", text=testdata.first_name())
         self.type(name="lastname", text=testdata.last_name())
