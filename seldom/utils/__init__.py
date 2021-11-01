@@ -1,4 +1,5 @@
 import os
+import sys
 import inspect
 
 
@@ -33,6 +34,20 @@ def file_dir() -> str:
     stack_t = inspect.stack()
     ins = inspect.getframeinfo(stack_t[1][0])
     return os.path.dirname(os.path.abspath(ins.filename))
+
+
+def file_dir_dir() -> str:
+    """
+    Returns the absolute directory path of the current file directory
+    """
+    return os.path.dirname(file_dir())
+
+
+def add_env_path() -> None:
+    """
+    add file_dir_dir() to environment variable path.
+    """
+    sys.path.insert(1, file_dir_dir())
 
 
 class AssertInfo:
