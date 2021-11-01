@@ -51,6 +51,29 @@ class TestMain(object):
         :return:
         """
         self.path = path
+        self.report = report
+        self.title = title
+        self.description = description
+        self.debug = debug
+        self.rerun = rerun
+        self.save_last_run = save_last_run
+
+        if isinstance(timeout, int) is False:
+            raise TypeError("Timeout {} is not integer.".format(timeout))
+
+        if isinstance(debug, bool) is False:
+            raise TypeError("Debug {} is not Boolean type.".format(debug))
+
+        Seldom.timeout = timeout
+        Seldom.debug = debug
+        Seldom.base_url = base_url
+
+        # Global launch browser
+        if browser is not None:
+            BrowserConfig.NAME = browser
+            print("张飞")
+            Seldom.driver = Browser(BrowserConfig.NAME)
+
         if self.path is None:
             stack_t = inspect.stack()
             ins = inspect.getframeinfo(stack_t[1][0])
@@ -77,28 +100,6 @@ class TestMain(object):
                     suits = unittest.defaultTestLoader.discover(self.path)
             else:
                 suits = unittest.defaultTestLoader.discover(self.path)
-
-        self.report = report
-        self.title = title
-        self.description = description
-        self.debug = debug
-        self.rerun = rerun
-        self.save_last_run = save_last_run
-
-        if isinstance(timeout, int) is False:
-            raise TypeError("Timeout {} is not integer.".format(timeout))
-
-        if isinstance(debug, bool) is False:
-            raise TypeError("Debug {} is not Boolean type.".format(debug))
-
-        Seldom.timeout = timeout
-        Seldom.debug = debug
-        Seldom.base_url = base_url
-
-        # Global launch browser
-        if browser is not None:
-            BrowserConfig.NAME = browser
-            Seldom.driver = Browser(BrowserConfig.NAME)
 
         self._run_test_case(suits)
 
