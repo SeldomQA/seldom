@@ -43,7 +43,7 @@ def file_dir_dir() -> str:
     return os.path.dirname(file_dir())
 
 
-def add_env_path() -> None:
+def init_env_path() -> None:
     """
     add file_dir_dir() to environment variable path.
     """

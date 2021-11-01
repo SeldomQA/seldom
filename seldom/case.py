@@ -1,4 +1,5 @@
 import unittest
+from urllib.parse import unquote
 import jmespath
 from time import sleep
 from jsonschema import validate
@@ -113,10 +114,10 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
         for _ in range(Seldom.timeout + 1):
-            current_url = Seldom.driver.current_url.decode(encoding='UTF-8', errors='ignore')
+            current_url = unquote(Seldom.driver.current_url)
             try:
                 self.assertEqual(url, current_url)
-                log.info("👀 assert url: {url}.".format(url=Seldom.driver.current_url))
+                log.info("👀 assert url: {url}.".format(url=current_url))
                 break
             except AssertionError:
                 sleep(1)
@@ -134,10 +135,10 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
         for _ in range(Seldom.timeout + 1):
-            current_url = Seldom.driver.current_url.decode(encoding='UTF-8', errors='ignore')
+            current_url = unquote(Seldom.driver.current_url)
             try:
                 self.assertIn(url, current_url)
-                log.info("👀 assertIn url: {url}.".format(url=Seldom.driver.current_url))
+                log.info("👀 assertIn url: {url}.".format(url=current_url))
                 break
             except AssertionError:
                 sleep(1)
