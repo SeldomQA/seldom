@@ -113,8 +113,9 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
         for _ in range(Seldom.timeout + 1):
+            current_url = Seldom.driver.current_url.decode(encoding='UTF-8', errors='ignore')
             try:
-                self.assertEqual(url, Seldom.driver.current_url)
+                self.assertEqual(url, current_url)
                 log.info("👀 assert url: {url}.".format(url=Seldom.driver.current_url))
                 break
             except AssertionError:
@@ -133,8 +134,9 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
         for _ in range(Seldom.timeout + 1):
+            current_url = Seldom.driver.current_url.decode(encoding='UTF-8', errors='ignore')
             try:
-                self.assertIn(url, Seldom.driver.current_url)
+                self.assertIn(url, current_url)
                 log.info("👀 assertIn url: {url}.".format(url=Seldom.driver.current_url))
                 break
             except AssertionError:
