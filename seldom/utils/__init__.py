@@ -27,12 +27,24 @@ class FindFilePath:
 find_file_path = FindFilePath
 
 
+def file_path() -> str:
+    """
+    Returns the absolute path to the directory where the current file resides
+    For example:
+        "/User/tech/you/test_dir/test_sample.py"
+        return "/User/tech/you/test_dir/test_sample.py"
+    """
+    stack_t = inspect.stack()
+    ins = inspect.getframeinfo(stack_t[1][0])
+    return os.path.abspath(ins.filename)
+
+
 def file_dir() -> str:
     """
     Returns the absolute path to the directory where the current file resides
     For example:
-        /User/tech/mypro/test_dir/test_sample.py
-        return "/User/tech/mypro/test_dir/"
+        "/User/tech/you/test_dir/test_sample.py"
+        return "/User/tech/you/test_dir/"
     """
     stack_t = inspect.stack()
     ins = inspect.getframeinfo(stack_t[1][0])
@@ -43,25 +55,29 @@ def file_dir_dir() -> str:
     """
     Returns the absolute directory path of the current file directory.
     For example:
-        /User/tech/mypro/test_dir/test_sample.py
-        return "/User/tech/mypro/"
+        "/User/tech/you/test_dir/test_sample.py"
+        return "/User/tech/you/"
     """
-    return os.path.dirname(file_dir())
+    stack_t = inspect.stack()
+    ins = inspect.getframeinfo(stack_t[1][0])
+    return os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
 
 
 def file_dir_dir_dir() -> str:
     """
     Returns the absolute directory path of the current file directory
     For example:
-        /User/tech/mypro/test_dir/test_sample.py
-        return "/User/tech/"
+        /User/tech/you/test_dir/test_sample.py
+        return "/User/you/"
     """
-    return os.path.dirname(file_dir_dir())
+    stack_t = inspect.stack()
+    ins = inspect.getframeinfo(stack_t[1][0])
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(ins.filename))))
 
 
 def init_env_path(path=None) -> None:
     """
-    add file_dir_dir() to environment variable path.
+    add path to environment variable path.
     """
     if path is None:
         sys.path.insert(1, file_dir_dir())
@@ -71,9 +87,6 @@ def init_env_path(path=None) -> None:
 
 class AssertInfo:
     data = []
-    @property
-    def abc(self):
-        pass
 
 
 def diff_json(response_data, assert_data):
