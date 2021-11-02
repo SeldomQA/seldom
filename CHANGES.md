@@ -1,3 +1,13 @@
+### 2.3.1
+* 修复`assertUrl()`、`assertInUrl()` 断言中文编码错误。
+* 增加文件路径操作。
+    * `file_path()` 获取当前文件路径。
+    * `file_dir()` 获取当前文件目录。
+    * `file_dir_dir()` 获取当前文件目录的目录。
+    * `file_dir_dir_dir()` 获取当前文件目录的目录的目录。
+    * `init_env_path()` 添加路径到环境变量。
+* 优化`main()` 方法中代码的执行顺序。
+
 ### 2.3.0
 * 集成 `webdriver-manager`，不需要再单独安装浏览器驱动。
 * seldom logo 显示版本号。
