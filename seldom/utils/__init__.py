@@ -49,7 +49,6 @@ def file_dir_dir() -> str:
     return os.path.dirname(file_dir())
 
 
-@property
 def file_dir_dir_dir() -> str:
     """
     Returns the absolute directory path of the current file directory

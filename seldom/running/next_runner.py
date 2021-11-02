@@ -50,6 +50,7 @@ class TestMain(object):
         :param timeout:
         :return:
         """
+        print(seldom_str)
         self.path = path
         self.report = report
         self.title = title
@@ -123,7 +124,6 @@ class TestMain(object):
                 report_path = os.path.join(os.getcwd(), "reports", self.report)
 
             with(open(report_path, 'wb')) as fp:
-                print(seldom_str)
                 if report_path.split(".")[-1] == "xml":
                     runner = XMLTestRunner(output=fp)
                     runner.run(suits)
@@ -136,10 +136,8 @@ class TestMain(object):
             webbrowser.open_new("file:///{}".format(report_path))
         else:
             runner = unittest.TextTestRunner(verbosity=2)
-            log.printf("A run the test in debug mode without generating HTML report!")
-            print(seldom_str)
             runner.run(suits)
-            log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            log.printf("A run the test in debug mode without generating HTML report!")
 
 
 main = TestMain
