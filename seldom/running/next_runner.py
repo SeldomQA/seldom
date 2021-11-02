@@ -71,7 +71,6 @@ class TestMain(object):
         # Global launch browser
         if browser is not None:
             BrowserConfig.NAME = browser
-            print("张飞")
             Seldom.driver = Browser(BrowserConfig.NAME)
 
         if self.path is None:
