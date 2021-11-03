@@ -28,12 +28,14 @@ def request(func):
         ResponseResult.status_code = r.status_code
         print("----------- Response 🛬️ -------------")
         try:
+            resp = r.json()
             print("type: {}".format("json"))
-            print(r.json())
-            ResponseResult.response = r.json()
+            print(resp)
+            ResponseResult.response = resp
         except BaseException as msg:
             print("warning: {}".format(msg))
             if img_file is True:
+                print("type: {}".format(file_type))
                 ResponseResult.response = r.content
             else:
                 print("type: {}".format("text"))
