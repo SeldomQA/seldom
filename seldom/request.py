@@ -1,6 +1,8 @@
 import requests
 from seldom.running.config import Seldom
 
+IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
+
 
 def request(func):
     def wrapper(*args, **kw):
@@ -12,6 +14,12 @@ def request(func):
             url = kw.get("url", "")
         if (Seldom.base_url is not None) and ("http" not in url):
             url = Seldom.base_url + list(args)[1]
+
+        img_file = False
+        file_type = url.split(".")[-1]
+        if file_type in IMG:
+            img_file = True
+
         print('url: {u}         method: {m}'.format(u=url, m=func_name.upper()))
 
         # running function
@@ -25,9 +33,12 @@ def request(func):
             ResponseResult.response = r.json()
         except BaseException as msg:
             print("warning: {}".format(msg))
-            print("type: {}".format("text"))
-            print(r.text)
-            ResponseResult.response = {}
+            if img_file is True:
+                ResponseResult.response = r.content
+            else:
+                print("type: {}".format("text"))
+                print(r.text)
+                ResponseResult.response = r.text
 
     return wrapper
 
