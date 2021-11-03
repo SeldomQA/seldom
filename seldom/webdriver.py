@@ -654,6 +654,21 @@ class WebDriver(object):
         else:
             Seldom.driver.save_screenshot(file_path)
 
+    def screenshot(self, file_path: str = None, index: int = 0, **kwargs) -> None:
+        """
+        Saves a screenshot of the element to a PNG image file.
+
+        Usage:
+        self.screenshot(css="#id", file_path='/Screenshots/foo.png')
+        """
+        log.info("📷️ element screenshot.")
+        web_elem = WebElement(**kwargs)
+        elem = web_elem.get_elements(index)
+        if file_path is None:
+            self.images.append(elem.screenshot_as_base64)
+        else:
+            elem.screenshot(file_path)
+
     @staticmethod
     def select(value: str = None, text: str = None, index: int = None, **kwargs) -> None:
         """
