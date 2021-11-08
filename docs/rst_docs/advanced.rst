@@ -381,10 +381,10 @@ Automatic Email
     # ……
 
     if __name__ == '__main__':
-        report_path = "/you/path/to/report.html"
+        report_path = "report.html"
         seldom.main(report=report_path)
         smtp = SMTP(user="you@126.com", password="abc123", host="smtp.126.com")
-        smtp.sender(to="receive@mail.com", subject='Email title', attachments=report_path)
+        smtp.sender(to="receive@mail.com", subject='Email title')
 
 
 

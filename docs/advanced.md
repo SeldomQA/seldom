@@ -353,10 +353,10 @@ from seldom import SMTP
 # ……
 
 if __name__ == '__main__':
-    report_path = "/you/path/to/report.html"
+    report_path = "report.html"
     seldom.main(report=report_path)
     smtp = SMTP(user="you@126.com", password="abc123", host="smtp.126.com")
-    smtp.sender(to="receive@mail.com", subject='Email title', attachments=report_path)
+    smtp.sender(to="receive@mail.com", subject='Email title')
 ```
 
 > `debug`模式不会生成测试报告， 自动化发邮件不支持`debug` 模式，自然也无法将报告发送到指定邮箱了。
