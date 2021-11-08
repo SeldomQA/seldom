@@ -118,10 +118,10 @@ class TestMain(object):
             else:
                 os.mkdir(os.path.join(os.getcwd(), "reports"))
 
-            if self.report is None and BrowserConfig.REPORT_PATH is not None:
+            if (self.report is None) and (BrowserConfig.REPORT_PATH is not None):
                 report_path = BrowserConfig.REPORT_PATH
             else:
-                report_path = os.path.join(os.getcwd(), "reports", self.report)
+                report_path = BrowserConfig.REPORT_PATH = os.path.join(os.getcwd(), "reports", self.report)
 
             with(open(report_path, 'wb')) as fp:
                 if report_path.split(".")[-1] == "xml":

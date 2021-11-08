@@ -13,6 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from seldom.logging import log
+from seldom.running.config import BrowserConfig
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 HTML_DIR = os.path.join(BASE_DIR, "html")
@@ -588,17 +589,19 @@ class SMTP(object):
         text = MIMEText(contents, 'html', 'utf-8')
         msg.attach(text)
 
-        if attachments is not None:
-            att_name = "report.html"
-            if "\\" in attachments:
-                att_name = attachments.split("\\")[-1]
-            if "/" in attachments:
-                att_name = attachments.split("/")[-1]
+        if attachments is None:
+            attachments = BrowserConfig.REPORT_PATH
 
-            att = MIMEApplication(open(attachments, 'rb').read())
-            att['Content-Type'] = 'application/octet-stream'
-            att["Content-Disposition"] = 'attachment; filename="{}"'.format(att_name)
-            msg.attach(att)
+        att_name = "report.html"
+        if "\\" in attachments:
+            att_name = attachments.split("\\")[-1]
+        if "/" in attachments:
+            att_name = attachments.split("/")[-1]
+
+        att = MIMEApplication(open(attachments, 'rb').read())
+        att['Content-Type'] = 'application/octet-stream'
+        att["Content-Disposition"] = 'attachment; filename="{}"'.format(att_name)
+        msg.attach(att)
 
         smtp = smtplib.SMTP_SSL(self.host, self.port)
         try:
