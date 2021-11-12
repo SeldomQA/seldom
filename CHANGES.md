@@ -1,3 +1,7 @@
+### 2.3.3
+* 增加 `assertNotText()` 断言方法 [75](https://github.com/SeldomQA/seldom/issues/75) 。
+* 修复`main()`设置`rerun` 和 `save_last_run`参数，导致用例统计错误 [76](https://github.com/SeldomQA/seldom/issues/76) 。
+
 ### 2.3.2
 * 接口调用如果是图片类型，不在打印内容。
 * 增加`screenshot` 针对定位的元素截图, 用法`self.screenshot(id="xx")`。
