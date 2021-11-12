@@ -143,6 +143,11 @@ class CustomTemplate(object):
 
 # -------------------- The end of the Template class -------------------
 
+class OneCase:
+    obj = None
+    error = 0
+    failure = 0
+
 
 TestResult = unittest.TestResult
 
@@ -206,12 +211,14 @@ class _TestResult(TestResult):
             if self.status == 1:
                 self.runs += 1
                 if self.runs <= self.rerun:
-                    if self.save_last_run:
+                    if self.save_last_run is True:
                         t = self.result.pop(-1)
                         if t[0] == 1:
-                            self.failure_count -= 1
+                            if self.failure_count > 1:
+                                self.failure_count -= 1
                         else:
-                            self.error_count -= 1
+                            if self.error_count > 1:
+                                self.error_count -= 1
                     test = copy.copy(test)
                     sys.stderr.write("Retesting... ")
                     sys.stderr.write(str(test))
@@ -233,6 +240,14 @@ class _TestResult(TestResult):
         test.runtime = round(case_run_time, 2)
 
     def addSuccess(self, test):
+        if (self.rerun > 1) and (OneCase.obj == test) and (OneCase.failure == 1):
+            self.failure_count -= 1
+            OneCase.obj = None
+            OneCase.failure = 0
+        if (self.rerun > 1) and (OneCase.obj == test) and (OneCase.error == 1):
+            self.error_count -= 1
+            OneCase.obj = None
+            OneCase.error = 0
         self.success_count += 1
         self.status = 0
         TestResult.addSuccess(self, test)
@@ -249,6 +264,8 @@ class _TestResult(TestResult):
         if self.test_obj != test:
             self.test_obj = test
             self.error_count += 1
+            OneCase.obj = test
+            OneCase.error = 1
         else:
             self.error_count += 0
         self.status = 1
@@ -270,6 +287,8 @@ class _TestResult(TestResult):
         if self.test_obj != test:
             self.test_obj = test
             self.failure_count += 1
+            OneCase.obj = test
+            OneCase.failure = 1
         else:
             self.failure_count += 0
         self.status = 1
