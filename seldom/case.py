@@ -168,6 +168,28 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         else:
             self.assertIn(text, elem.text, msg=msg)
 
+    def assertNotText(self, text=None, msg=None):
+        """
+        Asserts that the current page does not contain the specified text.
+
+        Usage:
+        self.assertNotText("text")
+        """
+        if text is None:
+            raise AssertionError("The assertion text cannot be empty.")
+
+        elem = Seldom.driver.find_element_by_tag_name("html")
+        for _ in range(Seldom.timeout + 1):
+            if elem.is_displayed():
+                try:
+                    self.assertNotIn(text, elem.text)
+                    log.info("👀 assertNotText: {text}.".format(text=text))
+                    break
+                except AssertionError:
+                    sleep(1)
+        else:
+            self.assertNotIn(text, elem.text, msg=msg)
+
     def assertAlertText(self, text=None, msg=None):
         """
         Asserts whether the text of the current page conforms to expectations.
