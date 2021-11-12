@@ -120,8 +120,12 @@ self.assertUrl("url")
 # 断言URL是否包含
 self.assertInUrl("url")
 
-# 断言页面是否存在“text”
+# 断言页面包含“text”
 self.assertText("text")
+
+# 断言页面不包含“text”
+self.assertNotText("text")
+
 
 # 断言警告是否存在"text" 提示信息
 self.assertAlertText("text")

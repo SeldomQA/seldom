@@ -136,6 +136,9 @@ Assertion
     # Asserts that the page contains "text"
     self.assertText("text")
 
+    # Asserts that the page not contains "text"
+    self.assertNotText("text")
+
     # Assert that the warning message is equal to "text"
     self.assertAlertText("text")
 
