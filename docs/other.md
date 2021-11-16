@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
 seldom为了更加方便的使用驱动，屏蔽了浏览器的配置，为了满足个性化的需求，比如禁用浏览器插件，设置浏览器代理等。所以，通过ChromeConfig类的参数来开放这些能力。
 
-例如，浏览器忽略无效证书的问题。
+* 浏览器忽略无效证书
 
 ```python
 import seldom
@@ -85,6 +85,21 @@ if __name__ == '__main__':
 
 将要`ChromeOption`添加的设置赋值给`ChromeConfig`的`options`变量。
 
+* 浏览器关闭沙盒模式
+
+```python
+import seldom
+from seldom import ChromeConfig
+from selenium.webdriver import ChromeOptions
+
+
+if __name__ == '__main__':
+    chrome_options = ChromeOptions()
+    chrome_options.add_argument('--no-sandbox')  # 关闭沙盒模式
+    ChromeConfig.options = chrome_options
+    ChromeConfig.headless = True
+    seldom.main(browser="chrome")
+```
 
 ### Selenium Grid
 
