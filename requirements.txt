@@ -11,7 +11,7 @@ jmespath==0.10.0
 jsonschema==4.1.0
 MarkupSafe==2.0.1
 openpyxl==3.0.9
-parameterized==0.7.0
+parameterized==0.8.1
 pyrsistent==0.18.0
 PyYAML==6.0
 requests==2.26.0

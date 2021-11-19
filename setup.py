@@ -25,7 +25,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'selenium==3.141.0',
-        'parameterized==0.7.0',
+        'parameterized==0.8.1',
         'colorama>=0.4.3',
         'openpyxl>=3.0.3',
         'pyyaml>=5.1',
