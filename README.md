@@ -209,7 +209,7 @@ https://github.com/BarryYBL/UIAutoDemo
 
 基于seldom的接口自动化项目:
 
-https://github.com/defnngj/pyrequest2
+https://github.com/defnngj/seldom-api-testing
 
 ## 感谢
 
