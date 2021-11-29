@@ -202,43 +202,45 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         alert_text = Seldom.driver.switch_to.alert.text
         self.assertEqual(alert_text, text, msg=msg)
 
-    def assertElement(self, msg=None, **kwargs):
+    def assertElement(self, index=0, msg=None, **kwargs):
         """
         Asserts whether the element exists.
 
         Usage:
-        self.assertElement("text")
+        self.assertElement(css="#id")
         """
         if msg is None:
-            msg = "No elements found"
+            msg = "No element found"
+        elem = True
         for _ in range(Seldom.timeout + 1):
             try:
                 log.info("👀 assertElement.")
-                self.get_elements(**kwargs)
+                self.get_element(index=index, **kwargs)
+                elem = True
                 break
             except NotFindElementError:
+                elem = False
                 sleep(1)
-        else:
-            print("time out")
-            self.assertTrue(False, msg=msg)
 
-    def assertNotElement(self, msg=None, **kwargs):
+        self.assertTrue(elem, msg=msg)
+
+    def assertNotElement(self, index=0, msg=None, **kwargs):
         """
         Asserts if the element does not exist.
 
         Usage:
-        self.assertNotElement("text")
+        self.assertNotElement(css="#id")
         """
         if msg is None:
             msg = "Find the element"
+        try:
+            log.info("👀 assertNotElement.")
+            self.get_element(index=index, **kwargs)
+            elem = True
+        except NotFindElementError:
+            elem = False
 
-            try:
-                log.info("👀 assertNotElement.")
-                self.get_elements(**kwargs)
-            except NotFindElementError:
-                pass
-            else:
-                self.assertFalse(True, msg=msg)
+        self.assertFalse(elem, msg=msg)
 
     def assertStatusCode(self, status_code, msg=None):
         """

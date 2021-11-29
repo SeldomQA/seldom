@@ -149,7 +149,7 @@ class WebDriver(object):
             self.Keys(id_="kw").enter()
         """
 
-        def __init__(self, index: int  = 0, **kwargs) -> None:
+        def __init__(self, index: int = 0, **kwargs) -> None:
             self.web_elem = WebElement(**kwargs)
             self.elem = self.web_elem.get_elements()
             self.web_elem.show_element(self.elem[index])
@@ -821,7 +821,7 @@ class WebDriver(object):
         return elems
 
     @staticmethod
-    def get_element(index: int=0, **kwargs):
+    def get_element(index: int = 0, **kwargs):
         """
         Get a set of elements
 
