@@ -81,6 +81,8 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
         ...     actual = add1(input)
         ...     assert_equal(actual, expected)
         ...
+        >> locals()
+        ... 'test_add1_foo_0': <function ...> ...
         >>
         """
 
@@ -100,9 +102,7 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
     name_func = name_func or default_name_func
 
     def parameterized_expand_wrapper(f, instance=None):
-        stack = inspect.stack()
-        frame = stack[1]
-        frame_locals = frame[0].f_locals
+        frame_locals = inspect.currentframe().f_back.f_locals
 
         parameters = parameterized.input_as_callable(input)()
 
@@ -113,7 +113,7 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
                     "`parameterized.expand([], skip_on_empty=True)` to skip "
                     "this test when the input is empty)"
                 )
-            return wraps(f)(lambda: skip_on_empty_helper())
+            return wraps(f)(skip_on_empty_helper)
 
         digits = len(str(len(parameters) - 1))
         for num, p in enumerate(parameters):
