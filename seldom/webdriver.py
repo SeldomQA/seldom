@@ -1,4 +1,5 @@
 # coding=utf-8
+import os
 import time
 import platform
 from selenium.webdriver import Chrome
@@ -646,28 +647,43 @@ class WebDriver(object):
         Saves a screenshots of the current window to a PNG image file.
 
         Usage:
-        self.screenshots('/Screenshots/foo.png')
+            self.screenshots()
+            self.screenshots('/Screenshots/foo.png')
         """
-        log.info("📷️  screenshot.")
         if file_path is None:
-            self.images.append(Seldom.driver.get_screenshot_as_base64())
-        else:
+            img_dir = os.path.join(os.getcwd(), "reports", "images")
+            if os.path.exists(img_dir) is False:
+                os.mkdir(img_dir)
+            file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
+        if Seldom.debug is True:
+            log.info(f"📷️  screenshot -> ({file_path}).")
             Seldom.driver.save_screenshot(file_path)
+        else:
+            log.info("📷️  screenshot -> HTML report.")
+            self.images.append(Seldom.driver.get_screenshot_as_base64())
 
-    def screenshot(self, file_path: str = None, index: int = 0, **kwargs) -> None:
+    def element_screenshot(self, file_path: str = None, index: int = 0, **kwargs) -> None:
         """
-        Saves a screenshot of the element to a PNG image file.
+        Saves a element screenshot of the element to a PNG image file.
 
         Usage:
-        self.screenshot(css="#id", file_path='/Screenshots/foo.png')
+            self.element_screenshot(css="#id")
+            self.element_screenshot(css="#id", file_path='/Screenshots/foo.png')
         """
-        log.info("📷️ element screenshot.")
+
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         if file_path is None:
-            self.images.append(elem.screenshot_as_base64)
-        else:
+            img_dir = os.path.join(os.getcwd(), "reports", "images")
+            if os.path.exists(img_dir) is False:
+                os.mkdir(img_dir)
+            file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
+        if Seldom.debug is True:
+            log.info(f"📷️ element screenshot -> ({file_path}).")
             elem.screenshot(file_path)
+        else:
+            log.info("📷️ element screenshot -> HTML Report.")
+            self.images.append(elem.screenshot_as_base64)
 
     @staticmethod
     def select(value: str = None, text: str = None, index: int = None, **kwargs) -> None:
