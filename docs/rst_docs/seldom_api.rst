@@ -253,7 +253,7 @@ Most APIs are provided by `WebDriver` class:
             self.open("https://www.baidu.com")
             
             # Gets the text of the Alert.
-            self.get_alert_text()
+            self.get_alert_text
             
             # Gets the value of an element attribute.
             self.get_attribute(css="#el", attribute="type")
@@ -274,10 +274,10 @@ Most APIs are provided by `WebDriver` class:
             self.get_text(css="#el")
             
             # Get window title.
-            self.get_title()
+            self.get_title
             
             # Get the URL address of the current page.
-            self.get_url()
+            self.get_url
             
             # Set browser window maximized.
             self.max_window()
@@ -298,8 +298,13 @@ Most APIs are provided by `WebDriver` class:
             self.right_click(css="#el")
             
             # Saves a screenshots of the current window to a PNG image file.
-            self.screenshots('/Screenshots/foo.png')
-            
+            self.screenshots() # Save to HTML report
+            self.screenshots('/Screenshots/foo.png')  # Save to the specified directory
+
+            # Saves a element screenshot of the element to a PNG image file.
+            self.element_screenshot(css="#id") # Save to HTML report
+            self.element_screenshot(css="#id", file_path='/Screenshots/foo.png') # Save to the specified directory
+
             """
             Constructor. A check is made that the given element is, indeed, a SELECT tag. If it is not,
             then an UnexpectedTagNameException is thrown.
