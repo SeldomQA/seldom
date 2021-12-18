@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver import FirefoxOptions
+from selenium.webdriver import EdgeOptions
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
@@ -36,6 +37,7 @@ class IEConfig:
 
 
 class EdgeConfig:
+    headless = False
     command_executor = ""
 
 
@@ -136,7 +138,22 @@ class Browser(object):
         if EdgeConfig.command_executor != "":
             return webdriver.Remote(command_executor=EdgeConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.EDGE.copy())
-        return webdriver.Edge(executable_path=EdgeChromiumDriverManager().install())
+
+        if EdgeConfig.options is None:
+            firefox_options = EdgeConfig()
+            if FirefoxConfig.headless is True:
+                firefox_options.headless = True
+        else:
+            firefox_options = FirefoxConfig.options
+            if FirefoxConfig.headless is True:
+                firefox_options.headless = True
+
+        if EdgeConfig.headless is True:
+            edge_options = EdgeOptions()
+            edge_options.headless = True
+            return webdriver.Edge(executable_path=EdgeChromiumDriverManager(log_level=1).install(), options=edge_options)
+        else:
+            return webdriver.Edge(executable_path=EdgeChromiumDriverManager(log_level=1).install())
 
     @staticmethod
     def opera():
