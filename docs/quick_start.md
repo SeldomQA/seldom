@@ -103,6 +103,9 @@ __运行类或方法__
 > seldom -m test_sample.SampleTest # 运行 SampleTest 测试类
 > seldom -m test_sample.SampleTest.test_case # 运行 test_case 测试方法
 ```
+> 这种模式有两个问题：
+> 1. 不支持poium，如果要使用，必须手动给`Seldom.driver` 赋值浏览器驱动。
+> 2. 如果是Web UI自动化测试，无法自动关闭浏览器，需要手动关闭浏览器`self.close()`
 
 
 ### 失败重跑 & 截图
