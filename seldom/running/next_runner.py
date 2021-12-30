@@ -8,6 +8,7 @@ from xmlrunner import XMLTestRunner
 import inspect
 from seldom.logging import log
 from seldom.driver import Browser
+from seldom.running.runtests import DebugTestRunner
 from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
@@ -35,7 +36,7 @@ class TestMain(object):
     """
     def __init__(self, path=None, browser=None, base_url=None, debug=False, timeout=10,
                  report=None, title="Seldom Test Report", description="Test case execution",
-                 rerun=0, save_last_run=False):
+                 rerun=0, save_last_run=False, whitelist=[], blacklist=[]):
         """
         runner test case
         :param path:
@@ -45,9 +46,11 @@ class TestMain(object):
         :param title:
         :param description:
         :param debug:
+        :param timeout:
         :param rerun:
         :param save_last_run:
-        :param timeout:
+        :param whitelist
+        :param blacklist
         :return:
         """
         print(seldom_str)
@@ -58,6 +61,8 @@ class TestMain(object):
         self.debug = debug
         self.rerun = rerun
         self.save_last_run = save_last_run
+        self.whitelist = whitelist
+        self.blacklist = blacklist
 
         if isinstance(timeout, int) is False:
             raise TypeError("Timeout {} is not integer.".format(timeout))
@@ -135,7 +140,10 @@ class TestMain(object):
             log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
             webbrowser.open_new("file:///{}".format(report_path))
         else:
-            runner = unittest.TextTestRunner(verbosity=2)
+            runner = DebugTestRunner(
+                blacklist=self.blacklist,
+                whitelist=self.whitelist,
+                verbosity=2)
             runner.run(suits)
             log.printf("A run the test in debug mode without generating HTML report!")
 

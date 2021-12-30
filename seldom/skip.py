@@ -2,7 +2,7 @@ import unittest
 import functools
 
 __all__ = [
-    "skip", "skip_if", "skip_unless", "expected_failure", "depend", "if_depend"
+    "skip", "skip_if", "skip_unless", "expected_failure", "depend", "if_depend", "label"
 ]
 
 
@@ -81,3 +81,20 @@ def if_depend(value):
                 function(self, *args, **kwargs)
         return inner_func
     return wrapper_func
+
+
+def label(*labels):
+    """
+    Usage::
+        @label('quick')
+        class MyTest(unittest.TestCase):
+            def test_foo(self):
+                pass
+    """
+
+    def inner(cls):
+        # append labels to class
+        cls._labels = set(labels) | getattr(cls, '_labels', set())
+        return cls
+
+    return inner
