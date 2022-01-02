@@ -5,13 +5,13 @@ IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
 
 def request(func):
-    def wrapper(*args, **kw):
+    def wrapper(*args, **kwargs):
         func_name = func.__name__
-        print('\n----------- Request 🚀 ---------------')
+        print('\n------------------ Request ---------------------[🚀]')
         try:
             url = list(args)[1]
         except IndexError:
-            url = kw.get("url", "")
+            url = kwargs.get("url", "")
         if (Seldom.base_url is not None) and ("http" not in url):
             url = Seldom.base_url + list(args)[1]
 
@@ -20,26 +20,38 @@ def request(func):
         if file_type in IMG:
             img_file = True
 
-        print('url: {u}         method: {m}'.format(u=url, m=func_name.upper()))
+        print("[method]: {m}      [url]: {u} \n".format(m=func_name.upper(), u=url))
+        auth = kwargs.get("auth", "")
+        headers = kwargs.get("headers", "")
+        params = kwargs.get("params", "")
+        data = kwargs.get("data", "")
+        if auth != "":
+            print(f"[auth]:\n {auth} \n")
+        if headers != "":
+            print(f"[headers]:\n {headers} \n")
+        if params != "":
+            print(f"[params]:\n {params} \n")
+        if data != "":
+            print(f"[data]:\n {data} \n")
 
         # running function
-        r = func(*args, **kw)
+        r = func(*args, **kwargs)
 
         ResponseResult.status_code = r.status_code
-        print("----------- Response 🛬️ -------------")
+        print("------------------ Response --------------------[🛬️]")
         try:
             resp = r.json()
-            print("type: {}".format("json"))
-            print(resp)
+            print(f"[type]: json \n")
+            print(f"[response]:\n {resp} \n")
             ResponseResult.response = resp
         except BaseException as msg:
-            print("warning: {}".format(msg))
+            print("[warning]: {} \n".format(msg))
             if img_file is True:
-                print("type: {}".format(file_type))
+                print("[type]: {}".format(file_type))
                 ResponseResult.response = r.content
             else:
-                print("type: {}".format("text"))
-                print(r.text)
+                print("[type]: text \n")
+                print(f"[response]:\n {r.text} \n")
                 ResponseResult.response = r.text
 
     return wrapper
