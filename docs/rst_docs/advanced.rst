@@ -447,3 +447,65 @@ Customize the state of the use case, and the dependent use case chooses whether 
     if __name__ == '__main__':
         seldom.main(debug=True)
 
+
+Use case classification label
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This function is implemented in seldom version 2.4.0.
+
+**demo**
+
+.. code:: python
+
+    # test_label.py
+    import seldom
+    from seldom import label
+
+
+    class MyTest(seldom.TestCase):
+
+        @label("base")
+        def test_label_base(self):
+            self.assertEqual(1+1, 2)
+
+        @label("slow")
+        def test_label_slow(self):
+            self.assertEqual(1, 2)
+
+        def test_no_label(self):
+            self.assertEqual(2+3, 5)
+
+
+    if __name__ == '__main__':
+        # seldom.main(debug=True, whitelist=["base"])  # whitelist
+        seldom.main(debug=True, blacklist=["slow"])    # blacklist
+
+
+If you only run the use cases labeled `base`, set the whitelist.
+
+
+.. code:: shell
+    > python test_label.py
+    test_label_base (btest_label.MyTest) ... ok
+    test_label_slow (btest_label.MyTest) ... skipped "label whitelist {'base'}"
+    test_no_label (btest_label.MyTest) ... skipped "label whitelist {'base'}"
+
+    ----------------------------------------------------------------------
+    Ran 3 tests in 0.001s
+
+    OK (skipped=2)
+
+
+If you only want to block the use cases labeled `slow`, set a blacklist.
+
+
+.. code:: shell
+    > python test_label.py
+
+    test_label_base (btest_label.MyTest) ... ok
+    test_label_slow (btest_label.MyTest) ... skipped "label blacklist {'slow'}"
+    test_no_label (btest_label.MyTest) ... ok
+    ----------------------------------------------------------------------
+    Ran 3 tests in 0.001s
+
+    OK (skipped=1)

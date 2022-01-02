@@ -26,6 +26,7 @@
   * [Page objects设计模式](./advanced.md#PageObjects设计模式)
   * [自动发邮件](./advanced.md#自动发邮件)
   * [用例的依赖](./advanced.md#用例的依赖)
+  * [用例标签分类](./advanced.md#用例分类标签)
 
 * [其他](./other.md)
   * [指定不同的浏览器](./other.md#指定不同的浏览器)

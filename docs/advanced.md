@@ -424,3 +424,63 @@ if __name__ == '__main__':
 2. 在`test_001`用例中，可以根据一些条件来选择是否修改`Test001`的值，如果改为`False`， 那么依赖的用例将被跳过。
 3. 在`test_002`用例中，通过`id_depend`装饰器来判断`Test001`的值，如果为为`False`， 那么装饰的用例跳过，否则执行。
 
+
+### 用例分类标签
+
+> 在 seldom 2.4.0 版本实现了该功能。
+
+__使用方式__
+
+```python
+# test_label.py
+import seldom
+from seldom import label
+
+
+class MyTest(seldom.TestCase):
+
+    @label("base")
+    def test_label_base(self):
+        self.assertEqual(1+1, 2)
+
+    @label("slow")
+    def test_label_slow(self):
+        self.assertEqual(1, 2)
+
+    def test_no_label(self):
+        self.assertEqual(2+3, 5)
+
+
+if __name__ == '__main__':
+    # seldom.main(debug=True, whitelist=["base"])  # whitelist
+    seldom.main(debug=True, blacklist=["slow"])    # blacklist
+```
+
+如果只运行标签为:`base`的用例，设置白名单（whitelist）。
+
+
+```shell
+> python test_label.py
+test_label_base (btest_label.MyTest) ... ok
+test_label_slow (btest_label.MyTest) ... skipped "label whitelist {'base'}"
+test_no_label (btest_label.MyTest) ... skipped "label whitelist {'base'}"
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK (skipped=2)
+```
+
+如果只想屏蔽标签为:`slow`的用例，设置黑名单（blacklist）。
+
+```shell
+> python test_label.py
+
+test_label_base (btest_label.MyTest) ... ok
+test_label_slow (btest_label.MyTest) ... skipped "label blacklist {'slow'}"
+test_no_label (btest_label.MyTest) ... ok
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK (skipped=1)
+```
