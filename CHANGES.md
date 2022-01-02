@@ -1,3 +1,12 @@
+### 2.4.0
+* 适配selenium 4.0+ ，适配相关依赖库新版本。
+* 测试用例支持`label`标签分类 [link](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E7%94%A8%E4%BE%8B%E5%88%86%E7%B1%BB%E6%A0%87%E7%AD%BE)
+* 接口测试增加打印入参信息 [79](https://github.com/SeldomQA/seldom/issues/75) 。
+* EdgeChromium浏览器支持`headless`模式。
+* Web自动化测试增加元素截图`self.element_screenshot()`
+* 优化HTML测试报告样式。
+* 优化邮件模板样式。
+
 ### 2.3.3
 * 增加 `assertNotText()` 断言方法 [75](https://github.com/SeldomQA/seldom/issues/75) 。
 * 修复`main()`设置`rerun` 和 `save_last_run`参数，导致用例统计错误 [76](https://github.com/SeldomQA/seldom/issues/76) 。
