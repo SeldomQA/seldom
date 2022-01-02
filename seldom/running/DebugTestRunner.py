@@ -3,7 +3,7 @@ import unittest
 import functools
 
 
-class DebugTestRunner(unittest.runner.TextTestRunner):
+class DebugTestRunner(unittest.TextTestRunner):
 
     def __init__(self, *args, **kwargs):
         """
@@ -27,12 +27,14 @@ class DebugTestRunner(unittest.runner.TextTestRunner):
                 yield test
 
     def run(self, testlist):
+        """
+        Run the given test case or test suite.
+        """
         # Change given testlist into a TestSuite
         suite = unittest.TestSuite()
 
         # Add each test in testlist, apply skip mechanism if necessary
         for test in self.test_iter(testlist):
-
             # Determine if test should be skipped
             skip = bool(self.whitelist)
             test_method = getattr(test, test._testMethodName)
@@ -44,15 +46,16 @@ class DebugTestRunner(unittest.runner.TextTestRunner):
 
             if skip:
                 # Test should be skipped.
-                #   replace original method with function "skip"
-
+                # replace original method with function "skip"
                 # Create a "skip test" wrapper for the actual test method
                 @functools.wraps(test_method)
                 def skip_wrapper(*args, **kwargs):
                     raise unittest.SkipTest('label exclusion')
                 skip_wrapper.__unittest_skip__ = True
-                skip_wrapper.__unittest_skip_why__ = 'label exclusion'
-
+                if len(self.whitelist) >= 1:
+                    skip_wrapper.__unittest_skip_why__ = f'label whitelist {self.whitelist}'
+                if len(self.blacklist) >= 1:
+                    skip_wrapper.__unittest_skip_why__ = f'label blacklist {self.blacklist}'
                 setattr(test, test._testMethodName, skip_wrapper)
 
             suite.addTest(test)

@@ -85,7 +85,9 @@ def if_depend(value):
 
 def label(*labels):
     """
-    Usage::
+    Test case classification label
+
+    Usage:
         @label('quick')
         class MyTest(unittest.TestCase):
             def test_foo(self):

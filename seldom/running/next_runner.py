@@ -8,7 +8,7 @@ from xmlrunner import XMLTestRunner
 import inspect
 from seldom.logging import log
 from seldom.driver import Browser
-from seldom.running.runtests import DebugTestRunner
+from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
@@ -133,7 +133,8 @@ class TestMain(object):
                     runner = XMLTestRunner(output=fp)
                     runner.run(suits)
                 else:
-                    runner = HTMLTestRunner(stream=fp, title=self.title, description=self.description)
+                    runner = HTMLTestRunner(stream=fp, title=self.title, description=self.description,
+                                            blacklist=self.blacklist, whitelist=self.whitelist)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
             log.printf("generated html file: file:///{}".format(report_path))

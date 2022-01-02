@@ -3,6 +3,7 @@ import io
 import sys
 import copy
 import time
+import functools
 import datetime
 import unittest
 from xml.sax import saxutils
@@ -325,7 +326,7 @@ class HTMLTestRunner(CustomTemplate):
     Run the test class
     """
 
-    def __init__(self, stream=sys.stdout, verbosity=1, title=None, description=None, save_last_run=True):
+    def __init__(self, stream=sys.stdout, verbosity=1, title=None, description=None, save_last_run=True, **kwargs):
         self.stream = stream
         self.verbosity = verbosity
         self.save_last_run = save_last_run
@@ -343,15 +344,52 @@ class HTMLTestRunner(CustomTemplate):
         self.end_time = None
         self.test_obj = None
 
-    def run(self, test, rerun=0, save_last_run=False):
+        self.whitelist = set(kwargs.pop('whitelist', []))
+        self.blacklist = set(kwargs.pop('blacklist', []))
+
+    @classmethod
+    def test_iter(cls, suite):
+        """
+        Iterate through test suites, and yield individual tests
+        """
+        for test in suite:
+            if isinstance(test, unittest.TestSuite):
+                for t in cls.test_iter(test):
+                    yield t
+            else:
+                yield test
+
+    def run(self, testlist, rerun=0, save_last_run=False):
         """
         Run the given test case or test suite.
         """
+        for test in self.test_iter(testlist):
+            # Determine if test should be skipped
+            skip = bool(self.whitelist)
+            test_method = getattr(test, test._testMethodName)
+            test_labels = getattr(test, '_labels', set()) | getattr(test_method, '_labels', set())
+            if test_labels & self.whitelist:
+                skip = False
+            if test_labels & self.blacklist:
+                skip = True
+
+            if skip:
+                # Test should be skipped.
+                @functools.wraps(test_method)
+                def skip_wrapper(*args, **kwargs):
+                    raise unittest.SkipTest('label exclusion')
+                skip_wrapper.__unittest_skip__ = True
+                if len(self.whitelist) >= 1:
+                    skip_wrapper.__unittest_skip_why__ = f'label whitelist {self.whitelist}'
+                if len(self.blacklist) >= 1:
+                    skip_wrapper.__unittest_skip_why__ = f'label blacklist {self.blacklist}'
+                setattr(test, test._testMethodName, skip_wrapper)
+
         result = _TestResult(self.verbosity, rerun=rerun, save_last_run=save_last_run)
-        test(result)
+        testlist(result)
         self.end_time = datetime.datetime.now()
         self.run_times += 1
-        self.generate_report(test, result)
+        self.generate_report(testlist, result)
         return result
 
     def sort_result(self, result_list):
