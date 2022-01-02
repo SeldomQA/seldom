@@ -139,21 +139,12 @@ class Browser(object):
             return webdriver.Remote(command_executor=EdgeConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.EDGE.copy())
 
-        if EdgeConfig.options is None:
-            firefox_options = EdgeConfig()
-            if FirefoxConfig.headless is True:
-                firefox_options.headless = True
-        else:
-            firefox_options = FirefoxConfig.options
-            if FirefoxConfig.headless is True:
-                firefox_options.headless = True
-
         if EdgeConfig.headless is True:
             edge_options = EdgeOptions()
             edge_options.headless = True
             return webdriver.Edge(executable_path=EdgeChromiumDriverManager(log_level=1).install(), options=edge_options)
-        else:
-            return webdriver.Edge(executable_path=EdgeChromiumDriverManager(log_level=1).install())
+
+        return webdriver.Edge(executable_path=EdgeChromiumDriverManager(log_level=1).install())
 
     @staticmethod
     def opera():
