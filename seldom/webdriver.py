@@ -11,6 +11,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
+from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 
 __all__ = ["WebDriver"]
 
@@ -217,7 +218,7 @@ class WebDriver(object):
         """
         log.info("📖 {}".format(url))
         if isinstance(Seldom.driver, SeleniumWebDriver) is False:
-            Seldom.driver = Chrome()
+            Seldom.driver = Chrome(executable_path=ChromeDriverManager().install())
         Seldom.driver.get(url)
 
     def open(self, url: str) -> None:
