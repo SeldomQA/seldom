@@ -8,7 +8,7 @@ WebUI/HTTP automation testing framework based on unittest.
 
 > 基于unittest 的 Web UI/HTTP自动化测试框架。
 
-## 特点
+### 特点
 
 * 提供更加简单API编写自动化测试
 * 提供脚手架，快速生成自动化测试项目
@@ -19,7 +19,7 @@ WebUI/HTTP automation testing framework based on unittest.
 * 支持HTTP接口测试 (v 2.0)
 
 
-### 安装
+### Install
 
 ```shell
 > pip install seldom
@@ -31,7 +31,7 @@ If you want to keep up with the latest version, you can install with github repo
 > pip install -U git+https://github.com/SeldomQA/seldom.git@master
 ```
 
-### Quick Start
+### 🤖 Quick Start
 
 1、查看帮助：
 
@@ -79,36 +79,38 @@ mypro/
 
 3、运行项目：
 
-> ⚠️ seldom不支持在`pyCharm`中右键执行，请使用cmd/终端。
+> ❌️ 在`pyCharm`中右键执行。
+>
+> ✔️ 通过命令行工具执行。
 
 ```shell
-> python3 run.py
+> python run.py
 
 
               __    __
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.3.0
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.4.0
 -----------------------------------------
                              @itest.info
 
-2021-10-12 00:47:33 [INFO] 📖 https://www.baidu.com
-2021-10-12 00:47:37 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-2021-10-12 00:47:38 [INFO] ✅ Find 1 element: css selector=#su , click.
-2021-10-12 00:47:40 [INFO] 👀 assertIn title: seldom_百度搜索.
-2021-10-12 00:47:40 [INFO] 📖 https://www.baidu.com
-2021-10-12 00:47:41 [INFO] ✅ Find 1 element: id=kw , input 'poium'.
-2021-10-12 00:47:42 [INFO] ✅ Find 1 element: css selector=#su , click.
-2021-10-12 00:47:43 [INFO] 👀 assertIn title: poium_百度搜索.
-2021-10-12 00:47:43 [INFO] 📖 https://www.baidu.com
-2021-10-12 00:47:44 [INFO] ✅ Find 1 element: id=kw , input 'HTMLTestRunner'.
-2021-10-12 00:47:45 [INFO] ✅ Find 1 element: css selector=#su , click.
-2021-10-12 00:47:46 [INFO] 👀 assertIn title: HTMLTestRunner_百度搜索.
-2021-10-12 00:47:46 [INFO] 📖 http://www.itest.info
-2021-10-12 00:47:53 [INFO] 👀 assertIn url: http://www.itest.info/.
-2021-10-12 00:47:53 [PRINT] generated html file: file:///D:\mypro\reports\2021_10_12_00_47_32_result.html
-2021-10-12 00:47:53 [PRINT] generated log file: file:///D:\mypro\reports\2021_10_12_00_47_32_log.log
+2022-01-06 23:46:16 [INFO] 📖 https://www.baidu.com
+2022-01-06 23:46:21 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+2022-01-06 23:46:21 [INFO] ✅ Find 1 element: css selector=#su , click.
+2022-01-06 23:46:23 [INFO] 👀 assertIn title: seldom_百度搜索.
+2022-01-06 23:46:23 [INFO] 📖 https://www.baidu.com
+2022-01-06 23:46:25 [INFO] ✅ Find 1 element: id=kw , input 'poium'.
+2022-01-06 23:46:26 [INFO] ✅ Find 1 element: css selector=#su , click.
+2022-01-06 23:46:27 [INFO] 👀 assertIn title: poium_百度搜索.
+2022-01-06 23:46:27 [INFO] 📖 https://www.baidu.com
+2022-01-06 23:46:28 [INFO] ✅ Find 1 element: id=kw , input 'HTMLTestRunner'.
+2022-01-06 23:46:29 [INFO] ✅ Find 1 element: css selector=#su , click.
+2022-01-06 23:46:30 [INFO] 👀 assertIn title: HTMLTestRunner_百度搜索.
+2022-01-06 23:46:30 [INFO] 📖 http://www.itest.info
+2022-01-06 23:46:39 [INFO] 👀 assertIn url: http://www.itest.info/.
+2022-01-06 23:46:39 [PRINT] generated html file: file:///D:\mypro\reports\2022_01_06_23_46_15_result.html
+2022-01-06 23:46:39 [PRINT] generated log file: file:///D:\mypro\reports\2022_01_06_23_46_15_log.log
 .1.2.3.4
 ```
 
@@ -118,9 +120,9 @@ mypro/
 
 ![test report](./test_report.png)
 
-## Demo
+## 🔬 Demo
 
-### simple demo
+### Web 测试
 
 [demo](/demo) 提供了丰富实例，帮你快速了解seldom的用法。
 
@@ -195,13 +197,13 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 ```
 
 
-## Document
+## 📖 Document
 
 [中文文档](/docs)
 
 [English document(readthedocs)](https://seldomqa.readthedocs.io/en/latest/index.html)
 
-## 项目实例
+### 项目实例
 
 基于seldom的web UI自动化项目：
 
@@ -211,7 +213,7 @@ https://github.com/BarryYBL/UIAutoDemo
 
 https://github.com/defnngj/seldom-api-testing
 
-## 感谢
+### 感谢
 
 感谢从以下项目中得到思路和帮助。
 
@@ -223,6 +225,6 @@ https://github.com/defnngj/seldom-api-testing
 
 * [utx](https://github.com/jianbing/utx)
 
-## 交流
+### 交流
 
 QQ群：948994709
