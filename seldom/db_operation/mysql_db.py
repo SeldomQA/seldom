@@ -48,6 +48,7 @@ class MySQLDB(SQLBase):
             rows = cursor.fetchall()
             for row in rows:
                 data_list.append(row)
+            self.connection.commit()
             return data_list
 
     def insert_data(self, table, data):
