@@ -23,12 +23,15 @@ def request(func):
         print("[method]: {m}      [url]: {u} \n".format(m=func_name.upper(), u=url))
         auth = kwargs.get("auth", "")
         headers = kwargs.get("headers", "")
+        cookies = kwargs.get("cookies", "")
         params = kwargs.get("params", "")
         data = kwargs.get("data", "")
         if auth != "":
             print(f"[auth]:\n {auth} \n")
         if headers != "":
             print(f"[headers]:\n {headers} \n")
+        if cookies != "":
+            print(f"[cookies]:\n {cookies} \n")
         if params != "":
             print(f"[params]:\n {params} \n")
         if data != "":
