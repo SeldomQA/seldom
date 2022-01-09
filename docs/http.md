@@ -314,6 +314,8 @@ class TestAPI(seldom.TestCase):
 
 在场景测试中，我们需要利用上一个接口的数据，调用下一个接口。
 
+* 简单的接口依赖
+
 ```python
 import seldom
 
@@ -333,6 +335,55 @@ class TestRespData(seldom.TestCase):
 ```
 
 seldom提供了`self.response`用于记录上个接口返回的结果，直接拿来用即可。
+
+* 封装接口依赖
+
+创建公共模块
+
+```python
+# common.py
+from seldom import HttpRequest
+
+
+class Common(HttpRequest):
+
+    def get_login_user(self):
+        """
+        调用接口获得用户名
+        """
+        headers = {"X-Account-Fullname": "bugmaster"}
+        self.get("http://httpbin.org/get", headers=headers)
+        user = self.response["headers"]["X-Account-Fullname"]
+        return user
+
+```
+
+> 创建类直接继承 `HttpRequest` 类调用使用Http请求方法`get/post/put/delete` .
+
+引用公共模块
+
+```python
+import seldom
+from common import Common
+
+
+class TestRequest(seldom.TestCase):
+
+    def start(self):
+        self.c = Common()
+
+    def test_case(self):
+        # 调用 get_login_user() 获取
+        user = self.c.get_login_user()
+        print(user)
+        self.post("http://httpbin.org/post", data={'username': user})
+        self.assertStatusCode(200)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+
+```
 
 
 ### 数据驱动

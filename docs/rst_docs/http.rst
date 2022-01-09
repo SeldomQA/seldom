@@ -324,6 +324,8 @@ Interface Data Dependency
 
 In scenario testing, we need to call the next interface using data from the previous interface.
 
+**Sample 1**
+
 .. code:: python
 
     import seldom
@@ -344,6 +346,54 @@ In scenario testing, we need to call the next interface using data from the prev
 
 
 \ ``self.response``\ Used to record the result returned by the last interface, just use it.
+
+**Sample 2**
+
+Defining common modules
+
+.. code:: python
+
+    # common.py
+    from seldom import HttpRequest
+
+
+    class Common(HttpRequest):
+
+        def get_login_user(self):
+            """
+            Call the interface to get the user name
+            """
+            headers = {"X-Account-Fullname": "bugmaster"}
+            self.get("http://httpbin.org/get", headers=headers)
+            user = self.response["headers"]["X-Account-Fullname"]
+            return user
+
+
+Create classes that inherit `HttpRequest` class calls using Http request methods 'get/post/put/delete'.
+
+Referencing public modules
+
+.. code:: python
+
+    import seldom
+    from common import Common
+
+
+    class TestRequest(seldom.TestCase):
+
+        def start(self):
+            self.c = Common()
+
+        def test_case(self):
+            #  get_login_user()
+            user = self.c.get_login_user()
+            print(user)
+            self.post("http://httpbin.org/post", data={'username': user})
+            self.assertStatusCode(200)
+
+
+    if __name__ == '__main__':
+        seldom.main(debug=True)
 
 
 Data-Driver
