@@ -44,7 +44,7 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
 
         seldom.main(path="./",
                     browser="chrome",
-                    base_url="",
+                    base_url=None,
                     report=None,
                     title="project name",
                     description="Environment description",
@@ -52,6 +52,8 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
                     rerun=0,
                     save_last_run=False,
                     timeout=None,
+                    whitelist=[],
+                    blacklist=[]
         )
 
 
@@ -59,7 +61,7 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
 **Parameter specification**
 
 -  path : Specifies the test directory or file.
--  browser : Run browser name, default `Chrome`.
+-  browser : Run browser name(for example: "chrome", "firefox").
 -  base\_url : A parameter to test the HTTP interface testing, setting the global URL.
 -  report : The name of the custom test report, The default format is `YYYY_mm_dd_HH_MM_SS_result.html`.
 -  title : Test report title.
@@ -68,7 +70,8 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
 -  rerun : Sets the number of failed reruns, Default is `0`.
 -  save\_last\_run : Sets to save only the last result, default to `False`.
 -  timeout : Sets the timeout, Default `10` seconds.
-
+-  whitelist :  The use case `label` sets the whitelist.
+-  blacklist :  Use case `label` Sets the blacklist。
 
 Run Test
 ~~~~~~~~~~

@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
     seldom.main(path="./",
                 browser="chrome",
-                base_url="",
+                base_url=None,
                 report=None,
                 title="百度测试用例",
                 description="测试环境:chrome",
@@ -43,6 +43,8 @@ if __name__ == '__main__':
                 rerun=0,
                 save_last_run=False,
                 timeout=None,
+                whitelist=[],
+                blacklist=[]
     )
 ```
 
@@ -50,7 +52,7 @@ __参数说明__
 
 
 * path : 指定测试目录或文件。
-* browser : 指定测试浏览器，默认`Chrome`。
+* browser : 针对Web UI测试需要指定浏览器（"chrome"、"firefox" 等）。
 * base_url : 针对HTTP接口测试的参数，设置全局的URL。
 * report : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`。
 * title : 指定测试报告标题。
@@ -58,7 +60,9 @@ __参数说明__
 * debug : debug模式，设置为True不生成测试HTML测试，默认为`False`。
 * rerun : 设置失败重新运行次数，默认为 `0`。
 * save_last_run : 设置只保存最后一次的结果，默认为`False`。
-* timeout : 设置超时时间，默认`10`秒
+* timeout : 设置超时时间，默认`10`秒。
+* whitelist :  用例标签（label）设置白名单。
+* blacklist :  用例标签（label）设置黑名单。
 
 ### 运行测试
 
