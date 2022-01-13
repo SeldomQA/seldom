@@ -38,13 +38,34 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
     """
     if file is None:
         raise FileExistsError("File name does not exist.")
+
+    stack_t = sys_inspect.stack()
+    ins = sys_inspect.getframeinfo(stack_t[1][0])
+    file_dir = os.path.dirname(os.path.abspath(ins.filename))
+
     if os.path.isfile(file) is True:
         file_path = file
-    else:
-        stack_t = sys_inspect.stack()
-        ins = sys_inspect.getframeinfo(stack_t[1][0])
-        file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
+    elif "/" in file or "\\" in file:
+        file = file.replace("\\", "/")
+        current_dir = os.path.join(file_dir, file)
+        parent_dir = os.path.join(os.path.dirname(file_dir), file)
+        parent_dir_dir = os.path.join(os.path.dirname(os.path.dirname(file_dir)), file)
+        parent_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file_dir))), file)
+        parent_dir_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
 
+        if os.path.isfile(current_dir) is True:
+            file_path = current_dir
+        elif os.path.isfile(parent_dir) is True:
+            file_path = parent_dir
+        elif os.path.isfile(parent_dir_dir) is True:
+            file_path = parent_dir_dir
+        elif os.path.isfile(parent_dir_dir_dir) is True:
+            file_path = parent_dir_dir_dir
+        elif os.path.isfile(parent_dir_dir_dir_dir) is True:
+            file_path = parent_dir_dir_dir_dir
+        else:
+            raise FileExistsError(f"No '{file}' data file found.")
+    else:
         file_path = None
         for root, dirs, files in os.walk(file_dir, topdown=False):
             for f in files:
@@ -54,6 +75,9 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
             else:
                 continue
             break
+
+        if file_path is None:
+            raise FileExistsError(f"No '{file}' data file found.")
 
     suffix = file.split(".")[-1]
     if suffix == "csv":
