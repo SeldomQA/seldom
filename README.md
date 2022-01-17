@@ -1,5 +1,5 @@
 
-![](seldom_logo.png)
+![](seldom_logo.jpg)
 
 [![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=SeldomQA.seldom)
