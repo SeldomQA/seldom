@@ -1,7 +1,13 @@
+### 2.4.1
+* 优化：HTTP接口测试增加`cookies`信息打印。
+* 优化：`@file_data()` 使用，支持指定目录 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)
+* 修复：`visit()` 方法默认浏览器没有自动安装浏览器驱动的问题。
+* 修复：`query_sql()` 执行SQL没有提交的问题。
+
 ### 2.4.0
 * 适配selenium 4.0+ ，适配相关依赖库新版本。
 * 测试用例支持`label`标签分类 [link](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E7%94%A8%E4%BE%8B%E5%88%86%E7%B1%BB%E6%A0%87%E7%AD%BE)
-* 接口测试增加打印入参信息 [79](https://github.com/SeldomQA/seldom/issues/75) 。
+* 接口测试增加打印入参信息 [79](https://github.com/SeldomQA/seldom/issues/79) 。
 * EdgeChromium浏览器支持`headless`模式。
 * Web自动化测试增加元素截图`self.element_screenshot()`
 * 优化HTML测试报告样式。
