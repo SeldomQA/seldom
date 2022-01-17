@@ -140,6 +140,23 @@ class YouTest(seldom.TestCase):
 * file: 指定csv文件的路径。
 * line: 指定从第几行开始读取，默认第1行。
 
+__@file_data用法__
+
+```shell
+mypro/
+├── test_dir/
+│   ├── module/
+│   │   ├── case/
+│   │   │   ├── test_sample.py (使用@file_data)
+├── test_data/
+│   ├── module_data/
+│   │   ├── data.csv
+```
+
+在 `test_sample.py` 中使用`@file_data("data.csv")`只能向上查找两级目录，即`module`目录下遍历查找`data.csv`文件。如果用例层级比较深，
+那么就需要指定文件目录了，使用方式：`@file_data("test_data/module_data/data.csv")`。
+
+
 __excel文件参数化__
 
 seldom支持将`excel`文件的参数化。
