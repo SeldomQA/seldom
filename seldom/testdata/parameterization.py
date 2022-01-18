@@ -67,7 +67,8 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
             raise FileExistsError(f"No '{file}' data file found.")
     else:
         file_path = None
-        for root, dirs, files in os.walk(file_dir, topdown=False):
+        find_dir = os.path.dirname(file_dir)
+        for root, dirs, files in os.walk(find_dir, topdown=False):
             for f in files:
                 if f == file:
                     file_path = os.path.join(root, file)
