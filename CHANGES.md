@@ -1,3 +1,6 @@
+### 2.4.2
+* 功能：增强`@file_data`使用方式，json/yaml支持内嵌`dict`数据 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5) 。
+
 ### 2.4.1
 * 优化：HTTP接口测试增加`cookies`信息打印。
 * 优化：`@file_data()` 使用，支持指定目录 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)
