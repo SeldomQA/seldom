@@ -5,12 +5,12 @@
   ],
   "login":[
     {
-      "username": "admin",
-      "password": "admin123"
+      "username": "Tom",
+      "password": "tom123"
     },
     {
-      "username": "admin",
-      "password": "admin123"
+      "username": "Jerry",
+      "password": "jerry123"
     }
   ]
 }

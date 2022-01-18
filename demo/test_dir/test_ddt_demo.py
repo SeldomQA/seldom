@@ -29,7 +29,7 @@ class FileDataTest(seldom.TestCase):
         self.test_url = "https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit"
 
     @file_data("json_data.json", key="name")
-    def test_json(self, firstname, lastname):
+    def test_json_list(self, firstname, lastname):
         """
         used file_data test
         """
@@ -39,8 +39,19 @@ class FileDataTest(seldom.TestCase):
         self.type(name="lastname", text=lastname, clear=True)
         self.sleep(1)
 
+    @file_data("json_data.json", key="login")
+    def test_json_dict(self, username, password):
+        """
+        used file_data test
+        """
+        self.open(self.test_url)
+        self.switch_to_frame(id_="iframeResult")
+        self.type(name="firstname", text=username, clear=True)
+        self.type(name="lastname", text=password, clear=True)
+        self.sleep(1)
+
     @file_data("yaml_data.yaml", key="name")
-    def test_yaml(self, firstname, lastname):
+    def test_yaml_list(self, firstname, lastname):
         """
         used file_data test
         """
@@ -48,6 +59,17 @@ class FileDataTest(seldom.TestCase):
         self.switch_to_frame(id_="iframeResult")
         self.type(name="firstname", text=firstname, clear=True)
         self.type(name="lastname", text=lastname, clear=True)
+        self.sleep(1)
+
+    @file_data("yaml_data.yaml", key="login")
+    def test_yaml_list(self, username, password):
+        """
+        used file_data test
+        """
+        self.open(self.test_url)
+        self.switch_to_frame(id_="iframeResult")
+        self.type(name="firstname", text=username, clear=True)
+        self.type(name="lastname", text=password, clear=True)
         self.sleep(1)
 
     @file_data("csv_data.csv", line=2)
@@ -74,4 +96,4 @@ class FileDataTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main(browser="ff", debug=True)
+    seldom.main(browser="gc", debug=True)
