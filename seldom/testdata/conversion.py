@@ -12,6 +12,28 @@ except ModuleNotFoundError:
     raise ModuleNotFoundError("Please install the library. https://pypi.org/project/openpyxl/")
 
 
+def _check_data(list_data: list) -> list:
+    """
+    Checking test data format.
+    :param list_data:
+    :return:
+    """
+    if isinstance(list_data, list) is False:
+        raise TypeError("The data format is not `list`.")
+    if len(list_data) == 0:
+        raise ValueError("The data format cannot be `[]`.")
+    if isinstance(list_data[0], dict):
+        test_data = []
+        for data in list_data:
+            line = []
+            for d in data.values():
+                line.append(d)
+            test_data.append(line)
+        return test_data
+    else:
+        return list_data
+
+
 def csv_to_list(file=None, line=1):
     """
     Convert CSV file data to list
@@ -19,7 +41,7 @@ def csv_to_list(file=None, line=1):
     :param line: Start line of read data
     :return:  list data
 
-    @data(csv_to_list(/home/user/seldom/data.csv, line=1))
+    @data("data.csv", line=1)
     def test_login(self, username, password):
         print(username)
         print(password)
@@ -43,7 +65,7 @@ def excel_to_list(file=None, sheet="Sheet1", line=1):
     :param line: Start line of read data
     :return: list data
 
-    @data(excel_to_list(/home/user/seldom/data.xlsx, sheet="Sheet1", line=1))
+    @data("data.xlsx", sheet="Sheet1", line=1)
     def test_login(self, username, password):
         print(username)
         print(password)
@@ -71,7 +93,7 @@ def json_to_list(file, key=None):
     :param key: Specifies the key for the dictionary
     :return: list data
 
-    @data(json_to_list(/home/user/seldom/data.json, key="login"))
+    @data("data.json", key="login")
     def test_login(self, username, password):
         print(username)
         print(password)
@@ -81,15 +103,17 @@ def json_to_list(file, key=None):
 
     if key is None:
         with open(file, "r", encoding="utf-8") as f:
-            dict_data = json.load(f)
+            data = json.load(f)
+            list_data = _check_data(data)
     else:
         with open(file, "r", encoding="utf-8") as f:
             try:
-                dict_data = json.load(f)[key]
+                data = json.load(f)[key]
+                list_data = _check_data(data)
             except KeyError:
                 raise ValueError("Check the test data, no '{}'".format(key))
 
-    return dict_data
+    return list_data
 
 
 def yaml_to_list(file, key=None):
@@ -99,7 +123,7 @@ def yaml_to_list(file, key=None):
     :param key: Specifies the key for the dictionary
     :return: list data
 
-    @data(yaml_to_list(/home/user/seldom/data.yaml, key="login"))
+    @data("data.yaml", key="login")
     def test_login(self, username, password):
         print(username)
         print(password)
@@ -109,12 +133,14 @@ def yaml_to_list(file, key=None):
 
     if key is None:
         with open(file, "r", encoding="utf-8") as f:
-            dict_data = yaml.load(f, Loader=yaml.FullLoader)
+            data = yaml.load(f, Loader=yaml.FullLoader)
+            list_data = _check_data(data)
     else:
         with open(file, "r", encoding="utf-8") as f:
             try:
-                dict_data = yaml.load(f, Loader=yaml.FullLoader)[key]
+                data = yaml.load(f, Loader=yaml.FullLoader)[key]
+                list_data = _check_data(data)
             except KeyError:
                 raise ValueError("Check the test data, no '{}'".format(key))
 
-    return dict_data
+    return list_data
