@@ -188,12 +188,24 @@ seldom支持将`JSON`文件的参数化。
 json 文件：
 ```json
 {
- "login":  [
+  "login1":  [
     ["admin", "admin123"],
     ["guest", "guest123"]
- ]
+  ],
+  "login2":  [
+    {
+      "username": "Tom",
+      "password": "tom123"
+    },
+    {
+      "username": "Jerry",
+      "password": "jerry123"
+    }
+  ]
 }
 ```
+
+> 注：`login1` 和 `login2` 的调用方法一样。 区别是前者更简洁，后者更易读。
 
 ```python
 import seldom
@@ -202,7 +214,7 @@ from seldom import file_data
 
 class YouTest(seldom.TestCase):
 
-    @file_data("data.json", key="login")
+    @file_data("data.json", key="login1")
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -221,12 +233,19 @@ seldom支持`YAML`文件的参数化。
 data.yaml 文件：
 
 ```yaml
-login:
+login1:
   - - admin
     - admin123
   - - guest
     - guest123
+login2:
+- username: Tom
+  password: tom123
+- username: Jerry
+  password: jerry123
 ```
+
+> 同json用法一样，yaml书写更加简洁。
 
 ```python
 import seldom
@@ -235,7 +254,7 @@ from seldom import file_data
 
 class YouTest(seldom.TestCase):
 
-    @file_data("data.yaml", key="login")
+    @file_data("data.yaml", key="login1")
     def test_login(self, username, password):
         """a simple test case """
         print(username)

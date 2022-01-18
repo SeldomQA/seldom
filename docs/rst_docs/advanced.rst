@@ -184,12 +184,24 @@ json file:
 .. code:: json
 
     {
-     "login":  [
+     "login1":  [
         ["admin", "admin123"],
         ["guest", "guest123"]
-     ]
+     ],
+    "login2":  [
+        {
+          "username": "Tom",
+          "password": "tom123"
+        },
+        {
+          "username": "Jerry",
+          "password": "jerry123"
+        }
+      ]
     }
 
+
+Note: 'login1' and 'login2' are called in the same way. The difference is that the former is more concise while the latter is easier to read.
 
 python code:
 
@@ -202,7 +214,7 @@ python code:
 
     class YouTest(seldom.TestCase):
 
-        @file_data("data.json", key="login")
+        @file_data("data.json", key="login1")
         def test_login(self, username, password):
             """a simple test case """
             print(username)
@@ -220,12 +232,19 @@ data.yaml file:
 
 .. code:: yaml
 
-    login:
+    login1:
       - - admin
         - admin123
       - - guest
         - guest123
+    login2:
+      - username: Tom
+        password: tom123
+      - username: Jerry
+        password: jerry123
 
+
+Like JSON usage, YAML is much more compact to write.
 
 python code:
 
@@ -237,7 +256,7 @@ python code:
 
     class YouTest(seldom.TestCase):
 
-        @file_data("data.yaml", key="login")
+        @file_data("data.yaml", key="login1")
         def test_login(self, username, password):
             """a simple test case """
             print(username)
