@@ -12,16 +12,16 @@ class FindFilePath:
         ins = inspect.getframeinfo(stack_t[1][0])
         this_file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
 
-        file_path = None
+        _file_path = None
         for root, dirs, files in os.walk(this_file_dir, topdown=False):
             for file in files:
                 if file == name:
-                    file_path = os.path.join(root, file)
+                    _file_path = os.path.join(root, file)
                     break
             else:
                 continue
             break
-        return file_path
+        return _file_path
 
 
 find_file_path = FindFilePath
@@ -111,17 +111,20 @@ def diff_json(response_data, assert_data):
         """ list format """
         if len(response_data) == 0:
             print("response is []")
+        else:
+            if isinstance(response_data[0], dict):
+                response_data = sorted(response_data, key=lambda x: x[list(response_data[0].keys())[0]])
+            else:
+                response_data = sorted(response_data)
+
         if len(response_data) != len(assert_data):
             print("list len: '{}' != '{}'".format(len(response_data), len(assert_data)))
 
-        if isinstance(response_data[0], dict):
-            response_data = sorted(response_data, key=lambda x: x[list(response_data[0].keys())[0]])
-        else:
-            response_data = sorted(response_data)
-        if isinstance(assert_data[0], dict):
-            assert_data = sorted(assert_data, key=lambda x: x[list(assert_data[0].keys())[0]])
-        else:
-            assert_data = sorted(assert_data)
+        if len(assert_data) > 0:
+            if isinstance(assert_data[0], dict):
+                assert_data = sorted(assert_data, key=lambda x: x[list(assert_data[0].keys())[0]])
+            else:
+                assert_data = sorted(assert_data)
 
         for src_list, dst_list in zip(response_data, assert_data):
             """ recursion """
