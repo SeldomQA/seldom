@@ -91,10 +91,12 @@ Fixture for each test class.
 
     class TestCase(seldom.TestCase):
 
-        def start_class(self):
+        @classmethod
+        def start_class(cls):
             print("start test class")
 
-        def end_class(self):
+        @classmethod
+        def end_class(cls):
             print("end test class")
 
         def test_search_seldom(self):

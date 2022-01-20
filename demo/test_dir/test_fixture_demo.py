@@ -7,11 +7,13 @@ class BaiduTest(seldom.TestCase):
     * start/end
     """
 
-    def start_class(self):
+    @classmethod
+    def start_class(cls):
         print("test class start")
-        self.max_window()
+        cls.max_window()
 
-    def end_class(self):
+    @classmethod
+    def end_class(cls):
         print("test class end")
 
     def start(self):

@@ -82,11 +82,13 @@ import seldom
 
 
 class TestCase(seldom.TestCase):
-
-    def start_class(self):
+    
+    @classmethod
+    def start_class(cls):
         print("测试类开始执行")
 
-    def end_class(self):
+    @classmethod
+    def end_class(cls):
         print("测试类结束执行")
 
     def test_search_seldom(self):
