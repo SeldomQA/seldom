@@ -22,7 +22,6 @@ class SeldomTestLoader(TestLoader):
             if not attrname.startswith(self.testMethodPrefix):
                 return False
             testFunc = getattr(testCaseClass, attrname)
-            # print("testFunc", testFunc)
             if not callable(testFunc):
                 return False
             fullName = f'%s.%s.%s' % (
@@ -35,7 +34,7 @@ class SeldomTestLoader(TestLoader):
                         "name": testCaseClass.__name__,
                         "doc": testCaseClass.__doc__
                     },
-                    "function": {
+                    "method": {
                         "name": attrname,
                         "doc": testFunc.__doc__
                     }
@@ -46,7 +45,6 @@ class SeldomTestLoader(TestLoader):
                    any(fnmatchcase(fullName, pattern) for pattern in self.testNamePatterns)
 
         testFnNames = list(filter(shouldIncludeMethod, dir(testCaseClass)))
-        # print("testFnNames", testFnNames)
         if self.sortTestMethodsUsing:
             testFnNames.sort(key=functools.cmp_to_key(self.sortTestMethodsUsing))
         return testFnNames

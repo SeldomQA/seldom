@@ -13,6 +13,8 @@ from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.loader_extend import seldomTestLoader
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
+from seldom.running.loader_extend import SeldomTestLoader
+
 
 INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
@@ -175,25 +177,33 @@ class TestMainExtend(TestMain):
                          auto=auto)
 
     @staticmethod
-    def _diff_case(file_name: str, class_name: str, function_name: str, data: list) -> bool:
+    def collect_cases() -> list:
+        """
+        Return the collected case information.
+        SeldomTestLoader.collectCaseInfo = True
+        """
+        return SeldomTestLoader.collectCaseList
+
+    @staticmethod
+    def _diff_case(file_name: str, class_name: str, method_name: str, data: list) -> bool:
         """
         Diff use case information
         :param file_name:
         :param class_name:
-        :param function_name:
+        :param method_name:
         :param data:
         :return:
         """
         for d in data:
             d_file = d["file"]
             d_class = d["class"]["name"]
-            d_function = d["function"]["name"]
-            if file_name == d_file and class_name == d_class and function_name == d_function:
+            d_method = d["method"]["name"]
+            if file_name == d_file and class_name == d_class and method_name == d_method:
                 return True
 
         return False
 
-    def run_case(self, data: list) -> None:
+    def run_cases(self, data: list) -> None:
         """
         run list case
         :param data:
@@ -212,8 +222,8 @@ class TestMainExtend(TestMain):
                 for case in cases:
                     file_name = case.__module__
                     class_name = case.__class__.__name__
-                    function_name = str(case).split(" ")[0]
-                    ret = self._diff_case(file_name, class_name, function_name, data)
+                    method_name = str(case).split(" ")[0]
+                    ret = self._diff_case(file_name, class_name, method_name, data)
                     if ret is True:
                         suit.addTest(case)
 
