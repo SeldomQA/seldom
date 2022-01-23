@@ -47,3 +47,5 @@
 * [数据库操作](./db_operation.md)
   * [连接数据库](./db_operation.md#连接数据库)
   * [操作方法](./db_operation.md#操作方法)
+
+* [平台化支持](./platform.md)
