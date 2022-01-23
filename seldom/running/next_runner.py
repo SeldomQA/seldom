@@ -81,10 +81,8 @@ class TestMain(object):
         Seldom.debug = debug
         Seldom.base_url = base_url
 
-        # ----- Global launch browser -----
-        if self.browser is not None:
-            BrowserConfig.NAME = self.browser
-            Seldom.driver = Browser(BrowserConfig.NAME)
+        # ----- Global open browser -----
+        self.open_browser()
 
         if self.path is None:
             stack_t = inspect.stack()
@@ -117,8 +115,7 @@ class TestMain(object):
             self.run(self.TestSuits)
 
         # ----- Close browser globally -----
-        if isinstance(Seldom.driver, SeleniumWebDriver):
-            Seldom.driver.quit()
+        self.close_browser()
 
     def run(self, suits):
         """
@@ -155,6 +152,23 @@ class TestMain(object):
                 verbosity=2)
             runner.run(suits)
             log.printf("A run the test in debug mode without generating HTML report!")
+
+    def open_browser(self):
+        """
+        If you set up a browser, open the browser
+        """
+        if self.browser is not None:
+            BrowserConfig.NAME = self.browser
+            Seldom.driver = Browser(BrowserConfig.NAME)
+
+    @staticmethod
+    def close_browser():
+        """
+        How to open the browser, close the browser
+        """
+        if isinstance(Seldom.driver, SeleniumWebDriver):
+            Seldom.driver.quit()
+            Seldom.driver = None
 
 
 class TestMainExtend(TestMain):
@@ -228,6 +242,7 @@ class TestMainExtend(TestMain):
                         suit.addTest(case)
 
         self.run(suit)
+        self.close_browser()
 
 
 main = TestMain
