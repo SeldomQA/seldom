@@ -19,8 +19,9 @@
 
 from .case import TestCase
 from .running.config import Seldom
-from .running.next_runner import main
+from .running.next_runner import main, TestMainExtend
 from .running.HTMLTestRunner import SMTP
+from .running.loader_extend import SeldomTestLoader
 
 from .skip import *
 from .driver import *
