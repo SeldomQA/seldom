@@ -2,6 +2,7 @@
 import os
 import re
 import ast
+import json as sys_json
 import unittest
 import webbrowser
 from xmlrunner import XMLTestRunner
@@ -191,11 +192,13 @@ class TestMainExtend(TestMain):
                          auto=auto)
 
     @staticmethod
-    def collect_cases() -> list:
+    def collect_cases(json=False):
         """
         Return the collected case information.
         SeldomTestLoader.collectCaseInfo = True
         """
+        if json is True:
+            return sys_json.dumps(SeldomTestLoader.collectCaseList)
         return SeldomTestLoader.collectCaseList
 
     @staticmethod
