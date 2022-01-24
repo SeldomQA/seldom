@@ -19,6 +19,7 @@ mypro/
 ### 获取用例信息
 
 ```py
+# run.py
 from seldom import SeldomTestLoader
 from seldom import TestMainExtend
 
@@ -121,7 +122,8 @@ __说明__
 当获取用例信息之后，可以进行自定义，例如 挑选出需要执行的用例，重新传给Seldom 执行。
 
 ```python
-from seldom.running.next_runner import TestMainExtend
+# run.py
+from seldom import TestMainExtend
 
 if __name__ == '__main__':
     # 自定义要执行的用例
