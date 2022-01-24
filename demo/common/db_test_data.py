@@ -14,7 +14,7 @@ end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + 43200
 now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
 
 
-datas = {
+sql_data = {
     'api_event': [
         {'id': 1, 'name': '红米Pro发布会', '`limit`': 2000, 'status': 1, 'address': '北京会展中心', 'start_time': start_time,
          "end_time": end_time, "create_time": now_time, "update_time": now_time},
@@ -38,9 +38,20 @@ datas = {
 }
 
 if __name__ == '__main__':
-    # test sqlite3
+    # test SQLite3
     db = SQLiteDB(r"D:\learnAPI\db.sqlite3")
-    db.init_table(datas)
-    # test mysql
-    db = MySQLDB(host="127.0.0.1", port="3306", user="root", password="123", database="db_name")
-    db.init_table(datas)
+    # query sql
+    ret = db.query_sql("select * from api_event")
+    print(ret)
+    # execute sql
+    db.execute_sql("select * from api_event where id=1")
+    # delete sql
+    db.delete("api_event", where={"id": 5})
+    # update sql
+    db.update("api_event", where={"name": "红米K20发布会", }, data={"name": "红米K30发布会", "address": "天津"})
+    # Batch insert data
+    db.init_table(sql_data)
+
+    # test MySQL
+    db = MySQLDB(host="127.0.0.1", port="3306", user="root", password="123456", database="dev_db")
+    # ...
