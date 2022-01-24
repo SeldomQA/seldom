@@ -35,6 +35,7 @@ setup(
         'jsonschema>=3.2.0',
         'jmespath>=0.10.0',
         'webdriver-manager>=3.5.0',
+        'pymysql>=1.0.0'
     ],
     classifiers=[
         'Intended Audience :: Developers',
