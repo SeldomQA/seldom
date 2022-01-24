@@ -20,7 +20,7 @@ mypro/
 
 ```py
 from seldom import SeldomTestLoader
-from seldom.running.next_runner import TestMainExtend
+from seldom import TestMainExtend
 
 if __name__ == '__main__':
     SeldomTestLoader.collectCaseInfo = True
@@ -33,9 +33,9 @@ __说明__
 
 返回的用例信息列表：
 
-* `SeldomTestLoader.collectCaseInfo` ：设置为`True` 说明需要收集用例信息。
-* `TestMainExtend(path="./test_dir/")` ： 通过`path` 设置收集用例的目录。
-* `.collect_cases(json=True)`: 返回收集的用例信息，`json=True` 说明返回`json`格式；默认为`dict/list`格式。
+* `collectCaseInfo` ：`collectCaseInfo`设置为`True` 说明需要收集用例信息。
+* `TestMainExtend(path="./test_dir/")` ： `TestMainExtend`类是`TestMain`类的扩展，`path`设置收集用例的目录，不能为空。
+* `collect_cases(json=True)`: 返回收集的用例信息，`json=True` 说明返回`json`格式；默认为`dict/list`格式。
 
 
 ```json
@@ -109,6 +109,13 @@ __说明__
 ]
 ```
 
+数据结构说明：
+
+* file: 获取类的文件名，包含目录名。
+* class: 测试类的名字`name` 和 描述`doc`。
+* method: 测试方法的名字`name` 和 描述`doc`。
+
+
 ### 执行用例信息
 
 当获取用例信息之后，可以进行自定义，例如 挑选出需要执行的用例，重新传给Seldom 执行。
@@ -118,7 +125,7 @@ from seldom.running.next_runner import TestMainExtend
 
 if __name__ == '__main__':
     # 自定义要执行的用例
-    case = [
+    cases = [
         {
             "file": "module_web.test_first_demo",
             "class": {
@@ -132,15 +139,11 @@ if __name__ == '__main__':
         }
     ]
     main_extend = TestMainExtend(path="./test_dir")
-    main_extend.run_cases(case)
+    main_extend.run_cases(cases)
 ```
 
 说明：
 
-* `case` 定义要执行的用例信息。
+* `cases` 定义要执行的用例信息， `doc` 非必填字段。
 * `TestMainExtend(path="./test_dir")` : 其中`path`指定从哪个目录查找用例集合。
-* `run_cases(case)`: 运行用例。
-
-
-> `TestMainExtend()` 是`main()` 的扩展。
-
+* `run_cases(cases)`: 运行用例。
