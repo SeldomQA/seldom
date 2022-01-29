@@ -3,18 +3,18 @@ import os
 import re
 import ast
 import json as sys_json
+import inspect
 import unittest
 import webbrowser
 from xmlrunner import XMLTestRunner
-import inspect
-from seldom.logging import log
+from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.driver import Browser
+from seldom.logging import log
+from seldom.logging.exceptions import SeldomException
 from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.loader_extend import seldomTestLoader
-from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
-from seldom.running.loader_extend import SeldomTestLoader
 
 
 INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
@@ -198,8 +198,8 @@ class TestMainExtend(TestMain):
         SeldomTestLoader.collectCaseInfo = True
         """
         if json is True:
-            return sys_json.dumps(SeldomTestLoader.collectCaseList)
-        return SeldomTestLoader.collectCaseList
+            return sys_json.dumps(seldomTestLoader.collectCaseList)
+        return seldomTestLoader.collectCaseList
 
     @staticmethod
     def _diff_case(file_name: str, class_name: str, method_name: str, data: list) -> bool:
@@ -212,9 +212,12 @@ class TestMainExtend(TestMain):
         :return:
         """
         for d in data:
-            d_file = d["file"]
-            d_class = d["class"]["name"]
-            d_method = d["method"]["name"]
+            d_file = d.get("file", None)
+            d_class = d.get("class").get("name", None)
+            d_method = d.get("method").get("name", None)
+            if (d_file is None) or (d_class is None) or (d_method is None):
+                raise SeldomException(
+                    """Use case format error, please refer to: https://github.com/SeldomQA/seldom/blob/master/docs/platform.md""")
             if file_name == d_file and class_name == d_class and method_name == d_method:
                 return True
 
@@ -249,7 +252,6 @@ class TestMainExtend(TestMain):
 
 
 main = TestMain
-
 
 if __name__ == '__main__':
     main()
