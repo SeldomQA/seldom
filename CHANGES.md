@@ -1,3 +1,9 @@
+### 2.5.0
+* 功能：支持测试平台化 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/platform.md) 。
+* 功能：utils 增加`file`类，获取当前文件目录更方便。
+* 修复：`self.select()` 操作下拉选择错误。
+* 修复：`diff_json()` 对比json文件错误。
+ 
 ### 2.4.2
 * 功能：增强`@file_data`使用方式，json/yaml支持内嵌`dict`数据 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5) 。
 
