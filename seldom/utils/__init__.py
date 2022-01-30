@@ -27,62 +27,68 @@ class FindFilePath:
 find_file_path = FindFilePath
 
 
-def file_path() -> str:
-    """
-    Returns the absolute path to the directory where the current file resides
-    For example:
-        "/User/tech/you/test_dir/test_sample.py"
-        return "/User/tech/you/test_dir/test_sample.py"
-    """
-    stack_t = inspect.stack()
-    ins = inspect.getframeinfo(stack_t[1][0])
-    return os.path.abspath(ins.filename)
+class File:
 
+    @property
+    def path(self) -> str:
+        """
+        Returns the absolute path to the directory where the current file resides
+        For example:
+            "/User/tech/you/test_dir/test_sample.py"
+            return "/User/tech/you/test_dir/test_sample.py"
+        """
+        stack_t = inspect.stack()
+        ins = inspect.getframeinfo(stack_t[1][0])
+        return os.path.abspath(ins.filename)
 
-def file_dir() -> str:
-    """
-    Returns the absolute path to the directory where the current file resides
-    For example:
-        "/User/tech/you/test_dir/test_sample.py"
-        return "/User/tech/you/test_dir/"
-    """
-    stack_t = inspect.stack()
-    ins = inspect.getframeinfo(stack_t[1][0])
-    return os.path.dirname(os.path.abspath(ins.filename))
+    @property
+    def dir(self) -> str:
+        """
+        Returns the absolute path to the directory where the current file resides
+        For example:
+            "/User/tech/you/test_dir/test_sample.py"
+            return "/User/tech/you/test_dir/"
+        """
+        stack_t = inspect.stack()
+        ins = inspect.getframeinfo(stack_t[1][0])
+        return os.path.dirname(os.path.abspath(ins.filename))
 
+    @property
+    def dir_dir(self) -> str:
+        """
+        Returns the absolute directory path of the current file directory.
+        For example:
+            "/User/tech/you/test_dir/test_sample.py"
+            return "/User/tech/you/"
+        """
+        stack_t = inspect.stack()
+        ins = inspect.getframeinfo(stack_t[1][0])
+        return os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
 
-def file_dir_dir() -> str:
-    """
-    Returns the absolute directory path of the current file directory.
-    For example:
-        "/User/tech/you/test_dir/test_sample.py"
-        return "/User/tech/you/"
-    """
-    stack_t = inspect.stack()
-    ins = inspect.getframeinfo(stack_t[1][0])
-    return os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
+    @property
+    def dir_dir_dir(self) -> str:
+        """
+        Returns the absolute directory path of the current file directory
+        For example:
+            /User/tech/you/test_dir/test_sample.py
+            return "/User/you/"
+        """
+        stack_t = inspect.stack()
+        ins = inspect.getframeinfo(stack_t[1][0])
+        return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(ins.filename))))
 
+    @staticmethod
+    def add_to_path(path=None) -> None:
+        """
+        add path to environment variable path.
+        """
+        if path is None:
+            raise FileNotFoundError("Please setting the File Path")
 
-def file_dir_dir_dir() -> str:
-    """
-    Returns the absolute directory path of the current file directory
-    For example:
-        /User/tech/you/test_dir/test_sample.py
-        return "/User/you/"
-    """
-    stack_t = inspect.stack()
-    ins = inspect.getframeinfo(stack_t[1][0])
-    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(ins.filename))))
-
-
-def init_env_path(path=None) -> None:
-    """
-    add path to environment variable path.
-    """
-    if path is None:
-        sys.path.insert(1, file_dir_dir())
-    else:
         sys.path.insert(1, path)
+
+
+file = File()
 
 
 class AssertInfo:
