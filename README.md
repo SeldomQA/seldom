@@ -207,7 +207,7 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 基于seldom的web UI自动化项目：
 
-https://github.com/BarryYBL/UIAutoDemo
+https://github.com/SeldomQA/seldom-web-testing
 
 基于seldom的接口自动化项目:
 
