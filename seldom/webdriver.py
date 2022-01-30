@@ -708,7 +708,7 @@ class WebDriver(object):
             self.select(css="#nr", index=2)
         """
         web_elem = WebElement(**kwargs)
-        elem = web_elem.get_elements(index)[0]
+        elem = web_elem.get_elements(0)
         web_elem.show_element(elem)
         log.info("✅ {}, select option.".format(web_elem.info))
         if value is not None:
