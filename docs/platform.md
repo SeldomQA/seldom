@@ -149,3 +149,8 @@ if __name__ == '__main__':
 * `cases` 定义要执行的用例信息， `doc` 非必填字段。
 * `TestMainExtend(path="./test_dir")` : 其中`path`指定从哪个目录查找用例集合。
 * `run_cases(cases)`: 运行用例。
+
+
+### 相关项目
+
+seldom-platform: https://github.com/SeldomQA/seldom-platform
