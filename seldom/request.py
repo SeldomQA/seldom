@@ -1,5 +1,7 @@
 import requests
 from seldom.running.config import Seldom
+from seldom.logging import log
+
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
@@ -7,7 +9,7 @@ IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 def request(func):
     def wrapper(*args, **kwargs):
         func_name = func.__name__
-        print('\n------------------ Request ---------------------[🚀]')
+        log.info('-------------- Request -----------------[🚀]')
         try:
             url = list(args)[1]
         except IndexError:
@@ -20,41 +22,41 @@ def request(func):
         if file_type in IMG:
             img_file = True
 
-        print("[method]: {m}      [url]: {u} \n".format(m=func_name.upper(), u=url))
+        log.debug("[method]: {m}      [url]: {u} \n".format(m=func_name.upper(), u=url))
         auth = kwargs.get("auth", "")
         headers = kwargs.get("headers", "")
         cookies = kwargs.get("cookies", "")
         params = kwargs.get("params", "")
         data = kwargs.get("data", "")
         if auth != "":
-            print(f"[auth]:\n {auth} \n")
+            log.debug(f"[auth]:\n {auth} \n")
         if headers != "":
-            print(f"[headers]:\n {headers} \n")
+            log.debug(f"[headers]:\n {headers} \n")
         if cookies != "":
-            print(f"[cookies]:\n {cookies} \n")
+            log.debug(f"[cookies]:\n {cookies} \n")
         if params != "":
-            print(f"[params]:\n {params} \n")
+            log.debug(f"[params]:\n {params} \n")
         if data != "":
-            print(f"[data]:\n {data} \n")
+            log.debug(f"[data]:\n {data} \n")
 
         # running function
         r = func(*args, **kwargs)
 
         ResponseResult.status_code = r.status_code
-        print("------------------ Response --------------------[🛬️]")
+        log.info("-------------- Response ----------------[🛬️]")
         try:
             resp = r.json()
-            print(f"[type]: json \n")
-            print(f"[response]:\n {resp} \n")
+            log.debug(f"[type]: json \n")
+            log.debug(f"[response]:\n {resp} \n")
             ResponseResult.response = resp
         except BaseException as msg:
-            print("[warning]: {} \n".format(msg))
+            log.debug("[warning]: {} \n".format(msg))
             if img_file is True:
-                print("[type]: {}".format(file_type))
+                log.debug("[type]: {}".format(file_type))
                 ResponseResult.response = r.content
             else:
-                print("[type]: text \n")
-                print(f"[response]:\n {r.text} \n")
+                log.debug("[type]: text \n")
+                log.debug(f"[response]:\n {r.text} \n")
                 ResponseResult.response = r.text
 
     return wrapper
