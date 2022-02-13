@@ -153,8 +153,8 @@ class WebDriver(object):
 
         def __init__(self, index: int = 0, **kwargs) -> None:
             self.web_elem = WebElement(**kwargs)
-            self.elem = self.web_elem.get_elements()
-            self.web_elem.show_element(self.elem[index])
+            self.elem = self.web_elem.get_elements(index)
+            self.web_elem.show_element(self.elem)
 
         def input(self, text="") -> None:
             log.info("✅ {info}, input '{text}'.".format(info=self.web_elem.info, text=text))
