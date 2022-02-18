@@ -9,6 +9,7 @@ IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 def request(func):
     def wrapper(*args, **kwargs):
         func_name = func.__name__
+        print("\n")
         log.info('-------------- Request -----------------[🚀]')
         try:
             url = list(args)[1]
