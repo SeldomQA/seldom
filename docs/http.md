@@ -131,28 +131,42 @@ if __name__ == '__main__':
 
 ```shell
 > python .\test_req.py
-2021-04-29 18:19:39 [INFO] A run the test in debug mode without generating HTML report!
-2021-04-29 18:19:39 [INFO]
+
               __    __
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.5.1
 -----------------------------------------
                              @itest.info
 
-test_get_method (test_req.TestAPI) ...
------------ Request 🚀 ---------------
-url: http://httpbin.org/get         method: GET
------------ Response 🛬️ -------------
-type: json
-{'args': {'key1': 'value1', 'key2': 'value2'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.22.0', 'X-Amzn-Trace-Id': 'Root=1-608a883c-7b355ba81fcd0d287566405a'}, 'origin': '183.178.27.36', 'url': 'http://httpbin.org/get?key1=value1&key2=value2'}
+.\test_req_2.py
+test_case (test_req_2.TestRequest) ... 
+2022-02-19 00:52:13 [INFO] -------------- Request -----------------[🚀]
+2022-02-19 00:52:13 [DEBUG] [method]: POST      [url]: http://httpbin.org/post
+
+2022-02-19 00:52:13 [DEBUG] [headers]:
+ {'User-Agent': 'python-requests/2.25.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': 'application/json', 'Connection': 'keep-alive', 'Host': 'httpbin.org', 'Content-Length': '36', 'Origin': 'http://httpbin.org', 'Content-Type': 'application/json', 'Cookie': 'lang=zh'}
+
+2022-02-19 00:52:13 [DEBUG] [cookies]:
+ {'lang': 'zh'}
+
+2022-02-19 00:52:13 [DEBUG] [json]:
+ {'key1': 'value1', 'key2': 'value2'}
+
+2022-02-19 00:52:13 [INFO] -------------- Response ----------------[🛬️]
+2022-02-19 00:52:13 [DEBUG] [type]: json
+
+2022-02-19 00:52:13 [DEBUG] [response]:
+ {'args': {}, 'data': '{"key1": "value1", "key2": "value2"}', 'files': {}, 'form': {}, 'headers': {'Accept': 'application/json', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '36', 'Content-Type': 'application/json', 'Cookie': 'lang=zh', 'Host': 'httpbin.org', 'Origin': 'http://httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-620fcebc-78fd3200528941ab13f942f9'}, 'json': {'key1': 'value1', 'key2': 'value2'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/post'}
+
 ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.619s
+Ran 1 test in 0.789s
 
 OK
+2022-02-19 00:52:13 [PRINT] A run the test in debug mode without generating HTML report!
 ```
 
 通过日志/报告都可以清楚的看到。
@@ -201,21 +215,29 @@ class TestAPI(seldom.TestCase):
 运行日志
 
 ```shell
-test_get_method (test_req.TestAPI) ...
------------ Request 🚀 ---------------
-url: http://httpbin.org/get         method: GET
------------ Response 🛬️ -------------
-type: json
-{'args': {'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.22.0', 'X-Amzn-Trace-Id': 'Root=1-608a896d-48fac4f6139912ba01d2626f'}, 'origin': '183.178.27.36', 'url': 'http://httpbin.org/get?name=tom&hobby=basketball&hobby=swim'}
+
+2022-02-19 00:59:28 [INFO] -------------- Request -----------------[🚀]
+2022-02-19 00:59:28 [DEBUG] [method]: GET      [url]: http://httpbin.org/get
+
+2022-02-19 00:59:28 [DEBUG] [params]:
+ {'name': 'tom', 'hobby': ['basketball', 'swim']}
+
+2022-02-19 00:59:28 [INFO] -------------- Response ----------------[🛬️]
+2022-02-19 00:59:28 [DEBUG] [type]: json
+
+2022-02-19 00:59:28 [DEBUG] [response]:
+ {'args': {'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-620fd06f-23a6d1231cb1b7aa7e34a211'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/get?name=tom&hobby=basketball&hobby=swim'}
+
 💡 Assert data has not key: headers
 💡 Assert data has not key: origin
 💡 Assert data has not key: url
 ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 1.305s
+Ran 1 test in 0.626s
 
 OK
+2022-02-19 00:59:28 [PRINT] A run the test in debug mode without generating HTML report!
 ```
 
 seldom还会提示你还有哪些字段没有断言。
