@@ -1,3 +1,8 @@
+### 2.5.1
+* 功能：Http接口测试使用日志打印接口信息
+* 功能：Http接口测试打印`json`参数 [83](https://github.com/SeldomQA/seldom/issues/83)
+* 修复：Web UI测试`self.Key()` 无法定位元素的问题
+
 ### 2.5.0
 * 功能：支持测试平台化 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/platform.md) 。
 * 功能：utils 增加`file`类，获取当前文件目录更方便。
