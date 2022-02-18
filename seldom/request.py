@@ -28,6 +28,7 @@ def request(func):
         cookies = kwargs.get("cookies", "")
         params = kwargs.get("params", "")
         data = kwargs.get("data", "")
+        json = kwargs.get("json", "")
         if auth != "":
             log.debug(f"[auth]:\n {auth} \n")
         if headers != "":
@@ -38,6 +39,8 @@ def request(func):
             log.debug(f"[params]:\n {params} \n")
         if data != "":
             log.debug(f"[data]:\n {data} \n")
+        if json != "":
+            log.debug(f"[json]:\n {json} \n")
 
         # running function
         r = func(*args, **kwargs)
