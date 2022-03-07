@@ -51,14 +51,5 @@ setup(
     entry_points='''
         [console_scripts]
         seldom=seldom.cli:main
-    ''',
-    py_modules=['whyteboard'],
-    scripts=[
-        'seldom/running/html/charts_script.html',
-        'seldom/running/html/heading.html',
-        'seldom/running/html/mail.html',
-        'seldom/running/html/report.html',
-        'seldom/running/html/stylesheet.html',
-        'seldom/running/html/template.html',
-    ],
+    '''
 )
