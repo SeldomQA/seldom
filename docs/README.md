@@ -42,6 +42,7 @@
   * [更强大的断言](./http.md#更强大的断言)
   * [接口数据依赖](./http.md#接口数据依赖)
   * [数据驱动](./http.md#数据驱动)
+  * [Session使用](./http.md#Session使用)
   * [随机生成测试数据](./http.md#随机生成测试数据)
 
 * [数据库操作](./db_operation.md)

@@ -473,6 +473,33 @@ class TestDDT(seldom.TestCase):
 
 更多数据文件(csv/excel/yaml)，[参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md)
 
+### Session使用
+
+在实际测试过程中，大部分接口需要登录，`Session` 是一种非常简单记录登录状态的方式。
+
+```python
+import seldom
+
+
+class TestCase(seldom.TestCase):
+
+    def start(self):
+        self.s = self.Session()
+        self.s.get('/cookies/set/sessioncookie/123456789')
+
+    def test_get_cookie1(self):
+        self.s.get('/cookies')
+
+    def test_get_cookie2(self):
+        self.s.get('/cookies')
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True, base_url="https://httpbin.org")
+```
+
+用法非常简单，你只需要在每个接口之前调用一次`登录`， `self.s`对象就记录下了登录状态，通过`self.s` 再去调用其他接口就不需要登录。
+
 ### 随机生成测试数据
 
 seldom提供随机生成测试数据方法，可以生成一些常用的数据。
