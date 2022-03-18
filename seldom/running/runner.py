@@ -42,7 +42,7 @@ class TestMain(object):
 
     def __init__(self, path=None, browser=None, base_url=None, debug=False, timeout=10,
                  report=None, title="Seldom Test Report", tester="Anonymous", description="Test case execution",
-                 rerun=0, save_last_run=False, whitelist=[], blacklist=[], auto=True):
+                 rerun=0, save_last_run=False, language="en", whitelist=[], blacklist=[], auto=True):
         """
         runner test case
         :param path:
@@ -56,6 +56,7 @@ class TestMain(object):
         :param timeout:
         :param rerun:
         :param save_last_run:
+        :param language:
         :param whitelist:
         :param blacklist:
         :param auto:
@@ -71,6 +72,7 @@ class TestMain(object):
         self.debug = debug
         self.rerun = rerun
         self.save_last_run = save_last_run
+        self.language = language
         self.whitelist = whitelist
         self.blacklist = blacklist
 
@@ -142,7 +144,7 @@ class TestMain(object):
                     runner.run(suits)
                 else:
                     runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester, description=self.description,
-                                            blacklist=self.blacklist, whitelist=self.whitelist)
+                                            language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
             log.printf("generated html file: file:///{}".format(report_path))
