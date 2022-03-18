@@ -26,7 +26,7 @@ class BaiduTest(seldom.TestCase):
         """
         page = BaiduPage(Seldom.driver)
         page.open("https://www.baidu.com")
-        page.search_input = "seldom"
+        page.search_input.send_keys("seldom")
         page.search_button.click()
         self.assertTitle("seldom_百度搜索")
 
