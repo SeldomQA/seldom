@@ -19,4 +19,5 @@ class BrowserConfig:
     """
     NAME = None
     REPORT_PATH = None
+    REPORT_TITLE = "Seldom Test Report"
     LOG_PATH = None
