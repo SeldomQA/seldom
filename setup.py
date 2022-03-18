@@ -25,18 +25,17 @@ setup(
     zip_safe=False,
     install_requires=[
         'selenium>=4.0.0',
+        'XTestRunner>=1.3.1',
         'parameterized==0.8.1',
         'colorama>=0.4.3',
         'openpyxl>=3.0.3',
         'pyyaml>=5.1',
         'unittest-xml-reporting==3.0.4',
-        'jinja2>=2.11.2',
         'requests>=2.22.0',
         'jsonschema>=3.2.0',
         'jmespath>=0.10.0',
         'webdriver-manager>=3.5.0',
         'pymysql>=1.0.0',
-        "XTestRunner>=1.3.1"
     ],
     classifiers=[
         'Intended Audience :: Developers',
