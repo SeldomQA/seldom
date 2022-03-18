@@ -360,7 +360,7 @@ if __name__ == '__main__':
     seldom.main()
 ```
 
-### 自动发邮件
+### 发送邮件
 
 如果你想将测试完成的报告发送到指定邮箱，那么可以调用发邮件的方法实现。
 
@@ -374,29 +374,47 @@ from seldom import SMTP
 if __name__ == '__main__':
     seldom.main()
     smtp = SMTP(user="send@126.com", password="abc123", host="smtp.126.com")
-    smtp.sender(to="receive@mail.com", subject='Email title')
+    smtp.sendmail(to="receive@mail.com", subject="Email title")
 ```
 
 * `subject`邮件标题 默认：`Seldom Test Report`。
 * `to`添加多个收件人 逗号`,`分隔。
 
-如果你自定义了报告的名称，那么需要指定报告名称。
-
-```python
-import seldom
-from seldom import SMTP
-
-# ……
-
-if __name__ == '__main__':
-    report_path = "report.html"
-    seldom.main(report=report_path)
-    smtp = SMTP(user="you@126.com", password="abc123", host="smtp.126.com")
-    smtp.sender(to="receive@mail.com", subject='Email title')
-```
 
 > `debug`模式不会生成测试报告， 自动化发邮件不支持`debug` 模式，自然也无法将报告发送到指定邮箱了。
 
+### 发送钉钉
+
+seldom 还提供了发送钉钉的API。
+
+帮助文档:
+https://open.dingtalk.com/document/group/enterprise-created-chatbot
+
+```python
+import seldom
+from seldom import DingTalk
+
+# ...
+
+if __name__ == '__main__':
+    seldom.main()
+    ding = DingTalk(
+        access_token="690900b5ce6d5d10bb1218b8e64a4e2b55f96a6d116aaf50",
+        key="xxxx",
+        app_secret="xxxxx",
+        at_mobiles=[13700000000, 13800000000],
+        is_at_all=False,
+    )
+    ding.sender()
+```
+
+__参数说明__
+
+* access_token:  钉钉机器人的access_token
+* key: 如果钉钉机器人安全设置了关键字，则需要传入对应的关键字。
+* app_secret: 如果钉钉机器人安全设置了签名，则需要传入对应的密钥。
+* at_mobiles: 发送通知钉钉中要@人的手机号列表，如：[137xxx, 188xxx]。
+* is_at_all: 是否@所有人，默认为False, 设为True则会@所有人。
 
 
 ### 用例的依赖

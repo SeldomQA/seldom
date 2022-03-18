@@ -13,7 +13,6 @@ import seldom
 if __name__ == '__main__':
     seldom.main(browser="chrome") # chrome浏览器,默认值
     seldom.main(browser="firefox") # firefox浏览器
-    seldom.main(browser="ie")  # IE浏览器
     seldom.main(browser="opera") # opera浏览器
     seldom.main(browser="edge") # edge浏览器
     seldom.main(browser="safari") # safari浏览器

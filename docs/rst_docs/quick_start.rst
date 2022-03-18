@@ -47,10 +47,12 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
                     base_url=None,
                     report=None,
                     title="project name",
+                    tester="Anonymous",
                     description="Environment description",
                     debug=False,
                     rerun=0,
                     save_last_run=False,
+                    language="en",
                     timeout=None,
                     whitelist=[],
                     blacklist=[]
@@ -65,13 +67,15 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
 -  base\_url : A parameter to test the HTTP interface testing, setting the global URL.
 -  report : The name of the custom test report, The default format is `YYYY_mm_dd_HH_MM_SS_result.html`.
 -  title : Test report title.
+-  title : Specifies the tester, default 'Anonymous'.
 -  description : Test report description.
 -  debug : Debug mode,  set to True does not generate test HTML tests, default is `False`.
 -  rerun : Sets the number of failed reruns, Default is `0`.
--  save\_last\_run : Sets to save only the last result, default to `False`.
+-  save\_last\_run : Set to save only the last result, default to `False`.
+-  language : Set the HTML report in English and Chinese, default 'en', Chinese `zh-CN`.
 -  timeout : Sets the timeout, Default `10` seconds.
 -  whitelist :  The use case `label` sets the whitelist.
--  blacklist :  Use case `label` Sets the blacklist。
+-  blacklist :  Use case `label` Sets the blacklist.
 
 Run Test
 ~~~~~~~~~~
@@ -159,34 +163,7 @@ Failed Rerun
 
 .. code:: shell
 
-    > seldom -r test_sample.py
-
-    2021-04-14 11:25:53,265 INFO Run the python version:
-    2021-04-14 11:25:53,265 - INFO - INFO Run the python version:
-    Python 3.7.1
-
-                  __    __
-       ________  / /___/ /___  ____ ____
-      / ___/ _ \/ / __  / __ \/ __ ` ___/
-     (__  )  __/ / /_/ / /_/ / / / / / /
-    /____/\___/_/\__,_/\____/_/ /_/ /_/
-    -----------------------------------------
-                                 @itest.info
-
-
-    DevTools listening on ws://127.0.0.1:12699/devtools/browser/301751bd-a833-44d1-8669-aa85d418b302
-    2021-04-14 23:31:54 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-    ERetesting... test_case (test_demo.YouTest)..1
-    2021-04-14 23:32:05 [INFO] 📖 https://www.baidu.com
-    2021-04-14 23:32:06 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-    ERetesting... test_case (test_demo.YouTest)..2
-    2021-04-14 23:32:17 [INFO] 📖 https://www.baidu.com
-    2021-04-14 23:32:22 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-    ERetesting... test_case (test_demo.YouTest)..3
-    2021-04-14 23:32:32 [INFO] 📖 https://www.baidu.com
-    2021-04-14 23:32:36 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-    2021-04-14 23:32:47 [INFO] generated html file: file:///D:\github\seldom\reports\2021_04_14_23_31_51_result.html
-    E
+    > python test_sample.py
 
 
 
@@ -209,16 +186,16 @@ Test Report
 .. code:: shell
 
     mypro/
-    └── test_sample.py
+    |--- test_sample.py
 
 -  After running the test case
 
 .. code:: shell
 
     mypro/
-    ├── reports/
-    │   ├── 2020_01_01_11_20_33_result.html
-    └── test_sample.py
+    |-- reports/
+    |   |-- 2020_01_01_11_20_33_result.html
+    |-- test_sample.py
 
 
 Open the `2020_01_01_11_20_33_result.html` test report through a browser, View the test results.
@@ -242,13 +219,15 @@ if you don't want to generate and HTML report every time you run, You can opent 
 
     import seldom
 
-    seldom.main(report="./report.html",
+    seldom.main(report="report.html",
                 title="xxxx",
+                tester="username",
                 description="run evn:windows 10/ chrome")
 
 
 -  report: Configure the report name and path.
 -  title: Customize the title of the report.
+-  tester: Customize the current tester.
 -  description: Add report information.
 
 
@@ -260,5 +239,5 @@ If you want to generate a report in XML format, just change the suffix name `.xm
 
     import seldom
 
-    seldom.main(report="./report.xml")
+    seldom.main(report="report.xml")
 

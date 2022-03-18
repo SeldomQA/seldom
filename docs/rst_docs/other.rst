@@ -15,7 +15,6 @@ Runs On More Browsers
     if __name__ == '__main__':
         seldom.main(browser="chrome") # chrome,The default
         seldom.main(browser="firefox") # firefox browser
-        seldom.main(browser="ie")  # IE browser
         seldom.main(browser="opera") # opera browser
         seldom.main(browser="edge") # edge browser
         seldom.main(browser="safari") # safari browser

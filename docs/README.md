@@ -24,7 +24,8 @@
   * [使用随机测试数据](./advanced.md#使用随机测试数据)
   * [数据驱动最佳实践](./advanced.md#数据驱动最佳实践)
   * [Page objects设计模式](./advanced.md#PageObjects设计模式)
-  * [自动发邮件](./advanced.md#自动发邮件)
+  * [发送邮件](./advanced.md#发送邮件)
+  * [发送钉钉](./advanced.md#发送钉钉)
   * [用例的依赖](./advanced.md#用例的依赖)
   * [用例标签分类](./advanced.md#用例分类标签)
 

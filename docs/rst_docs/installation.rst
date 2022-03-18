@@ -28,7 +28,7 @@ You can see the dependent libraries in the `requires.txt` file.
 
     colorama>=0.4.3
     XTestRunner>=1.3.1
-    selenium==3.141.0
+    selenium>=4.0.0
     parameterized>=0.7.0
     poium==1.0.0
     openpyxl==3.0.3
@@ -45,4 +45,4 @@ Finally, used the `seldom -v` command to view the version.
 .. code:: shell
 
     > seldom -v
-    seldom 2.2.4
+    seldom 2.6.0

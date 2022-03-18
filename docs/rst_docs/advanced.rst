@@ -383,28 +383,11 @@ Automatic Email
     if __name__ == '__main__':
         seldom.main()
         smtp = SMTP(user="send@126.com", password="abc123", host="smtp.126.com")
-        smtp.sender(to="receive@mail.com", subject='Email title')
+        smtp.sendmail(to="receive@mail.com", subject='Email title')
 
 
 -  subject: Email title, default: `Seldom Test Report`.
 -  to: Addressee email, Add multiple recipients commas ',' to separate.
-
-
-**Custom the name of the report**
-
-.. code:: python
-
-    import seldom
-    from seldom import SMTP
-
-    # ……
-
-    if __name__ == '__main__':
-        report_path = "report.html"
-        seldom.main(report=report_path)
-        smtp = SMTP(user="you@126.com", password="abc123", host="smtp.126.com")
-        smtp.sender(to="receive@mail.com", subject='Email title')
-
 
 
 Use Case Dependencies
