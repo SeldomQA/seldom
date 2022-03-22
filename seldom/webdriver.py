@@ -13,7 +13,7 @@ from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 
-__all__ = ["WebDriver"]
+__all__ = ["WebDriver", "WebElement"]
 
 
 LOCATOR_LIST = {
