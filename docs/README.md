@@ -20,6 +20,10 @@
   * [WebDriver API](./seldom_api.md#WebDriverAPI)
   * [键盘操作](./seldom_api.md#键盘操作)
 
+* [链式调用](./chaining.md)
+  * [基本例子](./chaining.md#基本例子)
+  * [Case API](./chaining.md#CaseAPI)
+
 * [高级用法](./advanced.md)
   * [使用随机测试数据](./advanced.md#使用随机测试数据)
   * [数据驱动最佳实践](./advanced.md#数据驱动最佳实践)
