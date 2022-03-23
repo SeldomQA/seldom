@@ -65,7 +65,12 @@ class Case(object):
         """
         find element
         """
-        web_elem = WebElement(css=css)
+        if len(css) > 5 and css[:5] == "text=":
+            web_elem = WebElement(link_text=css[5:])
+        elif len(css) > 6 and css[:6] == "text*=":
+            web_elem = WebElement(partial_link_text=css[6:])
+        else:
+            web_elem = WebElement(css=css)
         Seldom.element = elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("🔍 find {info}.".format(info=web_elem.info))
