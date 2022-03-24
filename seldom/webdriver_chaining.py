@@ -11,10 +11,10 @@ from seldom.running.config import Seldom
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 from seldom.webdriver import WebElement
 
-__all__ = ["Case"]
+__all__ = ["Steps"]
 
 
-class Case(object):
+class Steps(object):
     """
     Webdriver Basic method chaining
     Write test cases quickly.

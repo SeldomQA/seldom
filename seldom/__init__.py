@@ -22,7 +22,7 @@ from .running.config import Seldom
 from .running.loader_extend import SeldomTestLoader
 from .running.runner import main, TestMainExtend
 from .utils.send_extend import SMTP, DingTalk
-from .webdriver_chaining import Case
+from .webdriver_chaining import Steps
 
 from .skip import *
 from .driver import *
