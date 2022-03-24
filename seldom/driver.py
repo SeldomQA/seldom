@@ -84,7 +84,7 @@ class Browser(object):
 
     @staticmethod
     def chrome():
-        if ChromeConfig.command_executor != "":
+        if ChromeConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=ChromeConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.CHROME.copy())
 
@@ -109,7 +109,7 @@ class Browser(object):
 
     @staticmethod
     def firefox():
-        if FirefoxConfig.command_executor != "":
+        if FirefoxConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=FirefoxConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.FIREFOX.copy())
 
@@ -128,14 +128,14 @@ class Browser(object):
 
     @staticmethod
     def ie():
-        if IEConfig.command_executor != "":
+        if IEConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=IEConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.INTERNETEXPLORER.copy())
         return webdriver.Ie(executable_path=IEDriverManager().install())
 
     @staticmethod
     def edge():
-        if EdgeConfig.command_executor != "":
+        if EdgeConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=EdgeConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.EDGE.copy())
 
@@ -148,14 +148,14 @@ class Browser(object):
 
     @staticmethod
     def opera():
-        if OperaConfig.command_executor != "":
+        if OperaConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=OperaConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.OPERA.copy())
         return webdriver.Opera(executable_path=OperaDriverManager().install())
 
     @staticmethod
     def safari():
-        if SafariConfig.command_executor != "":
+        if SafariConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=SafariConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.SAFARI.copy())
         return webdriver.Safari(executable_path=SafariConfig.executable_path)
