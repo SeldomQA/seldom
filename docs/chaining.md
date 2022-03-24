@@ -8,7 +8,7 @@
 
 ```python
 import seldom
-from seldom import Case
+from seldom import Steps
 
 
 class BaiduTest(seldom.TestCase):
@@ -17,18 +17,16 @@ class BaiduTest(seldom.TestCase):
         """
         百度搜索
         """
-        Case(url="http://www.baidu.com", desc="百度搜索")\
-            .open().find("#kw").type("seldom").find("#su").click()
+        Steps(url="http://www.baidu.com", desc="百度搜索").open().find("#kw").type("seldom").find("#su").click()
         self.assertInTitle("seldom")
-
 
     def test_search2(self):
         """
         百度搜索
         """
-        c = Case(desc="百度搜索")
-        c.open("http://www.baidu.com")
-        c.find("#kw").type("seldom").enter()
+        s = Steps(desc="百度搜索")
+        s.open("http://www.baidu.com")
+        s.find("#kw").type("seldom").enter()
         self.assertInTitle("seldom")
 
 if __name__ == '__main__':
@@ -40,14 +38,14 @@ if __name__ == '__main__':
 
 ```python
 import seldom
-from seldom import Case
+from seldom import Steps
 
 
 class BaiduTest(seldom.TestCase):
 
     def test_search_setting(self):
         """百度搜索设置"""
-        Case(url="http://www.baidu.com", desc="百度搜索设置")\
+        Steps(url="http://www.baidu.com", desc="百度搜索设置")\
             .open()\
             .find("#s-usersetting-top").click()\
             .find("#s-user-setting-menu > div > a.setpref").click().sleep(2)\
@@ -69,32 +67,36 @@ if __name__ == '__main__':
 __查找元素__
 
 ```python
-from seldom import Case
+from seldom import Steps
 
-c = Case()
+c = Steps()
 c.find("#id")
 c.find(".class")
 c.find("[name=password]")
 c.find("div > tr > td")
 c.find("div", 1)
+c.find("text=hao123")
+c.find("text*=hao1")
 
 c.find_text("新闻")
 ```
 
 * find(): 只支持CSS定位，这几乎是最强大的定位方法了。 新的测试库`cypress`、`playwright` 默认也都是CSS定位。
+    * `text=` 用来定位文本，相当于`find_text()`。
+    * `test*=` 用例模糊定位文本。 
 
-* find_text(): 用于定位文本，对个`find()` 定位的补充。
+* find_text(): 用于定位文本。
 
 __操作方法__
 
 ```python
 import seldom
-from seldom import Case
+from seldom import Steps
 
 class TestCase(seldom.TestCase):
 
     def test_chaining_api(self):
-        Case(desc="chaining api")\
+        Steps(desc="chaining api")\
             .open("https://www.baidu.com")\
             .max_window()\
             .set_window(800, 600)\
