@@ -61,7 +61,7 @@ def error(msg):
 
 def warn(msg):
     now = time.strftime("%Y-%m-%d %H:%M:%S")
-    if Seldom.debug is True:
+    if Seldom.debug is False:
         print(now + " [WARNING] " + str(msg))
     if colorLog is True:
         return logger.warning(msg)
