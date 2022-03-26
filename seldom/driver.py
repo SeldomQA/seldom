@@ -96,9 +96,8 @@ class Browser(object):
             chrome_options = ChromeConfig.options
             if ChromeConfig.headless is True:
                 chrome_options.add_argument('--headless')
-
-        driver = webdriver.Chrome(options=chrome_options,
-                                  executable_path=ChromeDriverManager().install())
+        ep = ChromeConfig.command_executor if ChromeConfig.command_executor != "" else ChromeDriverManager().install()
+        driver = webdriver.Chrome(options=chrome_options, executable_path=ep)
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
             Object.defineProperty(navigator, 'webdriver', {
@@ -109,7 +108,7 @@ class Browser(object):
 
     @staticmethod
     def firefox():
-        if FirefoxConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
+        if FirefoxConfig.command_executor != "" and FirefoxConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=FirefoxConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.FIREFOX.copy())
 
@@ -122,8 +121,8 @@ class Browser(object):
             if FirefoxConfig.headless is True:
                 firefox_options.headless = True
 
-        driver = webdriver.Firefox(options=firefox_options,
-                                   executable_path=GeckoDriverManager().install())
+        ep = FirefoxConfig.command_executor if FirefoxConfig.command_executor != "" else GeckoDriverManager().install()
+        driver = webdriver.Firefox(options=firefox_options, executable_path=ep)
         return driver
 
     @staticmethod
@@ -135,27 +134,29 @@ class Browser(object):
 
     @staticmethod
     def edge():
-        if EdgeConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
+        if EdgeConfig.command_executor != "" and EdgeConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=EdgeConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.EDGE.copy())
 
+        ep = EdgeConfig.command_executor if EdgeConfig.command_executor != "" else EdgeChromiumDriverManager(log_level=1).install()
         if EdgeConfig.headless is True:
             edge_options = EdgeOptions()
             edge_options.headless = True
-            return webdriver.Edge(executable_path=EdgeChromiumDriverManager(log_level=1).install(), options=edge_options)
+            return webdriver.Edge(executable_path=ep, options=edge_options)
 
-        return webdriver.Edge(executable_path=EdgeChromiumDriverManager(log_level=1).install())
+        return webdriver.Edge(executable_path=ep)
 
     @staticmethod
     def opera():
-        if OperaConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
+        if OperaConfig.command_executor != "" and OperaConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=OperaConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.OPERA.copy())
-        return webdriver.Opera(executable_path=OperaDriverManager().install())
+        ep = OperaConfig.command_executor if OperaConfig.command_executor != "" else OperaDriverManager().install()
+        return webdriver.Opera(executable_path=ep)
 
     @staticmethod
     def safari():
-        if SafariConfig.command_executor != "" and ChromeConfig.command_executor[:4] == "http":
+        if SafariConfig.command_executor != "" and SafariConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=SafariConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.SAFARI.copy())
         return webdriver.Safari(executable_path=SafariConfig.executable_path)
