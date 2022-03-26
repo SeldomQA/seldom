@@ -13,14 +13,14 @@ from seldom import Steps
 
 class BaiduTest(seldom.TestCase):
 
-    def test_search1(self):
+    def test_search_one(self):
         """
         百度搜索
         """
-        Steps(url="http://www.baidu.com", desc="百度搜索").open().find("#kw").type("seldom").find("#su").click()
+        Steps(desc="百度搜索").open("http://www.baidu.com",).find("#kw").type("seldom").find("#su").click()
         self.assertInTitle("seldom")
 
-    def test_search2(self):
+    def test_search_two(self):
         """
         百度搜索
         """
