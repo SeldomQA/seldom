@@ -25,7 +25,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'selenium>=4.0.0',
-        'XTestRunner>=1.3.1',
+        'XTestRunner>=1.3.2',
         'parameterized==0.8.1',
         'loguru>=0.4.1',
         'openpyxl>=3.0.3',
