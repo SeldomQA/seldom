@@ -33,6 +33,6 @@ from .request import HttpRequest
 
 __author__ = "bugmaster"
 
-__version__ = "2.6.0"
+__version__ = "2.7.0"
 
 __description__ = "WebUI/HTTP automation testing framework based on unittest."
