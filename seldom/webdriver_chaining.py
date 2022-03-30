@@ -22,6 +22,8 @@ class Steps(object):
 
     def __init__(self, url: str = None, desc: str = None):
         self.url = url
+        self.element_obj = None
+        self.alert_obj = None
         log.info("🔖 Test Case: {}".format(desc))
 
     def open(self, url: str = None):
@@ -71,7 +73,7 @@ class Steps(object):
             web_elem = WebElement(partial_link_text=css[6:])
         else:
             web_elem = WebElement(css=css)
-        Seldom.element = elem = web_elem.get_elements(index)
+        self.element_obj = elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("🔍 find {info}.".format(info=web_elem.info))
         return self
@@ -84,7 +86,7 @@ class Steps(object):
             find_text("新闻")
         """
         web_elem = WebElement(link_text=text)
-        Seldom.element = elem = web_elem.get_elements(index)
+        self.element_obj = elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         log.info("🔍 find {} text.".format(web_elem.info))
         return self
@@ -94,7 +96,7 @@ class Steps(object):
         type text.
         """
         log.info(f"✅ input '{text}'.")
-        Seldom.element.send_keys(text)
+        self.element_obj.send_keys(text)
         return self
 
     def click(self):
@@ -102,7 +104,7 @@ class Steps(object):
         click.
         """
         log.info("✅ click.")
-        Seldom.element.click()
+        self.element_obj.click()
         return self
 
     def clear(self):
@@ -112,7 +114,7 @@ class Steps(object):
             clear()
         """
         log.info("✅ clear.")
-        Seldom.element.clear()
+        self.element_obj.clear()
         return self
 
     def submit(self):
@@ -122,7 +124,7 @@ class Steps(object):
             submit()
         """
         log.info("✅ clear.")
-        Seldom.element.submit()
+        self.element_obj.submit()
         return self
 
     def enter(self):
@@ -132,7 +134,7 @@ class Steps(object):
             enter()
         """
         log.info("✅ enter.")
-        Seldom.element.send_keys(Keys.ENTER)
+        self.element_obj.send_keys(Keys.ENTER)
         return self
 
     def move_to_click(self):
@@ -141,7 +143,7 @@ class Steps(object):
         Usage:
             move_to_click()
         """
-        elem = Seldom.element
+        elem = self.element_obj
         log.info("✅ Move to the element and click.")
         ActionChains(Seldom.driver).move_to_element(elem).click(elem).perform()
         return self
@@ -153,7 +155,7 @@ class Steps(object):
         Usage:
             right_click()
         """
-        elem = Seldom.element
+        elem = self.element_obj
         log.info("✅ right click.")
         ActionChains(Seldom.driver).context_click(elem).perform()
         return self
@@ -165,7 +167,7 @@ class Steps(object):
         Usage:
             move_to_element()
         """
-        elem = Seldom.element
+        elem = self.element_obj
         log.info("✅ move to element.")
         ActionChains(Seldom.driver).move_to_element(elem).perform()
         return self
@@ -178,7 +180,7 @@ class Steps(object):
             move_to_element()
         """
 
-        elem = Seldom.element
+        elem = self.element_obj
         log.info("✅ click and hold.")
         ActionChains(Seldom.driver).click_and_hold(elem).perform()
         return self
@@ -190,7 +192,7 @@ class Steps(object):
         Usage:
             double_click()
         """
-        elem = Seldom.element
+        elem = self.element_obj
         log.info("✅ double click.")
         ActionChains(Seldom.driver).double_click(elem).perform()
         return self
@@ -232,8 +234,8 @@ class Steps(object):
         Usage:
             alert()
         """
-        log.info("✅ alert.")
-        Seldom.alert = Seldom.driver.switch_to.alert
+        log.info("🔍 alert.")
+        self.alert_obj = Seldom.driver.switch_to.alert
         return self
 
     def accept(self):
@@ -244,7 +246,7 @@ class Steps(object):
             alert().accept()
         """
         log.info("✅ accept alert.")
-        Seldom.alert.accept()
+        self.alert_obj.accept()
         return self
 
     def dismiss(self):
@@ -265,7 +267,7 @@ class Steps(object):
         Usage:
             switch_to_frame()
         """
-        elem = Seldom.element
+        elem = self.element_obj
         log.info("✅  switch to frame.")
         Seldom.driver.switch_to.frame(elem)
         return self
@@ -310,12 +312,8 @@ class Steps(object):
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
             file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
-        if Seldom.debug is True:
-            log.info(f"📷️  screenshot -> ({file_path}).")
-            Seldom.driver.save_screenshot(file_path)
-        else:
-            log.info("📷️  screenshot -> HTML report.")
-            self.images.append(Seldom.driver.get_screenshot_as_base64())
+        log.info(f"📷️  screenshot -> ({file_path}).")
+        Seldom.driver.save_screenshot(file_path)
         return self
 
     def element_screenshot(self, file_path: str = None):
@@ -326,18 +324,14 @@ class Steps(object):
             element_screenshot()
             element_screenshot(file_path='/Screenshots/foo.png')
         """
-        elem = Seldom.element
+        elem = self.element_obj
         if file_path is None:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
             file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
-        if Seldom.debug is True:
-            log.info(f"📷️ element screenshot -> ({file_path}).")
-            elem.screenshot(file_path)
-        else:
-            log.info("📷️ element screenshot -> HTML Report.")
-            self.images.append(elem.screenshot_as_base64)
+        log.info(f"📷️ element screenshot -> ({file_path}).")
+        elem.screenshot(file_path)
         return self
 
     def select(self, value: str = None, text: str = None, index: int = None):
@@ -360,7 +354,7 @@ class Steps(object):
             select(text='每页显示20条')
             select(index=2)
         """
-        elem = Seldom.element
+        elem = self.element_obj
         log.info("✅ select option.")
         if value is not None:
             Select(elem).select_by_value(value)

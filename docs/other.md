@@ -46,6 +46,22 @@ PAD_LIST = ['iPad', 'iPad Pro']
 
 ```
 
+### 指定浏览器驱动
+
+虽然，通过 webdriver_manager 管理浏览器驱动非常方便，但毕竟依赖网络，你仍然可以手动设置浏览器驱动。 
+
+```python
+import seldom
+from seldom import ChromeConfig
+
+# ...
+
+if __name__ == '__main__':
+    ChromeConfig.command_executor = r"D:\webdriver\chromedriver.exe"
+    seldom.main(browser="gc", tester="虫师")
+```
+
+
 ### 开启headless模式
 
 Firefox和Chrome浏览器支持`headless`模式，即将浏览器置于后台运行，这样不会影响到我们在测试机上完成其他工作。

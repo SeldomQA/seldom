@@ -92,26 +92,26 @@ mypro/
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.6.0
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.7.0
 -----------------------------------------
                              @itest.info
 
-2022-01-06 23:46:16 [INFO] 📖 https://www.baidu.com
-2022-01-06 23:46:21 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-2022-01-06 23:46:21 [INFO] ✅ Find 1 element: css selector=#su , click.
-2022-01-06 23:46:23 [INFO] 👀 assertIn title: seldom_百度搜索.
-2022-01-06 23:46:23 [INFO] 📖 https://www.baidu.com
-2022-01-06 23:46:25 [INFO] ✅ Find 1 element: id=kw , input 'poium'.
-2022-01-06 23:46:26 [INFO] ✅ Find 1 element: css selector=#su , click.
-2022-01-06 23:46:27 [INFO] 👀 assertIn title: poium_百度搜索.
-2022-01-06 23:46:27 [INFO] 📖 https://www.baidu.com
-2022-01-06 23:46:28 [INFO] ✅ Find 1 element: id=kw , input 'HTMLTestRunner'.
-2022-01-06 23:46:29 [INFO] ✅ Find 1 element: css selector=#su , click.
-2022-01-06 23:46:30 [INFO] 👀 assertIn title: HTMLTestRunner_百度搜索.
-2022-01-06 23:46:30 [INFO] 📖 http://www.itest.info
-2022-01-06 23:46:39 [INFO] 👀 assertIn url: http://www.itest.info/.
-2022-01-06 23:46:39 [PRINT] generated html file: file:///D:\mypro\reports\2022_01_06_23_46_15_result.html
-2022-01-06 23:46:39 [PRINT] generated log file: file:///D:\mypro\reports\2022_01_06_23_46_15_log.log
+2022-03-26 17:36:13.346 | INFO     | seldom.logging.log:info:45 - 📖 https://www.baidu.com
+2022-03-26 17:36:18.187 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: id=kw  -> input 'seldom'.
+2022-03-26 17:36:19.025 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: css selector=#su  -> click.
+2022-03-26 17:36:20.234 | INFO     | seldom.logging.log:info:45 - 👀 assertIn title: seldom_百度搜索.
+.12022-03-26 17:36:20.236 | INFO     | seldom.logging.log:info:45 - 📖 https://www.baidu.com
+2022-03-26 17:36:21.370 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: id=kw  -> input 'poium'.
+2022-03-26 17:36:22.185 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: css selector=#su  -> click.
+2022-03-26 17:36:23.297 | INFO     | seldom.logging.log:info:45 - 👀 assertIn title: poium_百度搜索.
+.22022-03-26 17:36:23.299 | INFO     | seldom.logging.log:info:45 - 📖 https://www.baidu.com
+2022-03-26 17:36:24.745 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: id=kw  -> input 'HTMLTestRunner'.
+2022-03-26 17:36:25.599 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: css selector=#su  -> click.
+2022-03-26 17:36:28.059 | INFO     | seldom.logging.log:info:45 - 👀 assertIn title: HTMLTestRunner_百度搜索.
+.32022-03-26 17:36:28.060 | INFO     | seldom.logging.log:info:45 - 📖 http://www.itest.info
+2022-03-26 17:36:38.541 | INFO     | seldom.logging.log:info:45 - 👀 assertIn url: http://www.itest.info/.
+.42022-03-26 17:36:38.553 | SUCCESS  | seldom.logging.log:printf:75 - generated html file: file:///D:\mypro\reports\2022_03_26_17_36_12_result.html
+2022-03-26 17:36:38.555 | SUCCESS  | seldom.logging.log:printf:75 - generated log file: file:///D:\mypro\reports\2022_03_26_17_36_12_log.log
 .1.2.3.4
 ```
 
@@ -131,17 +131,22 @@ mypro/
 
 ```python
 import seldom
+from seldom import Steps
 
 
 class BaiduTest(seldom.TestCase):
 
-    def test_case(self):
+    def test_case_one(self):
         """a simple test case """
         self.open("https://www.baidu.com")
         self.type(id_="kw", text="seldom")
         self.click(css="#su")
         self.assertTitle("seldom_百度搜索")
 
+    def test_case_two(self):
+        """method chaining """
+        Steps(url="https://www.baidu.com").open().find("#kw").type("seldom").find("#su").click()
+        self.assertTitle("seldom_百度搜索")
 
 if __name__ == '__main__':
     seldom.main()
@@ -153,6 +158,7 @@ __说明：__
 * 创建测试类必须继承 `seldom.TestCase`。
 * 测试用例文件命名必须以 `test` 开头。
 * seldom的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
+* `Steps`类提供了一套方法链的API，编写简单的用例更连贯。
 
 ### HTTP 测试
 

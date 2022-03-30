@@ -11,8 +11,6 @@ class Seldom:
     timeout = 10
     debug = False
     base_url = None
-    element = None
-    alert = None
 
 
 class BrowserConfig:

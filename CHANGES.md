@@ -1,3 +1,9 @@
+### 2.7.0
+
+* 功能：引入`loguru` 库用于打印日志（之前使用python默认logging总有一些重复打印或不打印的问题）。
+* 功能：web自动化增加一套方法链（method chaining）的API，[文档](./docs/chaining.md)。
+* 功能：支持手动指定浏览器驱动路径，[文档](./docs/other.md)。
+
 ### 2.6.0
 
 * 移除：自带的`HTMLTestRunner`，HTML报告采用`XTestRunner`。
