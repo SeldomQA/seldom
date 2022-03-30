@@ -1,3 +1,4 @@
+[GitHub](https://github.com/SeldomQA/seldom) | [Gitee](https://gitee.com/fnngj/seldom) |
 
 ![](seldom_logo.jpg)
 
