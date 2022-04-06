@@ -14,9 +14,9 @@ class FindFilePath:
 
         _file_path = None
         for root, dirs, files in os.walk(this_file_dir, topdown=False):
-            for file in files:
-                if file == name:
-                    _file_path = os.path.join(root, file)
+            for _file in files:
+                if _file == name:
+                    _file_path = os.path.join(root, _file)
                     break
             else:
                 continue
@@ -86,6 +86,18 @@ class File:
             raise FileNotFoundError("Please setting the File Path")
 
         sys.path.insert(1, path)
+
+    @staticmethod
+    def remove(path) -> None:
+        """
+        del file
+        :param path:
+        :return:
+        """
+        if os.path.isfile(path):
+            os.remove(path)
+        else:
+            raise FileNotFoundError("file does not exist")
 
 
 file = File()
