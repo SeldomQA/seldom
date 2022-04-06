@@ -372,14 +372,16 @@ from seldom import SMTP
 # ...
 
 if __name__ == '__main__':
-    seldom.main()
+    report_path = "/you/path/report.html"
+    seldom.main(report=report_path)
     smtp = SMTP(user="send@126.com", password="abc123", host="smtp.126.com")
-    smtp.sendmail(to="receive@mail.com", subject="Email title")
+    smtp.sendmail(to="receive@mail.com", subject="Email title", attachments=report_path, delete=False)
 ```
 
-* `subject`邮件标题 默认：`Seldom Test Report`。
-* `to`添加多个收件人 逗号`,`分隔。
-
+* `subject`: 邮件标题，默认:`Seldom Test Report`。
+* `to`: 添加收件人，支持多个收件人: `["aa@mail.com", "bb@mail.com"]`。
+* `attachments`: 设置附件，默认发送HTML测试报告。
+* `delete`: 是否删除报告&日志。（在服务器上运行自动化，每次都会产生一份报告和日志，手动删除比较麻烦。）
 
 > `debug`模式不会生成测试报告， 自动化发邮件不支持`debug` 模式，自然也无法将报告发送到指定邮箱了。
 
