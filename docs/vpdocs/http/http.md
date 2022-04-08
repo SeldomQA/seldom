@@ -1,4 +1,4 @@
-## HTTP接口测试
+# HTTP接口测试
 
 ## 前言
 
@@ -85,11 +85,11 @@ if __name__ == '__main__':
 
 然后，选择菜单栏：`file` -> `Export Sessions` -> `Selected Sessions...`
 
-![](./image/fiddler.png)
+![](/image/fiddler.png)
 
 选择导出的文件格式。
 
-![](./image/fiddler2.png)
+![](/image/fiddler2.png)
 
 点击`next` 保存为`demo.har` 文件。
 

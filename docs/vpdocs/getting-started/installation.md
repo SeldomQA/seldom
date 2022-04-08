@@ -1,4 +1,4 @@
-## Installation
+# Installation
 
 seldom的安装非常简单。
 
