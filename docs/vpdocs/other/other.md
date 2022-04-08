@@ -1,4 +1,4 @@
-## 其他
+# 其他
 
 
 ### 指定不同的浏览器
@@ -148,10 +148,10 @@ if __name__ == '__main__':
 
 1. 配置测试用例通过 unittest 运行。
 
-![](./image/pycharm.png)
+![](/image/pycharm.png)
 
 2. 在文件中选择测试类或用例执行。
 
-![](./image/pycharm_run_case.png) 
+![](/image/pycharm_run_case.png) 
 
 > 警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。

@@ -4,7 +4,7 @@ Other
 Runs On More Browsers
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-`seledom` supports running automated tests on different browsers
+`seldom` supports running automated tests on different browsers
 
 .. code:: python
 
