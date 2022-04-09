@@ -316,7 +316,7 @@ if __name__ == '__main__':
 
 更多的用法请查看 ddt 文档：https://ddt.readthedocs.io/en/latest/example.html
 
-### Page Objects 设计模式
+### PageObjects设计模式
 
 seldom API 的设计理念是将元素操作和元素定位放到起，本身不太适合实现`Page objects`设计模式。
 

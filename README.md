@@ -207,7 +207,7 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 ## 📖 Document
 
-[中文文档](/docs)
+[中文文档](/https://seldomqa.github.io/)
 
 [English document(readthedocs)](https://seldomqa.readthedocs.io/en/latest/index.html)
 
