@@ -1,6 +1,6 @@
 module.exports = {
   title: "seldom文档",
-  description: "Seldom = Selenium + Requests + Unittest+ HTMLRunner",
+  description: "基于unittest 的 Web UI/HTTP自动化测试框架。",
   base: "/vpdocs/",
   // head: [["link", { rel: "icon", href: "/nuxt3-docs-zh/icon.png" }]],
   themeConfig: {
