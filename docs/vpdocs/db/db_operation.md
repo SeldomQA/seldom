@@ -132,7 +132,7 @@ db.close()
 ```
 
 
-##MongoDB
+## MongoDB
 
 MongoDB 是一个基于分布式文件存储的数据库，属于非关系型数据库，与关系型数据库得操作有着较大得差异，它本身支持字典传参，所以，seldom 只简单封装了数据库连接。
 
@@ -158,7 +158,8 @@ __参数说明:__
 * port: 端口号。
 * db: 数据库名字。
 
-### pymongo
+__pymongo__
+
 以下操作seldom没有做任何封装，请参考[pymongo](https://github.com/mongodb/mongo-python-driver)
 
 * 获取集合信息
