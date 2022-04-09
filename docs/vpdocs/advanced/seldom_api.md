@@ -168,7 +168,7 @@ if __name__ == '__main__':
 ```
 
 
-### WebDriver API
+### WebDriverAPI
 
 seldom简化了selenium中的API，使操作Web页面更加简单。
 
