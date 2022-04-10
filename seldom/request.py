@@ -1,7 +1,7 @@
 import requests
 from seldom.running.config import Seldom
 from seldom.logging import log
-
+from seldom.utils import jsonpath
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
@@ -105,6 +105,16 @@ class HttpRequest(object):
         :return: response
         """
         return ResponseResult.response
+
+    def jresponse(self, expr):
+        """
+        jsonpath
+        doc:
+        https://goessner.net/articles/JsonPath/
+        """
+        ret = jsonpath(ResponseResult.response, expr)
+        log.debug(f"[jresponse]:\n {str(ret)}")
+        return ret
 
     class Session(requests.Session):
 
