@@ -49,6 +49,7 @@
   * [数据驱动](./vpdocs/http/http.md#数据驱动)
   * [Session使用](./vpdocs/http/http.md#Session使用)
   * [随机生成测试数据](./vpdocs/http/http.md#随机生成测试数据)
+  * [jsonpath](./vpdocs/http/http.md#jsonpath)
 
 * [数据库操作](./vpdocs/db/db_operation.md)
   * [连接数据库](./vpdocs/db/db_operation.md#连接数据库)
