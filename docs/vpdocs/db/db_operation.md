@@ -1,6 +1,6 @@
-## 数据库操作
+# 数据库操作
 
-seldom 支持sqlite3、MySQL数据库操作。
+seldom 支持sqlite3、MySQL、MongoDB数据库操作。
 
 |  sqlite3   | MySQL  |
 |  ----  | ----  |
@@ -130,3 +130,67 @@ db.init_table(datas)
 ```py
 db.close()
 ```
+
+
+## MongoDB
+
+MongoDB 是一个基于分布式文件存储的数据库，属于非关系型数据库，与关系型数据库得操作有着较大得差异，它本身支持字典传参，所以，seldom 只简单封装了数据库连接。
+
+* 安装pymongo
+
+https://github.com/mongodb/mongo-python-driver
+
+```shell
+pip show pymongo
+```
+
+* 连接MongoDB
+
+```python
+from seldom.db_operation.mongo_db import MongoDB
+
+db = MongoDB(host="localhost", port=27017, db="yapi")
+```
+
+__参数说明:__
+
+* host: 连接地址。
+* port: 端口号。
+* db: 数据库名字。
+
+__pymongo__
+
+以下操作seldom没有做任何封装，请参考[pymongo](https://github.com/mongodb/mongo-python-driver)
+
+* 获取集合信息
+
+```python
+col = db.list_collection_names()
+print(col)
+```
+
+结果：
+
+```shell
+collection list:  ['project', 'log', ...]
+```
+
+* 获取表一条数据
+
+```python
+data = db.project.find_one()
+print("table one data:", data)
+```
+
+结果：
+
+```shell
+table data: {'_id': 11, 'switch_notice': True, 'is_mock_open': False, 'strice': False, 'is_json5': False, 'name': '发布会签到系统'}
+```
+
+* [添加数据](https://www.runoob.com/python3/python-mongodb-insert-document.html)
+* [查询数据](https://www.runoob.com/python3/python-mongodb-query-document.html)
+* [修改数据](https://www.runoob.com/python3/python-mongodb-update-document.html)
+* [删除数据](https://www.runoob.com/python3/python-mongodb-delete-document.html)
+
+

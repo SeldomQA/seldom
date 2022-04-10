@@ -1,4 +1,4 @@
-## 其他
+# 其他
 
 
 ### 指定不同的浏览器
@@ -13,7 +13,6 @@ import seldom
 if __name__ == '__main__':
     seldom.main(browser="chrome") # chrome浏览器,默认值
     seldom.main(browser="firefox") # firefox浏览器
-    seldom.main(browser="ie")  # IE浏览器
     seldom.main(browser="opera") # opera浏览器
     seldom.main(browser="edge") # edge浏览器
     seldom.main(browser="safari") # safari浏览器
@@ -46,6 +45,22 @@ PHONE_LIST = [
 PAD_LIST = ['iPad', 'iPad Pro']
 
 ```
+
+### 指定浏览器驱动
+
+虽然，通过 webdriver_manager 管理浏览器驱动非常方便，但毕竟依赖网络，你仍然可以手动设置浏览器驱动。 
+
+```python
+import seldom
+from seldom import ChromeConfig
+
+# ...
+
+if __name__ == '__main__':
+    ChromeConfig.command_executor = r"D:\webdriver\chromedriver.exe"
+    seldom.main(browser="gc", tester="虫师")
+```
+
 
 ### 开启headless模式
 
@@ -133,10 +148,10 @@ if __name__ == '__main__':
 
 1. 配置测试用例通过 unittest 运行。
 
-![](./image/pycharm.png)
+![](/image/pycharm.png)
 
 2. 在文件中选择测试类或用例执行。
 
-![](./image/pycharm_run_case.png) 
+![](/image/pycharm_run_case.png) 
 
 > 警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。

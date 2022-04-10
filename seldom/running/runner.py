@@ -6,13 +6,13 @@ import json as sys_json
 import inspect
 import unittest
 import webbrowser
-from xmlrunner import XMLTestRunner
+from XTestRunner import HTMLTestRunner
+from XTestRunner import XMLTestRunner
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.driver import Browser
 from seldom.logging import log
 from seldom.logging.exceptions import SeldomException
 from seldom.running.DebugTestRunner import DebugTestRunner
-from seldom.running.HTMLTestRunner import HTMLTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.loader_extend import seldomTestLoader
 
@@ -41,8 +41,8 @@ class TestMain(object):
     TestSuits = []
 
     def __init__(self, path=None, browser=None, base_url=None, debug=False, timeout=10,
-                 report=None, title="Seldom Test Report", description="Test case execution",
-                 rerun=0, save_last_run=False, whitelist=[], blacklist=[], auto=True):
+                 report=None, title="Seldom Test Report", tester="Anonymous", description="Test case execution",
+                 rerun=0, save_last_run=False, language="en", whitelist=[], blacklist=[], auto=True):
         """
         runner test case
         :param path:
@@ -50,11 +50,13 @@ class TestMain(object):
         :param base_url:
         :param report:
         :param title:
+        :param tester:
         :param description:
         :param debug:
         :param timeout:
         :param rerun:
         :param save_last_run:
+        :param language:
         :param whitelist:
         :param blacklist:
         :param auto:
@@ -64,11 +66,13 @@ class TestMain(object):
         self.path = path
         self.browser = browser
         self.report = report
-        self.title = title
+        self.title = BrowserConfig.REPORT_TITLE = title
+        self.tester = tester
         self.description = description
         self.debug = debug
         self.rerun = rerun
         self.save_last_run = save_last_run
+        self.language = language
         self.whitelist = whitelist
         self.blacklist = blacklist
 
@@ -139,8 +143,8 @@ class TestMain(object):
                     runner = XMLTestRunner(output=fp)
                     runner.run(suits)
                 else:
-                    runner = HTMLTestRunner(stream=fp, title=self.title, description=self.description,
-                                            blacklist=self.blacklist, whitelist=self.whitelist)
+                    runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester, description=self.description,
+                                            language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
             log.printf("generated html file: file:///{}".format(report_path))
@@ -217,7 +221,8 @@ class TestMainExtend(TestMain):
             d_method = d.get("method").get("name", None)
             if (d_file is None) or (d_class is None) or (d_method is None):
                 raise SeldomException(
-                    """Use case format error, please refer to: https://github.com/SeldomQA/seldom/blob/master/docs/platform.md""")
+                    """Use case format error, please refer to: 
+                    https://github.com/SeldomQA/seldom/blob/master/docs/platform.md""")
             if file_name == d_file and class_name == d_class and method_name == d_method:
                 return True
 

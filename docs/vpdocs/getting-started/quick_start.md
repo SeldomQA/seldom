@@ -1,5 +1,4 @@
-## 快速上手
-
+# 快速开始
 
 ### 下载浏览器驱动
 
@@ -38,10 +37,12 @@ if __name__ == '__main__':
                 base_url=None,
                 report=None,
                 title="百度测试用例",
+                tester="虫师",
                 description="测试环境:chrome",
                 debug=False,
                 rerun=0,
                 save_last_run=False,
+                language="en",
                 timeout=None,
                 whitelist=[],
                 blacklist=[]
@@ -56,10 +57,12 @@ __参数说明__
 * base_url : 针对HTTP接口测试的参数，设置全局的URL。
 * report : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`。
 * title : 指定测试报告标题。
+* tester : 指定测试人员, 默认`Anonymous`。
 * description : 指定测试报告描述。
 * debug : debug模式，设置为True不生成测试HTML测试，默认为`False`。
 * rerun : 设置失败重新运行次数，默认为 `0`。
 * save_last_run : 设置只保存最后一次的结果，默认为`False`。
+* language : 设置HTML报告中英文，默认`en`, 中文`zh-CN`。
 * timeout : 设置超时时间，默认`10`秒。
 * whitelist :  用例标签（label）设置白名单。
 * blacklist :  用例标签（label）设置黑名单。
@@ -112,11 +115,12 @@ __运行类或方法__
 > 2. 如果是Web UI自动化测试，无法自动关闭浏览器，需要手动关闭浏览器`self.close()`
 
 
-### 失败重跑 & 截图
+### 失败重跑与截图
 
 Seldom支持失败重跑，以及截图功能。
 
 ```python
+# test_sample.py
 import seldom
 
 
@@ -142,39 +146,51 @@ __说明__
 __运行日志__
 
 ```shell
-> seldom -r test_sample.py
+> python test_sample.py
 
-2021-04-14 11:25:53,265 INFO Run the python version:
-2021-04-14 11:25:53,265 - INFO - INFO Run the python version:
-Python 3.7.1
 
               __    __
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.6.0
 -----------------------------------------
                              @itest.info
 
 
-DevTools listening on ws://127.0.0.1:12699/devtools/browser/301751bd-a833-44d1-8669-aa85d418b302
-2021-04-14 23:31:54 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-ERetesting... test_case (test_demo.YouTest)..1
-2021-04-14 23:32:05 [INFO] 📖 https://www.baidu.com
-2021-04-14 23:32:06 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-ERetesting... test_case (test_demo.YouTest)..2
-2021-04-14 23:32:17 [INFO] 📖 https://www.baidu.com
-2021-04-14 23:32:22 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-ERetesting... test_case (test_demo.YouTest)..3
-2021-04-14 23:32:32 [INFO] 📖 https://www.baidu.com
-2021-04-14 23:32:36 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-2021-04-14 23:32:47 [INFO] generated html file: file:///D:\github\seldom\reports\2021_04_14_23_31_51_result.html
+
+====== WebDriver manager ======
+Current google-chrome version is
+Current google-chrome version is 99.0.4844
+Get LATEST chromedriver version for 99.0.4844 google-chrome
+Driver [C:\Users\fnngj\.wdm\drivers\chromedriver\win32\99.0.4844.35\chromedriver.exe] found in cache
+
+DevTools listening on ws://127.0.0.1:58294/devtools/browser/59f02afe-8c7a-4b20-b8f4-ff20fac07e08
+.\ztest_sync.py
+
+XTestRunner Running tests...
+
+----------------------------------------------------------------------
+2022-03-18 21:44:23 [INFO] 📖 https://www.baidu.com
+2022-03-18 21:44:26 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+ERetesting... test_case (ztest_sync.YouTest)..1
+2022-03-18 21:44:36 [INFO] 📖 https://www.baidu.com
+2022-03-18 21:44:38 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+ERetesting... test_case (ztest_sync.YouTest)..2
+2022-03-18 21:44:48 [INFO] 📖 https://www.baidu.com
+2022-03-18 21:44:50 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+ERetesting... test_case (ztest_sync.YouTest)..3
+2022-03-18 21:45:01 [INFO] 📖 https://www.baidu.com
+2022-03-18 21:45:02 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+Generating HTML reports...
+2022-03-18 21:45:12 [PRINT] generated html file: file:///D:\github\seldom\reports\2022_03_18_21_44_20_result.html
+2022-03-18 21:45:12 [PRINT] generated log file: file:///D:\github\seldom\reports\2022_03_18_21_44_20_log.log
 E
 ```
 
 __测试报告__
 
-![](./image/report.png)
+![](/image/report.png)
 
 点击报告中的`show`按钮可以查看截图。
 
@@ -217,14 +233,15 @@ __定义测试报告__
 ```py
 import seldom
 
-seldom.main(report="./report.html",
+seldom.main(report="report.html",
             title="百度测试用例",
+            tester="虫师",
             description="测试环境：windows 10/ chrome")
 ```
 
 * report: 配置报告名称和路径。
 * title: 自定义报告的标题。
-* description: 添加报告信息。
+* description: 添加报告信息，支持列表, 例如：["OS: windows","Browser: chrome"]。
 
 __XML测试报告__
 
@@ -233,6 +250,6 @@ __XML测试报告__
 ```py
 import seldom
 
-seldom.main(report="./report.xml")
+seldom.main(report="report.xml")
 ```
 

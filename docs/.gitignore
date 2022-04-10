@@ -1,0 +1,5 @@
+node_modules
+.temp
+.cache
+.DS_Store
+vpdocs/.vuepress/dist

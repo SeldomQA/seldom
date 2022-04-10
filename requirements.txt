@@ -29,7 +29,6 @@ sniffio==1.2.0
 sortedcontainers==2.4.0
 trio==0.19.0
 trio-websocket==0.9.2
-unittest-xml-reporting==3.0.4
 urllib3==1.26.7
 webdriver-manager==3.5.2
 wsproto==1.0.0

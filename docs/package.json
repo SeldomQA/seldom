@@ -1,0 +1,15 @@
+{
+  "name": "vuepress-docs",
+  "version": "1.0.0",
+  "description": "docs by vuepress",
+  "main": "index.js",
+  "author": "Yongchin",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vuepress dev vpdocs",
+    "build": "vuepress build vpdocs"
+  },
+  "devDependencies": {
+    "vuepress": "^2.0.0-beta.38"
+  }
+}

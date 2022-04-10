@@ -1,6 +1,7 @@
+# 介绍
 [GitHub](https://github.com/SeldomQA/seldom) | [Gitee](https://gitee.com/fnngj/seldom) |
 
-![](seldom_logo.jpg)
+![](/image/seldom_logo.jpg)
 
 [![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=SeldomQA.seldom)
@@ -120,7 +121,7 @@ mypro/
 
 你可以到 `mypro\reports\` 目录查看测试报告。
 
-![test report](./test_report.png)
+![test report](/image/test_report.png)
 
 ## 🔬 Demo
 
@@ -207,7 +208,7 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 ## 📖 Document
 
-[中文文档](https://seldomqa.github.io/)
+[中文文档](/docs)
 
 [English document(readthedocs)](https://seldomqa.readthedocs.io/en/latest/index.html)
 
@@ -242,6 +243,6 @@ QQ群：948994709
 
 他们都在用(排名不分先后)
 
-![](./company/samexsys.gif)
+![](/company/samexsys.gif)
 
-![](./company/klook.png)
+![](/company/klook.png)

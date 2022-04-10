@@ -1,4 +1,4 @@
-## Installation
+# Installation
 
 seldom的安装非常简单。
 
@@ -24,13 +24,12 @@ seldom的安装非常简单。
 
 ```shell
 colorama>=0.4.3
-selenium==3.141.0
+selenium>=4.0.0
+XTestRunner>=1.3.1
 parameterized>=0.7.0
 poium>=1.0.0
 openpyxl==3.0.3
 pyyaml>=5.1
-unittest-xml-reporting==3.0.4
-jinja2>=2.11.2
 requests>=2.22.0
 jsonschema>=3.2.0
 jmespath>=0.10.0
@@ -51,14 +50,14 @@ webdriver-manager>=3.5.0
 > pip show seldom
 
 Name: seldom
-Version: 2.4.2
-Summary: WebUI automation testing framework based on Selenium and unittest.
+Version: 2.6.0
+Summary: WebUI/HTTP automation testing framework based on unittest.
 Home-page: https://github.com/seldomQA/seldom/
 Author: bugmaster
 Author-email: fnngj@126.com
 License: BSD
-Location: c:\python38\lib\site-packages
-Requires: selenium, colorama, openpyxl, pyyaml, parameterized
+Location: c:\python38\lib\site-packages\seldom-2.6.0-py3.8.egg
+Requires: colorama, jmespath, jsonschema, openpyxl, parameterized, pymysql, pyyaml, requests, selenium, webdriver-manager, XTestRunner
 Required-by:
 
 ```

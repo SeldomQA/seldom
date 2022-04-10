@@ -19,9 +19,10 @@
 
 from .case import TestCase
 from .running.config import Seldom
-from .running.next_runner import main, TestMainExtend
-from .running.HTMLTestRunner import SMTP
 from .running.loader_extend import SeldomTestLoader
+from .running.runner import main, TestMainExtend
+from .utils.send_extend import SMTP, DingTalk
+from .webdriver_chaining import Steps
 
 from .skip import *
 from .driver import *
@@ -32,6 +33,6 @@ from .request import HttpRequest
 
 __author__ = "bugmaster"
 
-__version__ = "2.5.0"
+__version__ = "2.7.0"
 
 __description__ = "WebUI/HTTP automation testing framework based on unittest."
