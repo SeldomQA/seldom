@@ -1,6 +1,7 @@
 ---
 home: true
-# heroImage: /logo.svg
+heroText: Seldom
+heroImage: /logo.jpeg
 actions: 
   - text: 快速上手→
     link: /getting-started/quick_start/

@@ -2,15 +2,27 @@ module.exports = {
   title: "seldom文档",
   description: "基于unittest 的 Web UI/HTTP自动化测试框架。",
   base: "/vpdocs/",
-  // head: [["link", { rel: "icon", href: "/nuxt3-docs-zh/icon.png" }]],
-  themeConfig: {
-    repo: "/SeldomQA/seldom",
-    // docsBranch: "master/docs",
-    // logo: "/logo.svg",
-    navbar: [
-      { text: "指南", link: "/introduce" },
-      { text: "更新日志", link: "https://github.com/SeldomQA/seldom" },
+  plugins: [
+    [
+      "@vuepress/plugin-search",
+      {
+        locales: {
+          "/": {
+            placeholder: "Search",
+          },
+          "/zh/": {
+            placeholder: "搜索",
+          },
+        },
+         isSearchable: (page) => page.path !== '/',
+      },
     ],
+  ],
+  themeConfig: {
+    repo: "SeldomQA/seldom",
+    docsBranch: "vuepress-docs/docs/vpdocs",
+    logo: "/logo.jpeg",
+    navbar: [{ text: "指南", link: "/introduce" }],
     sidebar: [
       "/introduce",
       {
