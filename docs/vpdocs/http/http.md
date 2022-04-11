@@ -521,3 +521,241 @@ class TestAPI(seldom.TestCase):
 
 更过类型的测试数据，[参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md)
 
+
+### jsonpath
+
+如何更方便的提取接口返回的（JSON）数据，尤其在复杂的数据结构有位重要。seldom集成jsonpath。
+
+参考文档：https://goessner.net/articles/JsonPath/
+
+* jsonpath 用法
+
+```python
+from seldom.utils import jsonpath
+
+
+response = {
+    "code": 0,
+    "status": 1,
+    "data": {
+        "list": [
+            {
+                "stockOutId": "1467422726779043840",
+                "orderId": "1467422722362441728",
+                "id": "1467422722362441728",
+                "stockOutStatus": {
+                    "name": "待出库",
+                    "value": 0,
+                    "description": "待出库"
+                },
+                "orderStatus": {
+                    "name": "待付款",
+                    "value": 0,
+                    "description": "待付款"
+                },
+                "orderPayType": {
+                    "name": "货到付款",
+                    "value": 1,
+                    "description": "货到付款"
+                },
+                "orderDeliveryWay": {
+                    "name": "物流配送",
+                    "value": 0,
+                    "description": "物流配送"
+                },
+                "orderTradeType": {
+                    "name": "即时到帐交易",
+                    "value": 4,
+                    "description": "即时到帐交易"
+                },
+                "stockOutType": {
+                    "name": "制单出库",
+                    "value": 1,
+                    "description": "制单出库"
+                },
+                "creator": 9002257,
+                "reviser": 9002257,
+                "createTime": "2021-12-05 17:16:55",
+                "shippingFee": 0,
+                "totalAmount": 629,
+                "sumProductPayment": 629,
+                "currency": "RMB",
+                "toFullName": "张德天",
+                "toAddress": None,
+                "toFullAddress": "湖北省武汉市洪山区街道口",
+                "storageName": "初始仓库",
+                "orderTime": "2021-12-05 17:16:55",
+                "isSplit": 0,
+                "packageNum": "1/1",
+                "stockOutCreateTime": "2021-12-05 17:16:56",
+                "stockOutToFullName": "张德天",
+                "stockOutToFullAddress": "湖北省武汉市洪山区街道口",
+                "creatorName": "监狱账号联系人",
+            },
+            {
+                "stockOutId": "1467512423597473792",
+                "orderId": "1467512420523048960",
+                "id": "1467512420523048960",
+                "stockOutStatus": {
+                    "name": "待出库",
+                    "value": 0,
+                    "description": "待出库"
+                },
+                "orderStatus": {
+                    "name": "待发货",
+                    "value": 1,
+                    "description": "待发货"
+                },
+                "orderPayType": {
+                    "name": "货到付款",
+                    "value": 1,
+                    "description": "货到付款"
+                },
+                "orderDeliveryWay": {
+                    "name": "物流配送",
+                    "value": 0,
+                    "description": "物流配送"
+                },
+                "orderTradeType": {
+                    "name": "即时到帐交易",
+                    "value": 4,
+                    "description": "即时到帐交易"
+                },
+                "stockOutType": {
+                    "name": "销售出库",
+                    "value": 0,
+                    "description": "销售出库"
+                },
+                "creator": 9002257,
+                "reviser": 9002257,
+                "createTime": "2021-12-05 23:13:20",
+                "reviseTime": "2021-12-05 23:14:00",
+                "status": 0,
+                "storageId": 101888,
+                "no": "WD20211205836010001",
+                "sumProductPayment": 880.6,
+                "toAddress": "火车站",
+                "toFullAddress": "河北省石家庄市长安区火车站",
+                "storageName": "初始仓库",
+                "stockOutCreateTime": "2021-12-05 23:13:21",
+                "stockOutToFullName": "张德天",
+                "stockOutToFullAddress": "河北省石家庄市长安区火车站",
+                "creatorName": "监狱账号联系人",
+            }
+        ],
+        "pageIndex": 0,
+        "pageSize": 50,
+        "total": 2,
+        "pageCount": 1,
+        "data": {
+            "addRepairOrder": True,
+            "cancelOrder": True
+        }
+    },
+    "message": "操作成功。",
+    "isSuccessed": True
+}
+
+#==============常规匹配：======================
+print(response["message"])
+
+# ============jsonpath用法 =================
+# jsonpath匹配(取出来是个列表)
+print(jsonpath(response, '$..message'))
+
+# 取列表
+print(jsonpath(response, '$..message')[0])
+
+# 匹配list值
+print(jsonpath(response, '$..list')[0])
+
+# 匹配stockOutId值
+print(jsonpath(response, '$..stockOutId'))
+
+# 匹配stockOutStatus值
+print(jsonpath(response, '$..stockOutStatus'))
+
+# 匹配data下所有的元素
+print(jsonpath(response, '$.data.*'))
+
+# 匹配data下list所有的orderId值
+print(jsonpath(response, '$.data.list[*].orderId'))
+print(jsonpath(response, '$..orderId'))
+
+# 匹配data下list中倒数第一个orderId值
+print(jsonpath(response, '$.data.list[*].orderId')[-1])
+
+# 匹配data--list下所有的stockOutType值
+print(jsonpath(response, '$.data..stockOutType'))
+print(jsonpath(response, '$..stockOutType'))
+
+# 匹配data--list下第二个stockOutType中的description值
+print(jsonpath(response, '$.data..stockOutType.description')[1])
+
+# 匹配data--list下所有orderTradeType中所有的name值
+print(jsonpath(response, '$..orderTradeType.name'))
+
+# 匹配data--list中包含OutOutNo的所有列表值，并返回stockOutOutNo值
+print(jsonpath(response, '$..list[?(@.stockOutOutNo)].stockOutOutNo'))
+
+# 匹配data--list下sumProductPayment>800的所有值，是把list中满足条件的值列出来
+print(jsonpath(response, '$..list[?(@.sumProductPayment>800)]'))
+
+# 匹配data--list下sumProductPayment>800的所有值，并取出sumProductPayment的值
+print(jsonpath(response, '$..list[?(@.sumProductPayment>800)].sumProductPayment'))
+
+# 匹配orderPayType的所有值
+print(jsonpath(response, '$..orderPayType'))
+
+# 匹配orderPayType中所有的valve值
+print(jsonpath(response, '$..orderPayType.*'))
+
+# 匹配orderPayType返回的多个结果中的第一个
+print(jsonpath(response, '$..orderPayType')[0])
+
+# 匹配orderPayType中的description值
+print(jsonpath(response, '$..orderPayType.description'))
+```
+
+* `jresponse()` 用法
+
+在接口测试中通过`jresponse()` 方法可以直接提取数据。
+
+```python
+import seldom
+
+
+class TestAPI(seldom.TestCase):
+
+    def test_jresponse(self):
+        payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
+        self.get("http://httpbin.org/get", params=payload)
+        self.jresponse("$..hobby[0]")  # 提取hobby
+        self.jresponse("$..age")   # 提取name
+
+
+if __name__ == '__main__':
+    seldom.main(base_url="http://httpbin.org", debug=True)
+```
+
+运行结果
+
+```shell
+2022-04-10 21:00:30.079 | INFO     | seldom.logging.log:info:45 - -------------- Request -----------------[🚀]
+2022-04-10 21:00:30.082 | DEBUG    | seldom.logging.log:debug:34 - [method]: GET      [url]: http://httpbin.org/get
+
+2022-04-10 21:00:30.083 | DEBUG    | seldom.logging.log:debug:34 - [params]:
+ {'hobby': ['basketball', 'swim'], 'name': 'tom', 'age': '18'}
+
+2022-04-10 21:00:30.547 | INFO     | seldom.logging.log:info:45 - -------------- Response ----------------[🛬️]
+2022-04-10 21:00:30.549 | DEBUG    | seldom.logging.log:debug:34 - [type]: json      [time]: 0.460349
+
+2022-04-10 21:05:17.683 | DEBUG    | seldom.logging.log:debug:34 - [response]:
+ {'args': {'age': '18', 'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-6252d60c-551433d744b6869e5d1944d7'}, 'origin': '113.87.12.14', 'url': 'http://httpbin.org/get?hobby=basketball&hobby=swim&name=tom&age=18'}
+
+2022-04-10 21:05:17.686 | DEBUG    | seldom.logging.log:debug:34 - [jresponse]:
+ ['basketball']
+2022-04-10 21:05:17.689 | DEBUG    | seldom.logging.log:debug:34 - [jresponse]:
+ ['18']
+```
+
