@@ -40,12 +40,13 @@ class TestMain(object):
     """
     TestSuits = []
 
-    def __init__(self, path=None, browser=None, base_url=None, debug=False, timeout=10,
+    def __init__(self, path=None, case=None, browser=None, base_url=None, debug=False, timeout=10,
                  report=None, title="Seldom Test Report", tester="Anonymous", description="Test case execution",
                  rerun=0, save_last_run=False, language="en", whitelist=[], blacklist=[], auto=True):
         """
         runner test case
         :param path:
+        :param case:
         :param browser:
         :param base_url:
         :param report:
@@ -64,6 +65,7 @@ class TestMain(object):
         """
         print(seldom_str)
         self.path = path
+        self.case = case
         self.browser = browser
         self.report = report
         self.title = BrowserConfig.REPORT_TITLE = title
@@ -88,8 +90,10 @@ class TestMain(object):
 
         # ----- Global open browser -----
         self.open_browser()
+        if self.case is not None:
+            self.TestSuits = seldomTestLoader.loadTestsFromName(self.case)
 
-        if self.path is None:
+        elif self.path is None:
             stack_t = inspect.stack()
             ins = inspect.getframeinfo(stack_t[1][0])
             print(ins.filename)
