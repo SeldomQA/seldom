@@ -52,7 +52,8 @@ if __name__ == '__main__':
 __参数说明__
 
 
-* path : 指定测试目录或文件。
+* path : 指定测试目录或文件， 与`case`参数互斥。
+* case : 指定测试用例， 与`path`参数互斥。
 * browser : 针对Web UI测试需要指定浏览器（"chrome"、"firefox" 等）。
 * base_url : 针对HTTP接口测试的参数，设置全局的URL。
 * report : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`。
@@ -71,7 +72,6 @@ __参数说明__
 
 __在终端下运行（推荐）__
 
-在终端下运行（推荐）
 
 创建 `run.py` 文件，在要文件中引用`main()`方法，如下：
 
@@ -93,6 +93,7 @@ __设置运行目录、文件__
 可以通过`path`参数指定要运行的目录或文件。
 
 ```py
+# run.py
 import seldom
 
 seldom.main(path="./")  # 指定当前文件所在目录下面的用例。
@@ -101,7 +102,54 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定测试文件中的用例�
 seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")  # 指定文件的绝对路径。
 ```
 
-__运行类或方法__
+* 运行文件
+```shell
+python run.py
+```
+
+__运行单个类、方法（一）__
+
+可以通过`case`参数指定要运行文件、类和方法。
+
+> 注：如果指定了`case`参数，那么`path`参数将无效。
+
+```python
+# test_sample.py
+import seldom
+from seldom import data
+
+
+class TestCase(seldom.TestCase):
+
+    def test_case(self):
+        """ sample case """
+        pass
+
+    @data([
+        ("case1", "seldom"),
+        ("case2", "XTestRunner"),
+    ])
+    def test_ddt(self, name, search):
+        """ ddt case """
+        print(f"name: {name}, search_key: {search}")
+
+
+if __name__ == '__main__':
+    seldom.main(case="test_sample")  # 指定当前文件
+    seldom.main(case="test_sample.TestCase")  # 指定测试类
+    seldom.main(case="test_sample.TestCase.test_case")  # 指定测试用例
+
+    # 使用参数化的用例
+    seldom.main(case="test_sample.TestCase.test_ddt")  # 错误用法
+    seldom.main(case="test_sample.TestCase.test_ddt_0_case1")  # 正确用例
+```
+
+* 运行
+```shell
+> python test_sample.py
+```
+
+__运行单个类、方法（二）__
 
 `seldom -m`命令可以提供更细粒度的运行。
 
@@ -110,6 +158,7 @@ __运行类或方法__
 > seldom -m test_sample.SampleTest # 运行 SampleTest 测试类
 > seldom -m test_sample.SampleTest.test_case # 运行 test_case 测试方法
 ```
+
 > 这种模式有两个问题：
 > 1. 不支持poium，如果要使用，必须手动给`Seldom.driver` 赋值浏览器驱动。
 > 2. 如果是Web UI自动化测试，无法自动关闭浏览器，需要手动关闭浏览器`self.close()`
