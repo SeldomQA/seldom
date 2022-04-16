@@ -61,7 +61,8 @@ optional arguments:
 ```shell
 mypro/
 ├── test_dir/
-│   ├── test_sample.py
+│   ├── test_web_sample.py
+│   ├── test_api_sample.py
 ├── test_data/
 │   ├── data.json
 ├── reports/
