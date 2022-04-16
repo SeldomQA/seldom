@@ -1,18 +1,27 @@
+### 2.8.0
+
+* 功能：增加MongoDB 数据库操作 [93](https://github.com/SeldomQA/seldom/issues/93) 。
+* 功能：支持单个用例执行 [94](https://github.com/SeldomQA/seldom/issues/94) 。
+* 功能：`sendmail()` 增加`delete`参数，发送完邮件删除`reports/` 目录下面的报告和日志文件 [95](https://github.com/SeldomQA/seldom/issues/95) 。
+* 功能：增加`jsonpath` 和 `jresponse()` ，更容易查找json数据 [96](https://github.com/SeldomQA/seldom/issues/96) 。
+* 功能：创建项目脚手架增加api测试例子：`seldom -project mypro` 。
+* 其他： 全新的seldom在线文档：https://seldomqa.github.io/ ，感谢 @nickliya
+
 ### 2.7.0
 
 * 功能：引入`loguru` 库用于打印日志（之前使用python默认logging总有一些重复打印或不打印的问题）。
-* 功能：web自动化增加一套方法链（method chaining）的API，[文档](./docs/chaining.md)。
-* 功能：支持手动指定浏览器驱动路径，[文档](./docs/other.md)。
+* 功能：web自动化增加一套方法链（method chaining）的API。
+* 功能：支持手动指定浏览器驱动路径。
 
 ### 2.6.0
 
 * 移除：自带的`HTMLTestRunner`，HTML报告采用`XTestRunner`。
 * 移除：对`unittest-xml-reporting`库的依赖，XML报告使用`XTestRunner`。
-* 修改：`SMTP`类发送邮件方法 `sender()` -> `sendmail()`， 发送邮件样式采用`XTestRunner` [文档](./docs/advanced.md)。
-* 增加：`seldom.main()`方法增加`tester` 参数，用于设置测试人员名字，默认`Anonymous` [文档](./docs/quick_start.md)。
-* 增加：`seldom.main()`方法增加`language` 参数，用于设置报告中英文`en/zh-CN`，默认`en` [文档](./docs/quick_start.md)。
-* 增加：发送钉钉功能 [文档](./docs/advanced.md) 。
-* 修改：接口测试 `self.session` -> `self.Session()` [文档](./docs/http.md)。  
+* 修改：`SMTP`类发送邮件方法 `sender()` -> `sendmail()`， 发送邮件样式采用`XTestRunner`。
+* 增加：`seldom.main()`方法增加`tester` 参数，用于设置测试人员名字，默认`Anonymous`。
+* 增加：`seldom.main()`方法增加`language` 参数，用于设置报告中英文`en/zh-CN`，默认`en`。
+* 增加：发送钉钉功能。
+* 修改：接口测试 `self.session` -> `self.Session()`。  
 * 移除：接口测试 `self.request()` 方法移除（注：该方法原本不可用）。
 
 ### 2.5.1
@@ -21,23 +30,23 @@
 * 修复：Web UI测试`self.Key()` 无法定位元素的问题
 
 ### 2.5.0
-* 功能：支持测试平台化 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/platform.md) 。
+* 功能：支持测试平台化。
 * 功能：utils 增加`file`类，获取当前文件目录更方便。
 * 修复：`self.select()` 操作下拉选择错误。
 * 修复：`diff_json()` 对比json文件错误。
  
 ### 2.4.2
-* 功能：增强`@file_data`使用方式，json/yaml支持内嵌`dict`数据 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5) 。
+* 功能：增强`@file_data`使用方式，json/yaml支持内嵌`dict`数据。
 
 ### 2.4.1
 * 优化：HTTP接口测试增加`cookies`信息打印。
-* 优化：`@file_data()` 使用，支持指定目录 [参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)
+* 优化：`@file_data()` 使用，支持指定目录。
 * 修复：`visit()` 方法默认浏览器没有自动安装浏览器驱动的问题。
 * 修复：`query_sql()` 执行SQL没有提交的问题。
 
 ### 2.4.0
 * 适配selenium 4.0+ ，适配相关依赖库新版本。
-* 测试用例支持`label`标签分类 [link](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md#%E7%94%A8%E4%BE%8B%E5%88%86%E7%B1%BB%E6%A0%87%E7%AD%BE)
+* 测试用例支持`label`标签分类。
 * 接口测试增加打印入参信息 [79](https://github.com/SeldomQA/seldom/issues/79) 。
 * EdgeChromium浏览器支持`headless`模式。
 * Web自动化测试增加元素截图`self.element_screenshot()`
@@ -81,7 +90,7 @@
 * 修复因为`colorama`/`emoji`导致的编码错误。[70](https://github.com/SeldomQA/seldom/issues/70)
 
 ### 2.2.2
-* 优化db操作方法，[查看](https://github.com/SeldomQA/seldom/blob/master/docs/db_operation.md)
+* 优化db操作方法。
 * 打印`logs`合并到 `reports` 目录。
 
 ### 2.2.1
@@ -166,7 +175,7 @@
 * bug修复版本
 
 ### 1.7.0
-* 重构浏览器驱动，开放浏览器可配置能力。[文档](./docs/driver.md)
+* 重构浏览器驱动，开放浏览器可配置能力。
 
 ### 1.6.0
 * 浏览器增加简写
