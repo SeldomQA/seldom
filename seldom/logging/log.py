@@ -17,7 +17,7 @@ if os.path.exists(report_dir) is False:
 
 now_time = time.strftime("%Y_%m_%d_%H_%M_%S")
 if BrowserConfig.LOG_PATH is None:
-    BrowserConfig.LOG_PATH = os.path.join(os.getcwd(), "reports", now_time + "_log.log")
+    BrowserConfig.LOG_PATH = os.path.join(os.getcwd(), "reports", "seldom_log.log")
 if BrowserConfig.REPORT_PATH is None:
     BrowserConfig.REPORT_PATH = os.path.join(os.getcwd(), "reports", now_time + "_result.html")
 
