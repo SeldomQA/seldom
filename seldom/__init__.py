@@ -29,7 +29,7 @@ from .driver import *
 from .logging.log import *
 from .testdata.parameterization import *
 
-from .request import HttpRequest
+from .request import HttpRequest, Requests
 
 __author__ = "bugmaster"
 
