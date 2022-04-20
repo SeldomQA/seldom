@@ -1,7 +1,9 @@
 import requests
+import jmespath as lib_jmespath
 from seldom.running.config import Seldom
 from seldom.logging import log
-from seldom.utils import jsonpath
+from seldom.utils import jsonpath as utils_jsonpath
+from simplejson.errors import JSONDecodeError
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
@@ -120,7 +122,7 @@ class HttpRequest(object):
         doc:
         https://goessner.net/articles/JsonPath/
         """
-        ret = jsonpath(ResponseResult.response, expr)
+        ret = utils_jsonpath(ResponseResult.response, expr)
         log.debug(f"[jresponse]:\n {str(ret)}")
         return ret
 
@@ -179,3 +181,116 @@ class HttpRequest(object):
             if (Seldom.base_url is not None) and ("http" not in url):
                 url = Seldom.base_url + url
             return self.request('DELETE', url, **kwargs)
+
+
+class Requests(object):
+
+    def __init__(self):
+        self._response = None
+        self._status_code = 200
+        self._elapsed = None
+
+    def get(self, url, params=None, **kwargs):
+        if (Seldom.base_url is not None) and ("http" not in url):
+            url = Seldom.base_url + url
+        r = requests.get(url, params=params, **kwargs)
+        if r.status_code != 200:
+            log.warn(f"status_code: {r.status_code}")
+        self._status_code = r.status_code
+        try:
+            self._response = r.json()
+        except JSONDecodeError:
+            log.warn(f"Not in JSON format: {r.text}")
+            self._response = r.text
+        self._elapsed = r.elapsed
+        return self
+
+    def post(self, url, data=None, json=None, **kwargs):
+        if (Seldom.base_url is not None) and ("http" not in url):
+            url = Seldom.base_url + url
+        r = requests.post(url, data=data, json=json, **kwargs)
+        if r.status_code != 200:
+            log.warn(f"status_code: {r.status_code}")
+        self._status_code = r.status_code
+        try:
+            self._response = r.json()
+        except JSONDecodeError:
+            log.warn(f"Not in JSON format: {r.text}")
+            self._response = r.text
+        self._elapsed = r.elapsed
+        return self
+
+    def put(self, url, data=None, **kwargs):
+        if (Seldom.base_url is not None) and ("http" not in url):
+            url = Seldom.base_url + url
+        r = requests.put(url, data=data, **kwargs)
+        if r.status_code != 200:
+            log.warn(f"status_code: {r.status_code}")
+        self._status_code = r.status_code
+        try:
+            self._response = r.json()
+        except JSONDecodeError:
+            log.warn(f"Not in JSON format: {r.text}")
+            self._response = r.text
+        self._elapsed = r.elapsed
+        return self
+
+    def delete(self, url, **kwargs):
+        if (Seldom.base_url is not None) and ("http" not in url):
+            url = Seldom.base_url + url
+        r = requests.delete(url, **kwargs)
+        if r.status_code != 200:
+            log.warn(f"status_code: {r.status_code}")
+        self._status_code = r.status_code
+        try:
+            self._response = r.json()
+        except JSONDecodeError:
+            log.warn(f"Not in JSON format: {r.text}")
+            self._response = r.text
+        self._elapsed = r.elapsed
+        return self
+
+    @property
+    def status_code(self) -> int:
+        """
+        return status code
+        """
+        log.info(f"[status_code]: {str(self._status_code)}")
+        return self._status_code
+
+    @property
+    def total_time(self):
+        """
+        return request time
+        """
+        log.info(f"[total_time]: {str(self._elapsed.total_seconds())}")
+        return self._elapsed.total_seconds()
+
+    def json(self) -> dict:
+        """
+        return json data
+        """
+        log.info(f"[json]:\n {str(self._response)}")
+        return self._response
+
+    def jsonpath(self, expr, index: int = None):
+        """
+        jsonpath
+        doc:
+        https://goessner.net/articles/JsonPath/
+        """
+        if index is not None:
+            search_value = utils_jsonpath(self._response, expr)[index]
+        else:
+            search_value = utils_jsonpath(self._response, expr)
+        log.info(f"[jsonpath]:\n {str(search_value)}")
+        return search_value
+
+    def jmespath(self, path):
+        """
+        jmespath
+        doc: https://jmespath.org/
+        """
+        search_value = lib_jmespath.search(path, self._response)
+        log.info(f"[jmespath]:\n {str(search_value)}")
+        return search_value
