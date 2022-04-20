@@ -106,6 +106,14 @@ class HttpRequest(object):
         """
         return ResponseResult.response
 
+    @property
+    def status_code(self):
+        """
+        Returns the result of the status code
+        :return: status_code
+        """
+        return ResponseResult.status_code
+
     def jresponse(self, expr):
         """
         jsonpath
