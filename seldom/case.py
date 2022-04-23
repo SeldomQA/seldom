@@ -1,16 +1,14 @@
 import unittest
 from urllib.parse import unquote
-import jmespath
 from time import sleep
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from seldom.webdriver import WebDriver
-from seldom.request import HttpRequest
+from seldom.request import HttpRequest, ResponseResult
 from seldom.running.config import Seldom
 from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
-from seldom.utils import diff_json, AssertInfo
-from seldom.request import ResponseResult
+from seldom.utils import diff_json, AssertInfo, jmespath
 
 
 class TestCase(unittest.TestCase, WebDriver, HttpRequest):
@@ -276,7 +274,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         Assert path data
         doc: https://jmespath.org/
         """
-        search_value = jmespath.search(path, ResponseResult.response)
+        search_value = jmespath(ResponseResult.response, path)
         if search_value is None:
             self.assertEqual(path, None, msg="{} No match".format(path))
         else:
