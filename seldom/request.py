@@ -1,9 +1,10 @@
+import json
 import requests
 import jmespath as lib_jmespath
 from seldom.running.config import Seldom
 from seldom.logging import log
 from seldom.utils import jsonpath as utils_jsonpath
-from simplejson.errors import JSONDecodeError
+from seldom.utils import jmespath
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
@@ -199,7 +200,7 @@ class Requests(object):
         self._status_code = r.status_code
         try:
             self._response = r.json()
-        except JSONDecodeError:
+        except json.decoder.JSONDecodeError:
             log.warn(f"Not in JSON format: {r.text}")
             self._response = r.text
         self._elapsed = r.elapsed
@@ -214,7 +215,7 @@ class Requests(object):
         self._status_code = r.status_code
         try:
             self._response = r.json()
-        except JSONDecodeError:
+        except json.decoder.JSONDecodeError:
             log.warn(f"Not in JSON format: {r.text}")
             self._response = r.text
         self._elapsed = r.elapsed
@@ -229,7 +230,7 @@ class Requests(object):
         self._status_code = r.status_code
         try:
             self._response = r.json()
-        except JSONDecodeError:
+        except json.decoder.JSONDecodeError:
             log.warn(f"Not in JSON format: {r.text}")
             self._response = r.text
         self._elapsed = r.elapsed
@@ -244,7 +245,7 @@ class Requests(object):
         self._status_code = r.status_code
         try:
             self._response = r.json()
-        except JSONDecodeError:
+        except json.decoder.JSONDecodeError:
             log.warn(f"Not in JSON format: {r.text}")
             self._response = r.text
         self._elapsed = r.elapsed
@@ -294,3 +295,50 @@ class Requests(object):
         search_value = lib_jmespath.search(path, self._response)
         log.info(f"[jmespath]:\n {str(search_value)}")
         return search_value
+
+
+def check_response(describe: str, status_code: int, ret: str = None, check: dict = {}):
+    """
+    checkout response data
+    :param describe: interface describe
+    :param status_code: http status code
+    :param ret: return data
+    :param check: check data
+    :return:
+    """
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            func_name = func.__name__
+            log.printf(f"Execute {func_name}")
+
+            r = func(*args, **kwargs)
+            flat = True
+            if r.status_code != status_code:
+                log.error(f"{describe} failed：{r.status_code}")
+                flat = False
+
+            try:
+                r.json()
+            except json.decoder.JSONDecodeError:
+                log.error(f"{describe} failed：Not in JSON format")
+                flat = False
+
+            if flat is True:
+                log.info(f"{describe} success!")
+
+            if check != {}:
+                for expr, value in check.items():
+                    data = jmespath(r.json(), expr)
+                    if data != value:
+                        log.error(f"check data failed：{value}")
+                        raise ValueError(f"{data} != {value}")
+
+            if ret is not None:
+                data = jmespath(r.json(), ret)
+                return data
+            else:
+                return r.json()
+
+        return wrapper
+
+    return decorator
