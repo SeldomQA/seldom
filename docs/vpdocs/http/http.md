@@ -556,17 +556,13 @@ class TestAPI(seldom.TestCase):
 更过类型的测试数据，[参考](https://github.com/SeldomQA/seldom/blob/master/docs/advanced.md)
 
 
-### jsonpath
+### 提取接口返回数据
 
-如何更方便的提取接口返回的（JSON）数据，尤其在复杂的数据结构有位重要。seldom集成jsonpath。
+当接口返回的数据比较复杂时，我们需要有更方便方式去提取数据，seldom提供 `jmespath`、`jsonpath` 来简化数据提取。
 
-参考文档：https://goessner.net/articles/JsonPath/
-
-* jsonpath 用法
+* 接口返回数据
 
 ```python
-from seldom.utils import jsonpath
-
 
 response = {
     "code": 0,
@@ -577,11 +573,6 @@ response = {
                 "stockOutId": "1467422726779043840",
                 "orderId": "1467422722362441728",
                 "id": "1467422722362441728",
-                "stockOutStatus": {
-                    "name": "待出库",
-                    "value": 0,
-                    "description": "待出库"
-                },
                 "orderStatus": {
                     "name": "待付款",
                     "value": 0,
@@ -591,11 +582,6 @@ response = {
                     "name": "货到付款",
                     "value": 1,
                     "description": "货到付款"
-                },
-                "orderDeliveryWay": {
-                    "name": "物流配送",
-                    "value": 0,
-                    "description": "物流配送"
                 },
                 "orderTradeType": {
                     "name": "即时到帐交易",
@@ -607,34 +593,17 @@ response = {
                     "value": 1,
                     "description": "制单出库"
                 },
-                "creator": 9002257,
-                "reviser": 9002257,
-                "createTime": "2021-12-05 17:16:55",
                 "shippingFee": 0,
-                "totalAmount": 629,
                 "sumProductPayment": 629,
                 "currency": "RMB",
-                "toFullName": "张德天",
-                "toAddress": None,
-                "toFullAddress": "湖北省武汉市洪山区街道口",
-                "storageName": "初始仓库",
-                "orderTime": "2021-12-05 17:16:55",
-                "isSplit": 0,
                 "packageNum": "1/1",
-                "stockOutCreateTime": "2021-12-05 17:16:56",
                 "stockOutToFullName": "张德天",
                 "stockOutToFullAddress": "湖北省武汉市洪山区街道口",
-                "creatorName": "监狱账号联系人",
             },
             {
                 "stockOutId": "1467512423597473792",
                 "orderId": "1467512420523048960",
                 "id": "1467512420523048960",
-                "stockOutStatus": {
-                    "name": "待出库",
-                    "value": 0,
-                    "description": "待出库"
-                },
                 "orderStatus": {
                     "name": "待发货",
                     "value": 1,
@@ -644,11 +613,6 @@ response = {
                     "name": "货到付款",
                     "value": 1,
                     "description": "货到付款"
-                },
-                "orderDeliveryWay": {
-                    "name": "物流配送",
-                    "value": 0,
-                    "description": "物流配送"
                 },
                 "orderTradeType": {
                     "name": "即时到帐交易",
@@ -660,40 +624,71 @@ response = {
                     "value": 0,
                     "description": "销售出库"
                 },
-                "creator": 9002257,
-                "reviser": 9002257,
-                "createTime": "2021-12-05 23:13:20",
-                "reviseTime": "2021-12-05 23:14:00",
                 "status": 0,
                 "storageId": 101888,
                 "no": "WD20211205836010001",
                 "sumProductPayment": 880.6,
-                "toAddress": "火车站",
-                "toFullAddress": "河北省石家庄市长安区火车站",
-                "storageName": "初始仓库",
-                "stockOutCreateTime": "2021-12-05 23:13:21",
                 "stockOutToFullName": "张德天",
                 "stockOutToFullAddress": "河北省石家庄市长安区火车站",
-                "creatorName": "监狱账号联系人",
             }
         ],
-        "pageIndex": 0,
         "pageSize": 50,
         "total": 2,
         "pageCount": 1,
-        "data": {
-            "addRepairOrder": True,
-            "cancelOrder": True
-        }
     },
     "message": "操作成功。",
     "isSuccessed": True
 }
+```
 
-#==============常规匹配：======================
+* 常规提取
+
+```python
+response = {
+    # ...
+}
+
 print(response["message"])
+print(response["data"]["list"])
+print(response["data"]["list"][0])
+print(response["data"]["list"][0]["orderId"])
+```
 
-# ============jsonpath用法 =================
+* jmespath 用法
+
+```python
+from seldom.utils import jmespath
+
+response = {
+    # ...
+}
+
+# jmespath 匹配消息
+print(jmespath(response, 'message'))
+
+# jmespath 匹配list列表
+print(jmespath(response, 'data.list'))
+
+# jmespath 匹配list列表第一个元素
+print(jmespath(response, 'data.list[0]'))
+
+# jmespath 匹配list列表第二个元素下的 orderId
+print(jmespath(response, 'data.list[1].orderId'))
+```
+
+* jsonpath 用法
+
+参考文档：https://goessner.net/articles/JsonPath/
+
+
+```python
+from seldom.utils import jsonpath
+
+
+response = {
+    # ...
+}
+
 # jsonpath匹配(取出来是个列表)
 print(jsonpath(response, '$..message'))
 
@@ -764,8 +759,10 @@ class TestAPI(seldom.TestCase):
     def test_jresponse(self):
         payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
         self.get("http://httpbin.org/get", params=payload)
-        self.jresponse("$..hobby[0]")  # 提取hobby
-        self.jresponse("$..age")   # 提取name
+        self.jresponse("$..hobby[0]")  # 提取hobby (默认 jsonpath)
+        self.jresponse("$..age")   # 提取age (默认 jsonpath)
+        self.jresponse("hobby[0]", j="jmes")  # 提取hobby (jmespath)
+        self.jresponse("age", j="jmes")  # 提取age (jmespath)
 
 
 if __name__ == '__main__':
@@ -791,5 +788,41 @@ if __name__ == '__main__':
  ['basketball']
 2022-04-10 21:05:17.689 | DEBUG    | seldom.logging.log:debug:34 - [jresponse]:
  ['18']
+```
+
+
+### genson
+
+通过 `assertSchema()` 断言时需要写JSON Schema，但是这个写起来需要学习成本，seldom集成了[GenSON](https://github.com/wolverdude/GenSON) ,可以帮你自动生成。
+
+* 例子
+
+```python
+import seldom
+from seldom.utils import genson
+
+
+class TestAPI(seldom.TestCase):
+
+    def test_assert_schema(self):
+        payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
+        self.get("/get", params=payload)
+        print("response \n", self.response)
+        
+        schema = genson(self.response)
+        print("json Schema \n", schema)
+        
+        self.assertSchema(schema)
+```
+
+* 运行日志
+
+```shell
+...
+response
+ {'args': {'age': '18', 'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-626574d0-4c04bb7e76a53e8042c9d856'}, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/get?hobby=basketball&hobby=swim&name=tom&age=18'}
+
+json Schema
+ {'$schema': 'http://json-schema.org/schema#', 'type': 'object', 'properties': {'args': {'type': 'object', 'properties': {'age': {'type': 'string'}, 'hobby': {'type': 'array', 'items': {'type': 'string'}}, 'name': {'type': 'string'}}, 'required': ['age', 'hobby', 'name']}, 'headers': {'type': 'object', 'properties': {'Accept': {'type': 'string'}, 'Accept-Encoding': {'type': 'string'}, 'Host': {'type': 'string'}, 'User-Agent': {'type': 'string'}, 'X-Amzn-Trace-Id': {'type': 'string'}}, 'required': ['Accept', 'Accept-Encoding', 'Host', 'User-Agent', 'X-Amzn-Trace-Id']}, 'origin': {'type': 'string'}, 'url': {'type': 'string'}}, 'required': ['args', 'headers', 'origin', 'url']}
 ```
 
