@@ -15,9 +15,9 @@ if os.path.exists(report_dir) is False:
 
 now_time = time.strftime("%Y_%m_%d_%H_%M_%S")
 if BrowserConfig.LOG_PATH is None:
-    BrowserConfig.LOG_PATH = os.path.join(os.getcwd(), "reports", "seldom_log.log")
+    BrowserConfig.LOG_PATH = os.path.join(report_dir, "seldom_log.log")
 if BrowserConfig.REPORT_PATH is None:
-    BrowserConfig.REPORT_PATH = os.path.join(os.getcwd(), "reports", now_time + "_result.html")
+    BrowserConfig.REPORT_PATH = os.path.join(report_dir, now_time + "_result.html")
 
 
 class Logger:
@@ -50,13 +50,13 @@ class Logger:
         )
 
     def trace(self, msg: str):
-        now = time.strftime("-%m-%d %H:%M:%S")
+        now = time.strftime("%Y-%m-%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [DEBUG] " + str(msg))
+            print(now + " [TRACE] " + str(msg))
         return self.logger.trace(msg)
 
     def debug(self, msg: str):
-        now = time.strftime("-%m-%d %H:%M:%S")
+        now = time.strftime("%Y-%m-%d %H:%M:%S")
         if Seldom.debug is False:
             print(now + " [DEBUG] " + str(msg))
         return self.logger.debug(msg)
@@ -70,7 +70,7 @@ class Logger:
     def success(self, msg: str):
         now = time.strftime("%Y-%m-%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [WARNING] " + str(msg))
+            print(now + " [SUCCESS] " + str(msg))
         return self.logger.success(msg)
 
     def warn(self, msg: str):
@@ -88,7 +88,7 @@ class Logger:
     def critical(self, msg: str):
         now = time.strftime("%Y-%m-%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [ERROR] " + str(msg))
+            print(now + " [CRITICAL] " + str(msg))
         return self.logger.critical(msg)
 
     def printf(self, msg: str):
