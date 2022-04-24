@@ -192,45 +192,52 @@ class HttpRequest(object):
             return self.request('DELETE', url, **kwargs)
 
 
-
-def check_response(describe: str, status_code: int, ret: str = None, check: dict = {}):
+def check_response(describe: str, status_code: int, ret: str = None, check: dict = dict, debug: bool = False):
     """
     checkout response data
     :param describe: interface describe
     :param status_code: http status code
     :param ret: return data
     :param check: check data
+    :param debug: debug Ture/False
     :return:
     """
     def decorator(func):
         def wrapper(*args, **kwargs):
             func_name = func.__name__
-            log.printf(f"Execute {func_name}")
+            if debug is True:
+                log.debug(f"Execute {func_name} - args: {args}")
+                log.debug(f"Execute {func_name} - kwargs: {kwargs}")
 
             r = func(*args, **kwargs)
             flat = True
             if r.status_code != status_code:
-                log.error(f"{describe} failed：{r.status_code}")
+                log.error(f"Execute {func_name} - {describe} failed: {r.status_code}")
                 flat = False
 
             try:
                 r.json()
             except json.decoder.JSONDecodeError:
-                log.error(f"{describe} failed：Not in JSON format")
+                log.error(f"Execute {func_name} - {describe} failed：Not in JSON format")
                 flat = False
 
+            if debug is True:
+                log.debug(f"Execute {func_name} - response:\n {r.json()}")
+
             if flat is True:
-                log.info(f"{describe} success!")
+                log.info(f"Execute {func_name} - {describe} success!")
 
             if check != {}:
                 for expr, value in check.items():
                     data = jmespath(r.json(), expr)
                     if data != value:
-                        log.error(f"check data failed：{value}")
+                        log.error(f"Execute {func_name} - check data failed：{value}")
                         raise ValueError(f"{data} != {value}")
 
             if ret is not None:
                 data = jmespath(r.json(), ret)
+                if data is None:
+                    log.error(f"Execute {func_name} - return {ret} is None")
                 return data
             else:
                 return r.json()
