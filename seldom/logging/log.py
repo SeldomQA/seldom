@@ -6,14 +6,12 @@ from loguru import logger
 from seldom.running.config import BrowserConfig
 from seldom.running.config import Seldom
 
-
 stack_t = inspect.stack()
 ins = inspect.getframeinfo(stack_t[1][0])
-file_dir = os.path.dirname(os.path.abspath(ins.filename))
-report_dir = os.path.join(file_dir, "reports")
+exec_dir = os.path.dirname(os.path.abspath(ins.filename))
+report_dir = os.path.join(exec_dir, "reports")
 if os.path.exists(report_dir) is False:
     os.mkdir(report_dir)
-
 
 now_time = time.strftime("%Y_%m_%d_%H_%M_%S")
 if BrowserConfig.LOG_PATH is None:
@@ -21,58 +19,80 @@ if BrowserConfig.LOG_PATH is None:
 if BrowserConfig.REPORT_PATH is None:
     BrowserConfig.REPORT_PATH = os.path.join(os.getcwd(), "reports", now_time + "_result.html")
 
-logger.add(BrowserConfig.LOG_PATH, encoding="utf-8")
 
-colorLog = True
+class Logger:
+    def __init__(self, level: str = "INFO", colorlog: bool = True):
+        self.logger = logger
+        self._colorlog = colorlog
+        self._formator = "<fg #66CDAA>[<fg #FA8072>{level}</> {time:YYMMDD HH:mm:ss} {file}]</>  <lvl>{message}</lvl>"
+        self._lvl = level
+        self.logfile = open(BrowserConfig.LOG_PATH, "w")
+        self.df_config(self._colorlog, self._formator, self._lvl)
+
+    def __del__(self):
+        self.logfile.close()
+
+    def df_config(self, colorlog: bool, formator: str, console_lvl: str, log_lvl: str = "DEBUG"):
+        self.logger.configure(
+            handlers=[
+                dict(sink=sys.stderr, level=console_lvl, colorize=colorlog, format=formator),
+                dict(sink=self.logfile, level=log_lvl, format=formator),
+            ],
+            # levels=[dict(name="INFO", no=20, color="<yellow>")],
+        )
+
+    def set_level(self, console_lvl: str, log_lvl: str = "DEBUG"):
+        self.logger.configure(
+            handlers=[
+                dict(sink=sys.stderr, level=console_lvl, colorize=self._colorlog, format=self._formator),
+                dict(sink=self.logfile, level=log_lvl, format=self._formator),
+            ],
+        )
+
+    def trace(self, msg: str):
+        now = time.strftime("-%m-%d %H:%M:%S")
+        if Seldom.debug is False:
+            print(now + " [DEBUG] " + str(msg))
+        return self.logger.trace(msg)
+
+    def debug(self, msg: str):
+        now = time.strftime("-%m-%d %H:%M:%S")
+        if Seldom.debug is False:
+            print(now + " [DEBUG] " + str(msg))
+        return self.logger.debug(msg)
+
+    def info(self, msg: str):
+        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        if Seldom.debug is False:
+            print(now + " [INFO] " + str(msg))
+        return self.logger.info(msg)
+
+    def success(self, msg: str):
+        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        if Seldom.debug is False:
+            print(now + " [WARNING] " + str(msg))
+        return self.logger.success(msg)
+
+    def warn(self, msg: str):
+        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        if Seldom.debug is False:
+            print(now + " [WARNING] " + str(msg))
+        return self.logger.warning(msg)
+
+    def error(self, msg: str):
+        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        if Seldom.debug is False:
+            print(now + " [ERROR] " + str(msg))
+        return self.logger.error(msg)
+
+    def critical(self, msg: str):
+        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        if Seldom.debug is False:
+            print(now + " [ERROR] " + str(msg))
+        return self.logger.critical(msg)
+
+    def printf(self, msg: str):
+        return self.logger.success(msg)
 
 
-def debug(msg):
-    now = time.strftime("%Y-%m-%d %H:%M:%S")
-    if Seldom.debug is False:
-        print(now + " [DEBUG] " + str(msg))
-    if colorLog is True:
-        return logger.debug(msg)
-    else:
-        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
-        return logger.debug(msg)
-
-
-def info(msg):
-    now = time.strftime("%Y-%m-%d %H:%M:%S")
-    if Seldom.debug is False:
-        print(now + " [INFO] " + str(msg))
-    if colorLog is True:
-        return logger.info(msg)
-    else:
-        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
-        return logger.info(msg)
-
-
-def error(msg):
-    now = time.strftime("%Y-%m-%d %H:%M:%S")
-    if Seldom.debug is False:
-        print(now + " [ERROR] " + str(msg))
-    if colorLog is True:
-        return logger.error(msg)
-    else:
-        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
-        return logger.info(msg)
-
-
-def warn(msg):
-    now = time.strftime("%Y-%m-%d %H:%M:%S")
-    if Seldom.debug is False:
-        print(now + " [WARNING] " + str(msg))
-    if colorLog is True:
-        return logger.warning(msg)
-    else:
-        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
-        return logger.warning(msg)
-
-
-def printf(msg):
-    if colorLog is True:
-        return logger.success(msg)
-    else:
-        msg = msg.encode('gbk', 'ignore').decode('gbk', "ignore")
-        return logger.success(msg)
+log = Logger(level="INFO")

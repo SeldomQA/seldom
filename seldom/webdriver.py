@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from seldom.logging import log
+from seldom.logging.log import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager

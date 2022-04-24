@@ -2,7 +2,7 @@ import os
 import sys
 import ssl
 import argparse
-from seldom.logging import log
+from seldom.logging.log import log
 from seldom.har2case.core import HarParser
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager

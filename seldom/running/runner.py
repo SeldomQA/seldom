@@ -10,7 +10,7 @@ from XTestRunner import HTMLTestRunner
 from XTestRunner import XMLTestRunner
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.driver import Browser
-from seldom.logging import log
+from seldom.logging.log import log
 from seldom.logging.exceptions import SeldomException
 from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.config import Seldom, BrowserConfig

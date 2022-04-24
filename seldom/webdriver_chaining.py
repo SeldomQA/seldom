@@ -6,7 +6,7 @@ from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from seldom.logging import log
+from seldom.logging.log import log
 from seldom.running.config import Seldom
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 from seldom.webdriver import WebElement

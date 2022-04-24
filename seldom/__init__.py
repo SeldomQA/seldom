@@ -26,7 +26,7 @@ from .webdriver_chaining import Steps
 
 from .skip import *
 from .driver import *
-from .logging.log import *
+from .logging.log import log
 from .testdata.parameterization import *
 
 

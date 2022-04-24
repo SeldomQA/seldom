@@ -2,7 +2,7 @@ import json
 import requests
 import jmespath as lib_jmespath
 from seldom.running.config import Seldom
-from seldom.logging import log
+from seldom.logging.log import log
 from seldom.utils import jsonpath as utils_jsonpath
 from seldom.utils import jmespath
 

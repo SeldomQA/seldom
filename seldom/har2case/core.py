@@ -1,5 +1,5 @@
 import os
-from seldom.logging import log
+from seldom.logging.log import log
 from seldom.har2case import utils
 
 

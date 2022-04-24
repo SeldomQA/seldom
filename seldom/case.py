@@ -6,7 +6,7 @@ from jsonschema.exceptions import ValidationError
 from seldom.webdriver import WebDriver
 from seldom.request import HttpRequest, ResponseResult
 from seldom.running.config import Seldom
-from seldom.logging import log
+from seldom.logging.log import log
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
 
