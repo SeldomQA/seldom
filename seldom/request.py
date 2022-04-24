@@ -192,7 +192,7 @@ class HttpRequest(object):
             return self.request('DELETE', url, **kwargs)
 
 
-def check_response(describe: str, status_code: int, ret: str = None, check: dict = dict, debug: bool = False):
+def check_response(describe: str = "", status_code: int = 200, ret: str = "", check: dict = {}, debug: bool = False):
     """
     checkout response data
     :param describe: interface describe
@@ -227,14 +227,14 @@ def check_response(describe: str, status_code: int, ret: str = None, check: dict
             if flat is True:
                 log.info(f"Execute {func_name} - {describe} success!")
 
-            if check != {}:
+            if len(check) != 0:
                 for expr, value in check.items():
                     data = jmespath(r.json(), expr)
                     if data != value:
                         log.error(f"Execute {func_name} - check data failed：{value}")
                         raise ValueError(f"{data} != {value}")
 
-            if ret is not None:
+            if ret != "":
                 data = jmespath(r.json(), ret)
                 if data is None:
                     log.error(f"Execute {func_name} - return {ret} is None")

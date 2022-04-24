@@ -360,26 +360,30 @@ seldom提供了`self.response`用于记录上个接口返回的结果，直接�
 
 * 封装接口依赖
 
-创建公共模块
+1. 创建公共模块
 
 ```python
 # common.py
-from seldom import Requests
+import requests
+from seldom.request import check_response 
 
 
-class Common(Requests):
-
+class Common():
+    
+    @check_response(
+        describe="获取登录用户名",
+        status_code=200,
+        ret="headers.Account",
+        check={"headers.Host": "httpbin.org"},
+        debug=True
+    )
     def get_login_user(self):
         """
         调用接口获得用户名
         """
-        headers = {"X-Account-Fullname": "bugmaster"}
-        resp = self.get("http://httpbin.org/get", headers=headers)
-        data = resp.json()  # 获取接口返回的数据
-        host = resp.jmespath("headers.Host")  # jmespath 提取 host
-        users = resp.jsonpath("$..X-Account-Fullname")  # jsonpath 匹配X-Account-Fullname
-        user = resp.jsonpath("$..X-Account-Fullname", index=0)  # jsonpath 匹配X-Account-Fullname - 指定索引
-        return user
+        headers = {"Account": "bugmaster"}
+        r = requests.get("http://httpbin.org/get", headers=headers)
+        return r
 
 
 if __name__ == '__main__':
@@ -387,23 +391,33 @@ if __name__ == '__main__':
     c.get_login_user()
 ```
 
-> 创建类直接继承 `Requests` 类调用使用Http请求方法`get/post/put/delete`，提供`jsonpath()`、`jmespath()` 等方法可以更方便的提取接口数据。
-
 * 运行日志
 
 ```shell
-2022-04-21 00:18:32.075 | INFO     | seldom.logging.log:info:45 - [json]:
- {'args': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Account-Fullname': 'bugmaster', 'X-Amzn-Trace-Id': 'Root=1-62603257-7c213c1a661b80a85aace4bf'}, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/get'}
-2022-04-21 00:18:32.077 | INFO     | seldom.logging.log:info:45 - [jmespath]:
- httpbin.org
-2022-04-21 00:18:32.080 | INFO     | seldom.logging.log:info:45 - [jsonpath]:
- ['bugmaster']
-2022-04-21 00:18:32.081 | INFO     | seldom.logging.log:info:45 - [jsonpath]:
- bugmaster
+2022-04-24 22:21:38 [DEBUG] Execute get_login_user - args: (<__main__.Common object at 0x000001A6B028F970>,)
+2022-04-24 22:21:38 [DEBUG] Execute get_login_user - kwargs: {}
+2022-04-24 22:21:38.831 | DEBUG    | seldom.logging.log:debug:34 - Execute get_login_user - args: (<__main__.Common object at 0x000001A6B028F970>,)
+2022-04-24 22:21:38.832 | DEBUG    | seldom.logging.log:debug:34 - Execute get_login_user - kwargs: {}
+2022-04-24 22:21:39 [DEBUG] Execute get_login_user - response:
+ {'args': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Account': 'bugmaster', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-62655cf3-18c082b413a51b840fa9a449'}, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/get'}
+2022-04-24 22:21:39 [INFO] Execute get_login_user - 用户登录 success!
+2022-04-24 22:21:39.402 | DEBUG    | seldom.logging.log:debug:34 - Execute get_login_user - response:
+ {'args': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Account': 'bugmaster', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-62655cf3-18c082b413a51b840fa9a449'}, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/get'}
+2022-04-24 22:21:39.402 | INFO     | seldom.logging.log:info:45 - Execute get_login_user - 用户登录 success!
 ```
 
+* check_response
 
-引用公共模块
+`@check_response` 专门用于处理封装的方法。__参数说明：__
+
+* `describe` : 封装方法描述。
+* `status_code`: 判断接口返回的 HTTP 状态码，默认`200`。
+* `ret`: 提取接口返回的字段，参考`jmespath` 提取规则。
+* `check`: 检查接口返回的字段。参考`jmespath` 提取规则。
+* `debug`: 开启`debug`，打印更多信息。
+
+
+2. 引用公共模块
 
 ```python
 import seldom
