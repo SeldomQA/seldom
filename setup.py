@@ -35,6 +35,7 @@ setup(
         'jmespath>=0.10.0',
         'webdriver-manager>=3.5.0',
         'pymysql>=1.0.0',
+        'genson==1.2.2'
     ],
     classifiers=[
         'Intended Audience :: Developers',

@@ -126,7 +126,7 @@ class HttpRequest(object):
         jmespath
         doc: https://jmespath.org/
         """
-        if j =="json":
+        if j == "json":
             ret = utils_jsonpath(ResponseResult.response, expr)
         elif j == "jmes":
             ret = jmespath(ResponseResult.response, expr)

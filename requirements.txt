@@ -33,3 +33,4 @@ urllib3==1.26.7
 webdriver-manager==3.5.2
 wsproto==1.0.0
 zipp==3.6.0
+genson==1.2.2
