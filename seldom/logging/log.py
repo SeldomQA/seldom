@@ -24,8 +24,8 @@ class Logger:
     def __init__(self, level: str = "DEBUG", colorlog: bool = True):
         self.logger = logger
         self._colorlog = colorlog
-        self._console_format = "[<fg #FA8072>{level}</> <green>{time:YYMMDD HH:mm:ss}</green>] <level>{message}</level>"
-        self._log_format = "[{level} {time: YYMMDD HH:mm:ss}] {message}"
+        self._console_format = "[<fg #FA8072>{level}</> <fg #66CDAA>{time:YYMMDD HH:mm:ss}</> {file}] <level>{message}</level>"
+        self._log_format = "[{level} {time: YYMMDD HH:mm:ss} {file}] {message}"
         self._level = level
         self.logfile = BrowserConfig.LOG_PATH
         self.set_level(self._colorlog, self._console_format, self._level)
@@ -38,45 +38,45 @@ class Logger:
         logger.add(self.logfile, level=level, colorize=colorlog, format=self._log_format, encoding="utf-8")
 
     def trace(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        now = time.strftime("%y%m%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [TRACE] " + str(msg))
+            print(f"[TRACE {now}] {str(msg)}")
         return self.logger.trace(msg)
 
     def debug(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        now = time.strftime("%y%m%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [DEBUG] " + str(msg))
+            print(f"[DEBUG {now}] {str(msg)}")
         return self.logger.debug(msg)
 
     def info(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        now = time.strftime("%y%m%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [INFO] " + str(msg))
+            print(f"[INFO {now}] {str(msg)}")
         return self.logger.info(msg)
 
     def success(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        now = time.strftime("%y%m%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [SUCCESS] " + str(msg))
+            print(f"[SUCCESS {now}] {str(msg)}")
         return self.logger.success(msg)
 
     def warn(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        now = time.strftime("%y%m%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [WARNING] " + str(msg))
+            print(f"[WARNING {now}] {str(msg)}")
         return self.logger.warning(msg)
 
     def error(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        now = time.strftime("%y%m%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [ERROR] " + str(msg))
+            print(f"[ERROR {now}] {str(msg)}")
         return self.logger.error(msg)
 
     def critical(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        now = time.strftime("%y%m%d %H:%M:%S")
         if Seldom.debug is False:
-            print(now + " [CRITICAL] " + str(msg))
+            print(f"[CRITICAL {now}] {str(msg)}")
         return self.logger.critical(msg)
 
     def printf(self, msg: str):
