@@ -1,9 +1,8 @@
 import json
 import requests
-import jmespath as lib_jmespath
 from seldom.running.config import Seldom
 from seldom.logging import log
-from seldom.utils import jsonpath as utils_jsonpath
+from seldom.utils import jsonpath
 from seldom.utils import jmespath
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
@@ -26,7 +25,7 @@ def request(func):
         if file_type in IMG:
             img_file = True
 
-        log.debug("[method]: {m}      [url]: {u} \n".format(m=func_name.upper(), u=url))
+        log.info("[method]: {m}      [url]: {u} \n".format(m=func_name.upper(), u=url))
         auth = kwargs.get("auth", "")
         headers = kwargs.get("headers", "")
         cookies = kwargs.get("cookies", "")
@@ -51,6 +50,10 @@ def request(func):
 
         ResponseResult.status_code = r.status_code
         log.info("-------------- Response ----------------[🛬️]")
+        if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
+            log.info("successful with status {} \n".format(str(ResponseResult.status_code)))
+        else:
+            log.warn("unsuccessful with status {} \n".format(str(ResponseResult.status_code)))
         resp_time = r.elapsed.total_seconds()
         try:
             resp = r.json()
@@ -58,7 +61,8 @@ def request(func):
             log.debug(f"[response]:\n {resp} \n")
             ResponseResult.response = resp
         except BaseException as msg:
-            log.debug(f"[warning]: {msg} \n")
+            log.debug(f"[warning]: failed to convert res to json, try to convert to text")
+            log.trace(f"[warning]: {msg} \n")
             if img_file is True:
                 log.debug(f"[type]: {file_type}      [time]: {resp_time}")
                 ResponseResult.response = r.content
@@ -127,7 +131,7 @@ class HttpRequest(object):
         doc: https://jmespath.org/
         """
         if j == "json":
-            ret = utils_jsonpath(ResponseResult.response, expr)
+            ret = jsonpath(ResponseResult.response, expr)
         elif j == "jmes":
             ret = jmespath(ResponseResult.response, expr)
         else:
@@ -140,7 +144,6 @@ class HttpRequest(object):
         @request
         def get(self, url, **kwargs):
             r"""Sends a GET request. Returns :class:`Response` object.
-
             :param url: URL for the new :class:`Request` object.
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
@@ -192,7 +195,7 @@ class HttpRequest(object):
             return self.request('DELETE', url, **kwargs)
 
 
-def check_response(describe: str = "", status_code: int = 200, ret: str = "", check: dict = {}, debug: bool = False):
+def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None, debug: bool = False):
     """
     checkout response data
     :param describe: interface describe
@@ -227,14 +230,14 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = "", ch
             if flat is True:
                 log.info(f"Execute {func_name} - {describe} success!")
 
-            if len(check) != 0:
+            if check is not None:
                 for expr, value in check.items():
                     data = jmespath(r.json(), expr)
                     if data != value:
                         log.error(f"Execute {func_name} - check data failed：{value}")
                         raise ValueError(f"{data} != {value}")
 
-            if ret != "":
+            if ret is not None:
                 data = jmespath(r.json(), ret)
                 if data is None:
                     log.error(f"Execute {func_name} - return {ret} is None")
