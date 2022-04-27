@@ -273,7 +273,8 @@ class TestAPI(seldom.TestCase):
         payload = {'name': 'tom', 'hobby': ['basketball', 'swim']}
         self.get("http://httpbin.org/get", params=payload)
         self.assertPath("name", "tom")
-        self.assertPath("args.hobby[0]", "basketball")
+        self.assertPath("args.hobby[0]", "basketball")   #相等
+        self.assertInPath("args.hobby[0]", "ball")       #包含
 
 ```
 

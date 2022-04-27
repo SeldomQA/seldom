@@ -77,7 +77,7 @@ db.delete(table="user", where={"id":1})
 插入一条数据。
 
 ```py
-data = {'id': 1, 'username': 'admin', 'password': "123"},
+data = {'id': 1, 'username': 'admin', 'password': "123"}
 db.insert(table="user", data=data)
 ```
 
