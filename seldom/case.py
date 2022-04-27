@@ -275,10 +275,15 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         doc: https://jmespath.org/
         """
         search_value = jmespath(ResponseResult.response, path)
-        if search_value is None:
-            self.assertEqual(path, None, msg="{} No match".format(path))
-        else:
-            self.assertEqual(search_value, value)
+        self.assertEqual(search_value, value)
+
+    def assertInPath(self, path, value):
+        """
+        Assert path data
+        doc: https://jmespath.org/
+        """
+        search_value = jmespath(ResponseResult.response, path)
+        self.assertIn(value, search_value)
 
     def xSkip(self, reason):
         """
