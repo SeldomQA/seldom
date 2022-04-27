@@ -9,6 +9,7 @@ IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
 
 def request(func):
+
     def wrapper(*args, **kwargs):
         func_name = func.__name__
         print("\n")
@@ -70,6 +71,8 @@ def request(func):
                 log.debug(f"[type]: text      [time]: {resp_time}\n")
                 log.debug(f"[response]:\n {r.text} \n")
                 ResponseResult.response = r.text
+
+        return r.json()
 
     return wrapper
 
