@@ -12,6 +12,6 @@ git add -A
 git commit -m 'deploy'
 
 # 如果发布到 https://SeldomQA.github.io
-git push -f git@github.com:SeldomQA/SeldomQA.github.io.git master
+git push -f https://github.com/SeldomQA/SeldomQA.github.io.git main:master
 
 cd -
