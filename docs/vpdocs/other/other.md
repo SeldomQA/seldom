@@ -155,3 +155,69 @@ if __name__ == '__main__':
 ![](/image/pycharm_run_case.png) 
 
 > 警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
+
+
+### seldom日志
+
+在项目中你可以使用seldom提供的`log` 打印日志。
+
+* 使用log
+
+```python
+from seldom.logging import log
+
+log.trace("this is trace info.")
+log.info("this is info.")
+log.error("this error info.")
+log.debug("this debug info.")
+log.success("this success info.")
+log.warn("this warning info.")
+```
+
+* 运行日志
+
+```shell
+
+2022-04-30 16:31:49 log.py | TRACE | this is trace info.
+2022-04-30 16:31:49 log.py | INFO | this is info.
+2022-04-30 16:31:49 log.py | ERROR | this error info.
+2022-04-30 16:31:49 log.py | DEBUG | this debug info.
+2022-04-30 16:31:49 log.py | SUCCESS | this success info.
+2022-04-30 16:31:49 log.py | WARNING | this warning info.
+```
+
+* 关闭日志颜色
+
+```python
+from seldom.logging import log
+
+
+log.set_level(colorlog=False)  # 关闭日志颜色
+log.trace("this is trace info.")
+# ...
+```
+
+* 自定义日志格式
+
+```shell
+from seldom.logging import log
+
+
+# 定义日志格式
+format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> {file} |<level> {level} | {message}</level>"
+log.set_level(format=format)
+log.trace("this is trace info.")
+```
+
+* 日志级别
+
+```shell
+from seldom.logging import log
+
+# 设置日志级别
+log.set_level(level="DEBUG")
+log.trace("this is trace info.")
+log.error("this error info.")
+```
+
+> log level: TRACE < DEBUG < INFO < SUCCESS < WARNING < ERROR
