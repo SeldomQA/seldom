@@ -202,7 +202,7 @@ __运行日志__
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.6.0
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.x.x
 -----------------------------------------
                              @itest.info
 
@@ -220,21 +220,22 @@ DevTools listening on ws://127.0.0.1:58294/devtools/browser/59f02afe-8c7a-4b20-b
 XTestRunner Running tests...
 
 ----------------------------------------------------------------------
-2022-03-18 21:44:23 [INFO] 📖 https://www.baidu.com
-2022-03-18 21:44:26 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-ERetesting... test_case (ztest_sync.YouTest)..1
-2022-03-18 21:44:36 [INFO] 📖 https://www.baidu.com
-2022-03-18 21:44:38 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-ERetesting... test_case (ztest_sync.YouTest)..2
-2022-03-18 21:44:48 [INFO] 📖 https://www.baidu.com
-2022-03-18 21:44:50 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
-ERetesting... test_case (ztest_sync.YouTest)..3
-2022-03-18 21:45:01 [INFO] 📖 https://www.baidu.com
-2022-03-18 21:45:02 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+2022-04-30 18:32:41 log.py | INFO | 📖 https://www.baidu.com
+
+DevTools listening on ws://127.0.0.1:60038/devtools/browser/ab12c7af-cc6c-423b-be5b-018dc7b82e3d
+2022-04-30 18:32:48 log.py | INFO | ✅ Find 1 element: id=kw  -> input 'seldom'.
+ERetesting... test_case (test_req.YouTest)..1
+2022-04-30 18:32:58 log.py | INFO | 📖 https://www.baidu.com
+2022-04-30 18:33:00 log.py | INFO | ✅ Find 1 element: id=kw  -> input 'seldom'.
+ERetesting... test_case (test_req.YouTest)..2
+2022-04-30 18:33:11 log.py | INFO | 📖 https://www.baidu.com
+2022-04-30 18:33:12 log.py | INFO | ✅ Find 1 element: id=kw  -> input 'seldom'.
+ERetesting... test_case (test_req.YouTest)..3
+2022-04-30 18:33:22 log.py | INFO | 📖 https://www.baidu.com
+2022-04-30 18:33:23 log.py | INFO | ✅ Find 1 element: id=kw  -> input 'seldom'.
 Generating HTML reports...
-2022-03-18 21:45:12 [PRINT] generated html file: file:///D:\github\seldom\reports\2022_03_18_21_44_20_result.html
-2022-03-18 21:45:12 [PRINT] generated log file: file:///D:\github\seldom\reports\2022_03_18_21_44_20_log.log
-E
+E2022-04-30 18:33:34 log.py | SUCCESS | generated html file: file:///D:\github\seldom\reports\2022_04_30_18_32_41_result.html
+2022-04-30 18:33:34 log.py | SUCCESS | generated log file: file:///D:\github\seldom\reports\seldom_log.log
 ```
 
 __测试报告__

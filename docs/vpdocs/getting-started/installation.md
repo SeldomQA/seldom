@@ -50,13 +50,13 @@ webdriver-manager>=3.5.0
 > pip show seldom
 
 Name: seldom
-Version: 2.7.0
+Version: 2.x.x
 Summary: WebUI/HTTP automation testing framework based on unittest.
 Home-page: https://github.com/seldomQA/seldom/
 Author: bugmaster
 Author-email: fnngj@126.com
 License: BSD
-Location: c:\python38\lib\site-packages\seldom-2.7.0-py3.8.egg
+Location: c:\python38\lib\site-packages\seldom-2.x.x-py3.8.egg
 Requires: colorama, jmespath, jsonschema, openpyxl, parameterized, pymysql, pyyaml, requests, selenium, webdriver-manager, XTestRunner
 Required-by:
 

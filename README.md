@@ -82,9 +82,9 @@ mypro/
 
 3、运行项目：
 
-> ❌️ 在`pyCharm`中右键执行。
->
-> ✔️ 通过命令行工具执行。
+* ❌️ 在`pyCharm`中右键执行。
+
+* ✔️ 通过命令行工具执行。
 
 ```shell
 > python run.py
@@ -94,27 +94,36 @@ mypro/
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.7.0
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.x.x
 -----------------------------------------
                              @itest.info
+...
 
-2022-03-26 17:36:13.346 | INFO     | seldom.logging.log:info:45 - 📖 https://www.baidu.com
-2022-03-26 17:36:18.187 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: id=kw  -> input 'seldom'.
-2022-03-26 17:36:19.025 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: css selector=#su  -> click.
-2022-03-26 17:36:20.234 | INFO     | seldom.logging.log:info:45 - 👀 assertIn title: seldom_百度搜索.
-.12022-03-26 17:36:20.236 | INFO     | seldom.logging.log:info:45 - 📖 https://www.baidu.com
-2022-03-26 17:36:21.370 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: id=kw  -> input 'poium'.
-2022-03-26 17:36:22.185 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: css selector=#su  -> click.
-2022-03-26 17:36:23.297 | INFO     | seldom.logging.log:info:45 - 👀 assertIn title: poium_百度搜索.
-.22022-03-26 17:36:23.299 | INFO     | seldom.logging.log:info:45 - 📖 https://www.baidu.com
-2022-03-26 17:36:24.745 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: id=kw  -> input 'HTMLTestRunner'.
-2022-03-26 17:36:25.599 | INFO     | seldom.logging.log:info:45 - ✅ Find 1 element: css selector=#su  -> click.
-2022-03-26 17:36:28.059 | INFO     | seldom.logging.log:info:45 - 👀 assertIn title: HTMLTestRunner_百度搜索.
-.32022-03-26 17:36:28.060 | INFO     | seldom.logging.log:info:45 - 📖 http://www.itest.info
-2022-03-26 17:36:38.541 | INFO     | seldom.logging.log:info:45 - 👀 assertIn url: http://www.itest.info/.
-.42022-03-26 17:36:38.553 | SUCCESS  | seldom.logging.log:printf:75 - generated html file: file:///D:\mypro\reports\2022_03_26_17_36_12_result.html
-2022-03-26 17:36:38.555 | SUCCESS  | seldom.logging.log:printf:75 - generated log file: file:///D:\mypro\reports\2022_03_26_17_36_12_log.log
-.1.2.3.4
+2022-04-30 18:37:29 log.py | INFO | -------------- Request -----------------[🚀]
+2022-04-30 18:37:29 log.py | INFO | [method]: DELETE      [url]: http://httpbin.org/delete
+
+2022-04-30 18:37:30 log.py | INFO | -------------- Response ----------------[🛬️]
+2022-04-30 18:37:30 log.py | INFO | successful with status 200
+
+2022-04-30 18:37:30 log.py | DEBUG | [type]: json      [time]: 0.725183
+
+2022-04-30 18:37:30 log.py | DEBUG | [response]:
+ {'args': {}, 'data': '', 'files': {}, 'form': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '0', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-626d1168-457309ad306428ca5bcbb961'}, 'json': None, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/delete'}
+
+...
+
+2022-04-30 18:37:36 log.py | INFO | ✅ Find 1 element: id=sb_form_q  -> input 'seldom'.
+2022-04-30 18:37:39 log.py | INFO | 👀 assertIn title: seldom - 搜索.
+.52022-04-30 18:37:39 log.py | INFO | 📖 https://cn.bing.com
+2022-04-30 18:37:41 log.py | INFO | ✅ Find 1 element: id=sb_form_q  -> input 'poium'.
+2022-04-30 18:37:42 log.py | INFO | 👀 assertIn title: poium - 搜索.
+.62022-04-30 18:37:42 log.py | INFO | 📖 https://cn.bing.com
+2022-04-30 18:37:43 log.py | INFO | ✅ Find 1 element: id=sb_form_q  -> input 'XTestRunner'.
+2022-04-30 18:37:44 log.py | INFO | 👀 assertIn title: XTestRunner - 搜索.
+.72022-04-30 18:37:44 log.py | INFO | 📖 http://www.itest.info
+2022-04-30 18:37:52 log.py | INFO | 👀 assertIn url: http://www.itest.info/.
+.82022-04-30 18:37:52 log.py | SUCCESS | generated html file: file:///D:\mypro\reports\2022_04_30_18_37_29_result.html
+2022-04-30 18:37:52 log.py | SUCCESS | generated log file: file:///D:\mypro\reports\seldom_log.log
 ```
 
 4、查看报告

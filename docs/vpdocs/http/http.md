@@ -136,37 +136,39 @@ if __name__ == '__main__':
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.5.1
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.x.x
 -----------------------------------------
                              @itest.info
 
-.\test_req_2.py
-test_case (test_req_2.TestRequest) ... 
-2022-02-19 00:52:13 [INFO] -------------- Request -----------------[🚀]
-2022-02-19 00:52:13 [DEBUG] [method]: POST      [url]: http://httpbin.org/post
+.\test_req.py
+test_case (test_req.TestRequest) ... 
+2022-04-30 18:20:47 log.py | INFO | -------------- Request -----------------[🚀]
+2022-04-30 18:20:47 log.py | INFO | [method]: POST      [url]: http://httpbin.org/post
 
-2022-02-19 00:52:13 [DEBUG] [headers]:
+2022-04-30 18:20:47 log.py | DEBUG | [headers]:
  {'User-Agent': 'python-requests/2.25.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': 'application/json', 'Connection': 'keep-alive', 'Host': 'httpbin.org', 'Content-Length': '36', 'Origin': 'http://httpbin.org', 'Content-Type': 'application/json', 'Cookie': 'lang=zh'}
 
-2022-02-19 00:52:13 [DEBUG] [cookies]:
+2022-04-30 18:20:47 log.py | DEBUG | [cookies]:
  {'lang': 'zh'}
 
-2022-02-19 00:52:13 [DEBUG] [json]:
+2022-04-30 18:20:47 log.py | DEBUG | [json]:
  {'key1': 'value1', 'key2': 'value2'}
 
-2022-02-19 00:52:13 [INFO] -------------- Response ----------------[🛬️]
-2022-02-19 00:52:13 [DEBUG] [type]: json
+2022-04-30 18:20:47 log.py | INFO | -------------- Response ----------------[🛬️]
+2022-04-30 18:20:47 log.py | INFO | successful with status 200
 
-2022-02-19 00:52:13 [DEBUG] [response]:
- {'args': {}, 'data': '{"key1": "value1", "key2": "value2"}', 'files': {}, 'form': {}, 'headers': {'Accept': 'application/json', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '36', 'Content-Type': 'application/json', 'Cookie': 'lang=zh', 'Host': 'httpbin.org', 'Origin': 'http://httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-620fcebc-78fd3200528941ab13f942f9'}, 'json': {'key1': 'value1', 'key2': 'value2'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/post'}
+2022-04-30 18:20:47 log.py | DEBUG | [type]: json      [time]: 0.582786
+
+2022-04-30 18:20:47 log.py | DEBUG | [response]:
+ {'args': {}, 'data': '{"key1": "value1", "key2": "value2"}', 'files': {}, 'form': {}, 'headers': {'Accept': 'application/json', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '36', 'Content-Type': 'application/json', 'Cookie': 'lang=zh', 'Host': 'httpbin.org', 'Origin': 'http://httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-626d0d7e-69a616b20139cd6869cc5e90'}, 'json': {'key1': 'value1', 'key2': 'value2'}, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/post'}
 
 ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.789s
+Ran 1 test in 0.594s
 
 OK
-2022-02-19 00:52:13 [PRINT] A run the test in debug mode without generating HTML report!
+2022-04-30 18:20:47 log.py | SUCCESS | A run the test in debug mode without generating HTML report!
 ```
 
 通过日志/报告都可以清楚的看到。
@@ -216,17 +218,19 @@ class TestAPI(seldom.TestCase):
 
 ```shell
 
-2022-02-19 00:59:28 [INFO] -------------- Request -----------------[🚀]
-2022-02-19 00:59:28 [DEBUG] [method]: GET      [url]: http://httpbin.org/get
+2022-04-30 18:22:57 log.py | INFO | -------------- Request -----------------[🚀]
+2022-04-30 18:22:57 log.py | INFO | [method]: GET      [url]: http://httpbin.org/get
 
-2022-02-19 00:59:28 [DEBUG] [params]:
+2022-04-30 18:22:57 log.py | DEBUG | [params]:
  {'name': 'tom', 'hobby': ['basketball', 'swim']}
 
-2022-02-19 00:59:28 [INFO] -------------- Response ----------------[🛬️]
-2022-02-19 00:59:28 [DEBUG] [type]: json
+2022-04-30 18:22:57 log.py | INFO | -------------- Response ----------------[🛬️]
+2022-04-30 18:22:57 log.py | INFO | successful with status 200
 
-2022-02-19 00:59:28 [DEBUG] [response]:
- {'args': {'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-620fd06f-23a6d1231cb1b7aa7e34a211'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/get?name=tom&hobby=basketball&hobby=swim'}
+2022-04-30 18:22:57 log.py | DEBUG | [type]: json      [time]: 0.772016
+
+2022-04-30 18:22:57 log.py | DEBUG | [response]:
+ {'args': {'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-626d0e00-39c0025a439bf8de0d30425e'}, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/get?name=tom&hobby=basketball&hobby=swim'}
 
 💡 Assert data has not key: headers
 💡 Assert data has not key: origin
@@ -371,13 +375,7 @@ from seldom.request import check_response
 
 class Common():
     
-    @check_response(
-        describe="获取登录用户名",
-        status_code=200,
-        ret="headers.Account",
-        check={"headers.Host": "httpbin.org"},
-        debug=True
-    )
+    @check_response("获取登录用户名", 200, "headers.Account", {"headers.Host": "httpbin.org"}, debug=True)
     def get_login_user(self):
         """
         调用接口获得用户名
