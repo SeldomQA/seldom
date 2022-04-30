@@ -72,7 +72,7 @@ def request(func):
                 log.debug(f"[response]:\n {r.text} \n")
                 ResponseResult.response = r.text
 
-        return r.json()
+        return r
 
     return wrapper
 
