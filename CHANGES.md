@@ -1,3 +1,16 @@
+### 2.9.0
+
+* seldom log功能：
+  * 开放seldom 的`log`能力，可以配置`颜色（colorlog）`、`格式(format)`、`等级(level)` 等。
+  * 重新定义了seldom打印日志的格式。
+  * 所有log统一记录到`/reports/seldom_log.log`文件，不再每次生成单独文件。
+* 功能：提供了`@check_response()` 装饰器，为接口封装提供强大的支持。
+* 功能：集成`genson`库，生成JsonSchema模板 [100](https://github.com/SeldomQA/seldom/issues/100) 。
+* 功能：增加`assertInPath()` 断言方法。
+* 功能：增加`jmespath()`方法，方便提取测试数据。
+* 优化：`jresponse()` 增加对`jmespath` 语法的支持。
+* 优化：支持`self.get()/self.post()/self.put()/self.delete()` 返回response对象。
+
 ### 2.8.0
 
 * 功能：增加MongoDB 数据库操作 [93](https://github.com/SeldomQA/seldom/issues/93) 。
