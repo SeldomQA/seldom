@@ -1,6 +1,6 @@
 import json
 import warnings
-
+from typing import Any
 import requests
 from seldom.running.config import Seldom
 from seldom.logging import log
@@ -119,7 +119,7 @@ class HttpRequest(object):
         return ResponseResult.response
 
     @staticmethod
-    def responses(expr, mode="jmespath") -> dict:
+    def responses(expr, mode="jmespath", index: int = None) -> Any:
         """
         Extract the data in response
         mode:
@@ -128,6 +128,8 @@ class HttpRequest(object):
         """
         if mode == "jsonpath":
             ret = jsonpath(ResponseResult.response, expr)
+            if index is not None:
+                ret = ret[index]
         elif mode == "jmespath":
             ret = jmespath(ResponseResult.response, expr)
         else:

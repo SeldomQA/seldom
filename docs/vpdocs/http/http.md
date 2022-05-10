@@ -1,4 +1,5 @@
 # HTTP接口测试
+# HTTP接口测试
 
 ## 前言
 
@@ -745,9 +746,11 @@ print(jsonpath(response, '$..orderPayType')[0])
 print(jsonpath(response, '$..orderPayType.description'))
 ```
 
-* `jresponse()` 用法
+* ~~jresponse()~~ 用法
 
 在接口测试中通过`jresponse()` 方法可以直接提取数据。
+
+> 注：该方法计划后续版本移除，从命名、参数都不够好，推荐使用 `responses()`
 
 ```python
 import seldom
@@ -771,15 +774,7 @@ if __name__ == '__main__':
 运行结果
 
 ```shell
-2022-04-10 21:00:30.079 | INFO     | seldom.logging.log:info:45 - -------------- Request -----------------[🚀]
-2022-04-10 21:00:30.082 | DEBUG    | seldom.logging.log:debug:34 - [method]: GET      [url]: http://httpbin.org/get
-
-2022-04-10 21:00:30.083 | DEBUG    | seldom.logging.log:debug:34 - [params]:
- {'hobby': ['basketball', 'swim'], 'name': 'tom', 'age': '18'}
-
-2022-04-10 21:00:30.547 | INFO     | seldom.logging.log:info:45 - -------------- Response ----------------[🛬️]
-2022-04-10 21:00:30.549 | DEBUG    | seldom.logging.log:debug:34 - [type]: json      [time]: 0.460349
-
+...
 2022-04-10 21:05:17.683 | DEBUG    | seldom.logging.log:debug:34 - [response]:
  {'args': {'age': '18', 'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-6252d60c-551433d744b6869e5d1944d7'}, 'origin': '113.87.12.14', 'url': 'http://httpbin.org/get?hobby=basketball&hobby=swim&name=tom&age=18'}
 
@@ -787,6 +782,61 @@ if __name__ == '__main__':
  ['basketball']
 2022-04-10 21:05:17.689 | DEBUG    | seldom.logging.log:debug:34 - [jresponse]:
  ['18']
+```
+
+* `responses()` 用法
+
+在接口测试中通过`responses()` 方法可以方便的提取response数据。
+
+```python
+import seldom
+
+
+class TestAPI(seldom.TestCase):
+
+    def test_responses(self):
+        """
+        提取 response 数据
+        """
+        payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
+        self.get("http://httpbin.org/get", params=payload)
+        jsonpath1 = self.responses("$..name", mode="jsonpath")
+        jsonpath2 = self.responses("$..hobby", mode="jsonpath")
+        jsonpath3 = self.responses("$..hobby[0]", mode="jsonpath")
+        jsonpath4 = self.responses("$..hobby[0]", mode="jsonpath", index=0)
+        print(f"jsonpath1 --> {jsonpath1}")
+        print(f"jsonpath2 --> {jsonpath2}")
+        print(f"jsonpath3 --> {jsonpath3}")
+        print(f"jsonpath4 --> {jsonpath4}")
+
+        jmespath1 = self.responses("args.name", mode="jmespath")
+        jmespath2 = self.responses("args.hobby", mode="jmespath")
+        jmespath3 = self.responses("args.hobby[0]", mode="jmespath")
+
+        print(f"\njmespath1 --> {jmespath1}")
+        print(f"jmespath2 --> {jmespath2}")
+        print(f"jmespath3 --> {jmespath3}")
+...
+```
+说明：
+* `expr`: 提取response中的`语法`。
+* `mode`: 支持`jsonpath`模式和`jmespath`模式，模式不同`语法`不同，默认`jmespath`模式。
+* `index`: 针对`jsonpath`模式有效，`jsonpath`模式默认返回是列表，所以可以通过`index`返回下标。
+
+运行结果：
+
+```shell
+2022-05-11 00:01:21 log.py | DEBUG | [response]:
+ {'args': {'age': '18', 'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-627a8c4e-33ac8d79004291c8487c4dff'}, 'origin': '113.87.183.202', 'url': 'http://httpbin.org/get?hobby=basketball&hobby=swim&name=tom&age=18'}
+
+jsonpath1 --> ['tom']
+jsonpath2 --> [['basketball', 'swim']]
+jsonpath3 --> ['basketball']
+jsonpath4 --> basketball
+
+jmespath1 --> tom
+jmespath2 --> ['basketball', 'swim']
+jmespath3 --> basketball
 ```
 
 
