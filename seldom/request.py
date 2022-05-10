@@ -1,4 +1,6 @@
 import json
+import warnings
+
 import requests
 from seldom.running.config import Seldom
 from seldom.logging import log
@@ -109,15 +111,31 @@ class HttpRequest(object):
         return requests.delete(url, **kwargs)
 
     @property
-    def response(self):
+    def response(self) -> dict:
         """
         Returns the result of the response
         :return: response
         """
         return ResponseResult.response
 
+    @staticmethod
+    def responses(expr, mode="jmespath") -> dict:
+        """
+        Extract the data in response
+        mode:
+         * jsonpath: https://goessner.net/articles/JsonPath/
+         * jmespath: https://jmespath.org/
+        """
+        if mode == "jsonpath":
+            ret = jsonpath(ResponseResult.response, expr)
+        elif mode == "jmespath":
+            ret = jmespath(ResponseResult.response, expr)
+        else:
+            raise ValueError("mode is `jmespath` or `jsonpath`.")
+        return ret
+
     @property
-    def status_code(self):
+    def status_code(self) -> int:
         """
         Returns the result of the status code
         :return: status_code
@@ -128,11 +146,11 @@ class HttpRequest(object):
         """
         param j: json or jmes
         jsonpath
-        doc:
-        https://goessner.net/articles/JsonPath/
+        doc: https://goessner.net/articles/JsonPath/
         jmespath
         doc: https://jmespath.org/
         """
+        warnings.warn("use self.responses() instead", DeprecationWarning, stacklevel=2)
         if j == "json":
             ret = jsonpath(ResponseResult.response, expr)
         elif j == "jmes":
