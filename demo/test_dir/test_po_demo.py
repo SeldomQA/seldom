@@ -13,8 +13,8 @@ from poium import Page, Element
 
 class BaiduPage(Page):
     """baidu page"""
-    search_input = Element(id_="kw", describe="搜索输入框")
-    search_button = Element(id_="su", describe="搜索按钮")
+    input = Element(id_="kw", describe="搜索输入框")
+    button = Element(id_="su", describe="搜索按钮")
 
 
 class BaiduTest(seldom.TestCase):
@@ -26,8 +26,8 @@ class BaiduTest(seldom.TestCase):
         """
         page = BaiduPage(Seldom.driver, print_log=True)
         page.open("https://www.baidu.com")
-        page.search_input.send_keys("seldom")
-        page.search_button.click()
+        page.input.send_keys("seldom")
+        page.button.click()
         self.assertTitle("seldom_百度搜索")
 
 
