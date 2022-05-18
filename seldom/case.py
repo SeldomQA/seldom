@@ -250,11 +250,11 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         Assert JSON Schema
         doc: https://json-schema.org/
         """
-        if response is not None:
-            ResponseResult.response = response
+        if response is None:
+            response = ResponseResult.response
 
         try:
-            validate(instance=ResponseResult.response, schema=schema)
+            validate(instance=response, schema=schema)
         except ValidationError as msg:
             self.assertEqual("Response data", "Schema data", msg)
         else:
@@ -264,11 +264,11 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         Assert JSON data
         """
-        if response is not None:
-            ResponseResult.response = response
+        if response is None:
+            response = ResponseResult.response
 
         AssertInfo.data = []
-        diff_json(ResponseResult.response, assert_json)
+        diff_json(response, assert_json)
         if len(AssertInfo.data) == 0:
             self.assertTrue(True)
         else:

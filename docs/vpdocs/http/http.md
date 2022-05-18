@@ -555,195 +555,106 @@ class TestAPI(seldom.TestCase):
 
 * 接口返回数据
 
-```python
-
-response = {
-    "code": 0,
-    "status": 1,
-    "data": {
-        "list": [
-            {
-                "stockOutId": "1467422726779043840",
-                "orderId": "1467422722362441728",
-                "id": "1467422722362441728",
-                "orderStatus": {
-                    "name": "待付款",
-                    "value": 0,
-                    "description": "待付款"
-                },
-                "orderPayType": {
-                    "name": "货到付款",
-                    "value": 1,
-                    "description": "货到付款"
-                },
-                "orderTradeType": {
-                    "name": "即时到帐交易",
-                    "value": 4,
-                    "description": "即时到帐交易"
-                },
-                "stockOutType": {
-                    "name": "制单出库",
-                    "value": 1,
-                    "description": "制单出库"
-                },
-                "shippingFee": 0,
-                "sumProductPayment": 629,
-                "currency": "RMB",
-                "packageNum": "1/1",
-                "stockOutToFullName": "张德天",
-                "stockOutToFullAddress": "湖北省武汉市洪山区街道口",
-            },
-            {
-                "stockOutId": "1467512423597473792",
-                "orderId": "1467512420523048960",
-                "id": "1467512420523048960",
-                "orderStatus": {
-                    "name": "待发货",
-                    "value": 1,
-                    "description": "待发货"
-                },
-                "orderPayType": {
-                    "name": "货到付款",
-                    "value": 1,
-                    "description": "货到付款"
-                },
-                "orderTradeType": {
-                    "name": "即时到帐交易",
-                    "value": 4,
-                    "description": "即时到帐交易"
-                },
-                "stockOutType": {
-                    "name": "销售出库",
-                    "value": 0,
-                    "description": "销售出库"
-                },
-                "status": 0,
-                "storageId": 101888,
-                "no": "WD20211205836010001",
-                "sumProductPayment": 880.6,
-                "stockOutToFullName": "张德天",
-                "stockOutToFullAddress": "河北省石家庄市长安区火车站",
-            }
-        ],
-        "pageSize": 50,
-        "total": 2,
-        "pageCount": 1,
-    },
-    "message": "操作成功。",
-    "isSuccessed": True
+```json
+{
+  "args": {
+    "hobby": [
+      "basketball",
+      "swim"
+    ],
+    "name": "tom"
+  },
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate",
+    "Host": "httpbin.org",
+    "User-Agent": "python-requests/2.25.0",
+    "X-Amzn-Trace-Id": "Root=1-62851614-1ca9fdb276238c60406c118f"
+  },
+  "origin": "113.87.15.99",
+  "url": "http://httpbin.org/get?name=tom&hobby=basketball&hobby=swim"
 }
 ```
 
 * 常规提取
 
 ```python
-response = {
-    # ...
-}
+import seldom
 
-print(response["message"])
-print(response["data"]["list"])
-print(response["data"]["list"][0])
-print(response["data"]["list"][0]["orderId"])
+
+class TestAPI(seldom.TestCase):
+
+    def test_extract_responses(self):
+        """
+        提取 response 数据
+        """
+        payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
+        self.get("http://httpbin.org/get", params=payload)
+
+        # response
+        response1 = self.response["args"]["name"]
+        response2 = self.response["args"]["hobby"]
+        response3 = self.response["args"]["hobby"][0]
+        print(f"response1 --> {response1}")
+        print(f"response2 --> {response2}")
+        print(f"response3 --> {response3}")
+
+        # jmespath
+        jmespath1 = self.jmespath("args.name")
+        jmespath2 = self.jmespath("args.hobby")
+        jmespath3 = self.jmespath("args.hobby[0]")
+        jmespath4 = self.jmespath("hobby[0]", response=self.response["args"])
+        print(f"\njmespath1 --> {jmespath1}")
+        print(f"jmespath2 --> {jmespath2}")
+        print(f"jmespath3 --> {jmespath3}")
+        print(f"jmespath4 --> {jmespath4}")
+
+        # jsonpath
+        jsonpath1 = self.jsonpath("$..name")
+        jsonpath2 = self.jsonpath("$..hobby")
+        jsonpath3 = self.jsonpath("$..hobby[0]")
+        jsonpath4 = self.jsonpath("$..hobby[0]", index=0)
+        jsonpath5 = self.jsonpath("$..hobby[0]", index=0, response=self.response["args"])
+        print(f"\njsonpath1 --> {jsonpath1}")
+        print(f"jsonpath2 --> {jsonpath2}")
+        print(f"jsonpath3 --> {jsonpath3}")
+        print(f"jsonpath4 --> {jsonpath4}")
+        print(f"jsonpath5 --> {jsonpath5}")
+...
 ```
 
-* jmespath 用法
+说明：
+* `response`: 保存接口返回的数据，可以直接以，字典列表的方式提取。
+* `jmespath()`: 根据 JMESPath 语法规则，默认提取接口返回的数据，也可指定`resposne`数据提取。
+* `jsonpath()`: 根据 JsonPath 语法规则，默认提取接口返回的数据, `index`指定下标，也可指定`resposne`数据提取。
 
-```python
-from seldom.utils import jmespath
+运行结果：
 
-response = {
-    # ...
-}
+```shell
+2022-05-19 00:57:08 log.py | DEBUG | [response]:
+ {'args': {'age': '18', 'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-62852563-2fe77d4b1ce544696af60f10'}, 'origin': '113.87.15.99', 'url': 'http://httpbin.org/get?hobby=basketball&hobby=swim&name=tom&age=18'}
 
-# jmespath 匹配消息
-print(jmespath(response, 'message'))
+response1 --> tom
+response2 --> ['basketball', 'swim']
+response3 --> basketball
 
-# jmespath 匹配list列表
-print(jmespath(response, 'data.list'))
+jmespath1 --> tom
+jmespath2 --> ['basketball', 'swim']
+jmespath3 --> basketball
+jmespath4 --> basketball
 
-# jmespath 匹配list列表第一个元素
-print(jmespath(response, 'data.list[0]'))
-
-# jmespath 匹配list列表第二个元素下的 orderId
-print(jmespath(response, 'data.list[1].orderId'))
-```
-
-* jsonpath 用法
-
-参考文档：https://goessner.net/articles/JsonPath/
-
-
-```python
-from seldom.utils import jsonpath
-
-
-response = {
-    # ...
-}
-
-# jsonpath匹配(取出来是个列表)
-print(jsonpath(response, '$..message'))
-
-# 取列表
-print(jsonpath(response, '$..message')[0])
-
-# 匹配list值
-print(jsonpath(response, '$..list')[0])
-
-# 匹配stockOutId值
-print(jsonpath(response, '$..stockOutId'))
-
-# 匹配stockOutStatus值
-print(jsonpath(response, '$..stockOutStatus'))
-
-# 匹配data下所有的元素
-print(jsonpath(response, '$.data.*'))
-
-# 匹配data下list所有的orderId值
-print(jsonpath(response, '$.data.list[*].orderId'))
-print(jsonpath(response, '$..orderId'))
-
-# 匹配data下list中倒数第一个orderId值
-print(jsonpath(response, '$.data.list[*].orderId')[-1])
-
-# 匹配data--list下所有的stockOutType值
-print(jsonpath(response, '$.data..stockOutType'))
-print(jsonpath(response, '$..stockOutType'))
-
-# 匹配data--list下第二个stockOutType中的description值
-print(jsonpath(response, '$.data..stockOutType.description')[1])
-
-# 匹配data--list下所有orderTradeType中所有的name值
-print(jsonpath(response, '$..orderTradeType.name'))
-
-# 匹配data--list中包含OutOutNo的所有列表值，并返回stockOutOutNo值
-print(jsonpath(response, '$..list[?(@.stockOutOutNo)].stockOutOutNo'))
-
-# 匹配data--list下sumProductPayment>800的所有值，是把list中满足条件的值列出来
-print(jsonpath(response, '$..list[?(@.sumProductPayment>800)]'))
-
-# 匹配data--list下sumProductPayment>800的所有值，并取出sumProductPayment的值
-print(jsonpath(response, '$..list[?(@.sumProductPayment>800)].sumProductPayment'))
-
-# 匹配orderPayType的所有值
-print(jsonpath(response, '$..orderPayType'))
-
-# 匹配orderPayType中所有的valve值
-print(jsonpath(response, '$..orderPayType.*'))
-
-# 匹配orderPayType返回的多个结果中的第一个
-print(jsonpath(response, '$..orderPayType')[0])
-
-# 匹配orderPayType中的description值
-print(jsonpath(response, '$..orderPayType.description'))
+jsonpath1 --> ['tom']
+jsonpath2 --> [['basketball', 'swim']]
+jsonpath3 --> ['basketball']
+jsonpath4 --> basketball
+jsonpath5 --> basketball
 ```
 
 * ~~jresponse()~~ 用法
 
 在接口测试中通过`jresponse()` 方法可以直接提取数据。
 
-> 注：该方法计划后续版本移除，从命名、参数都不够好，推荐使用 `responses()`
+> 注：该方法从命名、参数都不规范，不推荐使用，后续版本将会移除。
 
 ```python
 import seldom
@@ -776,62 +687,6 @@ if __name__ == '__main__':
 2022-04-10 21:05:17.689 | DEBUG    | seldom.logging.log:debug:34 - [jresponse]:
  ['18']
 ```
-
-* `responses()` 用法
-
-在接口测试中通过`responses()` 方法可以方便的提取response数据。
-
-```python
-import seldom
-
-
-class TestAPI(seldom.TestCase):
-
-    def test_responses(self):
-        """
-        提取 response 数据
-        """
-        payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
-        self.get("http://httpbin.org/get", params=payload)
-        jsonpath1 = self.responses("$..name", mode="jsonpath")
-        jsonpath2 = self.responses("$..hobby", mode="jsonpath")
-        jsonpath3 = self.responses("$..hobby[0]", mode="jsonpath")
-        jsonpath4 = self.responses("$..hobby[0]", mode="jsonpath", index=0)
-        print(f"jsonpath1 --> {jsonpath1}")
-        print(f"jsonpath2 --> {jsonpath2}")
-        print(f"jsonpath3 --> {jsonpath3}")
-        print(f"jsonpath4 --> {jsonpath4}")
-
-        jmespath1 = self.responses("args.name", mode="jmespath")
-        jmespath2 = self.responses("args.hobby", mode="jmespath")
-        jmespath3 = self.responses("args.hobby[0]", mode="jmespath")
-
-        print(f"\njmespath1 --> {jmespath1}")
-        print(f"jmespath2 --> {jmespath2}")
-        print(f"jmespath3 --> {jmespath3}")
-...
-```
-说明：
-* `expr`: 提取response中的`语法`。
-* `mode`: 支持`jsonpath`模式和`jmespath`模式，模式不同`语法`不同，默认`jmespath`模式。
-* `index`: 针对`jsonpath`模式有效，`jsonpath`模式默认返回是列表，所以可以通过`index`返回下标。
-
-运行结果：
-
-```shell
-2022-05-11 00:01:21 log.py | DEBUG | [response]:
- {'args': {'age': '18', 'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-627a8c4e-33ac8d79004291c8487c4dff'}, 'origin': '113.87.183.202', 'url': 'http://httpbin.org/get?hobby=basketball&hobby=swim&name=tom&age=18'}
-
-jsonpath1 --> ['tom']
-jsonpath2 --> [['basketball', 'swim']]
-jsonpath3 --> ['basketball']
-jsonpath4 --> basketball
-
-jmespath1 --> tom
-jmespath2 --> ['basketball', 'swim']
-jmespath3 --> basketball
-```
-
 
 ### genson
 
