@@ -1,5 +1,4 @@
 # HTTP接口测试
-# HTTP接口测试
 
 ## 前言
 
@@ -78,7 +77,7 @@ if __name__ == '__main__':
 
 主要简化点在，接口的返回数据的处理。当然，seldom真正的优势在断言、日志和报告。
 
-### har to case
+## har to case
 
 对于不熟悉 Requests 库的人来说，通过Seldom来写接口测试用例还是会有一点难度。于是，seldom提供了`har` 文件转 `case` 的命令。
 
@@ -179,14 +178,27 @@ OK
 * 响应的类型
 * 响应的数据
 
-### 更强大的断言
+## 更强大的断言
 
 断言接口返回的数据是我们在做接口自动化很重要的工作。
 
-__assertJSON__
+### assertJSON
 
+`assertJSON()` 断言接口返回的某部分数据。
 
-接口返回结果如下：
+* 请求参数
+
+```json
+{
+  "name": "tom",
+  "hobby": [
+    "basketball",
+    "swim"
+  ]
+}
+```
+
+* 返回结果
 
 ```json
 {
@@ -196,11 +208,20 @@ __assertJSON__
       "swim"
     ],
     "name": "tom"
-  }
+  },
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate",
+    "Host": "httpbin.org",
+    "User-Agent": "python-requests/2.25.0",
+    "X-Amzn-Trace-Id": "Root=1-62851614-1ca9fdb276238c60406c118f"
+  },
+  "origin": "113.87.15.99",
+  "url": "http://httpbin.org/get?name=tom&hobby=basketball&hobby=swim"
 }
 ```
 
-我的目标是断言`name` 和 `hobby` 部分的内容。seldom可以针对`JSON`文件进行断言。
+我的目标是断言`name` 和 `hobby` 部分的内容。
 
 ```python
 import seldom
@@ -209,50 +230,25 @@ import seldom
 class TestAPI(seldom.TestCase):
 
     def test_assert_json(self):
-        payload = {'name': 'tom', 'hobby': ['basketball', 'swim']}
+        # 接口参数
+        payload = {"name": "tom", "hobby": ["basketball", "swim"]}
+        # 接口调用
         self.get("http://httpbin.org/get", params=payload)
-        assert_json = {'args': {'hobby': ['swim', 'basketball'], 'name': 'tom'}}
-        self.assertJSON(assert_json)
+
+        # 断言数据
+        assert_data = {
+            "hobby": ["swim", "basketball"],
+            "name": "tom"
+        }
+        self.assertJSON(assert_data, self.response["args"])
 ```
 
-运行日志
 
-```shell
-
-2022-04-30 18:22:57 log.py | INFO | -------------- Request -----------------[🚀]
-2022-04-30 18:22:57 log.py | INFO | [method]: GET      [url]: http://httpbin.org/get
-
-2022-04-30 18:22:57 log.py | DEBUG | [params]:
- {'name': 'tom', 'hobby': ['basketball', 'swim']}
-
-2022-04-30 18:22:57 log.py | INFO | -------------- Response ----------------[🛬️]
-2022-04-30 18:22:57 log.py | INFO | successful with status 200
-
-2022-04-30 18:22:57 log.py | DEBUG | [type]: json      [time]: 0.772016
-
-2022-04-30 18:22:57 log.py | DEBUG | [response]:
- {'args': {'hobby': ['basketball', 'swim'], 'name': 'tom'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-626d0e00-39c0025a439bf8de0d30425e'}, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/get?name=tom&hobby=basketball&hobby=swim'}
-
-💡 Assert data has not key: headers
-💡 Assert data has not key: origin
-💡 Assert data has not key: url
-ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.626s
-
-OK
-2022-02-19 00:59:28 [PRINT] A run the test in debug mode without generating HTML report!
-```
-
-seldom还会提示你还有哪些字段没有断言。
-
-
-__assertPath__
+### assertPath
 
 `assertPath` 是基于 `jmespath` 实现的断言，功能非常强大。
 
-jmespath:https://jmespath.org/specification.html
+jmespath: https://jmespath.org/specification.html
 
 接口返回数据如下：
 
@@ -277,65 +273,62 @@ class TestAPI(seldom.TestCase):
     def test_assert_path(self):
         payload = {'name': 'tom', 'hobby': ['basketball', 'swim']}
         self.get("http://httpbin.org/get", params=payload)
-        self.assertPath("name", "tom")
-        self.assertPath("args.hobby[0]", "basketball")   #相等
-        self.assertInPath("args.hobby[0]", "ball")       #包含
+        self.assertPath("args.name", "tom")
+        self.assertPath("args.hobby[0]", "basketball")
+        self.assertInPath("args.hobby[0]", "ball")
 
 ```
 
+* `args.hobby[0]` 提取接口返回的数据。
+* `assertPath()` 判断提取的数据是否等于`basketball`; 
+* `assertInPath()` 判断提取的数据是否包含`ball`。
 
-__assertSchema__
+### assertSchema
 
-有时并不关心数据本身是什么，而是需要断言数据的类型。 `assertSchema` 是基于 `jsonschema` 实现的断言方法。
+有时并不关心数据本身是什么，而是需要断言数据的结构和类型。 `assertSchema` 是基于 `jsonschema` 实现的断言方法。
 
 jsonschema: https://json-schema.org/learn/
 
-接口返回数据如下：
-
-```json
-{
-  "args": {
-    "hobby": 
-      ["basketball", "swim"], 
-    "name": "tom", 
-    "age": "18"
-  }
-}
-```
-
-seldom中可以通过利用`jsonschema` 进行断言：
-
 ```python
 import seldom
+from seldom.utils import genson
 
 
 class TestAPI(seldom.TestCase):
 
     def test_assert_schema(self):
+        # 接口参数
         payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
+        # 调用接口
         self.get("/get", params=payload)
-        schema = {
+
+        # 生成数据结构和类型
+        schema = genson(self.response["args"])
+        print("json Schema: \n", schema)
+
+        # 断言数据结构和类型
+        assert_data = {
+            "$schema": "http://json-schema.org/schema#",
             "type": "object",
             "properties": {
-                "args": {
-                    "type": "object",
-                    "properties": {
-                        "age": {"type": "string"},
-                        "name": {"type": "string"},
-                        "hobby": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            },
-                        }
-                    }
+                "age": {
+                    "type": "string"
+                },
+                "hobby": {
+                    "type": "array", "items": {"type": "string"}
+                },
+                "name": {
+                    "type": "string"
                 }
             },
+            "required":
+                ["age", "hobby", "name"]
         }
-        self.assertSchema(schema)
+        self.assertSchema(assert_data, self.response["args"])
+
 ```
 
-是否再次感受到了seldom提供的断言非常灵活，强大。
+* `genson`: 可以生成`jsonschema`数据结构和类型（`seldom 2.9` 新增）。
 
 
 ### 接口数据依赖
