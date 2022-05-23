@@ -12,6 +12,8 @@ from parameterized.parameterized import delete_patches_if_need
 from parameterized import parameterized_class
 from seldom.testdata import conversion
 from seldom.logging.exceptions import FileTypeError
+from seldom.testdata.conversion import _check_data
+
 
 __all__ = [
     "file_data", "data", "data_class"
@@ -110,6 +112,7 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
         ... 'test_add1_foo_0': <function ...> ...
         >>
         """
+    input = _check_data(input)
 
     if "testcase_func_name" in legacy:
         warnings.warn("testcase_func_name= is deprecated; use name_func=",
