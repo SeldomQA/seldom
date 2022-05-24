@@ -2,9 +2,9 @@ import os
 import sys
 import time
 import inspect
-from loguru import logger
+from loguru._logger import Core as _Core
+from loguru._logger import Logger
 from seldom.running.config import BrowserConfig
-from seldom.running.config import Seldom
 import io
 
 stack_t = inspect.stack()
@@ -21,26 +21,36 @@ if BrowserConfig.REPORT_PATH is None:
     BrowserConfig.REPORT_PATH = os.path.join(report_dir, now_time + "_result.html")
 
 
-class Logger:
+class MyLogger(Logger):
     def __init__(self, level: str = "DEBUG", colorlog: bool = True):
-        self.logger = logger
+        # self.logger = logger
         self._colorlog = colorlog
         self._console_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> {file} <level>| {level} | {message}</level>"
         self._log_format = "[{time: YYYY-MM-DD HH:mm:ss} {file} | {level} | {message}"
         self._level = level
         self.logfile = BrowserConfig.LOG_PATH
+        self.stderr_bak = sys.stderr
+        super().__init__(core=_Core(),
+                         exception=None,
+                         depth=0,
+                         record=False,
+                         lazy=False,
+                         colors=False,
+                         raw=False,
+                         capture=True,
+                         patcher=None,
+                         extra={})
         self.set_level(self._colorlog, self._console_format, self._level)
 
-    def set_level(self, colorlog: bool = True, format: str = None, level: str = "DEBUG"):
+    def set_level(self, colorlog: bool = True, format: str = None, level: str = "TRACE"):
         if format is None:
             format = self._console_format
-        logger.remove()
-        stderr = sys.stderr
+        self.remove()
         sys.stderr = io.StringIO()
-        logger.add(sys.stderr, level=level, format=format)
-        logger.add(stderr, level=level, colorize=colorlog, format=format)
-        logger.add(self.logfile, level=level, colorize=colorlog, format=self._log_format, encoding="utf-8")
+        self.add(sys.stderr, level=level, format=format)
+        self.add(self.stderr_bak, level=level, colorize=colorlog, format=format)
+        self.add(self.logfile, level=level, colorize=colorlog, format=self._log_format, encoding="utf-8")
 
 
 # log level: TRACE < DEBUG < INFO < SUCCESS < WARNING < ERROR
-log = Logger(level="TRACE")
+log = MyLogger(level="TRACE")
