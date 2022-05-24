@@ -10,6 +10,11 @@ class Cache:
     """
     Cache through JSON files
     """
+    def __init__(self):
+        is_exist = os.path.isfile(DATA_PATH)
+        if is_exist is False:
+            with open(DATA_PATH, "w") as f:
+                json.dump({}, f)
 
     @staticmethod
     def clear(name=None) -> None:
