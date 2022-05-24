@@ -33,7 +33,7 @@ setup(
         'requests>=2.22.0',
         'jsonschema>=3.2.0',
         'jmespath>=0.10.0',
-        'webdriver-manager>=3.5.0',
+        'webdriver-manager>=3.6.1',
         'pymysql>=1.0.0',
         'genson==1.2.2'
     ],

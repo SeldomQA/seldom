@@ -4,8 +4,8 @@ from typing import Any
 import requests
 from seldom.running.config import Seldom
 from seldom.logging import log
-from seldom.utils import jsonpath
-from seldom.utils import jmespath
+from seldom.utils import jsonpath as utils_jsonpath
+from seldom.utils import jmespath as utils_jmespath
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
@@ -119,21 +119,31 @@ class HttpRequest(object):
         return ResponseResult.response
 
     @staticmethod
-    def responses(expr, mode="jmespath", index: int = None) -> Any:
+    def jsonpath(expr, index: int = None, response=None) -> Any:
         """
         Extract the data in response
         mode:
          * jsonpath: https://goessner.net/articles/JsonPath/
          * jmespath: https://jmespath.org/
         """
-        if mode == "jsonpath":
-            ret = jsonpath(ResponseResult.response, expr)
-            if index is not None:
-                ret = ret[index]
-        elif mode == "jmespath":
-            ret = jmespath(ResponseResult.response, expr)
-        else:
-            raise ValueError("mode is `jmespath` or `jsonpath`.")
+        if response is None:
+            response = ResponseResult.response
+
+        ret = utils_jsonpath(response, expr)
+        if index is not None:
+            ret = ret[index]
+        return ret
+
+    @staticmethod
+    def jmespath(expr, response=None) -> Any:
+        """
+        Extract the data in response
+        * jmespath: https://jmespath.org/
+        """
+        if response is None:
+            response = ResponseResult.response
+
+        ret = utils_jmespath(response, expr)
         return ret
 
     @property

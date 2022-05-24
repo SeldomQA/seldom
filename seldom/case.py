@@ -77,7 +77,6 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             except AssertionError:
                 sleep(1)
         else:
-            print("abc")
             log.warn("❌ assert fail: {title}.".format(title=title))
             self.assertEqual(title, Seldom.driver.title, msg=msg)
 
@@ -246,24 +245,30 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         """
         self.assertEqual(ResponseResult.status_code, status_code, msg=msg)
 
-    def assertSchema(self, schema):
+    def assertSchema(self, schema, response=None):
         """
         Assert JSON Schema
         doc: https://json-schema.org/
         """
+        if response is None:
+            response = ResponseResult.response
+
         try:
-            validate(instance=ResponseResult.response, schema=schema)
+            validate(instance=response, schema=schema)
         except ValidationError as msg:
             self.assertEqual("Response data", "Schema data", msg)
         else:
             self.assertTrue(True)
 
-    def assertJSON(self, assert_json):
+    def assertJSON(self, assert_json, response=None):
         """
         Assert JSON data
         """
+        if response is None:
+            response = ResponseResult.response
+
         AssertInfo.data = []
-        diff_json(ResponseResult.response, assert_json)
+        diff_json(response, assert_json)
         if len(AssertInfo.data) == 0:
             self.assertTrue(True)
         else:
