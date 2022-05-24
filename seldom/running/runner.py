@@ -151,8 +151,8 @@ class TestMain(object):
                                             language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
-            log.logger.success("generated html file: file:///{}".format(report_path))
-            log.logger.success("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            log.success("generated html file: file:///{}".format(report_path))
+            log.success("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
             webbrowser.open_new("file:///{}".format(report_path))
         else:
             runner = DebugTestRunner(
@@ -160,7 +160,7 @@ class TestMain(object):
                 whitelist=self.whitelist,
                 verbosity=2)
             runner.run(suits)
-            log.logger.success("A run the test in debug mode without generating HTML report!")
+            log.success("A run the test in debug mode without generating HTML report!")
 
     def open_browser(self):
         """
