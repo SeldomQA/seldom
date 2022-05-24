@@ -171,19 +171,19 @@ log.info("this is info.")
 log.error("this error info.")
 log.debug("this debug info.")
 log.success("this success info.")
-log.warn("this warning info.")
+log.warning("this warning info.")
 ```
 
 * 运行日志
 
 ```shell
 
-2022-04-30 16:31:49 log.py | TRACE | this is trace info.
-2022-04-30 16:31:49 log.py | INFO | this is info.
-2022-04-30 16:31:49 log.py | ERROR | this error info.
-2022-04-30 16:31:49 log.py | DEBUG | this debug info.
-2022-04-30 16:31:49 log.py | SUCCESS | this success info.
-2022-04-30 16:31:49 log.py | WARNING | this warning info.
+2022-04-30 16:31:49 test_log.py | TRACE | this is trace info.
+2022-04-30 16:31:49 test_log.py | INFO | this is info.
+2022-04-30 16:31:49 test_log.py | ERROR | this error info.
+2022-04-30 16:31:49 test_log.py | DEBUG | this debug info.
+2022-04-30 16:31:49 test_log.py | SUCCESS | this success info.
+2022-04-30 16:31:49 test_log.py | WARNING | this warning info.
 ```
 
 * 关闭日志颜色

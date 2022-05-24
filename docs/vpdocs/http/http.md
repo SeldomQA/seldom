@@ -363,11 +363,11 @@ seldom提供了`self.response`用于记录上个接口返回的结果，直接�
 
 ```python
 # common.py
-import requests
 from seldom.request import check_response 
+from seldom.request import HttpRequest
 
 
-class Common():
+class Common(HttpRequest):
     
     @check_response("获取登录用户名", 200, "headers.Account", {"headers.Host": "httpbin.org"}, debug=True)
     def get_login_user(self):
@@ -375,7 +375,7 @@ class Common():
         调用接口获得用户名
         """
         headers = {"Account": "bugmaster"}
-        r = requests.get("http://httpbin.org/get", headers=headers)
+        r = self.get("http://httpbin.org/get", headers=headers)
         return r
 
 
