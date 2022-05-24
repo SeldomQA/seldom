@@ -77,7 +77,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             except AssertionError:
                 sleep(1)
         else:
-            log.warn("❌ assert fail: {title}.".format(title=title))
+            log.warning("❌ assert fail: {title}.".format(title=title))
             self.assertEqual(title, Seldom.driver.title, msg=msg)
 
     def assertInTitle(self, title=None, msg=None):
@@ -98,7 +98,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             except AssertionError:
                 sleep(1)
         else:
-            log.warn("❌ assertIn fail: {title}.".format(title=title))
+            log.warning("❌ assertIn fail: {title}.".format(title=title))
             self.assertIn(title, Seldom.driver.title, msg=msg)
 
     def assertUrl(self, url, msg=None):
@@ -119,7 +119,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             except AssertionError:
                 sleep(1)
         else:
-            log.warn("❌ assert fail: {url}.".format(url=url))
+            log.warning("❌ assert fail: {url}.".format(url=url))
             self.assertEqual(url, Seldom.driver.current_url, msg=msg)
 
     def assertInUrl(self, url=None, msg=None):
@@ -140,7 +140,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             except AssertionError:
                 sleep(1)
         else:
-            log.warn("❌ assertIn fail: {url}.".format(url=url))
+            log.warning("❌ assertIn fail: {url}.".format(url=url))
             self.assertIn(url, Seldom.driver.current_url, msg=msg)
 
     def assertText(self, text=None, msg=None):

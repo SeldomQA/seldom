@@ -818,7 +818,7 @@ class WebDriver(object):
                 ret = Seldom.driver.execute_script(js)
                 print("{} ->".format(i), ret)
         else:
-            log.warn("No elements were found.")
+            log.warning("No elements were found.")
 
     @staticmethod
     def get_elements(**kwargs):
@@ -832,7 +832,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elems = web_elem.get_elements()
         if len(elems) == 0:
-            log.warn("{}.".format(web_elem.warn))
+            log.warning("{}.".format(web_elem.warn))
         else:
             log.info("✅ {}.".format(web_elem.info))
         return elems

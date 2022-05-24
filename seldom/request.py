@@ -56,7 +56,7 @@ def request(func):
         if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
             log.info("successful with status {} \n".format(str(ResponseResult.status_code)))
         else:
-            log.warn("unsuccessful with status {} \n".format(str(ResponseResult.status_code)))
+            log.warning("unsuccessful with status {} \n".format(str(ResponseResult.status_code)))
         resp_time = r.elapsed.total_seconds()
         try:
             resp = r.json()
