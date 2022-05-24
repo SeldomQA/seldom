@@ -1,3 +1,4 @@
+import io
 import os
 import sys
 import time
@@ -5,7 +6,7 @@ import inspect
 from loguru._logger import Core as _Core
 from loguru._logger import Logger
 from seldom.running.config import BrowserConfig
-import io
+
 
 stack_t = inspect.stack()
 ins = inspect.getframeinfo(stack_t[1][0])
@@ -21,12 +22,12 @@ if BrowserConfig.REPORT_PATH is None:
     BrowserConfig.REPORT_PATH = os.path.join(report_dir, now_time + "_result.html")
 
 
-class MyLogger(Logger):
+class SeldomLogger(Logger):
+
     def __init__(self, level: str = "DEBUG", colorlog: bool = True):
-        # self.logger = logger
         self._colorlog = colorlog
         self._console_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> {file} <level>| {level} | {message}</level>"
-        self._log_format = "[{time: YYYY-MM-DD HH:mm:ss} {file} | {level} | {message}"
+        self._log_format = "{time: YYYY-MM-DD HH:mm:ss} {file} | {level} | {message}"
         self._level = level
         self.logfile = BrowserConfig.LOG_PATH
         self.stderr_bak = sys.stderr
@@ -53,4 +54,4 @@ class MyLogger(Logger):
 
 
 # log level: TRACE < DEBUG < INFO < SUCCESS < WARNING < ERROR
-log = MyLogger(level="TRACE")
+log = SeldomLogger(level="TRACE")
