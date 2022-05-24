@@ -29,16 +29,16 @@ class Logger:
         self._log_format = "[{time: YYYY-MM-DD HH:mm:ss} {file} | {level} | {message}"
         self._level = level
         self.logfile = BrowserConfig.LOG_PATH
+        self.stderr_bak = sys.stderr
         self.set_level(self._colorlog, self._console_format, self._level)
 
-    def set_level(self, colorlog: bool = True, format: str = None, level: str = "DEBUG"):
+    def set_level(self, colorlog: bool = True, format: str = None, level: str = "TRACE"):
         if format is None:
             format = self._console_format
         logger.remove()
-        stderr = sys.stderr
         sys.stderr = io.StringIO()
         logger.add(sys.stderr, level=level, format=format)
-        logger.add(stderr, level=level, colorize=colorlog, format=format)
+        logger.add(self.stderr_bak, level=level, colorize=colorlog, format=format)
         logger.add(self.logfile, level=level, colorize=colorlog, format=self._log_format, encoding="utf-8")
 
 
