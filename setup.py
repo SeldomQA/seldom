@@ -25,7 +25,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'selenium>=4.0.0',
-        'XTestRunner>=1.4.1',
+        'XTestRunner>=1.4.2',
         'parameterized==0.8.1',
         'loguru>=0.4.1',
         'openpyxl>=3.0.3',
@@ -33,7 +33,7 @@ setup(
         'requests>=2.22.0',
         'jsonschema>=3.2.0',
         'jmespath>=0.10.0',
-        'webdriver-manager>=3.6.1',
+        'webdriver-manager==3.7.0',
         'pymysql>=1.0.0',
         'genson==1.2.2'
     ],

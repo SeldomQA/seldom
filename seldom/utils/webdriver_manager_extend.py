@@ -2,19 +2,20 @@
 https://github.com/SergeyPirogov/webdriver_manager
 """
 import os
-from webdriver_manager.core import utils
-from webdriver_manager.drivers.chrome import ChromeDriver
+
 from webdriver_manager.core.manager import DriverManager
 from webdriver_manager.core.utils import ChromeType
+from webdriver_manager.drivers.chrome import ChromeDriver
 
 
 class ChromeDriverManager(DriverManager):
     """
     Since Google cannot be used in China, Taobao is used to replace Google
     """
+
     def __init__(self,
                  version="latest",
-                 os_type=utils.os_type(),
+                 os_type=None,
                  path=None,
                  name="chromedriver",
                  url="https://registry.npmmirror.com/-/binary/chromedriver",
