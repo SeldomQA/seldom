@@ -1,3 +1,15 @@
+### 2.10.0
+
+* seldom log功能：
+  * 修复打印日志显示固定文件的问题  [107](https://github.com/SeldomQA/seldom/issues/107)。
+  * log方法变更：`log.warn()` -> `log.warning()`。
+* 功能：提供了`cache` 类来模拟缓存。
+* 功能：`@data()` 装饰器支持 `dict` 格式。
+* 功能：`self.jresponse()` 方法设计不合理，给以废弃提示；可以使用`self.jsonpath()`/`self.jmespath()` 替代。
+* 优化：断言方法`assertSchema()`、`assertJSON()`支持`response`传参。
+* 优化：`@check_response()` check检查失败打印`response`。
+* 修复：`webdriver_manager` 没有设置上限版本，导致`webdriver_manager>=3.6.x` 报错; 如果使用的 `seldom<=2.9` 请重新安装`webdriver_manager==3.5.2`。
+
 ### 2.9.0
 
 * seldom log功能：

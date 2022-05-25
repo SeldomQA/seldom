@@ -26,12 +26,11 @@ from .webdriver_chaining import Steps
 
 from .skip import *
 from .driver import *
-from .logging.log import *
 from .testdata.parameterization import *
 
 
 __author__ = "bugmaster"
 
-__version__ = "2.9.0"
+__version__ = "2.10.0"
 
 __description__ = "WebUI/HTTP automation testing framework based on unittest."
