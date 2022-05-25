@@ -265,13 +265,14 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
 
             if check is not None:
                 for expr, value in check.items():
-                    data = jmespath(r.json(), expr)
+                    data = utils_jmespath(r.json(), expr)
                     if data != value:
-                        log.error(f"Execute {func_name} - check data failed：{value}")
+                        log.error(f"Execute {func_name} - check data failed：{expr} = {value}")
+                        log.error(f"Execute {func_name} - response：{r.json()}")
                         raise ValueError(f"{data} != {value}")
 
             if ret is not None:
-                data = jmespath(r.json(), ret)
+                data = utils_jmespath(r.json(), ret)
                 if data is None:
                     log.error(f"Execute {func_name} - return {ret} is None")
                 return data
