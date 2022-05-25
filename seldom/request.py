@@ -164,9 +164,9 @@ class HttpRequest(object):
         """
         warnings.warn("use self.responses() instead", DeprecationWarning, stacklevel=2)
         if j == "json":
-            ret = jsonpath(ResponseResult.response, expr)
+            ret = utils_jsonpath(ResponseResult.response, expr)
         elif j == "jmes":
-            ret = jmespath(ResponseResult.response, expr)
+            ret = utils_jmespath(ResponseResult.response, expr)
         else:
             raise ValueError("j is 'json' or 'jmes'.")
         log.debug(f"[jresponse]:\n {str(ret)}")
