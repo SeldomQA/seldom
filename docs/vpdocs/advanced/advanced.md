@@ -73,7 +73,21 @@ class BaiduTest(seldom.TestCase):
         (2, 'selenium'),
         (3, 'unittest'),
     ])
-    def test_baidu(self, _, keyword):
+    def test_baidu1(self, _, keyword):
+        """
+        used parameterized test
+        """
+        self.open("https://www.baidu.com")
+        self.type(id_="kw", text=keyword)
+        self.click(css="#su")
+        self.assertTitle(keyword+"_百度搜索")
+    
+    @data([
+        {"scene": 'case_1', 'keyword': 'seldom'},
+        {"scene": 'case_2', 'keyword': 'selenium'},
+        {"scene": 'case_3', 'keyword': 'unittest'},
+    ])
+    def test_baidu2(self, scene, keyword):
         """
         used parameterized test
         """

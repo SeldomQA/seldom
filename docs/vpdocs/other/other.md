@@ -221,3 +221,35 @@ log.error("this error info.")
 ```
 
 > log level: TRACE < DEBUG < INFO < SUCCESS < WARNING < ERROR
+
+
+### 缓存 cache
+
+实际测试过程中，往往需要需要通过cache去记录一些数据，从而减少不必要的操作。例如 登录token，很多条用例都会用到登录token，那么就可以借助缓存来暂存登录token，从而减少重复动作。
+
+```python
+from seldom.utils import cache
+
+# 清除指定缓存
+cache.clear("token")
+
+# 清除所有缓存
+cache.clear()
+
+# 获取指定缓存
+token = cache.get("token")
+print(f"token: {token}")
+if token is None:
+    # 写入缓存
+    cache.set({"token": "123"})
+
+# 获取指定缓存
+token = cache.get("token")
+print(f"token: {token}")
+
+# 获取所有缓存
+all_token = cache.get()
+print(f"all: {all_token}")
+```
+
+> 注：seldom 提供的 `cache` 本质上是通过json文件来临时记录数据，没有失效时间。你需要在适当的位置做清除操作。例如，整个用例开始时清除。
