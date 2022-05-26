@@ -27,7 +27,7 @@ setup(
         'selenium>=4.0.0',
         'XTestRunner>=1.4.2',
         'parameterized==0.8.1',
-        'loguru>=0.4.1',
+        'loguru==0.6.0',
         'openpyxl>=3.0.3',
         'pyyaml>=5.1',
         'requests>=2.22.0',
