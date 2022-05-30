@@ -6,7 +6,7 @@ import inspect
 from loguru._logger import Core as _Core
 from loguru._logger import Logger
 from seldom.running.config import BrowserConfig
-
+from seldom.running.config import Seldom
 
 stack_t = inspect.stack()
 ins = inspect.getframeinfo(stack_t[1][0])
@@ -30,7 +30,7 @@ class SeldomLogger(Logger):
         self._log_format = "{time: YYYY-MM-DD HH:mm:ss} {file} | {level} | {message}"
         self._level = level
         self.logfile = BrowserConfig.LOG_PATH
-        self.stderr_bak = sys.stderr
+        self.stdout_bak = sys.stdout
         super().__init__(core=_Core(),
                          exception=None,
                          depth=0,
@@ -47,9 +47,9 @@ class SeldomLogger(Logger):
         if format is None:
             format = self._console_format
         self.remove()
-        sys.stderr = io.StringIO()
-        self.add(sys.stderr, level=level, format=format)
-        self.add(self.stderr_bak, level=level, colorize=colorlog, format=format)
+        sys.stdout = io.StringIO()
+        self.add(sys.stdout, level=level, format=format)
+        self.add(self.stdout_bak, level=level, colorize=colorlog, format=format)
         self.add(self.logfile, level=level, colorize=colorlog, format=self._log_format, encoding="utf-8")
 
 
