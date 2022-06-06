@@ -850,3 +850,39 @@ class WebDriver(object):
         elem = web_elem.get_elements(index)
         log.info("✅ {}.".format(web_elem.info))
         return elem
+
+    @staticmethod
+    def switch_to_app() -> None:
+        """
+        appium API
+        Switch to native app.
+        """
+        log.info("🔀 switch to native app.")
+        Seldom.driver.switch_to.context('NATIVE_APP')
+
+    @staticmethod
+    def switch_to_web(context=None) -> None:
+        """
+        appium API
+        Switch to web view.
+        """
+        log.info("🔀 switch to webview.")
+        if context is not None:
+            Seldom.driver.switch_to.context(context)
+        else:
+            all_context = Seldom.driver.contexts
+            for context in all_context:
+                if "WEBVIEW" in context:
+                    Seldom.driver.switch_to.context(context)
+                    break
+            else:
+                raise NameError("No WebView found.")
+
+    @staticmethod
+    def switch_to_flutter() -> None:
+        """
+        appium API
+        Switch to flutter app.
+        """
+        log.info("🔀 switch to flutter.")
+        Seldom.driver.switch_to.context('FLUTTER')
