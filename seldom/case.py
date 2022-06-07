@@ -3,9 +3,10 @@ from urllib.parse import unquote
 from time import sleep
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
+from seldom.driver import Browser
 from seldom.webdriver import WebDriver
 from seldom.request import HttpRequest, ResponseResult
-from seldom.running.config import Seldom
+from seldom.running.config import Seldom, BrowserConfig
 from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
@@ -58,6 +59,14 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         return browser driver
         """
         return Seldom.driver
+
+    @staticmethod
+    def new_browser():
+        """
+        launch new browser
+        """
+        browser = Browser(BrowserConfig.NAME)
+        return browser
 
     def assertTitle(self, title=None, msg=None):
         """
