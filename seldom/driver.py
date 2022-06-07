@@ -14,10 +14,10 @@ __all__ = [
 ]
 
 PHONE_LIST = [
-    'iPhone 5', 'iPhone 6', 'iPhone 7', 'iPhone 8', 'iPhone 8 Plus',
-    'iPhone X', 'Pixel 2', 'Pixel XL', "Galaxy S5"
+    'iPhone 8', 'iPhone 8 Plus', 'iPhone SE', 'iPhone X', 'iPhone XR', 'iPhone 12 Pro',
+    'Pixel 2', 'Pixel XL', 'Pixel 5', 'Samsung Galaxy S8+', 'Samsung Galaxy S20 Ultra'
 ]
-PAD_LIST = ['iPad', 'iPad Pro']
+PAD_LIST = ['iPad Air', 'iPad Pro', 'iPad Mini']
 
 
 class ChromeConfig:
