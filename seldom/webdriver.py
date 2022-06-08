@@ -858,7 +858,9 @@ class WebDriver(object):
         Switch to native app.
         """
         log.info("🔀 switch to native app.")
-        Seldom.driver.switch_to.context('NATIVE_APP')
+        current_context = Seldom.driver.current_context
+        if current_context != "NATIVE_APP":
+            Seldom.driver.switch_to.context('NATIVE_APP')
 
     @staticmethod
     def switch_to_web(context=None) -> None:
@@ -867,8 +869,11 @@ class WebDriver(object):
         Switch to web view.
         """
         log.info("🔀 switch to webview.")
+        current_context = Seldom.driver.current_context
         if context is not None:
             Seldom.driver.switch_to.context(context)
+        elif "WEBVIEW" in current_context:
+            return
         else:
             all_context = Seldom.driver.contexts
             for context in all_context:
@@ -885,4 +890,6 @@ class WebDriver(object):
         Switch to flutter app.
         """
         log.info("🔀 switch to flutter.")
-        Seldom.driver.switch_to.context('FLUTTER')
+        current_context = Seldom.driver.current_context
+        if current_context != "NATIVE_APP":
+            Seldom.driver.switch_to.context('FLUTTER')
