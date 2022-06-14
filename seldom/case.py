@@ -253,11 +253,15 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         if msg is None:
             msg = "Find the element"
 
+        timeout_backups = Seldom.timeout
+        Seldom.timeout = 2
         try:
             self.get_element(index=index, **kwargs)
             elem = True
         except NotFindElementError:
             elem = False
+
+        Seldom.timeout = timeout_backups
 
         self.assertFalse(elem, msg=msg)
 
