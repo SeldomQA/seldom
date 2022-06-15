@@ -128,7 +128,6 @@ self.assertText("text")
 # 断言页面不包含“text”
 self.assertNotText("text")
 
-
 # 断言警告是否存在"text" 提示信息
 self.assertAlertText("text")
 
@@ -263,10 +262,7 @@ class TestCase(seldom.TestCase):
         
         # Set browser window maximized.
         self.max_window()
-        
-        # Mouse over the element.
-        self.move_to_element(css="#el")
-        
+
         # open url.
         self.open("https://www.baidu.com")
         
@@ -308,12 +304,15 @@ class TestCase(seldom.TestCase):
         
         # Switch to the specified frame.
         self.switch_to_frame(css="#el")
-        
+
+        # Switches focus to the parent context. If the current context is the top
+        # level browsing context, the context remains unchanged.
+        self.switch_to_frame_parent()
+
         # Returns the current form machine form at the next higher level.
         # Corresponding relationship with switch_to_frame () method.
         self.switch_to_frame_out()
-        
-        
+
         # Switches focus to the specified window.
         # This switches to the new windows/tab (0 is the first one)
         self.switch_to_window(1)

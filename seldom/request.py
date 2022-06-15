@@ -10,6 +10,12 @@ from seldom.utils import jmespath as utils_jmespath
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
 
+def formatting(msg):
+    """formatted message"""
+    format_msg = json.dumps(msg, indent=2, ensure_ascii=False)
+    return format_msg
+
+
 def request(func):
 
     def wrapper(*args, **kwargs):
@@ -34,19 +40,19 @@ def request(func):
         cookies = kwargs.get("cookies", "")
         params = kwargs.get("params", "")
         data = kwargs.get("data", "")
-        json = kwargs.get("json", "")
+        json_ = kwargs.get("json", "")
         if auth != "":
             log.debug(f"[auth]:\n {auth} \n")
         if headers != "":
-            log.debug(f"[headers]:\n {headers} \n")
+            log.debug(f"[headers]:\n {formatting(headers)} \n")
         if cookies != "":
-            log.debug(f"[cookies]:\n {cookies} \n")
+            log.debug(f"[cookies]:\n {formatting(cookies)} \n")
         if params != "":
-            log.debug(f"[params]:\n {params} \n")
+            log.debug(f"[params]:\n {formatting(params)} \n")
         if data != "":
-            log.debug(f"[data]:\n {data} \n")
-        if json != "":
-            log.debug(f"[json]:\n {json} \n")
+            log.debug(f"[data]:\n {formatting(data)} \n")
+        if json_ != "":
+            log.debug(f"[json]:\n {formatting(json_)} \n")
 
         # running function
         r = func(*args, **kwargs)
@@ -61,7 +67,7 @@ def request(func):
         try:
             resp = r.json()
             log.debug(f"[type]: json      [time]: {resp_time} \n")
-            log.debug(f"[response]:\n {resp} \n")
+            log.debug(f"[response]:\n {formatting(resp)} \n")
             ResponseResult.response = resp
         except BaseException as msg:
             log.debug(f"[warning]: failed to convert res to json, try to convert to text")

@@ -617,6 +617,18 @@ class WebDriver(object):
         Seldom.driver.switch_to.frame(elem)
 
     @staticmethod
+    def switch_to_frame_parent() -> None:
+        """
+        Switches focus to the parent context. If the current context is the top
+        level browsing context, the context remains unchanged.
+
+        Usage:
+            self.switch_to_frame_parent()
+        """
+        log.info("✅ switch to parent frame.")
+        Seldom.driver.switch_to.parent_frame()
+
+    @staticmethod
     def switch_to_frame_out() -> None:
         """
         Returns the current form machine form at the next higher level.

@@ -31,7 +31,7 @@ import seldom
 #...
 
 if __name__ == '__main__':
-    seldom.main(browser="iPhone 6") # iPhone 6 手机浏览器展示
+    seldom.main(browser="iPhone 8") # iPhone 8 手机浏览器展示
 ```
 
 支持的设备类型，如下：
@@ -39,10 +39,10 @@ if __name__ == '__main__':
 ```python
 
 PHONE_LIST = [
-    'iPhone 5', 'iPhone 6', 'iPhone 7', 'iPhone 8', 'iPhone 8 Plus',
-    'iPhone X', 'Pixel 2', 'Pixel XL', "Galaxy S5"
+    'iPhone 8', 'iPhone 8 Plus', 'iPhone SE', 'iPhone X', 'iPhone XR', 'iPhone 12 Pro',
+    'Pixel 2', 'Pixel XL', 'Pixel 5', 'Samsung Galaxy S8+', 'Samsung Galaxy S20 Ultra'
 ]
-PAD_LIST = ['iPad', 'iPad Pro']
+PAD_LIST = ['iPad Air', 'iPad Pro', 'iPad Mini']
 
 ```
 
