@@ -21,8 +21,12 @@ class ThreadWait:
 
         def run(self):
             print(f"{self} Start with SeldomThread...")
+            if isinstance(self.args, tuple) and len(self.args) > 1:
+                name_key = self.args[0]
+            else:
+                name_key = self.ident
             self.result = self.func(*self.args, **self.kwargs)
-            ThreadWait.result_dict[self.ident] = self.result
+            ThreadWait.result_dict[name_key] = self.result
 
         def get_result(self):
             """Return run result"""
