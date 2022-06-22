@@ -77,6 +77,7 @@ class TestMain(object):
         self.language = language
         self.whitelist = whitelist
         self.blacklist = blacklist
+        self.auto = auto
 
         if isinstance(timeout, int) is False:
             raise TypeError("Timeout {} is not integer.".format(timeout))
@@ -120,7 +121,7 @@ class TestMain(object):
             else:
                 self.TestSuits = seldomTestLoader.discover(self.path)
 
-        if auto is True:
+        if self.auto is True:
             self.run(self.TestSuits)
 
         # ----- Close browser globally -----
@@ -153,7 +154,8 @@ class TestMain(object):
 
             log.printf("generated html file: file:///{}".format(report_path))
             log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
-            webbrowser.open_new("file:///{}".format(report_path))
+            if self.auto is True:
+                webbrowser.open_new("file:///{}".format(report_path))
         else:
             runner = DebugTestRunner(
                 blacklist=self.blacklist,
