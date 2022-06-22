@@ -772,7 +772,7 @@ class WebDriver(object):
                 {'name' : 'foo', 'value' : 'bar'},
                 {'name' : 'foo', 'value' : 'bar'}
             ]
-            self.add_cookie(cookie_list)
+            self.add_cookies(cookie_list)
         """
         if isinstance(cookie_list, list):
             for cookie in cookie_list:
