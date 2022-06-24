@@ -9,6 +9,7 @@ import webbrowser
 from XTestRunner import HTMLTestRunner
 from XTestRunner import XMLTestRunner
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
+from selenium.common.exceptions import InvalidSessionIdException
 from seldom.driver import Browser
 from seldom.logging import log
 from seldom.logging.exceptions import SeldomException
@@ -178,7 +179,10 @@ class TestMain(object):
         How to open the browser, close the browser
         """
         if isinstance(Seldom.driver, SeleniumWebDriver):
-            Seldom.driver.quit()
+            try:
+                Seldom.driver.quit()
+            except InvalidSessionIdException:
+                ...
             Seldom.driver = None
 
 
