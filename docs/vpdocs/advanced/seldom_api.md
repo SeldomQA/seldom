@@ -190,7 +190,7 @@ class TestCase(seldom.TestCase):
             {'name' : 'foo', 'value' : 'bar'},
             {'name' : 'foo', 'value' : 'bar'}
         ]
-        self.add_cookie(cookie_list)
+        self.add_cookies(cookie_list)
         
         
         # Clear the contents of the input box.
