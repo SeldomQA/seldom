@@ -42,6 +42,7 @@ class TestMain(object):
     TestSuits = []
 
     def __init__(self, path=None, case=None, browser=None, base_url=None, debug=False, timeout=10,
+                 app_server=None, app_info=None,
                  report=None, title="Seldom Test Report", tester="Anonymous", description="Test case execution",
                  rerun=0, save_last_run=False, language="en", whitelist=[], blacklist=[], auto=True):
         """
@@ -50,12 +51,14 @@ class TestMain(object):
         :param case:
         :param browser:
         :param base_url:
-        :param report:
         :param title:
         :param tester:
         :param description:
         :param debug:
         :param timeout:
+        :param app_server:
+        :param app_info:
+        :param report:
         :param rerun:
         :param save_last_run:
         :param language:
@@ -79,6 +82,8 @@ class TestMain(object):
         self.whitelist = whitelist
         self.blacklist = blacklist
         self.auto = auto
+        Seldom.app_server = app_server
+        Seldom.app_info = app_info
 
         if isinstance(timeout, int) is False:
             raise TypeError("Timeout {} is not integer.".format(timeout))
@@ -194,6 +199,7 @@ class TestMainExtend(TestMain):
     """
 
     def __init__(self, path=None, browser=None, base_url=None, debug=False, timeout=10,
+                 app_server=None, app_info=None,
                  report=None, title="Seldom Test Report", description="Test case execution",
                  rerun=0, save_last_run=False, whitelist=[], blacklist=[], auto=False):
 
@@ -201,6 +207,7 @@ class TestMainExtend(TestMain):
             raise FileNotFoundError("Specify a file path")
 
         super().__init__(path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
+                         app_server=app_server, app_info=app_info,
                          report=report, title=title, description=description,
                          rerun=rerun, save_last_run=save_last_run, whitelist=whitelist, blacklist=blacklist,
                          auto=auto)

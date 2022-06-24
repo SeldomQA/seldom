@@ -4,6 +4,7 @@ from time import sleep
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from selenium.webdriver.common.by import By
+from appium.webdriver import Remote
 from seldom.driver import Browser
 from seldom.webdriver import WebDriver
 from seldom.request import HttpRequest, ResponseResult, formatting
@@ -49,9 +50,15 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
 
     def setUp(self):
         self.images = []
+        # lunch appium
+        if (Seldom.app_server is not None) and (Seldom.app_info is not None):
+            Seldom.driver = Remote(Seldom.app_server, Seldom.app_info)
         self.start()
 
     def tearDown(self):
+        # close appium
+        if (Seldom.app_server is not None) and (Seldom.app_info is not None):
+            Seldom.driver.quit()
         self.end()
 
     @property
