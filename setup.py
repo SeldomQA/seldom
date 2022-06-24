@@ -24,7 +24,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'selenium>=4.0.0',
+        'Appium-Python-Client>=2.1.0',
         'XTestRunner>=1.4.2',
         'parameterized==0.8.1',
         'loguru==0.6.0',
