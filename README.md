@@ -14,7 +14,7 @@ WebUI/HTTP automation testing framework based on unittest.
 * 集成`selenium`/`requests`，支持Web UI/HTTP测试。
 * 集成`XTestRunner`, 支持HTML/XML格式的测试报告。
 * 提供脚手架，快速生成自动化测试项目。
-* 提供强大的测试数据参数化。
+* 提供强大的`数据驱动`。
 * 提供丰富的断言。
 * 支持给用例标签，及黑白名单。
 * 支持生成随机测试数据。
@@ -22,7 +22,7 @@ WebUI/HTTP automation testing framework based on unittest.
 
 
 ### Install
-> 2.10.0 为了解决[107](https://github.com/SeldomQA/seldom/issues/107) 问题，我们经过反复的讨论和优化，甚至对相关库XTestRunner做了修改；以为完美解决了这个问题，没想到还是引起了一些严重的错误。为此，我们感到非常沮丧，退回到2.9.0的实现方案。请升级到2.10.1版本。
+> 2.10.0 为了解决[107](https://github.com/SeldomQA/seldom/issues/107) 问题，我们经过反复的讨论和优化，甚至对相关库XTestRunner做了修改；以为完美解决了这个问题，没想到还是引起了一些严重的错误。为此，我们感到非常沮丧，退回到2.9.0的实现方案。请升级到2.10.1以上版本。
 
 ```shell
 > pip install seldom
@@ -239,8 +239,6 @@ https://github.com/defnngj/seldom-api-testing
 * [HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
 
 * [parameterized](https://github.com/wolever/parameterized)
-
-* [pyderman](https://github.com/shadowmoose/pyderman)
 
 * [utx](https://github.com/jianbing/utx)
 
