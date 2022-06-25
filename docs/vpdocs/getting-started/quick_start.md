@@ -45,7 +45,8 @@ if __name__ == '__main__':
                 language="en",
                 timeout=None,
                 whitelist=[],
-                blacklist=[]
+                blacklist=[],
+                open=True
     )
 ```
 
@@ -67,6 +68,7 @@ __参数说明__
 * timeout : 设置超时时间，默认`10`秒。
 * whitelist :  用例标签（label）设置白名单。
 * blacklist :  用例标签（label）设置黑名单。
+* open :  是否使用浏览器自动打开测试报告，默认`True`。
 
 ### 运行测试
 
