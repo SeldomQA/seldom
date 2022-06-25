@@ -3,6 +3,7 @@
 * 功能：测试报告显示断言信息。
 * 功能：`main()` 通过`open=False`可以控制运行完测试 不自动化打开测试报告。
 * Web 测试：
+  * 增加`self.new_browser()` 可以打开新的浏览器，但只能使用`selenium` 的 API
   * 增加`switch_to_frame_parent` 切换到上一级表单，[#118](https://github.com/SeldomQA/seldom/issues/118)。
   * 优化`assertNotElement` 执行慢的情况 [#120](https://github.com/SeldomQA/seldom/issues/120)
 * HTTP 测试：
