@@ -138,7 +138,7 @@ class Browser(object):
             return webdriver.Remote(command_executor=EdgeConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.EDGE.copy())
 
-        ep = EdgeConfig.command_executor if EdgeConfig.command_executor != "" else EdgeChromiumDriverManager(log_level=1).install()
+        ep = EdgeConfig.command_executor if EdgeConfig.command_executor != "" else EdgeChromiumDriverManager().install()
         if EdgeConfig.headless is True:
             edge_options = EdgeOptions()
             edge_options.headless = True
