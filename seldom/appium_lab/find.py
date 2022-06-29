@@ -139,3 +139,93 @@ class FindByText(Switch):
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
+
+    def find_static_text(self, text):
+        """
+        查找 XCUIElementTypeStaticText
+        :param text:
+        :return:
+        """
+        self.switch_to_app()
+        for _ in range(3):
+            elem = self.__find(class_name="XCUIElementTypeStaticText", attribute="name", text=text)
+            if elem is not None:
+                break
+            else:
+                self.sleep(1)
+        else:
+            raise ValueError(f"Unable to find -> {text}")
+
+        return elem
+
+    def find_other(self, text):
+        """
+        查找 XCUIElementTypeOther
+        :param text:
+        :return:
+        """
+        self.switch_to_app()
+        for _ in range(3):
+            elem = self.__find(class_name="XCUIElementTypeOther", attribute="name", text=text)
+            if elem is not None:
+                break
+            else:
+                self.sleep(1)
+        else:
+            raise ValueError(f"Unable to find -> {text}")
+
+        return elem
+
+    def find_text_field(self, text):
+        """
+        查找 XCUIElementTypeTextField
+        :param text:
+        :return:
+        """
+        self.switch_to_app()
+        for _ in range(3):
+            elem = self.__find(class_name="XCUIElementTypeTextField", attribute="name", text=text)
+            if elem is not None:
+                break
+            else:
+                self.sleep(1)
+        else:
+            raise ValueError(f"Unable to find -> {text}")
+
+        return elem
+
+    def find_image(self, text):
+        """
+        查找 XCUIElementTypeImage
+        :param text:
+        :return:
+        """
+        self.switch_to_app()
+        for _ in range(3):
+            elem = self.__find(class_name="XCUIElementTypeImage", attribute="name", text=text)
+            if elem is not None:
+                break
+            else:
+                self.sleep(1)
+        else:
+            raise ValueError(f"Unable to find -> {text}")
+
+        return elem
+
+    def find_ios_button(self, text):
+        """
+        查找 XCUIElementTypeButton
+        :param text:
+        :return:
+        """
+        self.switch_to_app()
+        for _ in range(3):
+            elem = self.__find(class_name="XCUIElementTypeButton", attribute="name", text=text)
+            if elem is not None:
+                break
+            else:
+                self.sleep(1)
+        else:
+            raise ValueError(f"Unable to find -> {text}")
+
+        return elem
