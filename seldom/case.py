@@ -53,17 +53,14 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         self.images = []
         # lunch appium
         if (Seldom.app_server is not None) and (Seldom.app_info is not None):
-            try:
-                Seldom.driver = Remote(Seldom.app_server, Seldom.app_info)
-            except WebDriverException:
-                Seldom.quit()
+            Seldom.driver = Remote(Seldom.app_server, Seldom.app_info)
         self.start()
 
     def tearDown(self):
+        self.end()
         # close appium
         if (Seldom.app_server is not None) and (Seldom.app_info is not None):
             Seldom.driver.quit()
-        self.end()
 
     @property
     def driver(self):
