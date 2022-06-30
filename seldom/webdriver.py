@@ -655,6 +655,20 @@ class WebDriver(object):
         all_handles = Seldom.driver.window_handles
         Seldom.driver.switch_to.window(all_handles[window])
 
+    @staticmethod
+    def switch_to_new_window(type_hint=None) -> None:
+        """
+        Switches to a new top-level browsing context.
+
+        The type hint can be one of "tab" or "window". If not specified the
+        browser will automatically select it.
+
+        :Usage:
+            self.switch_to_new_window('tab')
+        """
+        log.info("✅ switch to new window.")
+        Seldom.driver.switch_to.new_window(type_hint=type_hint)
+
     def screenshots(self, file_path: str = None) -> None:
         """
         Saves a screenshots of the current window to a PNG image file.
