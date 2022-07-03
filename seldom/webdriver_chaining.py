@@ -123,7 +123,7 @@ class Steps(object):
         Usage:
             submit()
         """
-        log.info("✅ clear.")
+        log.info("✅ submit.")
         self.element_obj.submit()
         return self
 
