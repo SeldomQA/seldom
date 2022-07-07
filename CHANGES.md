@@ -1,3 +1,14 @@
+### 2.10.2
+* 更新：移动模式列表更新，去掉旧设备，增加新设备 [link](https://github.com/SeldomQA/seldom/blob/master/docs/vpdocs/other/other.md)
+* 功能：测试报告显示断言信息。
+* 功能：`main()` 通过`open=False`可以控制运行完测试 不自动化打开测试报告。
+* Web 测试：
+  * 增加`self.new_browser()` 可以打开新的浏览器，但只能使用`selenium` 的 API
+  * 增加`switch_to_frame_parent` 切换到上一级表单，[#118](https://github.com/SeldomQA/seldom/issues/118)。
+  * 优化`assertNotElement` 执行慢的情况 [#120](https://github.com/SeldomQA/seldom/issues/120)
+* HTTP 测试：
+  * 优化：JSON日志进行格式化打印。
+
 ### 2.10.1
 
 * 修复：seldom log 问题引起，错误信息无法在控制台打印。

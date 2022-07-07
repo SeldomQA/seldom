@@ -4,11 +4,12 @@ import warnings
 from functools import wraps
 from parameterized.parameterized import inspect
 from parameterized.parameterized import parameterized
-from parameterized.parameterized import default_doc_func
-from parameterized.parameterized import default_name_func
 from parameterized.parameterized import skip_on_empty_helper
 from parameterized.parameterized import reapply_patches_if_need
 from parameterized.parameterized import delete_patches_if_need
+from parameterized.parameterized import parameterized_argument_value_pairs
+from parameterized.parameterized import short_repr
+from parameterized.parameterized import to_text
 from parameterized import parameterized_class
 from seldom.testdata import conversion
 from seldom.logging.exceptions import FileTypeError
@@ -168,3 +169,44 @@ def data_class(attrs, input_values):
     Parameterizes a test class by setting attributes on the class.
     """
     return parameterized_class(attrs, input_values)
+
+
+def default_name_func(func, num, p):
+    """
+    return test function name
+    """
+    base_name = func.__name__
+    name_suffix = "_%s" %(num, )
+
+    if len(p.args) > 0 and isinstance(p.args[0], str):
+        # name_suffix += "_" + parameterized.to_safe_name(p.args[0])
+        name_suffix += ""
+    return base_name + name_suffix
+
+
+def default_doc_func(func, num, p):
+    """
+    return test function doc
+    """
+    if func.__doc__ is None:
+        return None
+
+    all_args_with_values = parameterized_argument_value_pairs(func, p)
+    first_args_with_values = [all_args_with_values[0]]
+
+    # Assumes that the function passed is a bound method.
+    descs = ["%s=%s" %(n, short_repr(v)) for n, v in first_args_with_values]
+
+    # The documentation might be a multiline string, so split it
+    # and just work with the first string, ignoring the period
+    # at the end if there is one.
+    first, nl, rest = func.__doc__.lstrip().partition("\n")
+    suffix = ""
+    if first.endswith("."):
+        suffix = "."
+        first = first[:-1]
+    args = "%s[%s]" %(len(first) and " " or "", ", ".join(descs))
+    return "".join(
+        to_text(x)
+        for x in [first.rstrip(), args, suffix, nl, rest]
+    )

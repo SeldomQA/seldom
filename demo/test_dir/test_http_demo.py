@@ -47,7 +47,7 @@ class TestAssert(seldom.TestCase):
         """
         self.get("/get")
         self.assertStatusCode(200)
-        assert_data = {"headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.25.0"}}
+        assert_data = {"headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.26.0"}}
         self.assertJSON(assert_data)
 
     def test_format_assert(self):

@@ -44,7 +44,7 @@ class TestMain(object):
     def __init__(self, path=None, case=None, browser=None, base_url=None, debug=False, timeout=10,
                  app_server=None, app_info=None,
                  report=None, title="Seldom Test Report", tester="Anonymous", description="Test case execution",
-                 rerun=0, save_last_run=False, language="en", whitelist=[], blacklist=[], auto=True):
+                 rerun=0, save_last_run=False, language="en", whitelist=[], blacklist=[], open=True, auto=True):
         """
         runner test case
         :param path:
@@ -64,6 +64,7 @@ class TestMain(object):
         :param language:
         :param whitelist:
         :param blacklist:
+        :param open:
         :param auto:
         :return:
         """
@@ -81,6 +82,7 @@ class TestMain(object):
         self.language = language
         self.whitelist = whitelist
         self.blacklist = blacklist
+        self.open = open
         self.auto = auto
         Seldom.app_server = app_server
         Seldom.app_info = app_info
@@ -160,7 +162,7 @@ class TestMain(object):
 
             log.printf("generated html file: file:///{}".format(report_path))
             log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
-            if self.auto is True:
+            if self.open is True:
                 webbrowser.open_new("file:///{}".format(report_path))
         else:
             runner = DebugTestRunner(
@@ -201,7 +203,7 @@ class TestMainExtend(TestMain):
     def __init__(self, path=None, browser=None, base_url=None, debug=False, timeout=10,
                  app_server=None, app_info=None,
                  report=None, title="Seldom Test Report", description="Test case execution",
-                 rerun=0, save_last_run=False, whitelist=[], blacklist=[], auto=False):
+                 rerun=0, save_last_run=False, whitelist=[], blacklist=[]):
 
         if path is None:
             raise FileNotFoundError("Specify a file path")
@@ -210,7 +212,7 @@ class TestMainExtend(TestMain):
                          app_server=app_server, app_info=app_info,
                          report=report, title=title, description=description,
                          rerun=rerun, save_last_run=save_last_run, whitelist=whitelist, blacklist=blacklist,
-                         auto=auto)
+                         open=False, auto=False)
 
     @staticmethod
     def collect_cases(json=False):

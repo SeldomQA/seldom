@@ -7,15 +7,14 @@ class BaiduTest(seldom.TestCase):
 
     def test_case(self):
         """a simple test case """
-        self.open("https://www.baidu.com")
-        self.type(id_="kw", text="seldom")
-        self.click(css="#su")
-        self.assertTitle("seldom_百度搜索")
+        self.open("https://cn.bing.com")
+        self.type(id_="sb_form_q", text="seldom", enter=True)
+        self.assertTitle("seldom - 搜索")
 
     def test_case_two(self):
         """method chaining """
-        Steps(url="https://www.baidu.com").open().find("#kw").type("seldom").find("#su").click()
-        self.assertTitle("seldom_百度搜索")
+        Steps(url="https://cn.bing.com").open().find("#sb_form_q").type("seldom").submit()
+        self.assertTitle("seldom - 搜索")
 
 
 if __name__ == '__main__':
