@@ -1,13 +1,11 @@
-"""
-author: zhiheng.hu
-data: 2022/5/26
-desc: appium 提供的 switch: 切换上下文
-"""
 from time import sleep as py_sleep
 from seldom.logging import log
 
 
 class Switch:
+    """
+    switch context by appium
+    """
 
     def __init__(self, driver):
         self.driver = driver

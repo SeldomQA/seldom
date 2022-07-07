@@ -72,7 +72,11 @@ class KeyEvent:
 
     def key_text(self, text=""):
         """
-        keyword input text
+        keyword input text.
+        :param text: input text
+
+        Usage:
+            key_text("Hello")
         """
         if text == "":
             return
@@ -81,32 +85,19 @@ class KeyEvent:
             keycode = keycodes.get(s.upper(), 0)
             if keycode == 0:
                 raise KeyError(f"The '{s}' character is not supported")
-            self.driver.keyevent(keycode)
+            if s.isupper():
+                self.driver.press_keycode(keycode, 64, 59)
+            else:
+                self.driver.keyevent(keycode)
 
     def press_key(self, key):
         """
         keyboard
-        :param key:
-        :return:
+        :param key: keyword name
+        press_key("HOME")
         """
         keycode = keycodes.get(key)
         self.driver.press_keycode(keycode)
-
-    def key_text_capital(self, text=""):
-        """
-        appium API
-        keyword input capital text
-        Usage:
-            self.key_text_capital("HELLO")
-        """
-        if text == "":
-            return
-
-        for s in text:
-            keycode = keycodes.get(s.upper(), 0)
-            if keycode == 0:
-                raise KeyError(f"The '{s}' character is not supported")
-            self.driver.press_keycode(keycode, 64, 59)
 
     def back(self):
         """go back"""

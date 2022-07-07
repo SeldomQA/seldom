@@ -1,3 +1,8 @@
+"""
+author: zhiheng.hu
+data: 2022/5/26
+desc: 查找元素
+"""
 from appium.webdriver.common.appiumby import AppiumBy
 from seldom.logging import log
 from seldom.appium_lab.switch import Switch
@@ -5,7 +10,7 @@ from seldom.appium_lab.switch import Switch
 
 class FindByText(Switch):
     """
-    查找元素
+    Find elements based on text
     """
 
     def __find(self, class_name: str, attribute: str, text: str):
@@ -34,8 +39,8 @@ class FindByText(Switch):
 
     def find_view(self, text):
         """
-        查找view
-        :param text: 匹配文本
+        Android: find view
+        :param text:
         :return:
         """
         self.switch_to_app()
@@ -52,8 +57,8 @@ class FindByText(Switch):
 
     def find_edit_text(self, text):
         """
-        查找editText
-        :param text: 匹配文本
+        Android: find editText
+        :param text:
         :return:
         """
         self.switch_to_app()
@@ -70,8 +75,8 @@ class FindByText(Switch):
 
     def find_button(self, text):
         """
-        查找button
-        :param text: 匹配文本
+        Android: find button
+        :param text:
         :return:
         """
         self.switch_to_app()
@@ -88,8 +93,8 @@ class FindByText(Switch):
 
     def find_text_view(self, text):
         """
-        查找TextView
-        :param text: 匹配文本
+        Android: find TextView
+        :param text:
         :return:
         """
         self.switch_to_app()
@@ -106,8 +111,8 @@ class FindByText(Switch):
 
     def find_image_view(self, text):
         """
-        查找ImageView
-        :param text: 匹配文本
+        Android: find ImageView
+        :param text:
         :return:
         """
         self.switch_to_app()
@@ -124,8 +129,8 @@ class FindByText(Switch):
 
     def find_check_box(self, text):
         """
-        查找CheckBox
-        :param text: 匹配文本
+        Android: find CheckBox
+        :param text:
         :return:
         """
         self.switch_to_app()
@@ -142,7 +147,7 @@ class FindByText(Switch):
 
     def find_static_text(self, text):
         """
-        查找 XCUIElementTypeStaticText
+        iOS: find XCUIElementTypeStaticText
         :param text:
         :return:
         """
@@ -160,7 +165,7 @@ class FindByText(Switch):
 
     def find_other(self, text):
         """
-        查找 XCUIElementTypeOther
+        iOS: find XCUIElementTypeOther
         :param text:
         :return:
         """
@@ -178,7 +183,7 @@ class FindByText(Switch):
 
     def find_text_field(self, text):
         """
-        查找 XCUIElementTypeTextField
+        iOS: find XCUIElementTypeTextField
         :param text:
         :return:
         """
@@ -196,7 +201,7 @@ class FindByText(Switch):
 
     def find_image(self, text):
         """
-        查找 XCUIElementTypeImage
+        iOS: find XCUIElementTypeImage
         :param text:
         :return:
         """
@@ -214,7 +219,7 @@ class FindByText(Switch):
 
     def find_ios_button(self, text):
         """
-        查找 XCUIElementTypeButton
+        iOS: find XCUIElementTypeButton
         :param text:
         :return:
         """

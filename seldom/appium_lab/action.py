@@ -1,5 +1,5 @@
-from seldom.appium_lab.switch import Switch
 from seldom.logging import log
+from seldom.appium_lab.switch import Switch
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
@@ -8,7 +8,7 @@ from selenium.webdriver.common.actions import interaction
 
 class Action(Switch):
     """
-    封装基本动作：滑动、点击等
+    Encapsulate basic actions: swipe, tap, etc
     """
 
     def __init__(self, driver):
@@ -20,9 +20,9 @@ class Action(Switch):
 
     def tap(self, x, y):
         """
-        坐标为位点击
-        :param x: 横向坐标
-        :param y: 纵向坐标
+        Tap on the coordinates
+        :param x: x coordinates
+        :param y: y coordinates
         :return:
         """
         self.switch_to_app()
@@ -38,9 +38,9 @@ class Action(Switch):
 
     def swipe_up(self, times=1, up=False):
         """
-        向上滑动
-        :param times: 滑动次数
-        :param up: 因为屏幕键盘遮挡，只滑动上半个区域
+        swipe up
+        :param times: swipe times
+        :param up: Keyboard screen occlusion, swipe only the upper half of the area.
         :return:
         """
         self.switch_to_app()
@@ -66,11 +66,12 @@ class Action(Switch):
 
     def swipe_down(self, times=1):
         """
-        向下滑动
-        :param times: 滑动次数
+        swipe down
+        :param times: swipe times
         :return:
         """
         self.switch_to_app()
+        log.info(f"swipe down {times} times")
         x_start = int(self.width / 2)
         x_end = int(self.width / 2)
 
