@@ -230,7 +230,7 @@ class TestMainExtend(TestMain):
             if (d_file is None) or (d_class is None) or (d_method is None):
                 raise SeldomException(
                     """Use case format error, please refer to: 
-                    https://github.com/SeldomQA/seldom/blob/master/docs/platform.md""")
+                    https://seldomqa.github.io/platform/platform.html""")
             if file_name == d_file and class_name == d_class and method_name == d_method:
                 return True
 
