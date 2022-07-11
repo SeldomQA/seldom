@@ -1,4 +1,4 @@
-# 其他
+# 更多配置
 
 
 ### 指定不同的浏览器
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
 ```
 
-* 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/en/grid/)。
+* 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/grid/)。
 
 
 ### 在pycharm中运行测试

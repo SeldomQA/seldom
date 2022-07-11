@@ -123,6 +123,39 @@ class YouTest(seldom.TestCase):
 
 ```
 
+**动态生成测试数据**
+
+除了使用固定的数据，也可以动态生成一些测试数据用于自动化测试。
+
+```python
+import seldom
+from seldom import data
+from seldom import testdata
+
+
+def test_data():
+    """
+    自动生成测试数据
+    """
+    login_data = []
+    for i in range(5):
+        login_data.append({
+            "scene": f"login{i}",
+            "username": testdata.get_email(),
+            "password": testdata.get_int(100000, 999999)
+        })
+    return login_data
+
+
+class MyTest(seldom.TestCase):
+
+    @data(test_data())
+    def test_login(self, _, username, password):
+        """test login"""
+        print(username)
+        print(password)
+```
+
 **csv 文件参数化**
 
 seldom 支持将`csv`文件的参数化。
@@ -278,6 +311,72 @@ class YouTest(seldom.TestCase):
 
 - file : 指定 YAML 文件的路径。
 - key: 指定字典的 key，默认不指定解析整个 YAML 文件。
+
+
+**支持配置测试环境**
+
+在自动化测试过程中，我们往往需要一套代码在不同的环境下运行，seldom支持根据环境使用不同的数据文件。
+
+* 数据文件目录结构（一）
+```shell
+.
+└── test_data
+    ├── develop
+    │   └── test_data.json
+    ├── product
+    │   └── test_data.json
+    └── test
+        └── test_data.json
+```
+
+* 数据文件目录结构（二）
+```shell
+.
+├── develop
+│   └── test_data
+│       └── test_data.json
+├── product
+│   └── test_data
+│       └── test_data.json
+└── test
+    └── test_data
+        └── test_data.json
+```
+
+* 配置测试环境
+```python
+import seldom
+from seldom import file_data
+from seldom import Seldom
+
+
+class MyTest(seldom.TestCase):
+
+    # 数据文件目录结构（一）
+    @file_data("test_data.json")
+    def test_case(self, req, resp):
+        f"""a simple test case"""
+        ...
+
+    # 数据文件目录结构（二）
+    @file_data("test_data/test_data.json")
+    def test_case(self, req, resp):
+        f"""a simple test case"""
+        ...
+
+
+if __name__ == '__main__':
+    Seldom.env = "product"  # test/develop/product 设置当前环境
+    seldom.main(debug=True)
+```
+
+`Seldom.env` 默认为`None`，当设置了环境，`@file_data()` 会带上环境的目录名，例如:
+
+* `test_data.json` 查找的文件为 `product/test_data.json`
+* `test_data/test_data.json` 查找的文件为 `product/test_data/test_data.json`
+
+> `Seldom.env` 可以随意命名，但最好遵循一定的规范:`test/develop/product`。你还可以利用`Seldom.env`变量本地创建更多的配置。
+
 
 **支持第三方 ddt 库**
 
