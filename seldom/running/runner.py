@@ -204,14 +204,52 @@ class TestMainExtend(TestMain):
                          open=False, auto=False)
 
     @staticmethod
-    def collect_cases(json=False):
+    def collect_cases(json=False, level="data"):
         """
         Return the collected case information.
         SeldomTestLoader.collectCaseInfo = True
+        :param json: Return JSON format
+        :param level: Parse the level of use cases:
+                * data: Each piece of test data is parsed into a use case.
+                * method: Each method is resolved into a use case
         """
+        if level not in ["data", "method"]:
+            raise ValueError("level value error.")
+
+        cases = seldomTestLoader.collectCaseList
+
+        if level == "method":
+            # Remove the data-driven use case end number
+            cases_backup_1 = []
+            for case in cases:
+                case_name = case["method"]["name"]
+                if "_" not in case_name:
+                    cases_backup_1.append(case)
+                else:
+                    try:
+                        int(case_name.split("_")[-1])
+                    except ValueError:
+                        cases_backup_1.append(case)
+                    else:
+                        case_name_end = case_name.split("_")[-1]
+                        case["method"]["name"] = case_name[:-(len(case_name_end) + 1)]
+                        cases_backup_1.append(case)
+
+            # Remove duplicate use cases
+            cases_backup_2 = []
+            case_full_list = []
+            for case in cases_backup_1:
+                case_full = f'{case["file"]}.{case["class"]["name"]}.{case["method"]["name"]}'
+                if case_full not in case_full_list:
+                    case_full_list.append(case_full)
+                    cases_backup_2.append(case)
+
+            cases = cases_backup_2
+
         if json is True:
-            return sys_json.dumps(seldomTestLoader.collectCaseList)
-        return seldomTestLoader.collectCaseList
+            return sys_json.dumps(cases, indent=2, ensure_ascii=False)
+
+        return cases
 
     @staticmethod
     def _diff_case(file_name: str, class_name: str, method_name: str, data: list) -> bool:
@@ -231,15 +269,26 @@ class TestMainExtend(TestMain):
                 raise SeldomException(
                     """Use case format error, please refer to: 
                     https://seldomqa.github.io/platform/platform.html""")
-            if file_name == d_file and class_name == d_class and method_name == d_method:
-                return True
+
+            if "_" not in method_name:
+                if file_name == d_file and class_name == d_class and method_name == d_method:
+                    return True
+            else:
+                try:
+                    int(method_name.split("_")[-1])
+                except ValueError:
+                    if file_name == d_file and class_name == d_class and method_name == d_method:
+                        return True
+                else:
+                    if file_name == d_file and class_name == d_class and method_name.startswith(d_method):
+                        return True
 
         return False
 
     def run_cases(self, data: list) -> None:
         """
         run list case
-        :param data:
+        :param data: test case list
         :return:
         """
         if isinstance(data, list) is False:
