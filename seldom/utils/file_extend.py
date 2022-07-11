@@ -88,6 +88,13 @@ class File:
         sys.path.insert(1, path)
 
     @staticmethod
+    def join(a, *paths):
+        """
+        Connect two or more path names
+        """
+        return os.path.join(a, *paths)
+
+    @staticmethod
     def remove(path) -> None:
         """
         del file
