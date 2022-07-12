@@ -60,9 +60,9 @@ if __name__ == '__main__':
     seldom.main(browser="gc", tester="虫师")
 ```
 
-### CaseAPI 
+### Steps 类 
 
-`Case` 类所提供的API 大部分和`Webidrver` 类保持一致，但考虑掉到链式的特点，命名上更体现`动作`。
+`Steps` 类所提供的API 大部分和`Webidrver` 类保持一致，但考虑掉到链式的特点，命名上更体现`动作`。
 
 __查找元素__
 

@@ -185,6 +185,19 @@ if __name__ == '__main__':
 > 2. 如果是Web UI自动化测试，无法自动关闭浏览器，需要手动关闭浏览器`self.close()`
 
 
+### 在pycharm中运行测试
+
+1. 配置测试用例通过 unittest 运行。
+
+![](/image/pycharm.png)
+
+2. 在文件中选择测试类或用例执行。
+
+![](/image/pycharm_run_case.png) 
+
+> 警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
+
+
 ### 失败重跑
 
 Seldom支持`错误`&`失败`重跑。

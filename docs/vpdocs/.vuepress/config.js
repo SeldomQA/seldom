@@ -36,15 +36,22 @@ module.exports = {
         ],
       },
       {
-        text: "进阶",
+        text: "web UI 测试",
         children: [
-          "/advanced/seldom_api",
-          "/advanced/chaining",
-          "/advanced/advanced",
+          "/web-testing/browser_driver",
+          "/web-testing/seldom_api",
+          "/web-testing/chaining",
+          "/web-testing/other",
         ],
       },
-      "/other/other",
-      "/http/http",
+      {
+        text: "HTTP接口测试",
+        children: [
+          "/api-testing/start",
+          "/api-testing/assert",
+          "/api-testing/more",
+        ],
+      },
       "/db/db_operation",
       "/platform/platform",
     ],
