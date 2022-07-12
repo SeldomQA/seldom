@@ -54,6 +54,7 @@ module.exports = {
       },
       "/db/db_operation",
       "/platform/platform",
+      "/version/CHANGES",
     ],
     editLinks: true,
     editLinkText: "在 GitHub 上编辑此页",
