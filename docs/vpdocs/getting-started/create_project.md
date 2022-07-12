@@ -2,35 +2,12 @@
 
 seldom已经安装完成，那么现在已经迫不及待的想体验seldom的使用。
 
-### 创建用例
-
-创建一个python文件`test_sample.py`。
-
-```py
-import seldom
-
-
-class YouTest(seldom.TestCase):
-
-    def test_case(self):
-        """a simple test case """
-        self.open("https://www.baidu.com")
-        self.type(id_="kw", text="seldom")
-        self.click(css="#su")
-        self.assertTitle("seldom_百度搜索")
-
-
-if __name__ == '__main__':
-    seldom.main()
-```
-
-seldom提供的有命令，可以快速的帮助我们创建。
 
 ### 自动生成项目
 
-seldom 通过`seldom`命令提供了脚手架，可以快速的帮我们创建Web UI自动化项目。
+seldom 通过`seldom`命令提供了脚手架，可以快速的帮我们创建自动化测试项目。
 
-1、查看帮助：
+1. 查看帮助：
 
 ```shell
 > seldom -h
@@ -50,7 +27,7 @@ optional arguments:
                     'firefox'.
 ```
 
-2、创建项目：
+2. 创建项目：
 
 ```shell
 > seldom -project mypro
@@ -73,3 +50,42 @@ mypro/
 * `test_data/` 测试数据文件目录。
 * `reports/` 测试报告目录。
 * `run.py` 运行测试用例主文件。
+
+3. 克隆项目
+
+如果无法使用`seldom`命令，可以通过git克隆相关项目进行学习。
+
+
+* seldom-web-testing
+
+```shell
+> git clone https://github.com/SeldomQA/seldom-web-testing
+```
+
+* seldom-api-testing
+
+```shell
+> git clone https://github.com/defnngj/seldom-api-testing
+```
+
+
+### 创建测试用例
+
+根据上面的创建的项目，可以在`test_dir`目录下继续创建测试用例：`test_sample.py`。
+
+```py
+import seldom
+
+
+class YouTest(seldom.TestCase):
+
+    def test_case(self):
+        """a simple test case """
+        ...
+
+
+if __name__ == '__main__':
+    seldom.main()
+```
+
+根据自己的需求编写`Web UI` or`HTTP接口`自动化测试。

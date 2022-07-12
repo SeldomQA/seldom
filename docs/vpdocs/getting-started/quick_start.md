@@ -1,29 +1,35 @@
 # 快速开始
 
-### 下载浏览器驱动
+### 基本规范
 
-和Selenium一样，在使用seldom运行自动化测试之前，需要先配置浏览器驱动，这一步非常重要。
-
-__自动下载__
-
-seldom 集成 [webdriver_manager](https://github.com/SergeyPirogov/webdriver_manager) ，提供了`chrome/firefox/ie/edge/opera`浏览器驱动的自动下载。
+`seldom`继承`unittest`单元测试框架，所以他的编写规范与[unittest](https://docs.python.org/3/library/unittest.html)基本保持一致。
 
 ```shell
-> seldom -install chrome
-> seldom -install firefox
-> seldom -install ie
-> seldom -install edge
-> seldom -install opera
+# test_sample.py
+import seldom
+
+
+class YouTest(seldom.TestCase):
+
+    def test_case(self):
+        """a simple test case """
+        self.assertEqual(1+1, 2)
+
+
+if __name__ == '__main__':
+    seldom.main()
 ```
 
-1. 默认下载到当前的`C:\Users\username\.wdm\drivers\` 目录下面。
-2. Chrome: `chromedriver` （众所周知的原因，使用的taobao的镜像）。
-3. Safari: `safaridriver` （macOS系统自带，默认路径:`/usr/bin/safaridriver`）
+基本规范：
+
+1. 创建测试类`YouTest`并继承`seldom.TestCase`类。
+2. 创建测试方法`test_case`, 必须以`test`开头。
+3. `seldom.mian()`是框架运行的入口方法，接下来详细介绍。
 
 
 ### `main()` 方法
 
-`main()`方法是seldom运行测试的入口, 它提供了一些最基本也是重要的配置。
+`main()`方法是seldom运行测试的入口, 它提供了一些最基本也是最重要的配置。
 
 ```python
 import seldom
@@ -72,24 +78,36 @@ __参数说明__
 
 ### 运行测试
 
-1.在终端下运行（推荐）
+> seldom 强烈建议通过命令行工具执行
 
-创建 `run.py` 文件，在要文件中引用`main()`方法，如下：
+1. 运行当前文件中的用例
+
+创建 `test_sample.py` 文件，在要文件中使用`main()`方法，如下：
 
 ```py
+# test_sample.py
 import seldom
 
-seldom.main()    # 默认运行当前文件中的用例。
+
+class YouTest(seldom.TestCase):
+
+    def test_case(self):
+        """a simple test case """
+        self.assertEqual(1+1, 2)
+
+
+if __name__ == '__main__':
+    seldom.main()  # 默认运行当前文件中的用例
 ```
 
 `main()`方法默认运行当前文件中的所有用例。
 
 ```shell
-> python run.py      # 通过python命令运行
-> seldom -r run.py   # 通过seldom命令运行
+> python test_sample.py      # 通过python命令运行
+> seldom -r test_sample.py   # 通过seldom命令运行
 ```
 
-2.设置运行目录、文件
+2. 指定运行目录、文件
 
 可以通过`path`参数指定要运行的目录或文件。
 
@@ -104,11 +122,12 @@ seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")  # 指定文件的�
 ```
 
 * 运行文件
+
 ```shell
-python run.py
+> python run.py
 ```
 
-3.运行单个类、方法（一）
+3. 指定单个类、方法执行
 
 可以通过`case`参数指定要运行文件、类和方法。
 
@@ -145,12 +164,13 @@ if __name__ == '__main__':
     seldom.main(case="test_sample.TestCase.test_ddt_0_case1")  # 正确用例
 ```
 
-* 运行
+* 运行文件
+
 ```shell
 > python test_sample.py
 ```
 
-4.运行单个类、方法（二）
+4. seldom命令指定单个类、方法
 
 `seldom -m`命令可以提供更细粒度的运行。
 
@@ -160,14 +180,14 @@ if __name__ == '__main__':
 > seldom -m test_sample.SampleTest.test_case # 运行 test_case 测试方法
 ```
 
-> 这种模式有两个问题：
+> seldom命令指定类、方法有两个问题：
 > 1. 不支持poium，如果要使用，必须手动给`Seldom.driver` 赋值浏览器驱动。
 > 2. 如果是Web UI自动化测试，无法自动关闭浏览器，需要手动关闭浏览器`self.close()`
 
 
-### 失败重跑与截图
+### 失败重跑
 
-Seldom支持失败重跑，以及截图功能。
+Seldom支持`错误`&`失败`重跑。
 
 ```python
 # test_sample.py
@@ -176,24 +196,26 @@ import seldom
 
 class YouTest(seldom.TestCase):
 
-    def test_case(self):
-        """a simple test case """
-        self.open("https://www.baidu.com")
-        self.type(id_="kw", text="seldom")
-        self.click(css="#su_error")
-        #...
+  
+    def test_error(self):
+        """error case"""
+        self.assertEqual(a, 2)
+
+    def test_fail(self):
+        """fail case """
+        self.assertEqual(1+1, 3)
 
 
 if __name__ == '__main__':
     seldom.main(rerun=3, save_last_run=False)
 ```
 
-__说明__
+参数说明：
 
 * rerun: 指定重跑的次数，默认为 `0`。
 * save_last_run: 设置是否只保存最后一次运行结果，默认为`False`。
 
-__运行日志__
+运行日志：
 
 ```shell
 > python test_sample.py
@@ -209,42 +231,21 @@ __运行日志__
 
 
 
-====== WebDriver manager ======
-Current google-chrome version is
-Current google-chrome version is 99.0.4844
-Get LATEST chromedriver version for 99.0.4844 google-chrome
-Driver [C:\Users\fnngj\.wdm\drivers\chromedriver\win32\99.0.4844.35\chromedriver.exe] found in cache
-
-DevTools listening on ws://127.0.0.1:58294/devtools/browser/59f02afe-8c7a-4b20-b8f4-ff20fac07e08
-.\ztest_sync.py
+.\test_sample.py
 
 XTestRunner Running tests...
 
 ----------------------------------------------------------------------
-2022-04-30 18:32:41 log.py | INFO | 📖 https://www.baidu.com
-
-DevTools listening on ws://127.0.0.1:60038/devtools/browser/ab12c7af-cc6c-423b-be5b-018dc7b82e3d
-2022-04-30 18:32:48 log.py | INFO | ✅ Find 1 element: id=kw  -> input 'seldom'.
-ERetesting... test_case (test_req.YouTest)..1
-2022-04-30 18:32:58 log.py | INFO | 📖 https://www.baidu.com
-2022-04-30 18:33:00 log.py | INFO | ✅ Find 1 element: id=kw  -> input 'seldom'.
-ERetesting... test_case (test_req.YouTest)..2
-2022-04-30 18:33:11 log.py | INFO | 📖 https://www.baidu.com
-2022-04-30 18:33:12 log.py | INFO | ✅ Find 1 element: id=kw  -> input 'seldom'.
-ERetesting... test_case (test_req.YouTest)..3
-2022-04-30 18:33:22 log.py | INFO | 📖 https://www.baidu.com
-2022-04-30 18:33:23 log.py | INFO | ✅ Find 1 element: id=kw  -> input 'seldom'.
+ERetesting... test_error (test_sample.YouTest)..1
+ERetesting... test_error (test_sample.YouTest)..2
+ERetesting... test_error (test_sample.YouTest)..3
+EFRetesting... test_fail (test_sample.YouTest)..1
+FRetesting... test_fail (test_sample.YouTest)..2
+FRetesting... test_fail (test_sample.YouTest)..3
 Generating HTML reports...
-E2022-04-30 18:33:34 log.py | SUCCESS | generated html file: file:///D:\github\seldom\reports\2022_04_30_18_32_41_result.html
-2022-04-30 18:33:34 log.py | SUCCESS | generated log file: file:///D:\github\seldom\reports\seldom_log.log
+F2022-07-12 00:22:52 log.py | SUCCESS | generated html file: file:///D:\github\seldom\reports\2022_07_12_00_22_51_result.html
+2022-07-12 00:22:52 log.py | SUCCESS | generated log file: file:///D:\github\seldom\reports\seldom_log.log
 ```
-
-__测试报告__
-
-![](/image/report.png)
-
-点击报告中的`show`按钮可以查看截图。
-
 
 ### 测试报告
 
@@ -268,6 +269,9 @@ mypro/
 ```
 
 通过浏览器打开 `2020_01_01_11_20_33_result.html` 测试报告，查看测试结果。
+
+![](/image/report.png)
+
 
 __debug模式__
 

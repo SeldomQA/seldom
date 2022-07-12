@@ -31,6 +31,8 @@ module.exports = {
           "/getting-started/installation",
           "/getting-started/create_project",
           "/getting-started/quick_start",
+          "/getting-started/advanced",
+          "/getting-started/data_driver",
         ],
       },
       {
