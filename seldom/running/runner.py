@@ -301,6 +301,9 @@ class TestMainExtend(TestMain):
         suit = unittest.TestSuite()
         for suits in self.TestSuits:
             for cases in suits:
+                if isinstance(cases, unittest.suite.TestSuite) is False:
+                    raise SeldomException(f"Case analysis failed. {cases}")
+
                 for case in cases:
                     file_name = case.__module__
                     class_name = case.__class__.__name__
