@@ -1,5 +1,5 @@
 """
-The @KLOOK Company sends a lark message
+The @KLOOK Company API
 """
 import requests
 from requests.exceptions import RetryError
@@ -79,8 +79,8 @@ class Lark:
                 code = error.get('code', -1)
                 if code != '0':
                     log.error(f'[send_message] got error, {response}')
-                    return
                 log.success(f'[send_message] success, {response}')
+                return r.json()
             else:
                 log.error(f'[send_message] got error, {response}')
         except RetryError as e:
@@ -88,3 +88,28 @@ class Lark:
             return {}
         except Exception as e:
             log.error(f'[send_message] got exception error, error: {e}')
+
+
+class MockEnv:
+    """
+    修改请求指向Mock环境
+    """
+
+    def __init__(self, url: str, data: dict):
+        self.url = url
+        self.data = data
+
+    def update(self):
+        try:
+            r = requests.post(url=self.url, json=data)
+            if r.status_code == 200:
+                success = r.json().get('success')
+                if success is not True:
+                    log.error(f'[mock] got error, {r.text}')
+                log.success(f'[mock] success, {r.json()}')
+                return r.json()
+        except RetryError as e:
+            log.error(f'[mock] got retry error, error: {e}')
+            return {}
+        except Exception as e:
+            log.error(f'[mock] got exception error, error: {e}')
