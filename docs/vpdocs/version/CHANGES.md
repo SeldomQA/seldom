@@ -1,5 +1,12 @@
 # 版本更新
 
+### 2.10.3
+* 数据驱动：`@data()` 和 `@file_data()` 优化用例名称和描述。
+* 增加`Seldom.env`环境配置变量，`@file_data()` 数据驱动装饰器支持环境变量。 
+* 修复：`Edge`浏览器启动错误。
+* 修复：HTTP接口测试`self.post()`方法 `data`参数不是dict类型错误。
+* 平台化支持：优化用例收集，具体查看文档。
+
 ### 2.10.2
 * 更新：移动模式列表更新，去掉旧设备，增加新设备 [link](https://github.com/SeldomQA/seldom/blob/master/docs/vpdocs/other/other.md)
 * 功能：测试报告显示断言信息。
