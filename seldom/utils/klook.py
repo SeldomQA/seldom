@@ -73,21 +73,20 @@ class Lark:
 
         try:
             r = requests.post(url=self.url, headers=self.headers, json=req_body)
-            response = f'email: {email}, status_code: {r.status_code}, response: {r.text}'
             if r.status_code == 200:
                 error = r.json().get('error', {})
                 code = error.get('code', -1)
-                if code != '0':
-                    log.error(f'[send_message] got error, {response}')
-                log.success(f'[send_message] success, {response}')
-                return r.json()
+                if code == '0':
+                    log.success(f'[message] success, {r.json()}')
+                    return r.json()
+                log.error(f'[message] got error, {r.text}')
             else:
-                log.error(f'[send_message] got error, {response}')
+                log.error(f'[message] got error, {r.text}')
         except RetryError as e:
-            log.error(f'[send_message] got retry error, error: {e}')
+            log.error(f'[message] got retry error, error: {e}')
             return {}
         except Exception as e:
-            log.error(f'[send_message] got exception error, error: {e}')
+            log.error(f'[message] got exception error, error: {e}')
 
 
 class MockEnv:
@@ -95,19 +94,22 @@ class MockEnv:
     修改请求指向Mock环境
     """
 
-    def __init__(self, url: str, data: dict):
+    def __init__(self, url: str, data: dict, headers: dict):
         self.url = url
         self.data = data
+        self.headers = headers
 
     def update(self):
         try:
-            r = requests.post(url=self.url, json=data)
+            r = requests.post(url=self.url, json=self.data, headers=self.headers)
             if r.status_code == 200:
                 success = r.json().get('success')
-                if success is not True:
-                    log.error(f'[mock] got error, {r.text}')
-                log.success(f'[mock] success, {r.json()}')
-                return r.json()
+                if success is True:
+                    log.success(f'[mock] success, {r.json()}')
+                    return r.json()
+                log.error(f'[mock] got error, {r.text}')
+            else:
+                log.error(f'[message] got error, {r.text}')
         except RetryError as e:
             log.error(f'[mock] got retry error, error: {e}')
             return {}
