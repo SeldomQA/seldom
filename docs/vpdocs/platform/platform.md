@@ -36,7 +36,9 @@ __说明__
 
 * `collectCaseInfo` ：`collectCaseInfo`设置为`True` 说明需要收集用例信息。
 * `TestMainExtend(path="./test_dir/")` ： `TestMainExtend`类是`TestMain`类的扩展，`path`设置收集用例的目录，不能为空。
-* `collect_cases(json=True)`: 返回收集的用例信息，`json=True` 说明返回`json`格式；默认为`dict/list`格式。
+* `collect_cases(json=False, level="data")`：返回收集的用例信息。
+    * `json=False`：默认为`list`格式；设置为`True`返回`json`格式。
+    * `level="data"` ：默认为`data`，数据驱动的每条数据被解析为一条用例。如果设置为 `method` 数据驱动的方法被解析为一条用例。
 
 
 ```json

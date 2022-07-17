@@ -12,8 +12,9 @@ IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
 def formatting(msg):
     """formatted message"""
-    format_msg = json.dumps(msg, indent=2, ensure_ascii=False)
-    return format_msg
+    if isinstance(msg, dict):
+        return json.dumps(msg, indent=2, ensure_ascii=False)
+    return msg
 
 
 def request(func):

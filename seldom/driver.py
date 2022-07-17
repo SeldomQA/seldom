@@ -80,7 +80,7 @@ class Browser(object):
         elif cls.name in PAD_LIST:
             return cls.pad(name)
         raise NameError(
-            "Not found '{}' browser, See the help doc: https://github.com/SeldomQA/seldom/blob/master/docs/driver.md'.".format(cls.name))
+            "Not found `{}` browser, See the help doc: https://seldomqa.github.io/other/other.html.".format(cls.name))
 
     @staticmethod
     def chrome():

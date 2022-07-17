@@ -14,6 +14,7 @@ from parameterized import parameterized_class
 from seldom.testdata import conversion
 from seldom.logging.exceptions import FileTypeError
 from seldom.testdata.conversion import _check_data
+from seldom import Seldom
 
 
 __all__ = [
@@ -21,10 +22,65 @@ __all__ = [
 ]
 
 
+def find_file_path(file_dir, file_name):
+    """
+    find file path
+    :param file_dir:
+    :param file_name:
+    """
+    file_path = None
+    find_dir = os.path.dirname(file_dir)
+
+    for root, dirs, files in os.walk(find_dir, topdown=False):
+        for f in files:
+            if Seldom.env is not None:
+                if root.endswith(Seldom.env) and f == file_name:
+                    file_path = os.path.join(root, file_name)
+                    break
+            else:
+                if f == file_name:
+                    file_path = os.path.join(root, file_name)
+                    break
+        else:
+            continue
+        break
+
+    return file_path
+
+
+def find_env_file_path(file_dir, file_part_path):
+    """
+    find file path
+    :param file_dir:
+    :param file_part_path:
+    """
+    file_path = None
+    find_dir = os.path.dirname(file_dir)
+    file_name = file_part_path.split("/")[-1]
+    file_part = os.path.join(Seldom.env, file_part_path[:-len(file_name) - 1])
+
+    for root, dirs, files in os.walk(find_dir, topdown=False):
+        for f in files:
+            if root.endswith(file_part) and f == file_name:
+                file_path = os.path.join(root, file_name)
+                break
+        else:
+            continue
+        break
+
+    return file_path
+
+
 def file_data(file, line=1, sheet="Sheet1", key=None):
     """
     Support file parameterization.
 
+    :param file: file name
+    :param line:  Line number of an Excel/CSV file
+    :param sheet: Excel sheet name
+    :param key: Key name of an YAML/JSON file
+
+    Usage:
     d.json
     ```json
     {
@@ -49,36 +105,32 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
     if os.path.isfile(file) is True:
         file_path = file
     elif "/" in file or "\\" in file:
-        file = file.replace("\\", "/")
-        current_dir = os.path.join(file_dir, file)
-        parent_dir = os.path.join(os.path.dirname(file_dir), file)
-        parent_dir_dir = os.path.join(os.path.dirname(os.path.dirname(file_dir)), file)
-        parent_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file_dir))), file)
-        parent_dir_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
-
-        if os.path.isfile(current_dir) is True:
-            file_path = current_dir
-        elif os.path.isfile(parent_dir) is True:
-            file_path = parent_dir
-        elif os.path.isfile(parent_dir_dir) is True:
-            file_path = parent_dir_dir
-        elif os.path.isfile(parent_dir_dir_dir) is True:
-            file_path = parent_dir_dir_dir
-        elif os.path.isfile(parent_dir_dir_dir_dir) is True:
-            file_path = parent_dir_dir_dir_dir
+        if Seldom.env is not None:
+            file_path = find_env_file_path(file_dir=file_dir, file_part_path=file)
+            if file_path is None:
+                raise FileExistsError(f"No '{file}' data file found.")
         else:
-            raise FileExistsError(f"No '{file}' data file found.")
-    else:
-        file_path = None
-        find_dir = os.path.dirname(file_dir)
-        for root, dirs, files in os.walk(find_dir, topdown=False):
-            for f in files:
-                if f == file:
-                    file_path = os.path.join(root, file)
-                    break
+            file = file.replace("\\", "/")
+            current_dir = os.path.join(file_dir, file)
+            parent_dir = os.path.join(os.path.dirname(file_dir), file)
+            parent_dir_dir = os.path.join(os.path.dirname(os.path.dirname(file_dir)), file)
+            parent_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file_dir))), file)
+            parent_dir_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
+
+            if os.path.isfile(current_dir) is True:
+                file_path = current_dir
+            elif os.path.isfile(parent_dir) is True:
+                file_path = parent_dir
+            elif os.path.isfile(parent_dir_dir) is True:
+                file_path = parent_dir_dir
+            elif os.path.isfile(parent_dir_dir_dir) is True:
+                file_path = parent_dir_dir_dir
+            elif os.path.isfile(parent_dir_dir_dir_dir) is True:
+                file_path = parent_dir_dir_dir_dir
             else:
-                continue
-            break
+                raise FileExistsError(f"No '{file}' data file found.")
+    else:
+        file_path = find_file_path(file_dir=file_dir, file_name=file)
 
         if file_path is None:
             raise FileExistsError(f"No '{file}' data file found.")

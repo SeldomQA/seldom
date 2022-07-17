@@ -13,6 +13,7 @@ class Seldom:
     base_url = None
     app_server = None
     app_info = None
+    env = None
 
 
 class BrowserConfig:

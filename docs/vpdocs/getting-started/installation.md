@@ -23,17 +23,18 @@ seldom的安装非常简单。
 随着seldom 加入更多的功能，seldom不得不依赖其他的开源库。你可以在 requirements.txt 文件里面看到这些依赖。
 
 ```shell
-colorama>=0.4.3
 selenium>=4.0.0
-XTestRunner>=1.4.1
-parameterized>=0.7.0
-poium>=1.0.0
-openpyxl==3.0.3
+XTestRunner>=1.4.2
+parameterized==0.8.1
+loguru==0.6.0
+openpyxl>=3.0.3
 pyyaml>=5.1
 requests>=2.22.0
 jsonschema>=3.2.0
 jmespath>=0.10.0
-webdriver-manager>=3.5.0
+webdriver-manager==3.7.0
+pymysql>=1.0.0
+genson==1.2.2
 ```
 
 先通过 `pip` 命令安装这些依赖库，可以加快seldom的这安装。
@@ -50,14 +51,14 @@ webdriver-manager>=3.5.0
 > pip show seldom
 
 Name: seldom
-Version: 2.x.x
+Version: 2.xx.xx
 Summary: WebUI/HTTP automation testing framework based on unittest.
 Home-page: https://github.com/seldomQA/seldom/
 Author: bugmaster
 Author-email: fnngj@126.com
 License: BSD
-Location: c:\python38\lib\site-packages\seldom-2.x.x-py3.8.egg
-Requires: colorama, jmespath, jsonschema, openpyxl, parameterized, pymysql, pyyaml, requests, selenium, webdriver-manager, XTestRunner
+Location: c:\python38\lib\site-packages
+Requires: genson, jmespath, jsonschema, loguru, openpyxl, parameterized, pymysql, pyyaml, requests, selenium, webdriver-manager, XTestRunner
 Required-by:
 
 ```
