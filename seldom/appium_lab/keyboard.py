@@ -106,3 +106,26 @@ class KeyEvent:
     def home(self):
         """press home"""
         self.driver.home()
+
+    def hide_keyboard(self, key_name=None, key=None, strategy = None):
+        """
+        Hides the software keyboard on the device.
+
+        In iOS, use `key_name` to press
+        a particular key, or `strategy`. In Android, no parameters are used.
+
+        Args:
+            key_name: key to press
+            key:
+            strategy: strategy for closing the keyboard (e.g., `tapOutside`)
+
+        """
+        self.driver.hide_keyboard()
+
+    def is_keyboard_shown(self) -> bool:
+        """Attempts to detect whether a software keyboard is present
+
+        Returns:
+            `True` if keyboard is shown
+        """
+        return self.driver.is_keyboard_shown()
