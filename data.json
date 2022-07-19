@@ -1,0 +1,15 @@
+{
+ "login":  [
+    ["admin", "admin123"],
+    ["guest", "guest123"]
+ ],
+  "search": [
+    {
+      "name": "case1",
+      "search": "seldom"
+    }, {
+      "name": "case2",
+      "search": "XTestRunner"
+    }
+  ]
+}
