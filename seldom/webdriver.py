@@ -250,6 +250,16 @@ class WebDriver(object):
         """
         Seldom.driver.set_window_size(wide, high)
 
+    @staticmethod
+    def get_windows() -> dict:
+        """
+         Gets the width and height of the current window.
+
+        :Usage:
+            driver.get_windows()
+        """
+        return Seldom.driver.get_window_size()
+
     def type(self, text: str, clear: bool = False, enter: bool = False, index: int = 0, **kwargs) -> None:
         """
         Operation input box.
