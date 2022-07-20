@@ -16,27 +16,40 @@ import seldom
 from seldom import data
 
 
-class BaiduTest(seldom.TestCase):
+class DataDriverTest(seldom.TestCase):
 
     @data([
-        (1, 'seldom'),
-        (2, 'selenium'),
-        (3, 'unittest'),
+        ("First case", "seldom"),
+        ("Second case", "selenium"),
+        ("Third case", "unittest"),
     ])
-    def test_baidu1(self, _, keyword):
+    def test_tuple_data(self, name, keyword):
         """
-        used parameterized test
+        Used tuple test data
+        :param name: case desc
+        :param keyword: case data
         """
         print(f"test data: {keyword}")
     
     @data([
-        {"scene": 'case_1', 'keyword': 'seldom'},
-        {"scene": 'case_2', 'keyword': 'selenium'},
-        {"scene": 'case_3', 'keyword': 'unittest'},
+        ["First case", "seldom"],
+        ["Second case", "selenium"],
+        ["Third case", "unittest"],
     ])
-    def test_baidu2(self, scene, keyword):
+    def test_list_data(self, name, keyword):
         """
-        used parameterized test
+        Used list test data
+        """
+        print(f"test data: {keyword}")
+    
+    @data([
+        {"scene": 'First case', 'keyword': 'seldom'},
+        {"scene": 'Second case', 'keyword': 'selenium'},
+        {"scene": 'Third case', 'keyword': 'unittest'},
+    ])
+    def test_dict_data(self, scene, keyword):
+        """
+        used dict test data
         """
         print(f"case desc: {scene}")
         print(f"test data: {keyword}")
