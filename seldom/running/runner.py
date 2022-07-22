@@ -126,8 +126,8 @@ class TestMain(object):
         if self.auto is True:
             self.run(self.TestSuits)
 
-        # ----- Close browser globally -----
-        self.close_browser()
+            # ----- Close browser globally -----
+            self.close_browser()
 
     def run(self, suits):
         """
