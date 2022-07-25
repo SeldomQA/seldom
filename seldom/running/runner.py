@@ -13,11 +13,11 @@ from XTestRunner import XMLTestRunner
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.driver import Browser
 from seldom.logging import log
+from seldom.logging import log2
 from seldom.logging.exceptions import SeldomException
 from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.loader_extend import seldomTestLoader
-
 
 INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
@@ -152,12 +152,14 @@ class TestMain(object):
                     runner = XMLTestRunner(output=fp)
                     runner.run(suits)
                 else:
-                    runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester, description=self.description,
-                                            language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
+                    runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester,
+                                            description=self.description,
+                                            language=self.language, blacklist=self.blacklist, whitelist=self.whitelist,
+                                            logger=log)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
-            log.printf("generated html file: file:///{}".format(report_path))
-            log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            log2.printf("generated html file: file:///{}".format(report_path))
+            log2.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
             if self.open is True:
                 webbrowser.open_new("file:///{}".format(report_path))
         else:

@@ -85,4 +85,5 @@ class Logger:
 
 
 # log level: TRACE < DEBUG < INFO < SUCCESS < WARNING < ERROR
-log = Logger(level="TRACE")
+log2 = Logger(level="TRACE")
+log = logger
