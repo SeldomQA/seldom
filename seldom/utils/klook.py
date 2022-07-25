@@ -3,6 +3,7 @@ The @KLOOK Company API
 """
 import requests
 from requests.exceptions import RetryError
+
 from seldom.logging import log
 
 
@@ -94,14 +95,14 @@ class MockEnv:
     修改请求指向Mock环境
     """
 
-    def __init__(self, url: str, data: dict, headers: dict):
+    def __init__(self, url: str, data: dict, **kwargs):
         self.url = url
         self.data = data
-        self.headers = headers
+        self.kwargs = kwargs
 
     def update(self):
         try:
-            r = requests.post(url=self.url, json=self.data, headers=self.headers)
+            r = requests.post(url=self.url, json=self.data, **self.kwargs)
             if r.status_code == 200:
                 success = r.json().get('success')
                 if success is True:
