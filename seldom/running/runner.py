@@ -6,6 +6,8 @@ import json as sys_json
 import inspect
 import unittest
 import webbrowser
+from typing import Dict, List, Any
+
 from XTestRunner import HTMLTestRunner
 from XTestRunner import XMLTestRunner
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
@@ -126,8 +128,8 @@ class TestMain(object):
         if self.auto is True:
             self.run(self.TestSuits)
 
-        # ----- Close browser globally -----
-        self.close_browser()
+            # ----- Close browser globally -----
+            self.close_browser()
 
     def run(self, suits):
         """
@@ -251,39 +253,29 @@ class TestMainExtend(TestMain):
 
         return cases
 
-    @staticmethod
-    def _diff_case(file_name: str, class_name: str, method_name: str, data: list) -> bool:
+    def _load_testsuite(self) -> Dict[str, List[Any]]:
         """
-        Diff use case information
-        :param file_name:
-        :param class_name:
-        :param method_name:
-        :param data:
-        :return:
+        load test suite and convert to mapping
         """
-        for d in data:
-            d_file = d.get("file", None)
-            d_class = d.get("class").get("name", None)
-            d_method = d.get("method").get("name", None)
-            if (d_file is None) or (d_class is None) or (d_method is None):
-                raise SeldomException(
-                    """Use case format error, please refer to: 
-                    https://seldomqa.github.io/platform/platform.html""")
+        mapping = {}
 
-            if "_" not in method_name:
-                if file_name == d_file and class_name == d_class and method_name == d_method:
-                    return True
-            else:
-                try:
-                    int(method_name.split("_")[-1])
-                except ValueError:
-                    if file_name == d_file and class_name == d_class and method_name == d_method:
-                        return True
-                else:
-                    if file_name == d_file and class_name == d_class and method_name.startswith(d_method):
-                        return True
+        for suits in self.TestSuits:
+            for cases in suits:
+                if isinstance(cases, unittest.suite.TestSuite) is False:
+                    log.warning(f"Case analysis failed. {cases}")
+                    continue
 
-        return False
+                for case in cases:
+                    file_name = case.__module__
+                    class_name = case.__class__.__name__
+
+                    key = "{}.{}".format(file_name, class_name)
+                    if mapping.get(key, None) is None:
+                        mapping[key] = []
+
+                    mapping[key].append(case)
+
+        return mapping
 
     def run_cases(self, data: list) -> None:
         """
@@ -299,19 +291,35 @@ class TestMainExtend(TestMain):
             return
 
         suit = unittest.TestSuite()
-        for suits in self.TestSuits:
-            for cases in suits:
-                if isinstance(cases, unittest.suite.TestSuite) is False:
-                    log.warning(f"Case analysis failed. {cases}")
-                    continue
 
-                for case in cases:
-                    file_name = case.__module__
-                    class_name = case.__class__.__name__
-                    method_name = str(case).split(" ")[0]
-                    ret = self._diff_case(file_name, class_name, method_name, data)
-                    if ret is True:
+        case_mapping = self._load_testsuite()
+        for d in data:
+            d_file = d.get("file", None)
+            d_class = d.get("class").get("name", None)
+            d_method = d.get("method").get("name", None)
+            if (d_file is None) or (d_class is None) or (d_method is None):
+                raise SeldomException(
+                    """Use case format error, please refer to: 
+                    https://seldomqa.github.io/platform/platform.html""")
+
+            cases = case_mapping.get("{}.{}".format(d_file, d_class), None)
+            if cases is None:
+                continue
+
+            for case in cases:
+                method_name = str(case).split(" ")[0]
+                if "_" not in method_name:
+                    if method_name == d_method:
                         suit.addTest(case)
+                else:
+                    try:
+                        int(method_name.split("_")[-1])
+                    except ValueError:
+                        if method_name == d_method:
+                            suit.addTest(case)
+                    else:
+                        if method_name.startswith(d_method):
+                            suit.addTest(case)
 
         self.run(suit)
         self.close_browser()
