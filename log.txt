@@ -1,8 +1,0 @@
-[ 2022-05-23 23:30:29 test_log.py | ERROR | error
-[ 2022-05-23 23:30:29 test_log.py | TRACE | trace
-[ 2022-05-23 23:30:29 test_log.py | DEBUG | debug
-[ 2022-05-23 23:30:29 test_log.py | SUCCESS | success
-[ 2022-05-23 23:31:18 test_log.py | ERROR | error
-[ 2022-05-23 23:31:18 test_log.py | TRACE | trace
-[ 2022-05-23 23:31:18 test_log.py | DEBUG | debug
-[ 2022-05-23 23:31:18 test_log.py | SUCCESS | success
