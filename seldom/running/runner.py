@@ -13,7 +13,6 @@ from XTestRunner import XMLTestRunner
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.driver import Browser
 from seldom.logging import log
-from seldom.logging import log2
 from seldom.logging.exceptions import SeldomException
 from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.config import Seldom, BrowserConfig
@@ -158,8 +157,8 @@ class TestMain(object):
                                             logger=log)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
-            log2.printf("generated html file: file:///{}".format(report_path))
-            log2.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            print("generated html file: file:///{}".format(report_path))
+            print("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
             if self.open is True:
                 webbrowser.open_new("file:///{}".format(report_path))
         else:

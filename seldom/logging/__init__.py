@@ -1,2 +1,2 @@
 from .log import log
-from .log import log2
+from .log import log_cfg

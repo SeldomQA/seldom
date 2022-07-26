@@ -4,7 +4,6 @@ import time
 import inspect
 from loguru import logger
 from seldom.running.config import BrowserConfig
-from seldom.running.config import Seldom
 
 stack_t = inspect.stack()
 ins = inspect.getframeinfo(stack_t[1][0])
@@ -20,8 +19,7 @@ if BrowserConfig.REPORT_PATH is None:
     BrowserConfig.REPORT_PATH = os.path.join(report_dir, now_time + "_result.html")
 
 
-class Logger:
-
+class LogConfig:
     def __init__(self, level: str = "DEBUG", colorlog: bool = True):
         self.logger = logger
         self._colorlog = colorlog
@@ -34,56 +32,11 @@ class Logger:
     def set_level(self, colorlog: bool = True, format: str = None, level: str = "DEBUG"):
         if format is None:
             format = self._console_format
-        logger.remove()
-        logger.add(sys.stderr, level=level, colorize=colorlog, format=format)
-        logger.add(self.logfile, level=level, colorize=False, format=self._log_format, encoding="utf-8")
-
-    def trace(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
-        if Seldom.debug is False:
-            print(f"{now} | TRACE | {str(msg)}")
-        return self.logger.trace(msg)
-
-    def debug(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
-        if Seldom.debug is False:
-            print(f"{now} | DEBUG | {str(msg)}")
-        return self.logger.debug(msg)
-
-    def info(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
-        if Seldom.debug is False:
-            print(f"{now} | INFO | {str(msg)}")
-        return self.logger.info(msg)
-
-    def success(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
-        if Seldom.debug is False:
-            print(f"{now} | SUCCESS | {str(msg)}")
-        return self.logger.success(msg)
-
-    def warning(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
-        if Seldom.debug is False:
-            print(f"{now} | WARNING | {str(msg)}")
-        return self.logger.warning(msg)
-
-    def error(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
-        if Seldom.debug is False:
-            print(f"{now} | ERROR | {str(msg)}")
-        return self.logger.error(msg)
-
-    def critical(self, msg: str):
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
-        if Seldom.debug is False:
-            print(f"{now} | CRITICAL | {str(msg)}")
-        return self.logger.critical(msg)
-
-    def printf(self, msg: str):
-        return self.logger.success(msg)
+        self.logger.remove()
+        self.logger.add(sys.stderr, level=level, colorize=colorlog, format=format)
+        self.logger.add(self.logfile, level=level, colorize=False, format=self._log_format, encoding="utf-8")
 
 
 # log level: TRACE < DEBUG < INFO < SUCCESS < WARNING < ERROR
-log2 = Logger(level="TRACE")
+log_cfg = LogConfig(level="TRACE")
 log = logger
