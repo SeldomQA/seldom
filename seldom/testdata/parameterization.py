@@ -22,7 +22,7 @@ __all__ = [
 ]
 
 
-def find_file_path(file_dir, file_name):
+def _find_file_path(file_dir, file_name):
     """
     find file path
     :param file_dir:
@@ -48,9 +48,9 @@ def find_file_path(file_dir, file_name):
     return file_path
 
 
-def find_env_file_path(file_dir, file_part_path):
+def _find_env_file_path(file_dir, file_part_path):
     """
-    find file path
+    find environment file path
     :param file_dir:
     :param file_part_path:
     """
@@ -67,6 +67,47 @@ def find_env_file_path(file_dir, file_part_path):
         else:
             continue
         break
+
+    return file_path
+
+
+def find_file(file: str, file_dir: str):
+    """
+    find file
+    :param file:
+    :param file_dir:
+    """
+    if os.path.isfile(file) is True:
+        file_path = file
+    elif "/" in file or "\\" in file:
+        if Seldom.env is not None:
+            file_path = _find_env_file_path(file_dir=file_dir, file_part_path=file)
+            if file_path is None:
+                return None
+        else:
+            file = file.replace("\\", "/")
+            current_dir = os.path.join(file_dir, file)
+            parent_dir = os.path.join(os.path.dirname(file_dir), file)
+            parent_dir_dir = os.path.join(os.path.dirname(os.path.dirname(file_dir)), file)
+            parent_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file_dir))), file)
+            parent_dir_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
+
+            if os.path.isfile(current_dir) is True:
+                file_path = current_dir
+            elif os.path.isfile(parent_dir) is True:
+                file_path = parent_dir
+            elif os.path.isfile(parent_dir_dir) is True:
+                file_path = parent_dir_dir
+            elif os.path.isfile(parent_dir_dir_dir) is True:
+                file_path = parent_dir_dir_dir
+            elif os.path.isfile(parent_dir_dir_dir_dir) is True:
+                file_path = parent_dir_dir_dir_dir
+            else:
+                return None
+    else:
+        file_path = _find_file_path(file_dir=file_dir, file_name=file)
+        if file_path is None:
+            return None
 
     return file_path
 
@@ -102,38 +143,9 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
     ins = sys_inspect.getframeinfo(stack_t[1][0])
     file_dir = os.path.dirname(os.path.abspath(ins.filename))
 
-    if os.path.isfile(file) is True:
-        file_path = file
-    elif "/" in file or "\\" in file:
-        if Seldom.env is not None:
-            file_path = find_env_file_path(file_dir=file_dir, file_part_path=file)
-            if file_path is None:
-                raise FileExistsError(f"No '{file}' data file found.")
-        else:
-            file = file.replace("\\", "/")
-            current_dir = os.path.join(file_dir, file)
-            parent_dir = os.path.join(os.path.dirname(file_dir), file)
-            parent_dir_dir = os.path.join(os.path.dirname(os.path.dirname(file_dir)), file)
-            parent_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file_dir))), file)
-            parent_dir_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
-
-            if os.path.isfile(current_dir) is True:
-                file_path = current_dir
-            elif os.path.isfile(parent_dir) is True:
-                file_path = parent_dir
-            elif os.path.isfile(parent_dir_dir) is True:
-                file_path = parent_dir_dir
-            elif os.path.isfile(parent_dir_dir_dir) is True:
-                file_path = parent_dir_dir_dir
-            elif os.path.isfile(parent_dir_dir_dir_dir) is True:
-                file_path = parent_dir_dir_dir_dir
-            else:
-                raise FileExistsError(f"No '{file}' data file found.")
-    else:
-        file_path = find_file_path(file_dir=file_dir, file_name=file)
-
-        if file_path is None:
-            raise FileExistsError(f"No '{file}' data file found.")
+    file_path = find_file(file, file_dir)
+    if file_path is None:
+        raise FileExistsError(f"No '{file}' data file found.")
 
     suffix = file.split(".")[-1]
     if suffix == "csv":
