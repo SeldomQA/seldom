@@ -95,14 +95,15 @@ class MockEnv:
     修改请求指向Mock环境
     """
 
-    def __init__(self, url: str, data: dict, **kwargs):
+    def __init__(self, url: str, data: dict = None, json: dict = None, **kwargs):
         self.url = url
         self.data = data
+        self.json = json
         self.kwargs = kwargs
 
     def update(self):
         try:
-            r = requests.post(url=self.url, json=self.data, **self.kwargs)
+            r = requests.post(url=self.url, data=self.data, json=self.json, **self.kwargs)
             if r.status_code == 200:
                 success = r.json().get('success')
                 if success is True:
