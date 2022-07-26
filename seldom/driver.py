@@ -76,8 +76,6 @@ class Browser(object):
             return cls.ie()
         elif cls.name == "edge":
             return cls.edge()
-        elif cls.name == "opera":
-            return cls.opera()
         elif cls.name == "safari":
             return cls.safari()
         elif cls.name in PHONE_LIST:
@@ -177,14 +175,6 @@ class Browser(object):
                                     executable_path=EdgeConfig.command_executor)
 
         return driver
-
-    @staticmethod
-    def opera():
-        if OperaConfig.command_executor != "" and OperaConfig.command_executor[:4] == "http":
-            return webdriver.Remote(command_executor=OperaConfig.command_executor,
-                                    desired_capabilities=DesiredCapabilities.OPERA.copy())
-        ep = OperaConfig.command_executor if OperaConfig.command_executor != "" else OperaDriverManager().install()
-        return webdriver.Opera(executable_path=ep)
 
     @staticmethod
     def safari():
