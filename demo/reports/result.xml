@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+	<testsuite name="test_data_demo.FileDataTest-20211121224657" tests="1" file="test_data_demo.py" time="5.311" timestamp="2021-11-21T22:47:03" failures="0" errors="0" skipped="0">
+		<testcase classname="test_data_demo.FileDataTest" name="test_testdata" time="5.311" timestamp="2021-11-21T22:47:03" file="test_dir\test_data_demo.py" line="10">
+			<!--
+        used testdata test
+        -->
+			<system-out><![CDATA[2021-11-21 22:46:57 [INFO] 📖 https://www.runoob.com/try/try.php?filename=tryhtml_input
+2021-11-21 22:47:00 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:47:01 [INFO] ✅ Find 1 element: name=firstname , input 'Диана'.
+2021-11-21 22:47:02 [INFO] ✅ Find 1 element: name=lastname , input 'Владлена'.
+2021-11-21 22:47:02 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_ddt_demo.BaiduTest-20211121224657" tests="3" file="test_ddt_demo.py" time="11.573" timestamp="2021-11-21T22:47:14" failures="0" errors="0" skipped="0">
+		<testcase classname="test_ddt_demo.BaiduTest" name="test_baidu_0" time="4.843" timestamp="2021-11-21T22:47:08" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used parameterized test [with name=1, search_key='seldom']
+        :param name: case name
+        :param search_key: search keyword
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:03 [INFO] 📖 https://www.baidu.com
+2021-11-21 22:47:06 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+2021-11-21 22:47:06 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-11-21 22:47:08 [INFO] 👀 assertIn title: seldom_百度搜索.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.BaiduTest" name="test_baidu_1" time="3.209" timestamp="2021-11-21T22:47:11" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used parameterized test [with name=2, search_key='selenium']
+        :param name: case name
+        :param search_key: search keyword
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:08 [INFO] 📖 https://www.baidu.com
+2021-11-21 22:47:09 [INFO] ✅ Find 1 element: id=kw , input 'selenium'.
+2021-11-21 22:47:10 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-11-21 22:47:11 [INFO] 👀 assertIn title: selenium_百度搜索.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.BaiduTest" name="test_baidu_2" time="3.520" timestamp="2021-11-21T22:47:14" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used parameterized test [with name=3, search_key='unittest']
+        :param name: case name
+        :param search_key: search keyword
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:11 [INFO] 📖 https://www.baidu.com
+2021-11-21 22:47:12 [INFO] ✅ Find 1 element: id=kw , input 'unittest'.
+2021-11-21 22:47:13 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-11-21 22:47:14 [INFO] 👀 assertIn title: unittest_百度搜索.
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_ddt_demo.FileDataTest-20211121224657" tests="8" file="test_ddt_demo.py" time="48.997" timestamp="2021-11-21T22:48:03" failures="0" errors="0" skipped="0">
+		<testcase classname="test_ddt_demo.FileDataTest" name="test_csv_0_Forest" time="8.222" timestamp="2021-11-21T22:47:23" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used file_data test [with firstname='Forest', lastname='Hobbs']
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:14 [INFO] 📖 https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit
+2021-11-21 22:47:18 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:47:19 [INFO] ✅ Find 1 element: name=firstname , clear input.
+2021-11-21 22:47:20 [INFO] ✅ Find 1 element: name=firstname , input 'Forest'.
+2021-11-21 22:47:21 [INFO] ✅ Find 1 element: name=lastname , clear input.
+2021-11-21 22:47:21 [INFO] ✅ Find 1 element: name=lastname , input 'Hobbs'.
+2021-11-21 22:47:22 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.FileDataTest" name="test_csv_1_Ferdinand" time="5.921" timestamp="2021-11-21T22:47:28" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used file_data test [with firstname='Ferdinand', lastname='Lozano']
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:23 [INFO] 📖 https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit
+2021-11-21 22:47:24 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:47:25 [INFO] ✅ Find 1 element: name=firstname , clear input.
+2021-11-21 22:47:26 [INFO] ✅ Find 1 element: name=firstname , input 'Ferdinand'.
+2021-11-21 22:47:27 [INFO] ✅ Find 1 element: name=lastname , clear input.
+2021-11-21 22:47:27 [INFO] ✅ Find 1 element: name=lastname , input 'Lozano'.
+2021-11-21 22:47:27 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.FileDataTest" name="test_excel_0_Marshall" time="5.784" timestamp="2021-11-21T22:47:34" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used file_data test [with firstname='Marshall', lastname='Conrad']
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:28 [INFO] 📖 https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit
+2021-11-21 22:47:30 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:47:31 [INFO] ✅ Find 1 element: name=firstname , clear input.
+2021-11-21 22:47:32 [INFO] ✅ Find 1 element: name=firstname , input 'Marshall'.
+2021-11-21 22:47:32 [INFO] ✅ Find 1 element: name=lastname , clear input.
+2021-11-21 22:47:33 [INFO] ✅ Find 1 element: name=lastname , input 'Conrad'.
+2021-11-21 22:47:33 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.FileDataTest" name="test_excel_1_Ruthie" time="5.749" timestamp="2021-11-21T22:47:40" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used file_data test [with firstname='Ruthie', lastname='Pitts']
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:34 [INFO] 📖 https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit
+2021-11-21 22:47:36 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:47:37 [INFO] ✅ Find 1 element: name=firstname , clear input.
+2021-11-21 22:47:37 [INFO] ✅ Find 1 element: name=firstname , input 'Ruthie'.
+2021-11-21 22:47:38 [INFO] ✅ Find 1 element: name=lastname , clear input.
+2021-11-21 22:47:39 [INFO] ✅ Find 1 element: name=lastname , input 'Pitts'.
+2021-11-21 22:47:39 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.FileDataTest" name="test_json_0_Wayne" time="5.706" timestamp="2021-11-21T22:47:46" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used file_data test [with firstname='Wayne', lastname='Burch']
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:40 [INFO] 📖 https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit
+2021-11-21 22:47:41 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:47:42 [INFO] ✅ Find 1 element: name=firstname , clear input.
+2021-11-21 22:47:43 [INFO] ✅ Find 1 element: name=firstname , input 'Wayne'.
+2021-11-21 22:47:44 [INFO] ✅ Find 1 element: name=lastname , clear input.
+2021-11-21 22:47:45 [INFO] ✅ Find 1 element: name=lastname , input 'Burch'.
+2021-11-21 22:47:45 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.FileDataTest" name="test_json_1_Jamie_louise" time="5.816" timestamp="2021-11-21T22:47:52" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used file_data test [with firstname='Jamie-louise', lastname='Wong']
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:46 [INFO] 📖 https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit
+2021-11-21 22:47:47 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:47:48 [INFO] ✅ Find 1 element: name=firstname , clear input.
+2021-11-21 22:47:49 [INFO] ✅ Find 1 element: name=firstname , input 'Jamie-louise'.
+2021-11-21 22:47:50 [INFO] ✅ Find 1 element: name=lastname , clear input.
+2021-11-21 22:47:50 [INFO] ✅ Find 1 element: name=lastname , input 'Wong'.
+2021-11-21 22:47:51 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.FileDataTest" name="test_yaml_0_Elnora" time="5.822" timestamp="2021-11-21T22:47:57" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used file_data test [with firstname='Elnora', lastname='West']
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:52 [INFO] 📖 https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit
+2021-11-21 22:47:53 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:47:54 [INFO] ✅ Find 1 element: name=firstname , clear input.
+2021-11-21 22:47:55 [INFO] ✅ Find 1 element: name=firstname , input 'Elnora'.
+2021-11-21 22:47:55 [INFO] ✅ Find 1 element: name=lastname , clear input.
+2021-11-21 22:47:56 [INFO] ✅ Find 1 element: name=lastname , input 'West'.
+2021-11-21 22:47:56 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+		<testcase classname="test_ddt_demo.FileDataTest" name="test_yaml_1_Leon" time="5.977" timestamp="2021-11-21T22:48:03" file="test_dir\test_ddt_demo.py" line="531">
+			<!--used file_data test [with firstname='Leon', lastname='Richard']
+        -->
+			<system-out><![CDATA[2021-11-21 22:47:57 [INFO] 📖 https://www.w3school.com.cn/tiy/t.asp?f=eg_html_form_submit
+2021-11-21 22:47:59 [INFO] ✅ Find 1 element: id=iframeResult , switch to frame.
+2021-11-21 22:48:00 [INFO] ✅ Find 1 element: name=firstname , clear input.
+2021-11-21 22:48:01 [INFO] ✅ Find 1 element: name=firstname , input 'Leon'.
+2021-11-21 22:48:01 [INFO] ✅ Find 1 element: name=lastname , clear input.
+2021-11-21 22:48:02 [INFO] ✅ Find 1 element: name=lastname , input 'Richard'.
+2021-11-21 22:48:02 [INFO] 💤️ sleep: 1s.
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_first_demo.BaiduTest-20211121224657" tests="1" file="test_first_demo.py" time="3.127" timestamp="2021-11-21T22:48:06" failures="0" errors="0" skipped="0">
+		<testcase classname="test_first_demo.BaiduTest" name="test_case" time="3.127" timestamp="2021-11-21T22:48:06" file="test_dir\test_first_demo.py" line="7">
+			<!--a simple test case -->
+			<system-out><![CDATA[2021-11-21 22:48:03 [INFO] 📖 https://www.baidu.com
+2021-11-21 22:48:05 [INFO] ✅ Find 1 element: id=kw , input 'seldom'.
+2021-11-21 22:48:05 [INFO] ✅ Find 1 element: css selector=#su , click.
+2021-11-21 22:48:06 [INFO] 👀 assert title: seldom_百度搜索.
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_fixture_demo.BaiduTest-20211121224657" tests="2" file="test_fixture_demo.py" time="5.683" timestamp="2021-11-21T22:48:12" failures="0" errors="0" skipped="0">
+		<testcase classname="test_fixture_demo.BaiduTest" name="test_case1" time="0.299" timestamp="2021-11-21T22:48:07" file="test_dir\test_fixture_demo.py" line="25">
+			<system-out><![CDATA[test case start
+2021-11-21 22:48:07 [INFO] 📖 https://www.baidu.com/
+test case end
+]]></system-out>
+		</testcase>
+		<testcase classname="test_fixture_demo.BaiduTest" name="test_case2" time="5.384" timestamp="2021-11-21T22:48:12" file="test_dir\test_fixture_demo.py" line="28">
+			<system-out><![CDATA[test case start
+2021-11-21 22:48:07 [INFO] 📖 https://news.baidu.com/
+test case end
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_http_demo.TestAssert-20211121224657" tests="3" file="test_http_demo.py" time="1.658" timestamp="2021-11-21T22:48:14" failures="0" errors="0" skipped="0">
+		<testcase classname="test_http_demo.TestAssert" name="test_data_assert" time="0.580" timestamp="2021-11-21T22:48:13" file="test_dir\test_http_demo.py" line="43">
+			<!--
+        The JSON data returned by the assertion
+        :return:
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/get         method: GET
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c2f-2282a4772cc44c2a4262728b'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/get'}
+💡 Assert data has not key: args
+💡 Assert data has not key: Accept
+💡 Assert data has not key: Accept-Encoding
+💡 Assert data has not key: X-Amzn-Trace-Id
+💡 Assert data has not key: origin
+💡 Assert data has not key: url
+]]></system-out>
+		</testcase>
+		<testcase classname="test_http_demo.TestAssert" name="test_format_assert" time="0.546" timestamp="2021-11-21T22:48:13" file="test_dir\test_http_demo.py" line="53">
+			<!--
+        Assert json-schema
+        help doc: https://json-schema.org/
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/get         method: GET
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c30-036b51c934328f7a0f372b10'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/get'}
+]]></system-out>
+		</testcase>
+		<testcase classname="test_http_demo.TestAssert" name="test_path_assert" time="0.532" timestamp="2021-11-21T22:48:14" file="test_dir\test_http_demo.py" line="77">
+			<!--
+        assert jmesPath
+        help doc: https://jmespath.org/
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/get         method: GET
+----------- Response 🛬️ -------------
+type: json
+{'args': {'foot': 'bread'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c31-091125f3089442c21d4cf07b'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/get?foot=bread'}
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_http_demo.TestDDT-20211121224657" tests="3" file="test_http_demo.py" time="1.623" timestamp="2021-11-21T22:48:16" failures="0" errors="0" skipped="0">
+		<testcase classname="test_http_demo.TestDDT" name="test_data_0_key1" time="0.532" timestamp="2021-11-21T22:48:14" file="test_dir\test_http_demo.py" line="531">
+			<!--Data-Driver Tests [with key='key1', value='value1']
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/post         method: POST
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'data': '', 'files': {}, 'form': {'key1': 'value1'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '11', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c31-368dddcf08e67bb20adfeb96'}, 'json': None, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/post'}
+]]></system-out>
+		</testcase>
+		<testcase classname="test_http_demo.TestDDT" name="test_data_1_key2" time="0.534" timestamp="2021-11-21T22:48:15" file="test_dir\test_http_demo.py" line="531">
+			<!--Data-Driver Tests [with key='key2', value='value2']
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/post         method: POST
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'data': '', 'files': {}, 'form': {'key2': 'value2'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '11', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c32-17d5f3b632b977e94ac45bc6'}, 'json': None, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/post'}
+]]></system-out>
+		</testcase>
+		<testcase classname="test_http_demo.TestDDT" name="test_data_2_key3" time="0.557" timestamp="2021-11-21T22:48:16" file="test_dir\test_http_demo.py" line="531">
+			<!--Data-Driver Tests [with key='key3', value='value3']
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/post         method: POST
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'data': '', 'files': {}, 'form': {'key3': 'value3'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '11', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c32-252f7c1e03bb7dde6964e8f2'}, 'json': None, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/post'}
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_http_demo.TestRequest-20211121224657" tests="4" file="test_http_demo.py" time="2.169" timestamp="2021-11-21T22:48:18" failures="0" errors="0" skipped="0">
+		<testcase classname="test_http_demo.TestRequest" name="test_delete_method" time="0.539" timestamp="2021-11-21T22:48:16" file="test_dir\test_http_demo.py" line="33">
+			<!--
+        test delete request
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/delete         method: DELETE
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'data': '', 'files': {}, 'form': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '0', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c33-046caae9008f7f366e3271d5'}, 'json': None, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/delete'}
+]]></system-out>
+		</testcase>
+		<testcase classname="test_http_demo.TestRequest" name="test_get_method" time="0.531" timestamp="2021-11-21T22:48:17" file="test_dir\test_http_demo.py" line="25">
+			<!--
+        test get request
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/get         method: GET
+----------- Response 🛬️ -------------
+type: json
+{'args': {'key1': 'value1', 'key2': 'value2'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c33-4f12c4a3674ec0cb14ac5ee8'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/get?key1=value1&key2=value2'}
+]]></system-out>
+		</testcase>
+		<testcase classname="test_http_demo.TestRequest" name="test_post_method" time="0.553" timestamp="2021-11-21T22:48:17" file="test_dir\test_http_demo.py" line="18">
+			<!--
+        test post request
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/post         method: POST
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'data': '', 'files': {}, 'form': {'key': 'value'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '9', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c34-24cb40a875b3b4174232d304'}, 'json': None, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/post'}
+]]></system-out>
+		</testcase>
+		<testcase classname="test_http_demo.TestRequest" name="test_put_method" time="0.547" timestamp="2021-11-21T22:48:18" file="test_dir\test_http_demo.py" line="11">
+			<!--
+        test put request
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/put         method: PUT
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'data': '', 'files': {}, 'form': {'key': 'value'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '9', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c34-778e214063b6ddd72d389701'}, 'json': None, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/put'}
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_http_demo.TestRespData-20211121224657" tests="2" file="test_http_demo.py" time="1.640" timestamp="2021-11-21T22:48:19" failures="0" errors="0" skipped="0">
+		<testcase classname="test_http_demo.TestRespData" name="test_data_dependency" time="1.062" timestamp="2021-11-21T22:48:19" file="test_dir\test_http_demo.py" line="99">
+			<!--
+        Test for interface data dependencies
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/get         method: GET
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Account-Fullname': 'bugmaster', 'X-Amzn-Trace-Id': 'Root=1-619a5c35-15617ce410fdeec64cf75988'}, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/get'}
+
+----------- Request 🚀 ---------------
+url: http://httpbin.org/post         method: POST
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'data': '', 'files': {}, 'form': {'username': 'bugmaster'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '18', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c35-464f2c1438c24d311ba786bc'}, 'json': None, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/post'}
+]]></system-out>
+		</testcase>
+		<testcase classname="test_http_demo.TestRespData" name="test_resp_data" time="0.578" timestamp="2021-11-21T22:48:19" file="test_dir\test_http_demo.py" line="89">
+			<!--
+        Get the returned data
+        -->
+			<system-out><![CDATA[
+----------- Request 🚀 ---------------
+url: http://httpbin.org/post         method: POST
+----------- Response 🛬️ -------------
+type: json
+{'args': {}, 'data': '', 'files': {}, 'form': {'key1': 'value1', 'key2': 'value2'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '23', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-619a5c36-671aeed471d1656c12e453f7'}, 'json': None, 'origin': '173.248.248.93', 'url': 'http://httpbin.org/post'}
+]]></system-out>
+		</testcase>
+	</testsuite>
+	<testsuite name="test_po_demo.BaiduTest-20211121224657" tests="1" file="test_po_demo.py" time="3.758" timestamp="2021-11-21T22:48:23" failures="0" errors="0" skipped="0">
+		<testcase classname="test_po_demo.BaiduTest" name="test_case" time="3.758" timestamp="2021-11-21T22:48:23" file="test_dir\test_po_demo.py" line="23">
+			<!--
+        A simple test
+        -->
+			<system-out><![CDATA[2021-11-21 22:48:23 [INFO] 👀 assert title: seldom_百度搜索.
+]]></system-out>
+		</testcase>
+	</testsuite>
+</testsuites>
