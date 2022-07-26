@@ -8,6 +8,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from seldom.logging import log
 from seldom.running.config import Seldom
+from selenium.webdriver.chrome.service import Service as cService
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 from seldom.webdriver import WebElement
 
@@ -34,7 +35,7 @@ class Steps(object):
             open("https://www.baidu.com")
         """
         if isinstance(Seldom.driver, SeleniumWebDriver) is False:
-            Seldom.driver = Chrome(executable_path=ChromeDriverManager().install())
+            Seldom.driver = Chrome(service=cService(ChromeDriverManager().install()))
         if self.url is not None:
             log.info("📖 {}".format(self.url))
             Seldom.driver.get(self.url)
