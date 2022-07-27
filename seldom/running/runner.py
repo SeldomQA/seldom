@@ -18,7 +18,6 @@ from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.loader_extend import seldomTestLoader
 
-
 INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 with open(INIT_FILE, 'rb') as f:
@@ -152,12 +151,14 @@ class TestMain(object):
                     runner = XMLTestRunner(output=fp)
                     runner.run(suits)
                 else:
-                    runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester, description=self.description,
-                                            language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
+                    runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester,
+                                            description=self.description,
+                                            language=self.language, blacklist=self.blacklist, whitelist=self.whitelist,
+                                            logger=log)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
-            log.printf("generated html file: file:///{}".format(report_path))
-            log.printf("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            print("generated html file: file:///{}".format(report_path))
+            print("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
             if self.open is True:
                 webbrowser.open_new("file:///{}".format(report_path))
         else:

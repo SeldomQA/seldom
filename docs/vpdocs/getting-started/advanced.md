@@ -267,33 +267,36 @@ log.warning("this warning info.")
 * 关闭日志颜色
 
 ```python
+from seldom.logging import log_cfg
 from seldom.logging import log
 
 
-log.set_level(colorlog=False)  # 关闭日志颜色
+log_cfg.set_level(colorlog=False)  # 关闭日志颜色
 log.trace("this is trace info.")
 # ...
 ```
 
 * 自定义日志格式
 
-```shell
+```python
+from seldom.logging import log_cfg
 from seldom.logging import log
 
 
 # 定义日志格式
 format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> {file} |<level> {level} | {message}</level>"
-log.set_level(format=format)
+log_cfg.set_level(format=format)
 log.trace("this is trace info.")
 ```
 
 * 日志级别
 
-```shell
+```python
+from seldom.logging import log_cfg
 from seldom.logging import log
 
 # 设置日志级别
-log.set_level(level="DEBUG")
+log_cfg.set_level(level="DEBUG")
 log.trace("this is trace info.")
 log.error("this error info.")
 ```
