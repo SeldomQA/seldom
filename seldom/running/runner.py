@@ -158,8 +158,8 @@ class TestMain(object):
                                             logger=log_cfg)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
-            print("generated html file: file:///{}".format(report_path))
-            print("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            log.success("generated html file: file:///{}".format(report_path))
+            log.success("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
             if self.open is True:
                 webbrowser.open_new("file:///{}".format(report_path))
         else:
