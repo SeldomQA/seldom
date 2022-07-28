@@ -13,6 +13,7 @@ from XTestRunner import XMLTestRunner
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from seldom.driver import Browser
 from seldom.logging import log
+from seldom.logging import log_cfg
 from seldom.logging.exceptions import SeldomException
 from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.config import Seldom, BrowserConfig
@@ -148,13 +149,13 @@ class TestMain(object):
 
             with(open(report_path, 'wb')) as fp:
                 if report_path.split(".")[-1] == "xml":
-                    runner = XMLTestRunner(output=fp)
+                    runner = XMLTestRunner(output=fp, logger=log_cfg)
                     runner.run(suits)
                 else:
                     runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester,
                                             description=self.description,
                                             language=self.language, blacklist=self.blacklist, whitelist=self.whitelist,
-                                            logger=log)
+                                            logger=log_cfg)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
             print("generated html file: file:///{}".format(report_path))
