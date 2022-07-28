@@ -25,9 +25,18 @@ class TestCase(seldom.TestCase):
         print("7. this is print msg")
         log.debug(f"test data: {keyword}")
 
+    def test_failed(self):
+        """ ddt case """
+        assert 0
+
+    def test_error(self):
+        """ ddt case """
+        raise IOError("ddd")
+
 
 if __name__ == '__main__':
     print("1. 逻辑顺序测试开始！🚀")
     log.debug("2. logger的内容不会被吃掉,但是没有进入seldom.main()，所以不会出现在报告中")
 
-    seldom.main()
+    # seldom.main()
+    seldom.main(report="report.xml")
