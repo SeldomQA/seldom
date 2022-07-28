@@ -5,7 +5,7 @@ from seldom.utils.klook import MockEnv
 
 class TestMockEnv(TestCase):
 
-    def test_update(self):
+    def test_update_case_01(self):
         with open(file='./data/hello.txt', mode='rb') as f:
             file = f.read()
         args = {
@@ -18,3 +18,8 @@ class TestMockEnv(TestCase):
         }
         m = MockEnv(url='https://httpbin.org/post', data={'hello': 'world'}, **args)
         m.update()
+
+    def test_update_case_02(self):
+        m = MockEnv(url='https://httpbin.org/post', json={'hello': 'world'})
+        m.update()
+

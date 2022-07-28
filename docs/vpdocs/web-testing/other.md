@@ -60,13 +60,19 @@ if __name__ == '__main__':
 首先，安装Java环境，然后下载 `selenium-server`。
 
 ```shell
-> java -jar selenium-server-standalone-3.141.59.jar
+> java -jar .\selenium-server-4.3.0.jar standalone
 
-12:30:37.138 INFO [GridLauncherV3.parse] - Selenium server version: 3.141.59, revision: e82be7d358
-12:30:37.204 INFO [GridLauncherV3.lambda$buildLaunchers$3] - Launching a standalone Selenium Server on port 4444
-2020-10-10 12:30:37.245:INFO::main: Logging initialized @301ms to org.seleniumhq.jetty9.util.log.StdErrLog
-12:30:37.417 INFO [WebDriverServlet.<init>] - Initialising WebDriverServlet
-12:30:37.497 INFO [SeleniumServer.boot] - Selenium Server is up and running on port 4444
+00:25:28.023 INFO [LoggingOptions.configureLogEncoding] - Using the system default encoding
+00:25:28.029 INFO [OpenTelemetryTracer.createTracer] - Using OpenTelemetry for tracing
+00:25:36.978 INFO [NodeOptions.getSessionFactories] - Detected 16 available processors
+00:25:37.012 INFO [NodeOptions.discoverDrivers] - Discovered 3 driver(s)
+00:25:37.043 INFO [NodeOptions.report] - Adding Chrome for {"browserName": "chrome"} 16 times
+00:25:37.045 INFO [NodeOptions.report] - Adding Firefox for {"browserName": "firefox"} 16 times
+00:25:37.046 INFO [NodeOptions.report] - Adding Edge for {"browserName": "MicrosoftEdge"} 16 times
+00:25:38.260 INFO [Node.<init>] - Binding additional locator mechanisms: id, name, relative
+00:25:38.281 INFO [GridModel.setAvailability] - Switching Node 373df045-cf78-4d52-84c0-d99fd2c7a374 (uri: http://10.2.212.3:4444) from DOWN to UP
+00:25:38.282 INFO [LocalDistributor.add] - Added node 373df045-cf78-4d52-84c0-d99fd2c7a374 at http://10.2.212.3:4444. Health check every 120s
+00:25:42.503 INFO [Standalone.execute] - Started Selenium Standalone 4.3.0 (revision a4995e2c09*): http://10.2.212.3:4444
 ```
 
 ```python
@@ -75,12 +81,12 @@ from seldom import ChromeConfig
 
 # ……
 if __name__ == '__main__':
-    ChromeConfig.command_executor = "http://127.0.0.1:4444/wd/hub"
+    ChromeConfig.command_executor = "http://10.2.212.3:4444"
     seldom.main(browser="chrome")
 
 ```
 
-* 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/grid/)。
+* 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/grid/getting_started/)。
 
 
 

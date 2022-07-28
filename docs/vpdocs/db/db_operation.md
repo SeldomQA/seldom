@@ -50,9 +50,9 @@ db = MySQLDB(host="127.0.0.1",
 执行sql语句，无返回结果。
 
 ```python
-db.execute_sql("INSERT INTO table_name (id, name) VALUES (1, 'tom') ")
-db.execute_sql("UPDATE table_name SET name = 'jack' WHERE id=1")
-db.execute_sql("DELETE FROM table_name WHERE id = 1")
+db.execute_sql("INSERT INTO user (id, name) VALUES (1, 'tom') ")
+db.execute_sql("UPDATE user SET name = 'jack' WHERE id=1")
+db.execute_sql("DELETE FROM user WHERE id = 1")
 ```
 
 * query_sql
@@ -60,7 +60,7 @@ db.execute_sql("DELETE FROM table_name WHERE id = 1")
 执行查询sql语句，返回查询结果。
 
 ```python
-ret = db.query_sql("select * from table_name")
+ret = db.query_sql("select * from user")
 print(ret)
 ```
 
@@ -77,11 +77,11 @@ db.delete(table="user", where={"id":1})
 插入一条数据。
 
 ```py
-data = {'id': 1, 'username': 'admin', 'password': "123"}
+data = {"id": 10, "name": "jean"}
 db.insert(table="user", data=data)
 ```
 
-* select_data
+* select
 
 查询表数据。
 
@@ -95,7 +95,7 @@ print(result)
 更新表数据。
 
 ```py
-db.update(table="user", data={"name":"new tom"}, where={"name": "tom"})
+db.update(table="user", where={"name": "tom", }, data={"name": "jack"})
 ```
 
 
@@ -105,22 +105,22 @@ db.update(table="user", data={"name":"new tom"}, where={"name": "tom"})
 
 ```py
 
-datas = {
-    'api_event': [
-        {'id': 1, 'name': '红米Pro发布会'},
-        {'id': 2, 'name': '可参加人数为0'},
-        {'id': 3, 'name': '当前状态为0关闭'},
-        {'id': 4, 'name': '发布会已结束'},
-        {'id': 5, 'name': '小米5发布会'},
+# more table data
+table_data = {
+    "group": [
+        {"id": 1, "name": "test"},
+        {"id": 2, "name": "product"},
+        {"id": 3, "name": "develop"},
     ],
-    'api_guest': [
-        {'id': 1, 'real_name': 'alen'},
-        {'id': 2, 'real_name': 'has sign'},
-        {'id': 3, 'real_name': 'tom'},
-    ]
+    "user": [
+        {"id": 1, "name": "jeannie"},
+        {"id": 2, "name": "joye"},
+        {"id": 3, "name": "blue"},
+    ],
+
 }
 
-db.init_table(datas)
+db.init_table(table_data)
 ```
 
 * close

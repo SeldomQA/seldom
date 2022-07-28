@@ -70,7 +70,6 @@ __手动下载__
 > seldom -install firefox
 > seldom -install ie
 > seldom -install edge
-> seldom -install opera
 ```
 
 1. 默认下载到当前的`C:\Users\username\.wdm\drivers\` 目录下面。
@@ -106,7 +105,6 @@ if __name__ == '__main__':
     seldom.main(browser="gc")     # chrome简写
     seldom.main(browser="firefox") # firefox浏览器
     seldom.main(browser="ff")      # firefox简写
-    seldom.main(browser="opera")   # opera浏览器
     seldom.main(browser="edge")    # edge浏览器
     seldom.main(browser="safari")  # safari浏览器
 ```

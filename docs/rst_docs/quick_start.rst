@@ -10,7 +10,7 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
 
 **Automatically download**
 
-`Seldom` provides automatic download driven by `chrome/firefox/ie/edge/opera` browser.
+`Seldom` provides automatic download driven by `chrome/firefox/ie/edge` browser.
 
 .. code:: shell
 
@@ -18,7 +18,6 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
     > seldom -install firefox
     > seldom -install ie
     > seldom -install edge
-    > seldom -install opera
 
 - By default, download to the current `C://Users/username/.wdm/drivers/` directory.
 

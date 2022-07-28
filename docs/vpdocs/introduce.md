@@ -54,7 +54,7 @@ optional arguments:
   -m M              run tests modules, classes or even individual test methods
                     from the command line
   -install INSTALL  Install the browser driver, For example, 'chrome', 'firefox',
-                    'ie', 'edge', 'opera'.
+                    'ie', 'edge'.
 ```
 
 2、创建项目：
