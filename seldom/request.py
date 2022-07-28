@@ -28,7 +28,7 @@ def request(func):
         except IndexError:
             url = kwargs.get("url", "")
         if (Seldom.base_url is not None) and ("http" not in url):
-            url = Seldom.base_url + list(args)[1]
+            url = Seldom.base_url + url
 
         img_file = False
         file_type = url.split(".")[-1]
