@@ -67,6 +67,21 @@ class Cache:
                     log.info(f"Get cache data: {name} = {value}")
                 return value
 
+    @staticmethod
+    def update(name=None, dict_key=None, dict_value=None) -> None:
+        """
+        Update cached
+        :param name:
+        :param dict_key:
+        :param dict_value:
+        """
+        with open(DATA_PATH, "r+") as f:
+            save_data = json.load(f)
+            save_data[name][dict_key] = dict_value
+            f.seek(0)
+            json.dump(save_data, f, ensure_ascii=False)
+            f.truncate()
+            log.info(f"Update cache data: {name}['{dict_key}'] = {dict_value}")
 
 cache = Cache()
 
