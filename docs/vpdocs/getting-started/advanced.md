@@ -314,25 +314,29 @@ log.error("this error info.")
 from seldom.utils import cache
 
 # 清除指定缓存
-cache.clear("token")
-
-# 清除所有缓存
 cache.clear()
 
 # 获取指定缓存
 token = cache.get("token")
 print(f"token: {token}")
+
+# 判断为空写入缓存
 if token is None:
-    # 写入缓存
     cache.set({"token": "123"})
 
-# 获取指定缓存
-token = cache.get("token")
-print(f"token: {token}")
+# 设置存在的数据(相当于更新)
+cache.set({"token": "456"})
+
+# value复杂格式设置存在的数据
+cache.set({"user": [{"name": "tom", "age": 11}]})
+
 
 # 获取所有缓存
 all_token = cache.get()
 print(f"all: {all_token}")
+
+# 清除指定缓存
+cache.clear("token")
 ```
 
 > 注：seldom 提供的 `cache` 本质上是通过json文件来临时记录数据，没有失效时间。你需要在适当的位置做清除操作。例如，整个用例开始时清除。
