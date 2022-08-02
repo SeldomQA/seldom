@@ -13,6 +13,14 @@ class FindByText(Switch):
     Find elements based on text
     """
 
+    @staticmethod
+    def __remove_unprintable_chars(s):
+        """
+        remove unprintable chars
+        :param s: string
+        """
+        return ''.join(x for x in s if x.isprintable())
+
     def __find(self, class_name: str, attribute: str, text: str):
         """
         find element
@@ -31,8 +39,9 @@ class FindByText(Switch):
         for elem in elems:
             if elem.get_attribute(attribute) is None:
                 continue
-            if text in elem.get_attribute(attribute):
-                log.info(f'find -> {elem.get_attribute(attribute)}')
+            attribute_text = self.__remove_unprintable_chars(elem.get_attribute(attribute))
+            if text in attribute_text:
+                log.info(f'find -> {attribute_text}')
                 return elem
         else:
             return None
