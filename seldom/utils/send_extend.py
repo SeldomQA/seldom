@@ -1,3 +1,4 @@
+import os
 from XTestRunner import SMTP as XSMTP
 from XTestRunner import DingTalk as XDingTalk
 from seldom.running.config import BrowserConfig
@@ -22,7 +23,10 @@ class SMTP(XSMTP):
         self.sender(to=to, subject=subject, attachments=attachments)
         if delete is True:
             file.remove(BrowserConfig.REPORT_PATH)
-            file.remove(BrowserConfig.LOG_PATH)
+            is_exist = os.path.isfile(BrowserConfig.LOG_PATH)
+            if is_exist is True:
+                with open(BrowserConfig.LOG_PATH, "r+") as f:
+                    f.truncate(0)
 
 
 class DingTalk(XDingTalk):

@@ -30,7 +30,7 @@ sortedcontainers==2.4.0
 trio==0.19.0
 trio-websocket==0.9.2
 urllib3==1.26.7
-webdriver-manager==3.5.2
+webdriver-manager==3.8.2
 wsproto==1.0.0
 zipp==3.6.0
 genson==1.2.2

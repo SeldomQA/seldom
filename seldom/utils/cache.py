@@ -30,7 +30,7 @@ class Cache:
             with open(DATA_PATH, "r+") as f:
                 save_data = json.load(f)
                 del save_data[name]
-                log.info(f"Set cache data: {name}")
+                log.info(f"Clear cache data: {name}")
 
             with open(DATA_PATH, "w+") as f:
                 json.dump(save_data, f)
@@ -44,7 +44,11 @@ class Cache:
         with open(DATA_PATH, "r+") as f:
             save_data = json.load(f)
             for key, value in data.items():
-                log.info(f"Delete cache data: {key} = {value}")
+                data = save_data.get(key, None)
+                if data is None:
+                    log.info(f"Set cache data: {key} = {value}")
+                else:
+                    log.info(f"update cache data: {key} = {value}")
                 save_data[key] = value
 
         with open(DATA_PATH, "w+") as f:

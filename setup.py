@@ -25,7 +25,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'Appium-Python-Client>=2.1.0',
-        'XTestRunner>=1.4.2',
+        'XTestRunner>=1.4.5',
         'parameterized==0.8.1',
         'loguru==0.6.0',
         'openpyxl>=3.0.3',
@@ -33,7 +33,7 @@ setup(
         'requests>=2.22.0',
         'jsonschema>=3.2.0',
         'jmespath>=0.10.0',
-        'webdriver-manager==3.7.0',
+        'webdriver-manager==3.8.2',
         'pymysql>=1.0.0',
         'genson==1.2.2'
     ],
@@ -45,6 +45,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         "Topic :: Software Development :: Testing",
     ],

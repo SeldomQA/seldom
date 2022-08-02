@@ -28,14 +28,14 @@ def request(func):
         except IndexError:
             url = kwargs.get("url", "")
         if (Seldom.base_url is not None) and ("http" not in url):
-            url = Seldom.base_url + list(args)[1]
+            url = Seldom.base_url + url
 
         img_file = False
         file_type = url.split(".")[-1]
         if file_type in IMG:
             img_file = True
 
-        log.info("[method]: {m}      [url]: {u} \n".format(m=func_name.upper(), u=url))
+        log.info("[method]: {m}      [url]: {u} ".format(m=func_name.upper(), u=url))
         auth = kwargs.get("auth", "")
         headers = kwargs.get("headers", "")
         cookies = kwargs.get("cookies", "")
@@ -43,17 +43,17 @@ def request(func):
         data = kwargs.get("data", "")
         json_ = kwargs.get("json", "")
         if auth != "":
-            log.debug(f"[auth]:\n {auth} \n")
+            log.debug(f"[auth]:\n {auth}")
         if headers != "":
-            log.debug(f"[headers]:\n {formatting(headers)} \n")
+            log.debug(f"[headers]:\n {formatting(headers)}")
         if cookies != "":
-            log.debug(f"[cookies]:\n {formatting(cookies)} \n")
+            log.debug(f"[cookies]:\n {formatting(cookies)}")
         if params != "":
-            log.debug(f"[params]:\n {formatting(params)} \n")
+            log.debug(f"[params]:\n {formatting(params)}")
         if data != "":
-            log.debug(f"[data]:\n {formatting(data)} \n")
+            log.debug(f"[data]:\n {formatting(data)}")
         if json_ != "":
-            log.debug(f"[json]:\n {formatting(json_)} \n")
+            log.debug(f"[json]:\n {formatting(json_)}")
 
         # running function
         r = func(*args, **kwargs)
@@ -61,24 +61,24 @@ def request(func):
         ResponseResult.status_code = r.status_code
         log.info("-------------- Response ----------------[🛬️]")
         if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
-            log.info("successful with status {} \n".format(str(ResponseResult.status_code)))
+            log.info("successful with status {}".format(str(ResponseResult.status_code)))
         else:
-            log.warning("unsuccessful with status {} \n".format(str(ResponseResult.status_code)))
+            log.warning("unsuccessful with status {}".format(str(ResponseResult.status_code)))
         resp_time = r.elapsed.total_seconds()
         try:
             resp = r.json()
-            log.debug(f"[type]: json      [time]: {resp_time} \n")
-            log.debug(f"[response]:\n {formatting(resp)} \n")
+            log.debug(f"[type]: json      [time]: {resp_time}")
+            log.debug(f"[response]:\n {formatting(resp)}")
             ResponseResult.response = resp
         except BaseException as msg:
             log.debug(f"[warning]: failed to convert res to json, try to convert to text")
-            log.trace(f"[warning]: {msg} \n")
+            log.trace(f"[warning]: {msg}")
             if img_file is True:
                 log.debug(f"[type]: {file_type}      [time]: {resp_time}")
                 ResponseResult.response = r.content
             else:
-                log.debug(f"[type]: text      [time]: {resp_time}\n")
-                log.debug(f"[response]:\n {r.text} \n")
+                log.debug(f"[type]: text      [time]: {resp_time}")
+                log.debug(f"[response]:\n {r.text}")
                 ResponseResult.response = r.text
 
         return r
