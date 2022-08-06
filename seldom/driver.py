@@ -61,29 +61,26 @@ class Browser(object):
     to drive the Firefox browser. Of course, you can also
     pass parameter for other browser, Chrome browser for the "Chrome",
     the Internet Explorer browser for "internet explorer" or "ie".
-    :param name: Browser name
-    :return:
     """
 
-    def __new__(cls, name=None):
-        cls.name = name
+    def __new__(cls, name: str = None):
 
-        if (cls.name is None) or (cls.name in ["chrome", "google chrome", "gc"]):
+        if (name is None) or (name in ["chrome", "google chrome", "gc"]):
             return cls.chrome()
-        elif cls.name in ["firefox", "ff"]:
+        elif name in ["firefox", "ff"]:
             return cls.firefox()
-        elif cls.name in ["internet explorer", "ie", "IE"]:
+        elif name in ["internet explorer", "ie", "IE"]:
             return cls.ie()
-        elif cls.name == "edge":
+        elif name == "edge":
             return cls.edge()
-        elif cls.name == "safari":
+        elif name == "safari":
             return cls.safari()
-        elif cls.name in PHONE_LIST:
+        elif name in PHONE_LIST:
             return cls.phone(name)
-        elif cls.name in PAD_LIST:
+        elif name in PAD_LIST:
             return cls.pad(name)
         raise NameError(
-            "Not found `{}` browser, See the help doc: https://seldomqa.github.io/other/other.html.".format(cls.name))
+            "Not found `{}` browser, See the help doc: https://seldomqa.github.io/other/other.html.".format(name))
 
     @staticmethod
     def chrome():
