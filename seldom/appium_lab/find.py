@@ -46,15 +46,25 @@ class FindByText(Switch):
         else:
             return None
 
-    def find_view(self, text):
+    def find_view(self, text=None, content_desc=None):
         """
         Android: find view
         :param text:
+        :param content_desc:
         :return:
         """
         self.switch_to_app()
+        if text is not None:
+            attribute = "text"
+            text = text
+        elif content_desc is not None:
+            attribute = "content-desc"
+            text = content_desc
+        else:
+            raise ValueError(f"parameter error, setting text/content_desc")
+
         for _ in range(3):
-            elem = self.__find(class_name="android.view.View", attribute="content-desc", text=text)
+            elem = self.__find(class_name="android.view.View", attribute=attribute, text=text)
             if elem is not None:
                 break
             else:
@@ -82,15 +92,25 @@ class FindByText(Switch):
 
         return elem
 
-    def find_button(self, text):
+    def find_button(self, text=None, content_desc=None):
         """
         Android: find button
         :param text:
+        :param content_desc:
         :return:
         """
         self.switch_to_app()
+        if text is not None:
+            attribute = "text"
+            text = text
+        elif content_desc is not None:
+            attribute = "content-desc"
+            text = content_desc
+        else:
+            raise ValueError(f"parameter error, setting text/content_desc")
+
         for _ in range(3):
-            elem = self.__find(class_name="android.widget.Button", attribute="text", text=text)
+            elem = self.__find(class_name="android.widget.Button", attribute=attribute, text=text)
             if elem is not None:
                 break
             else:
