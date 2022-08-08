@@ -36,11 +36,11 @@ class Action(Switch):
         actions.perform()
         self.sleep(2)
 
-    def swipe_up(self, times=1, up=False):
+    def swipe_up(self, times=1, upper=False):
         """
         swipe up
         :param times: swipe times
-        :param up: Keyboard screen occlusion, swipe only the upper half of the area.
+        :param upper: Keyboard screen occlusion, swipe only the upper half of the area.
         :return:
         """
         self.switch_to_app()
@@ -48,7 +48,7 @@ class Action(Switch):
         x_start = int(self.width / 2)
         x_end = int(self.width / 2)
 
-        if up is True:
+        if upper is True:
             self.height = (self.height / 2)
 
         y_start = int((self.height / 3) * 2)
@@ -64,16 +64,20 @@ class Action(Switch):
             actions.perform()
             self.sleep(1)
 
-    def swipe_down(self, times=1):
+    def swipe_down(self, times=1, upper=False):
         """
         swipe down
         :param times: swipe times
+        :param upper: Keyboard screen occlusion, swipe only the upper half of the area.
         :return:
         """
         self.switch_to_app()
         log.info(f"swipe down {times} times")
         x_start = int(self.width / 2)
         x_end = int(self.width / 2)
+
+        if upper is True:
+            self.height = (self.height / 2)
 
         y_start = int((self.height / 3) * 1)
         y_end = int((self.height / 3) * 2)
