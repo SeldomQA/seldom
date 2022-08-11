@@ -37,7 +37,7 @@ pymysql>=1.0.0
 genson==1.2.2
 ```
 
-先通过 `pip` 命令安装这些依赖库，可以加快seldom的这安装。
+先通过 `pip` 命令安装这些依赖库，可以加快seldom的安装。
 
 ```shell
 > pip install -r requirements.txt
