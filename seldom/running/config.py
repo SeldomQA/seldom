@@ -12,6 +12,7 @@ class Seldom:
     debug = False
     base_url = None
     env = None
+    api_data_url = None
 
 
 class BrowserConfig:
