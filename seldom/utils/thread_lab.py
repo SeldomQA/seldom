@@ -1,4 +1,5 @@
 from threading import Thread
+from seldom.logging import log
 
 
 class ThreadWait:
@@ -20,7 +21,7 @@ class ThreadWait:
             self.result = None
 
         def run(self):
-            print(f"{self} Start with SeldomThread...")
+            log.info(f"{self} Start with SeldomThread...")
             if isinstance(self.args, tuple) and len(self.args) > 1:
                 name_key = self.args[0]
             else:

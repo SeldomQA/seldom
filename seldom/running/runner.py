@@ -101,7 +101,6 @@ class TestMain(object):
         elif self.path is None:
             stack_t = inspect.stack()
             ins = inspect.getframeinfo(stack_t[1][0])
-            print(ins.filename)
             file_dir = os.path.dirname(os.path.abspath(ins.filename))
             file_path = ins.filename
             if "\\" in file_path:

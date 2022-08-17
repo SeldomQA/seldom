@@ -163,7 +163,6 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             raise AssertionError("The assertion text cannot be empty.")
 
         elem = Seldom.driver.find_element(By.TAG_NAME, "html")
-        print(">>>", elem.text)
         log.info(f"👀 assertText -> {text}.")
         for _ in range(Seldom.timeout + 1):
             if elem.is_displayed():

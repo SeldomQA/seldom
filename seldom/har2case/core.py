@@ -97,7 +97,7 @@ if __name__ == '__main__':
     def gen_testcase(self):
         har_file = os.path.splitext(self.har_file_path)[0]
         output_testcase_file = "{}.py".format(har_file)
-        print(output_testcase_file)
+        log.info(output_testcase_file)
 
         log.info("Start to generate testcase.")
         testcase = self._make_testcase()

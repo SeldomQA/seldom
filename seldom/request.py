@@ -21,8 +21,7 @@ def request(func):
 
     def wrapper(*args, **kwargs):
         func_name = func.__name__
-        print("\n")
-        log.info('-------------- Request -----------------[🚀]')
+        log.info('\n-------------- Request -----------------[🚀]')
         try:
             url = list(args)[1]
         except IndexError:

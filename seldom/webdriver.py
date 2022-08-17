@@ -843,7 +843,7 @@ class WebDriver(object):
             for i in range(len(ret)):
                 js = 'return document.querySelectorAll("{css}")[{i}].outerHTML;'.format(css=css, i=i)
                 ret = Seldom.driver.execute_script(js)
-                print("{} ->".format(i), ret)
+                log.info("{} ->".format(i), ret)
         else:
             log.warning("No elements were found.")
 
