@@ -62,6 +62,14 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         return Seldom.driver
 
     @staticmethod
+    def browser(name: str):
+        """
+        launch browser
+        :param name: browser name
+        """
+        Seldom.driver = Browser(name=name)
+
+    @staticmethod
     def new_browser():
         """
         launch new browser

@@ -370,7 +370,7 @@ class WebDriver(object):
         ActionChains(Seldom.driver).click_and_hold(elem).perform()
 
     @staticmethod
-    def drag_and_drop_by_offset(index:int = 0, x: int = 0, y: int = 0, **kwargs) -> None:
+    def drag_and_drop_by_offset(index: int = 0, x: int = 0, y: int = 0, **kwargs) -> None:
         """
         Holds down the left mouse button on the source element,
            then moves to the target offset and releases the mouse button.
@@ -423,7 +423,9 @@ class WebDriver(object):
         Usage:
             self.close()
         """
-        Seldom.driver.close()
+        if isinstance(Seldom.driver, SeleniumWebDriver) is True:
+            Seldom.driver.close()
+            Seldom.driver = None
 
     @staticmethod
     def quit() -> None:
