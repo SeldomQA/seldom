@@ -31,6 +31,6 @@ from .testdata.parameterization import *
 
 __author__ = "bugmaster"
 
-__version__ = "2.10.5"
+__version__ = "2.10.6"
 
 __description__ = "WebUI/HTTP automation testing framework based on unittest."
