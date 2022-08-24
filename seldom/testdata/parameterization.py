@@ -31,7 +31,7 @@ def _find_file_path(file_dir, file_name):
     :param file_name:
     """
     file_path = None
-    find_dir = os.path.dirname(file_dir)
+    find_dir = os.path.dirname(os.path.dirname(file_dir))
 
     for root, dirs, files in os.walk(find_dir, topdown=False):
         for f in files:
