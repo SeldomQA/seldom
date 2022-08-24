@@ -35,7 +35,8 @@ setup(
         'jmespath>=0.10.0',
         'webdriver-manager==3.8.2',
         'pymysql>=1.0.0',
-        'genson==1.2.2'
+        'genson==1.2.2',
+        'click~=8.1.3'
     ],
     classifiers=[
         'Intended Audience :: Developers',
@@ -51,6 +52,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        seldom=seldom.cli:main
+        seldom=seldom.cli2:main
     '''
 )
