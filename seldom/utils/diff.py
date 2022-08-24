@@ -9,7 +9,7 @@ def diff_json(response_data, assert_data):
     """
     Compare the JSON data format
     """
-    if isinstance(response_data, dict):
+    if isinstance(response_data, dict) and isinstance(assert_data, dict):
         """ dict format """
         for key in assert_data:
             if key not in response_data:
@@ -23,7 +23,7 @@ def diff_json(response_data, assert_data):
             else:
                 info = "💡 Assert data has not key: {}".format(key)
                 log.info(info)
-    elif isinstance(response_data, list):
+    elif isinstance(response_data, list) and isinstance(assert_data, list):
         """ list format """
         if len(response_data) == 0:
             log.info("response is []")
