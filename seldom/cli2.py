@@ -1,6 +1,7 @@
 import os
 import sys
 import ssl
+import json
 import click
 import seldom
 from seldom.logging import log
@@ -9,6 +10,9 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
+from seldom import Seldom
+from seldom import SeldomTestLoader
+from seldom import TestMainExtend
 
 
 from seldom import __description__, __version__
@@ -22,21 +26,56 @@ ssl._create_default_https_context = ssl._create_unverified_context
 @click.version_option(version="{}".format(__version__), help="Show version.")
 @click.option("-P", "--project", help="Create an Seldom automation test project.")
 @click.option("-p", "--path", help="Run test case file path.")
-@click.option("-d", "--debug", default=False, help="Debug mode.")
+@click.option("-c", "--collect", default=False, help="Collect project test cases. Need the `--path`.")
+@click.option("-l", "--level", default="data",
+              type=click.Choice(['data', 'method']),
+              help="Parse the level of use cases. Need the --path.")
+@click.option("-j", "--case-json", default=None, help="Collect project test cases. Need the `--path`.")
+@click.option("-e", "--env", default=None, help="Set the Seldom run environment `Seldom.env`.")
+@click.option("-b", "--browser", default=None,
+              type=click.Choice(['chrome', 'firefox', 'ie', 'edge', 'safari']),
+              help="The browser that runs the Web UI automation tests. Need the `--path`.")
+@click.option("-u", "--base-url", default=None,
+              help="The base-url that runs the HTTP automation tests. Need the `--path`.")
+@click.option("-d", "--debug", default=False, help="Debug mode. Need the `--path`.")
+@click.option("-rr", "--rerun", default=0, type=int,
+              help="The number of times a use case failed to run again. Need the `--path`.")
+@click.option("-r", "--report", default=None, help="Set the test report for output. Need the `--path`.")
 @click.option("-m", "--mod", help="Run tests modules, classes or even individual test methods from the command line.")
-@click.option("-i", "--install", type=click.Choice(['chrome', 'firefox', 'ie', 'edge']), help="Install the browser driver.")
+@click.option("-i", "--install",
+              type=click.Choice(['chrome', 'firefox', 'ie', 'edge']),
+              help="Install the browser driver.")
 @click.option("-h2c", "--har2case", help="HAR file converts an interface test case.")
-def main(project, path, debug, mod, install, har2case):
+def main(project, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod, install, har2case):
     """
     seldom CLI.
     """
+    click.echo(f"path?? {path} collect {collect}")
+
     if project:
         create_scaffold(project)
         return 0
 
     if path:
-        seldom.main(path=path, debug=debug)
-        return 0
+        Seldom.env = env
+        if collect is True and case_json is not None:
+            click.echo(f"Collect use cases for the {path} directory and save them to {case_json}")
+            SeldomTestLoader.collectCaseInfo = True
+            main_extend = TestMainExtend(path=path)
+            case_info = main_extend.collect_cases(json=True, level=level)
+            with open(os.path.join(os.getcwd(), case_json), "w") as f:
+                f.write(case_info)
+            return 0
+        if collect is False and case_json is not None:
+            click.echo(f"Read the {case_json} use case file to the {path} directory for execution")
+            main_extend = TestMainExtend(path=path, debug=debug, browser=browser, base_url=base_url, report=report, rerun=rerun)
+            with open(case_json) as f:
+                case = json.load(f)
+                main_extend.run_cases(case)
+            return 0
+        else:
+            seldom.main(path=path, debug=debug, browser=browser, base_url=base_url, report=report, rerun=rerun)
+            return 0
 
     if mod:
         if PY3:
