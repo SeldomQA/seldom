@@ -4,18 +4,18 @@ import ssl
 import json
 import click
 import seldom
+from seldom import Seldom
+from seldom import SeldomTestLoader
+from seldom import TestMainExtend
 from seldom.logging import log
+from seldom.utils import file
 from seldom.har2case.core import HarParser
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
-from seldom import Seldom
-from seldom import SeldomTestLoader
-from seldom import TestMainExtend
 
-
-from seldom import __description__, __version__
+from seldom import __version__
 
 PY3 = sys.version_info[0] == 3
 
@@ -46,11 +46,11 @@ ssl._create_default_https_context = ssl._create_unverified_context
               type=click.Choice(['chrome', 'firefox', 'ie', 'edge']),
               help="Install the browser driver.")
 @click.option("-h2c", "--har2case", help="HAR file converts an interface test case.")
-def main(project, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod, install, har2case):
+def main(project, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod, install,
+         har2case):
     """
     seldom CLI.
     """
-    click.echo(f"path?? {path} collect {collect}")
 
     if project:
         create_scaffold(project)
@@ -59,16 +59,25 @@ def main(project, path, collect, level, case_json, env, debug, browser, base_url
     if path:
         Seldom.env = env
         if collect is True and case_json is not None:
-            click.echo(f"Collect use cases for the {path} directory and save them to {case_json}")
+            click.echo(f"Collect use cases for the {path} directory.")
+            if os.path.isdir(path) is True:
+                click.echo(f"add env Path: {os.path.dirname(path)}.")
+                file.add_to_path(os.path.dirname(path))
             SeldomTestLoader.collectCaseInfo = True
             main_extend = TestMainExtend(path=path)
             case_info = main_extend.collect_cases(json=True, level=level)
-            with open(os.path.join(os.getcwd(), case_json), "w") as f:
+            case_path = os.path.join(os.getcwd(), case_json)
+            with open(case_path, "w") as f:
                 f.write(case_info)
+            click.echo(f"save them to {case_path}")
             return 0
         if collect is False and case_json is not None:
             click.echo(f"Read the {case_json} use case file to the {path} directory for execution")
-            main_extend = TestMainExtend(path=path, debug=debug, browser=browser, base_url=base_url, report=report, rerun=rerun)
+            if os.path.isdir(path) is True:
+                click.echo(f"add env Path: {os.path.dirname(path)}.")
+                file.add_to_path(os.path.dirname(path))
+            main_extend = TestMainExtend(path=path, debug=debug, browser=browser, base_url=base_url, report=report,
+                                         rerun=rerun)
             with open(case_json) as f:
                 case = json.load(f)
                 main_extend.run_cases(case)
@@ -162,10 +171,10 @@ if __name__ == '__main__':
 
 class TestRequest(seldom.TestCase):
     """api test case"""
-    
+
     def start(self):
         self.base_url = "http://httpbin.org"
-    
+
     def test_put_method(self):
         self.put(f'{self.base_url}/put', data={'key': 'value'})
         self.assertStatusCode(200)
