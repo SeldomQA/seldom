@@ -30,7 +30,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 @click.option("-l", "--level", default="data",
               type=click.Choice(['data', 'method']),
               help="Parse the level of use cases. Need the --path.")
-@click.option("-j", "--case-json", default=None, help="Collect project test cases. Need the `--path`.")
+@click.option("-j", "--case-json", default=None, help="Test case files. Need the `--path`.")
 @click.option("-e", "--env", default=None, help="Set the Seldom run environment `Seldom.env`.")
 @click.option("-b", "--browser", default=None,
               type=click.Choice(['chrome', 'firefox', 'ie', 'edge', 'safari']),
@@ -72,12 +72,14 @@ def main(project, path, collect, level, case_json, env, debug, browser, base_url
             click.echo(f"save them to {case_path}")
             return 0
         if collect is False and case_json is not None:
-            click.echo(f"Read the {case_json} use case file to the {path} directory for execution")
+            click.echo(f"Read the {case_json} case file to the {path} directory for execution")
             if os.path.isdir(path) is True:
                 click.echo(f"add env Path: {os.path.dirname(path)}.")
                 file.add_to_path(os.path.dirname(path))
             main_extend = TestMainExtend(path=path, debug=debug, browser=browser, base_url=base_url, report=report,
                                          rerun=rerun)
+            if os.path.exists(case_json) is False:
+                click.echo(f"The run case file {case_json} does not exist.")
             with open(case_json) as f:
                 case = json.load(f)
                 main_extend.run_cases(case)
