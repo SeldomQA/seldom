@@ -64,17 +64,17 @@ C:\Python38\Scripts\seldom.exe
 
 ```shell
 > seldom -P mypro
-2022-09-03 11:22:25 cli2.py | INFO | Start to create new test project: mypro
-2022-09-03 11:22:25 cli2.py | INFO | CWD: D:\github\seldom
+2022-09-03 11:22:25 cli.py | INFO | Start to create new test project: mypro
+2022-09-03 11:22:25 cli.py | INFO | CWD: D:\github\seldom
 
-2022-09-03 11:22:25 cli2.py | INFO | created folder: mypro
-2022-09-03 11:22:25 cli2.py | INFO | created folder: mypro\test_dir
-2022-09-03 11:22:25 cli2.py | INFO | created folder: mypro\reports
-2022-09-03 11:22:25 cli2.py | INFO | created folder: mypro\test_data
-2022-09-03 11:22:25 cli2.py | INFO | created file: mypro\test_data\data.json
-2022-09-03 11:22:25 cli2.py | INFO | created file: mypro\test_dir\test_web_sample.py
-2022-09-03 11:22:25 cli2.py | INFO | created file: mypro\test_dir\test_api_sample.py
-2022-09-03 11:22:25 cli2.py | INFO | created file: mypro\run.py
+2022-09-03 11:22:25 cli.py | INFO | created folder: mypro
+2022-09-03 11:22:25 cli.py | INFO | created folder: mypro\test_dir
+2022-09-03 11:22:25 cli.py | INFO | created folder: mypro\reports
+2022-09-03 11:22:25 cli.py | INFO | created folder: mypro\test_data
+2022-09-03 11:22:25 cli.py | INFO | created file: mypro\test_data\data.json
+2022-09-03 11:22:25 cli.py | INFO | created file: mypro\test_dir\test_web_sample.py
+2022-09-03 11:22:25 cli.py | INFO | created file: mypro\test_dir\test_api_sample.py
+2022-09-03 11:22:25 cli.py | INFO | created file: mypro\run.py
 ```
 
 ### 安装浏览器驱动
@@ -84,7 +84,7 @@ C:\Python38\Scripts\seldom.exe
 ```shell
 > seldom -i chrome
 
-2022-09-03 11:25:55 cli2.py | INFO | Chrome Driver[==>] C:\Users\fnngj\.wdm\drivers\chromedriver\win32\104.0.5112\chromedriver.exe
+2022-09-03 11:25:55 cli.py | INFO | Chrome Driver[==>] C:\Users\fnngj\.wdm\drivers\chromedriver\win32\104.0.5112\chromedriver.exe
 ```
 
 支持`[chrome|firefox|ie|edge]`等浏览器驱动安装。
@@ -102,7 +102,7 @@ C:\Python38\Scripts\seldom.exe
 
 注：`har` 是fiddler 抓包工具导出的一种格式，即 `HTTPArchive`。
 
-### 运行测试目录&文件：
+### 运行测试目录&文件
 
 * `-p\--path`
 
@@ -113,7 +113,7 @@ C:\Python38\Scripts\seldom.exe
 
 不支持斜杠`\`表示路径
 
-### 运行文件&类&方法：
+### 运行文件&类&方法
 
 * `-m\--mod` 
 
@@ -125,7 +125,7 @@ C:\Python38\Scripts\seldom.exe
 
 > 注： 这种方式要保持用例的完整性，比如，用例浏览器打开/关闭。
 
-### 调试模式：
+### 调试模式
 
 * ` -d, --debug/ -nd, --no-debug`
 

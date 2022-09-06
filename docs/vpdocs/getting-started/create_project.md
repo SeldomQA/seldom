@@ -10,7 +10,7 @@ seldom 通过`seldom`命令提供了脚手架，可以快速的帮我们创建�
 1. 查看帮助：
 
 ```shell
- seldom --help
+> seldom --help
 Usage: seldom [OPTIONS]
 
   seldom CLI.
@@ -19,7 +19,8 @@ Options:
   --version                       Show version.
   -P, --project TEXT              Create an Seldom automation test project.
   -p, --path TEXT                 Run test case file path.
-  -c, --collect BOOLEAN           Collect project test cases. Need the
+  -c, --collect / -nc, --no-collect
+                                  Collect project test cases. Need the
                                   `--path`.
   -l, --level [data|method]       Parse the level of use cases. Need the
                                   --path.
@@ -30,7 +31,7 @@ Options:
                                   tests. Need the `--path`.
   -u, --base-url TEXT             The base-url that runs the HTTP automation
                                   tests. Need the `--path`.
-  -d, --debug BOOLEAN             Debug mode. Need the `--path`.
+  -d, --debug / -nd, --no-debug   Debug mode. Need the `--path`.
   -rr, --rerun INTEGER            The number of times a use case failed to run
                                   again. Need the `--path`.
   -r, --report TEXT               Set the test report for output. Need the
@@ -47,7 +48,7 @@ Options:
 2. 创建项目：
 
 ```shell
-> seldom -project mypro
+> seldom -P mypro
 ```
 
 目录结构如下：

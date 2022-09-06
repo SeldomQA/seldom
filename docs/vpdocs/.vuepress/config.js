@@ -33,6 +33,7 @@ module.exports = {
           "/getting-started/quick_start",
           "/getting-started/advanced",
           "/getting-started/data_driver",
+          "/getting-started/seldom_cli",
         ],
       },
       {
