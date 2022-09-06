@@ -58,7 +58,9 @@ C:\Python38\Scripts\seldom.exe
 
 ## seldom 使用
 
-* seldom 创建项目: `-P/--project`
+### 创建项目
+
+-  `-P/--project`
 
 ```shell
 > seldom -P mypro
@@ -75,7 +77,9 @@ C:\Python38\Scripts\seldom.exe
 2022-09-03 11:22:25 cli2.py | INFO | created file: mypro\run.py
 ```
 
-* 安装浏览器驱动：`-i/--install`
+### 安装浏览器驱动
+
+* `-i/--install`
 
 ```shell
 > seldom -i chrome
@@ -85,7 +89,9 @@ C:\Python38\Scripts\seldom.exe
 
 支持`[chrome|firefox|ie|edge]`等浏览器驱动安装。
 
-* 生成接口自动化用例：`-h2c/--har2case`
+### 生成接口自动化用例
+
+* `-h2c/--har2case`
 
 ```shell
 > seldom -h2c .\demo.har
@@ -96,7 +102,9 @@ C:\Python38\Scripts\seldom.exe
 
 注：`har` 是fiddler 抓包工具导出的一种格式，即 `HTTPArchive`。
 
-* 运行测试目录&文件：`-p\--path`
+### 运行测试目录&文件：
+
+* `-p\--path`
 
 ```shell
 > seldom -p ./test_dir/                     # 指定运行目录
@@ -105,37 +113,48 @@ C:\Python38\Scripts\seldom.exe
 
 不支持斜杠`\`表示路径
 
-* 运行文件&类*方法：`-m\--mod` 
+### 运行文件&类&方法：
+
+* `-m\--mod` 
 
 ```shell
 > seldom -m test_first_demo            # 文件名，不要.py后缀
-> seldom -p test_first_demo.BingTest   # 文件名.类名
+> seldom -m test_first_demo.BingTest   # 文件名.类名
 > seldom -m test_first_demo.BingTest.test_case  # 文件名.类名.方法名
 ```
 
-注： 这种方式要保持用例的完整性，比如，用例浏览器打开/关闭。
+> 注： 这种方式要保持用例的完整性，比如，用例浏览器打开/关闭。
 
-* 调试模式：`-d/--debug`
+### 调试模式：
+
+* ` -d, --debug/ -nd, --no-debug`
 
 ```shell
-> seldom -p test_first_demo.py -d true  # debug模式
+> seldom -p test_first_demo.py -d   # 开启debug模式
+> seldom -p test_first_demo.py -nd   # 关闭debug模式
 ```
 
-* 运行浏览器：`-b/--browser`
+### 运行浏览器
+
+* `-b/--browser`
 
 ```shell
 > seldom -p test_first_demo.py -b firefox  # firefox浏览器
 ```
 
-支持`[chrome|firefox|ie|edge]` 浏览器。
+> 支持`[chrome|firefox|ie|edge]` 浏览器。
 
-* 运行URL：`-u/--base-url`
+### 运行URL
+
+* `-u/--base-url`
 
 ```shell
 > seldom -p test_http_demo.py -u http://httpbin.org  # base-url
 ```
 
-* 测试报告：`-r/--report`
+### 测试报告
+
+* `-r/--report`
 
 ```shell
 > seldom -p test_first_demo.py -r result.html  # HTML报告
@@ -143,24 +162,28 @@ C:\Python38\Scripts\seldom.exe
 ```
 
 
-* 失败/错误重跑次数：`-rr/--rerun`
+### 失败/错误重跑次数
+
+* `-rr/--rerun`
 
 ```shell
 > seldom -p test_first_demo.py -rr 2  # rerun重跑次数
 ```
 
-* 数据驱动运行环境：`-e/--env`
+### 数据驱动运行环境
+
+* `-e/--env`
 
 ```shell
 > seldom -p test_ddt_demo.py -e production  # 运行环境
 ```
 
-注：参考`数据驱动` 一章 `Seldom.env` 的用法。
+> 注：参考`数据驱动` 一章 `Seldom.env` 的用法。
 
-* 收集测试用例
+### 收集测试用例
 
 ```shell
-> seldom -p test_dir -c true -l method -j case.json
+> seldom -p test_dir -c -l method -j case.json
 Collect use cases for the test_dir directory.
 add env Path: .
 
@@ -177,12 +200,11 @@ save them to D:\github\seldom\demo\case.json
 
 * 说明：
   - `-p/--path`: 指定收集用例的目录：`test_dir`。
-  - `-c/--collect`: 是否收集用例: `true`。
+  - `-c, --collect / -nc, --no-collect`: 是否收集用例, 默认`false`。
   - `-l/--level`: 是否收集用例级别: `data/method`。
   - `-j/--case-json`: 收集用例保存文件: `case.json`。
 
-
-* 运行收集测试用例
+### 运行收集测试用例
 
 ```shell
 > seldom -p test_dir -j case.json -r result.html

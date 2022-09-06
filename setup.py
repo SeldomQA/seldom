@@ -52,6 +52,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        seldom=seldom.cli2:main
+        seldom=seldom.cli:main
     '''
 )
