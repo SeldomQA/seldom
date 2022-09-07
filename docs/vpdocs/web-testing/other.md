@@ -55,6 +55,24 @@ if __name__ == '__main__':
     seldom.main(browser="chrome")
 ```
 
+* 开启实验性功能
+
+chrome开启实验性功能参数 `excludeSwitches`。
+
+```python
+
+import seldom
+from seldom import ChromeConfig
+from selenium.webdriver import ChromeOptions
+
+
+if __name__ == '__main__':
+    option = ChromeOptions()
+    option.add_experimental_option("excludeSwitches", ['enable-automation', 'enable-logging'])
+    ChromeConfig.options = option
+    seldom.main(browser="chrome")
+```
+
 ### Selenium Grid
 
 首先，安装Java环境，然后下载 `selenium-server`。

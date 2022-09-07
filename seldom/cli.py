@@ -1,108 +1,113 @@
 import os
 import sys
 import ssl
-import argparse
+import json
+import click
+import seldom
+from seldom import Seldom
+from seldom import SeldomTestLoader
+from seldom import TestMainExtend
 from seldom.logging import log
+from seldom.utils import file
 from seldom.har2case.core import HarParser
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 
-
-from seldom import __description__, __version__
+from seldom import __version__
 
 PY3 = sys.version_info[0] == 3
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
 
-def main():
+@click.command()
+@click.version_option(version="{}".format(__version__), help="Show version.")
+@click.option("-P", "--project", help="Create an Seldom automation test project.")
+@click.option("-p", "--path", help="Run test case file path.")
+@click.option("-c/-nc", "--collect/--no-collect", default=False, help="Collect project test cases. Need the `--path`.")
+@click.option("-l", "--level", default="data",
+              type=click.Choice(['data', 'method']),
+              help="Parse the level of use cases. Need the --path.")
+@click.option("-j", "--case-json", default=None, help="Test case files. Need the `--path`.")
+@click.option("-e", "--env", default=None, help="Set the Seldom run environment `Seldom.env`.")
+@click.option("-b", "--browser", default=None,
+              type=click.Choice(['chrome', 'firefox', 'ie', 'edge', 'safari']),
+              help="The browser that runs the Web UI automation tests. Need the `--path`.")
+@click.option("-u", "--base-url", default=None,
+              help="The base-url that runs the HTTP automation tests. Need the `--path`.")
+@click.option("-d/-nd", "--debug/--no-debug", default=False, help="Debug mode. Need the `--path`.")
+@click.option("-rr", "--rerun", default=0, type=int,
+              help="The number of times a use case failed to run again. Need the `--path`.")
+@click.option("-r", "--report", default=None, help="Set the test report for output. Need the `--path`.")
+@click.option("-m", "--mod", help="Run tests modules, classes or even individual test methods from the command line.")
+@click.option("-i", "--install",
+              type=click.Choice(['chrome', 'firefox', 'ie', 'edge']),
+              help="Install the browser driver.")
+@click.option("-h2c", "--har2case", help="HAR file converts an interface test case.")
+def main(project, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod, install,
+         har2case):
     """
-    API test: parse command line options and run commands.
+    seldom CLI.
     """
 
-    parser = argparse.ArgumentParser(description=__description__)
-    parser.add_argument(
-        '-v', '--version', dest='version', action='store_true',
-        help="show version")
-
-    parser.add_argument(
-        '-project',
-        help="Create an Seldom automation test project.")
-
-    parser.add_argument(
-        '-h2c',
-        help="HAR file converts an interface test case.")
-
-    parser.add_argument(
-        '-r',
-        help="run test case")
-
-    parser.add_argument(
-        '-m',
-        help="run tests modules, classes or even individual test methods from the command line ")
-
-    parser.add_argument(
-        '-install',
-        help="Install the browser driver, For example, 'chrome', 'firefox', 'ie', 'edge', 'opera'. ")
-
-    args = parser.parse_args()
-
-    if args.version:
-        print("seldom {}".format(__version__))
+    if project:
+        create_scaffold(project)
         return 0
 
-    project_name = args.project
-    if project_name:
-        create_scaffold(project_name)
+    if path:
+        Seldom.env = env
+        if collect is True and case_json is not None:
+            click.echo(f"Collect use cases for the {path} directory.")
+            if os.path.isdir(path) is True:
+                click.echo(f"add env Path: {os.path.dirname(path)}.")
+                file.add_to_path(os.path.dirname(path))
+            SeldomTestLoader.collectCaseInfo = True
+            main_extend = TestMainExtend(path=path)
+            case_info = main_extend.collect_cases(json=True, level=level)
+            case_path = os.path.join(os.getcwd(), case_json)
+            with open(case_path, "w") as f:
+                f.write(case_info)
+            click.echo(f"save them to {case_path}")
+            return 0
+        if collect is False and case_json is not None:
+            click.echo(f"Read the {case_json} case file to the {path} directory for execution")
+            if os.path.isdir(path) is True:
+                click.echo(f"add env Path: {os.path.dirname(path)}.")
+                file.add_to_path(os.path.dirname(path))
+            main_extend = TestMainExtend(path=path, debug=debug, browser=browser, base_url=base_url, report=report,
+                                         rerun=rerun)
+            if os.path.exists(case_json) is False:
+                click.echo(f"The run case file {case_json} does not exist.")
+            with open(case_json) as f:
+                case = json.load(f)
+                main_extend.run_cases(case)
+            return 0
+        else:
+            seldom.main(path=path, debug=debug, browser=browser, base_url=base_url, report=report, rerun=rerun)
+            return 0
+
+    if mod:
+        if PY3:
+            ret = os.system("python3 -V")
+            os.system("seldom --version")
+            if ret == 0:
+                command = "python3 -m unittest " + mod
+            else:
+                command = "python -m unittest " + mod
+        else:
+            raise NameError("Does not support python2")
+        os.system(command)
         return 0
 
-    har_file = args.h2c
-    if har_file:
-        hp = HarParser(har_file)
+    if install:
+        install_driver(install)
+        return 0
+
+    if har2case:
+        hp = HarParser(har2case)
         hp.gen_testcase()
-        return 0
-
-    run_file = args.r
-    if run_file:
-        print("Runtime environment:")
-        print("---------------------")
-        if PY3:
-            ret = os.system("python3 -V")
-            os.system("seldom -v")
-            print("---------------------")
-            if ret == 0:
-                command = "python3 " + run_file
-            else:
-                command = "python " + run_file
-        else:
-            raise NameError("Does not support python2")
-        os.system(command)
-        return 0
-
-    run_case = args.m
-    if run_case:
-        print("Runtime environment:")
-        print("---------------------")
-        print("Note: This mode is suitable for debugging single test classes and methods.")
-        if PY3:
-            ret = os.system("python3 -V")
-            os.system("seldom -v")
-            print("Browser: Chrome(default)")
-            print("---------------------")
-            if ret == 0:
-                command = "python3 -m unittest " + run_case
-            else:
-                command = "python -m unittest " + run_case
-        else:
-            raise NameError("Does not support python2")
-        os.system(command)
-        return 0
-
-    driver_name = args.install
-    if driver_name:
-        install_driver(driver_name)
         return 0
 
 
@@ -168,10 +173,10 @@ if __name__ == '__main__':
 
 class TestRequest(seldom.TestCase):
     """api test case"""
-    
+
     def start(self):
         self.base_url = "http://httpbin.org"
-    
+
     def test_put_method(self):
         self.put(f'{self.base_url}/put', data={'key': 'value'})
         self.assertStatusCode(200)
@@ -215,24 +220,25 @@ if __name__ == '__main__':
     create_file(os.path.join(project_name, "run.py"), run_test)
 
 
-def install_driver(browser=None):
+def install_driver(browser):
     """
     Download and install the browser driver
 
-    :param browser: The Driver to download. Pass as `chrome/firefox/ie/edge/opera`. Default Chrome.
+    :param browser: The Driver to download. Pass as `chrome/firefox/ie/edge`. Default Chrome.
     :return:
     """
 
-    if browser is None:
-        browser = "chrome"
-
     if browser == "chrome":
-        ChromeDriverManager().install()
+        driver_path = ChromeDriverManager().install()
+        log.info(f"Chrome Driver[==>] {driver_path}")
     elif browser == "firefox":
-        GeckoDriverManager().install()
+        driver_path = GeckoDriverManager().install()
+        log.info(f"Firefox Driver[==>] {driver_path}")
     elif browser == "ie":
-        IEDriverManager().install()
+        driver_path = IEDriverManager().install()
+        log.info(f"IE Driver[==>] {driver_path}")
     elif browser == "edge":
-        EdgeChromiumDriverManager().install()
+        driver_path = EdgeChromiumDriverManager().install()
+        log.info(f"Edge Driver[==>] {driver_path}")
     else:
         raise NameError(f"Not found '{browser}' browser driver.")

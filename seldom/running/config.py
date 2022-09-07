@@ -14,6 +14,7 @@ class Seldom:
     app_server = None
     app_info = None
     env = None
+    api_data_url = None
 
 
 class BrowserConfig:

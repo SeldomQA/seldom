@@ -1,3 +1,5 @@
+from seldom.logging import log
+
 
 class AssertInfo:
     data = []
@@ -7,12 +9,12 @@ def diff_json(response_data, assert_data):
     """
     Compare the JSON data format
     """
-    if isinstance(response_data, dict):
+    if isinstance(response_data, dict) and isinstance(assert_data, dict):
         """ dict format """
         for key in assert_data:
             if key not in response_data:
                 info = "❌ Response data has no key: {}".format(key)
-                print(info)
+                log.info(info)
                 AssertInfo.data.append(info)
         for key in response_data:
             if key in assert_data:
@@ -20,11 +22,11 @@ def diff_json(response_data, assert_data):
                 diff_json(response_data[key], assert_data[key])
             else:
                 info = "💡 Assert data has not key: {}".format(key)
-                print(info)
-    elif isinstance(response_data, list):
+                log.info(info)
+    elif isinstance(response_data, list) and isinstance(assert_data, list):
         """ list format """
         if len(response_data) == 0:
-            print("response is []")
+            log.info("response is []")
         else:
             if isinstance(response_data[0], dict):
                 response_data = sorted(response_data, key=lambda x: x[list(response_data[0].keys())[0]])
@@ -32,7 +34,7 @@ def diff_json(response_data, assert_data):
                 response_data = sorted(response_data)
 
         if len(response_data) != len(assert_data):
-            print("list len: '{}' != '{}'".format(len(response_data), len(assert_data)))
+            log.info("list len: '{}' != '{}'".format(len(response_data), len(assert_data)))
 
         if len(assert_data) > 0:
             if isinstance(assert_data[0], dict):
@@ -46,5 +48,5 @@ def diff_json(response_data, assert_data):
     else:
         if str(response_data) != str(assert_data):
             info = "❌ Value are not equal: {}".format(response_data)
-            print(info)
+            log.info(info)
             AssertInfo.data.append(info)

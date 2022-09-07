@@ -1,3 +1,19 @@
+### 2.10.6 ~ 2.10.7
+* 功能：`seldom`命令重大更新，支持更多参数和功能。
+* 功能：`@file_data()` 当设置`Seldom.env`时支持更深一级遍历。
+* 修复：`diff_json()` 对比数据错误。 
+
+### 2.10.4 ~ 2.10.5
+* 重构log日志打印。 @Yongchin
+  * 彻底修复日志重复打印的问题。
+  * 移除`log.printf()` 非标准日志类型。
+* 修复:
+  * `sender()` 发送完邮件，`seldom_log.log` 文件无法删除的问题。
+  * `TestMainExtend` 类`run_cases()`按照用例的顺序执行。@luna-CY
+  * 修复`request` 带上`url=` 参数时异常。 @986379041@qq.com
+* 依赖：`webdriver_manager`依赖升级到`3.8.2`
+* 移除：`Opera` 浏览器的支持，selenium 4 已经移除了对opera的单独驱动支持。
+
 ### 2.10.3
 * 数据驱动：`@data()` 和 `@file_data()` 优化用例名称和描述。
 * 增加`Seldom.env`环境配置变量，`@file_data()` 数据驱动装饰器支持环境变量。 

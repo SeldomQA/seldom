@@ -71,6 +71,14 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         return Seldom.driver
 
     @staticmethod
+    def browser(name: str):
+        """
+        launch browser
+        :param name: browser name
+        """
+        Seldom.driver = Browser(name=name)
+
+    @staticmethod
     def new_browser():
         """
         launch new browser
@@ -172,7 +180,6 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             raise AssertionError("The assertion text cannot be empty.")
 
         elem = Seldom.driver.find_element(By.TAG_NAME, "html")
-        print(">>>", elem.text)
         log.info(f"👀 assertText -> {text}.")
         for _ in range(Seldom.timeout + 1):
             if elem.is_displayed():

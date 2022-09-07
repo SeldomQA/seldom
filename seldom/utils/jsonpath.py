@@ -6,6 +6,7 @@ from __future__ import print_function
 
 import re
 import sys
+from seldom.logging import log
 
 __all__ = ['jsonpath']
 
@@ -84,15 +85,18 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
         return path
 
     def trace(expr, obj, path):
-        if debug: print("trace", expr, "/", path)
+        if debug:
+            log.debug(f"trace {expr} / {path}")
         if expr:
             x = expr.split(';')
             loc = x[0]
             x = ';'.join(x[1:])
-            if debug: print("\t", loc, type(obj))
+            if debug:
+                log.debug(f"\t {loc} {type(obj)}")
             if loc == "*":
                 def f03(key, loc, expr, obj, path):
-                    if debug > 1: print("\tf03", key, loc, expr, path)
+                    if debug > 1:
+                        log.debug(f"\tf03 {key} {loc} {expr} {path}")
                     trace(s(key, expr), obj, path)
 
                 walk(loc, x, obj, path, f03)
@@ -100,7 +104,8 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
                 trace(x, obj, path)
 
                 def f04(key, loc, expr, obj, path):
-                    if debug > 1: print("\tf04", key, loc, expr, path)
+                    if debug > 1:
+                        log.debug(f"\tf04 {key} {loc} {expr} {path}")
                     if isinstance(obj, dict):
                         if key in obj:
                             trace(s('..', expr), obj[key], s(path, key))
@@ -121,14 +126,14 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
             elif isinstance(obj, list) and isint(loc):
                 iloc = int(loc)
                 if debug:
-                    print("----->", iloc, len(obj))
+                    log.debug(f"-----> {iloc} {len(obj)}")
                 if len(obj) > iloc:
                     trace(x, obj[iloc], s(path, loc))
             else:
                 # [(index_expression)]
                 if loc.startswith("(") and loc.endswith(")"):
                     if debug > 1:
-                        print("index", loc)
+                        log.debug(f"index {loc}")
                     e = evalx(loc, obj)
                     trace(s(e, x), obj, path)
                     return
@@ -136,11 +141,11 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
                 # ?(filter_expression)
                 if loc.startswith("?(") and loc.endswith(")"):
                     if debug > 1:
-                        print("filter", loc)
+                        log.debug(f"filter {loc}")
 
                     def f05(key, loc, expr, obj, path):
                         if debug > 1:
-                            print("f05", key, loc, expr, path)
+                            log.debug(f"f05 {key} {loc} {expr} {path}")
                         if isinstance(obj, dict):
                             eval_result = evalx(loc, obj[key])
                         else:
@@ -193,7 +198,7 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
                     # [index,index....]
                     for piece in re.split(r"'?,'?", loc):
                         if debug > 1:
-                            print("piece", piece)
+                            log.debug(f"piece {piece}")
                         trace(s(piece, x), obj, path)
         else:
             store(path, obj)
@@ -210,7 +215,7 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
         """eval expression"""
 
         if debug:
-            print("evalx", loc)
+            log.debug(f"evalx {loc}")
 
         # a nod to JavaScript. doesn't work for @.name.name.length
         # Write len(@.name.name) instead!!!
@@ -252,20 +257,20 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
         loc = re.sub(r'(?<!\\)@', "__obj", loc).replace(r'\@', '@')
         if not use_eval:
             if debug:
-                print("eval disabled")
+                log.debug("eval disabled")
             raise Exception("eval disabled")
         if debug:
-            print("eval", loc)
+            log.debug(f"eval {loc}")
         try:
             # eval w/ caller globals, w/ local "__obj"!
             v = eval(loc, caller_globals, {'__obj': obj})
         except Exception as e:
             if debug:
-                print(repr(e))
+                log.debug(repr(e))
             return False
 
         if debug:
-            print("->", v)
+            log.debug(f"-> {v}")
         return v
 
     # body of jsonpath()
@@ -308,7 +313,7 @@ if __name__ == '__main__':
         # XXX verify?
         format = sys.argv[3]
 
-    value = jsonpath(object, path, format)
+    value = jsonpath(object, path, format, debug=2)
 
     if not value:
         sys.exit(1)

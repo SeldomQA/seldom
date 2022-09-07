@@ -39,28 +39,44 @@ If you want to keep up with the latest version, you can install with github repo
 1、查看帮助：
 
 ```shell
-> seldom -h
-usage: seldom [-h] [-v] [-project PROJECT] [-h2c H2C] [-r R] [-m M]
-              [-install INSTALL]
+> seldom --help
+Usage: seldom [OPTIONS]
 
-WebUI/HTTP automation testing framework based on unittest.
+  seldom CLI.
 
-optional arguments:
-  -h, --help        show this help message and exit
-  -v, --version     show version
-  -project PROJECT  Create an Seldom automation test project.
-  -h2c H2C          HAR file converts an interface test case.
-  -r R              run test case
-  -m M              run tests modules, classes or even individual test methods
-                    from the command line
-  -install INSTALL  Install the browser driver, For example, 'chrome', 'firefox',
-                    'ie', 'edge'.
+Options:
+  --version                       Show version.
+  -P, --project TEXT              Create an Seldom automation test project.
+  -p, --path TEXT                 Run test case file path.
+  -c, --collect BOOLEAN           Collect project test cases. Need the
+                                  `--path`.
+  -l, --level [data|method]       Parse the level of use cases. Need the
+                                  --path.
+  -j, --case-json TEXT            Test case files. Need the `--path`.
+  -e, --env TEXT                  Set the Seldom run environment `Seldom.env`.
+  -b, --browser [chrome|firefox|ie|edge|safari]
+                                  The browser that runs the Web UI automation
+                                  tests. Need the `--path`.
+  -u, --base-url TEXT             The base-url that runs the HTTP automation
+                                  tests. Need the `--path`.
+  -d, --debug BOOLEAN             Debug mode. Need the `--path`.
+  -rr, --rerun INTEGER            The number of times a use case failed to run
+                                  again. Need the `--path`.
+  -r, --report TEXT               Set the test report for output. Need the
+                                  `--path`.
+  -m, --mod TEXT                  Run tests modules, classes or even
+                                  individual test methods from the command
+                                  line.
+  -i, --install [chrome|firefox|ie|edge]
+                                  Install the browser driver.
+  -h2c, --har2case TEXT           HAR file converts an interface test case.
+  --help                          Show this message and exit.
 ```
 
 2、创建项目：
 
 ```shell
-> seldom -project mypro
+> seldom -P mypro
 ```
 
 目录结构如下：

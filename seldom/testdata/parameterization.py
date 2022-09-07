@@ -1,6 +1,7 @@
 import os
 import inspect as sys_inspect
 import warnings
+import requests
 from functools import wraps
 from parameterized.parameterized import inspect
 from parameterized.parameterized import parameterized
@@ -14,11 +15,12 @@ from parameterized import parameterized_class
 from seldom.testdata import conversion
 from seldom.logging.exceptions import FileTypeError
 from seldom.testdata.conversion import _check_data
+from seldom.utils import jmespath as utils_jmespath
 from seldom import Seldom
 
 
 __all__ = [
-    "file_data", "data", "data_class"
+    "file_data", "api_data", "data", "data_class"
 ]
 
 
@@ -29,7 +31,7 @@ def _find_file_path(file_dir, file_name):
     :param file_name:
     """
     file_path = None
-    find_dir = os.path.dirname(file_dir)
+    find_dir = os.path.dirname(os.path.dirname(file_dir))
 
     for root, dirs, files in os.walk(find_dir, topdown=False):
         for f in files:
@@ -160,6 +162,36 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
         raise FileTypeError("Your file is not supported: {}".format(file))
 
     return data(data_list)
+
+
+def api_data(url: str = None, params: dict = None, ret: str = None):
+    """
+    Support api data parameterization.
+    :param url:
+    :param params:
+    :param ret:
+    :return:
+    """
+
+    if url is None and Seldom.api_data_url is None:
+        raise ValueError("url is not None")
+
+    url = url if url is not None else Seldom.api_data_url
+    resp = requests.get(url, params=params).json()
+
+    if ret is not None:
+        data_ = utils_jmespath(resp, ret)
+        if data_ is None:
+            raise ValueError(f"Error - return {ret} is None in {resp}")
+        elif isinstance(data_, list) is False:
+            raise TypeError(f"Error - {data_} is not list")
+        else:
+            return data(data_)
+    else:
+        if isinstance(resp, list) is False:
+            raise TypeError(f"Error - {resp} is not list")
+        else:
+            return data(resp)
 
 
 def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
