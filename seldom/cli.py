@@ -80,7 +80,7 @@ def main(project, path, collect, level, case_json, env, debug, browser, base_url
                                          rerun=rerun)
             if os.path.exists(case_json) is False:
                 click.echo(f"The run case file {case_json} does not exist.")
-            with open(case_json) as f:
+            with open(case_json, encoding="utf-8") as f:
                 case = json.load(f)
                 main_extend.run_cases(case)
             return 0
