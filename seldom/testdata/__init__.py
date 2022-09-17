@@ -7,82 +7,83 @@ import hashlib
 import datetime
 
 from .data import (
-    unicode_names,
+    en_first_names_male,
+    en_first_names_female,
+    en_last_names,
+    zh_names_male,
+    zh_names_female,
+    zh_last_name,
     words_str,
-    first_names_male,
-    first_names_female,
-    last_names,
     mobile,
     unicom,
     telecom,
 )
 
 
-def first_name(gender="", is_unicode=None):
+def first_name(gender: str = "", language: str = "en") -> str:
     """
     get first name
     :param gender:
-    :param is_unicode:
+    :param language:
     :return:
     """
-    genders = ["m", "f"]
-    if gender:
-        gender = str(gender).lower()[0]
-        gender = "m" if gender == "1" else "f"
-        gender = "m" if gender == "t" else "f"
-        if gender not in genders:
-            raise ValueError("Unsupported gender, try [m, f, male, female] instead")
-    else:
-        gender = random.choice(genders)
+    genders = ["", "m", "f", "male", "female"]
+    if gender not in genders:
+        raise ValueError("Unsupported gender, try [m, f, male, female] instead")
 
-    if is_unicode is None:
-        is_unicode = random.randint(0, 100) < 20
-
-    if is_unicode:
-        name = random.choice(unicode_names)
-    else:
-        if gender == "m":
-            name = random.choice(first_names_male)
+    if language == "en":
+        if gender == "":
+            name = random.choice(en_first_names_female + en_first_names_male)
+        elif gender in ["m", "male"]:
+            name = random.choice(en_first_names_male)
         else:
-            name = random.choice(first_names_female)
+            name = random.choice(en_first_names_female)
 
-    if random.randint(0, 20) == 5:
-        name = '{}-{}'.format(name, first_name(gender, is_unicode))
+        return name.capitalize()
 
-    return name.capitalize()
+    elif language == "zh":
+        if gender == "":
+            name = random.choice(zh_names_female + zh_names_male)
+        elif gender == "m":
+            name = random.choice(zh_names_male)
+        else:
+            name = random.choice(zh_names_female)
+
+        return name
 
 
-def last_name(is_unicode=None):
+def last_name(language: str = "en") -> str:
     """
     get last name
-    :param is_unicode:
     :return:
     """
-    if is_unicode is None:
-        is_unicode = random.randint(0, 100) < 20
-
-    if is_unicode:
-        name = random.choice(unicode_names)
+    if language == "en":
+        name = random.choice(en_last_names)
+        return name.capitalize()
+    elif language == "zh":
+        name = random.choice(zh_last_name)
+        return name
     else:
-        name = random.choice(last_names)
-
-    if random.randint(0, 20) == 5:
-        name = '{}-{}'.format(name, last_name(is_unicode))
-
-    return name.capitalize()
+        raise ValueError(f"{language} language is not supported")
 
 
-def username(name=""):
+def username(name: str = "", language: str = "en") -> str:
     """
-    Returns just a non-space ascii name, this is a very basic username generator
+    this is a very basic username generator
     """
-    if not name:
-        name = first_name() if yes() else last_name()
-    name = re.sub(r"['-]", "", name)
-    return name
+    if language == "en":
+        if not name:
+            name = first_name() if yes() else last_name()
+        name = re.sub(r"['-]", "", name)
+        return name
+    elif language == "zh":
+        name = f"{last_name(language=language)}{first_name(language=language)}"
+        return name
+    else:
+        raise ValueError(f"{language} language is not supported")
 
 
-def get_email(name=''):
+def get_email(name: str = "") -> str:
     """
     return a random email address
     """
@@ -100,10 +101,10 @@ def get_email(name=''):
         "msn.com",
         "mail.com",
     ]
-    return '{}@{}'.format(name.lower(), random.choice(email_domains))
+    return f"{name.lower()}@{random.choice(email_domains)}"
 
 
-def get_md5(val=""):
+def get_md5(val: str = "") -> str:
     """Return an md5 hash of val, if no val then return a random md5 hash
 
     :param val: string, the value you want to md5 hash
@@ -120,14 +121,14 @@ def get_md5(val=""):
     return ret
 
 
-def get_uuid():
+def get_uuid() -> str:
     """
     Generate a random UUID
     """
     return str(uuid.uuid4())
 
 
-def get_int(min_size=1, max_size=sys.maxsize):
+def get_int(min_size: int = 1, max_size=sys.maxsize) -> int:
     """
     return integer style data
     :param min_size:
@@ -136,8 +137,10 @@ def get_int(min_size=1, max_size=sys.maxsize):
     return random.randint(min_size, max_size)
 
 
-def get_int32(min_size=1):
-    """returns a 32-bit positive integer"""
+def get_int32(min_size: int = 1) -> int:
+    """
+    returns a 32-bit positive integer
+    """
     return random.randint(min_size, 2**31-1)
 
 
@@ -146,7 +149,7 @@ def get_int64(min_size=1):
     return random.randint(min_size, 2**63-1)
 
 
-def get_float(min_size=None, max_size=None):
+def get_float(min_size: float = None, max_size: float = None) -> float:
     """
     return a random float
     sames as the random method but automatically sets min and max
@@ -163,7 +166,7 @@ def get_float(min_size=None, max_size=None):
     return random.uniform(min_size, max_size)
 
 
-def get_digits(count):
+def get_digits(count: int) -> str:
     """
     return a string value that contains count digits
     :param count: int, how many digits you want, so if you pass in 4, you would get
@@ -176,7 +179,7 @@ def get_digits(count):
     return ret
 
 
-def yes(specifier=0):
+def yes(specifier=0) -> int:
     """
     Decide if we should perform this action, this is just a simple way to do something
     I do in tests every now and again
@@ -217,8 +220,8 @@ def yes(specifier=0):
                 specifier *= 100.0
 
             specifier = int(specifier)
-            x = random.randint(0, 100)
-            choice = 1 if x <= specifier else 0
+            num = random.randint(0, 100)
+            choice = 1 if num <= specifier else 0
 
     else:
         choice = random.choice([0, 1])
@@ -226,7 +229,7 @@ def yes(specifier=0):
     return choice
 
 
-def get_words(count=0, as_str=True, words=None):
+def get_words(count: int = 0, as_str: bool = True, words=None) -> str:
     """get some amount of random words
     :param count: integer, how many words you want, 0 means a random amount (at most 20)
     :param as_str: boolean, True to return as string, false to return as list of words
@@ -244,11 +247,11 @@ def get_words(count=0, as_str=True, words=None):
     return ret_words if not as_str else ' '.join(ret_words)
 
 
-def get_word(words=None):
+def get_word(words=None) -> str:
     return get_words(1, as_str=True, words=words)
 
 
-def get_birthday(as_str=False, start_age=18, stop_age=100):
+def get_birthday(as_str: bool = False, start_age: int = 18, stop_age: int = 100) -> [str, datetime]:
     """
     return a random YYYY-MM-DD
     :param as_str: boolean, true to return the bday as a YYYY-MM-DD string
@@ -273,7 +276,7 @@ def get_birthday(as_str=False, start_age=18, stop_age=100):
     return birthday
 
 
-def get_past_datetime(now=None):
+def get_past_datetime(now=None, strftime=False) -> datetime:
     """
     a datetime guaranteed to be in the past from now.
     return: 2001-06-13 00:11:33.168502
@@ -284,13 +287,16 @@ def get_past_datetime(now=None):
         now = datetime.datetime.now() - now
 
     td = now - datetime.datetime(year=2000, month=1, day=1)
-    return now - datetime.timedelta(
+    data_time = now - datetime.timedelta(
         days=random.randint(1, max(td.days, 1)),
         seconds=random.randint(1, max(td.seconds, 1))
     )
+    if strftime is True:
+        return data_time.strftime("%Y-%m-%d %H:%M:%S")
+    return data_time
 
 
-def get_future_datetime(now=None):
+def get_future_datetime(now=None, strftime=False) -> datetime:
     """
     a datetime guaranteed to be in the future from now
     return: 2034-02-23 04:59:41.168502
@@ -299,25 +305,29 @@ def get_future_datetime(now=None):
         now = datetime.datetime.now()
     if isinstance(now, datetime.timedelta):
         now = datetime.datetime.now() + now
-
-    return now + datetime.timedelta(
+    data_time = now + datetime.timedelta(
         weeks=random.randint(1, 52 * 50),
         hours=random.randint(0, 24),
         days=random.randint(0, 365),
         seconds=random.randint(0, 86400)
     )
+    if strftime is True:
+        return data_time.strftime("%Y-%m-%d %H:%M:%S")
+    return data_time
 
 
-def get_now_time():
+def get_now_datetime(strftime=False) -> [str, datetime]:
     """
     Get date time, default to current day。
     :return:
     """
-    date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return date
+    date_time = datetime.datetime.now()
+    if strftime is True:
+        return date_time.strftime("%Y-%m-%d %H:%M:%S")
+    return date_time
 
 
-def get_past_time():
+def get_past_time() -> str:
     """
     Gets the past date time
     :return: 2019-05-16 00:34:30
@@ -327,7 +337,7 @@ def get_past_time():
     return date_time
 
 
-def get_future_time():
+def get_future_time() -> datetime:
     """
     Gets the future date time.
     :return: 2022-10-24 19:52:21
@@ -337,7 +347,7 @@ def get_future_time():
     return date_time
 
 
-def get_date(day=None):
+def get_date(day=None) -> str:
     """
     Get date, default to current day。
     :return:
@@ -350,12 +360,11 @@ def get_date(day=None):
     return date
 
 
-def get_phone(operator=None):
+def get_phone(operator: str = None) -> str:
     """
     get phone number
     :return:
     """
-
     if operator is None:
         all_operator = mobile + unicom + telecom
         top_third = random.choice(all_operator)

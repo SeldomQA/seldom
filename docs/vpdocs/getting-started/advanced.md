@@ -27,28 +27,109 @@ if __name__ == '__main__':
 
 **更多的方法**
 
-- first_name()
-- last_name()
-- username()
-- get_birthday()
-- get_date()
-- get_digits()
-- get_email()
-- get_float()
-- get_now_time()
-- get_future_time()
-- get_past_time()
-- get_future_datetime()
-- get_past_datetime()
-- get_int()
-- get_int32()
-- get_int64()
-- get_md5()
-- get_uuid()
-- get_word()
-- get_words()
-- get_phone()
+```python
+from seldom.testdata import *
 
+
+# 随机一个名字
+print("名字：", first_name())
+print("名字(男)：", first_name(gender="male"))
+print("名字(女)：", first_name(gender="female"))
+print("名字(中文男)：", first_name(gender="male", language="zh"))
+print("名字(中文女)：", first_name(gender="female", language="zh"))
+
+# 随机一个姓
+print("姓:", last_name())
+print("姓(中文):", last_name(language="zh"))
+
+# 随机一个姓名
+print("姓名:", username())
+print("姓名(中文):", username(language="zh"))
+
+# 随机一个生日
+print("生日:", get_birthday())
+print("生日字符串:", get_birthday(as_str=True))
+print("生日年龄范围:", get_birthday(start_age=20, stop_age=30))
+
+# 日期
+print("日期(当前):", get_date())
+print("日期(昨天):", get_date(-1))
+print("日期(明天):", get_date(1))
+
+# 数字
+print("数字(8位):", get_digits(8))
+
+# 邮箱
+print("邮箱:", get_email())
+
+# 浮点数
+print("浮点数:", get_float())
+print("浮点数范围:", get_float(min_size=1.0, max_size=2.0))
+
+# 随机时间
+print("当前时间:", get_now_datetime())
+print("当前时间(格式化字符串):", get_now_datetime(strftime=True))
+print("未来时间:", get_future_datetime())
+print("未来时间(格式化字符串):", get_future_datetime(strftime=True))
+print("过去时间:", get_past_datetime())
+print("过去时间(格式化字符串):", get_past_datetime(strftime=True))
+
+# 随机数据
+print("整型:", get_int())
+print("整型32位:", get_int32())
+print("整型64位:", get_int64())
+print("MD5:", get_md5())
+print("UUID:", get_uuid())
+
+print("单词:", get_word())
+print("单词组(3个):", get_words(3))
+
+print("手机号:", get_phone())
+print("手机号(移动):", get_phone(operator="mobile"))
+print("手机号(联通):", get_phone(operator="unicom"))
+print("手机号(电信):", get_phone(operator="telecom"))
+```
+
+* 运行结果
+
+```shell
+名字： Hayden
+名字（男）： Brantley
+名字（女）： Julia
+名字（中文男）： 觅儿
+名字（中文女）： 若星
+姓: Lee
+姓（中文）: 白
+姓名: Genesis
+姓名（中文）: 廉高义
+生日: 2000-03-11
+生日字符串: 1994-11-12
+生日年龄范围: 1996-01-12
+日期（当前）: 2022-09-17
+日期（昨天）: 2022-09-16
+日期（明天）: 2022-09-18
+数字(8位): 48285099
+邮箱: melanie@yahoo.com
+浮点数: 1.5315717275531858e+308
+浮点数范围: 1.6682402084146244
+当前时间: 2022-09-17 23:33:22.736031
+当前时间(格式化字符串): 2022-09-17 23:33:22
+未来时间: 2054-05-02 11:33:47.736031
+未来时间(格式化字符串): 2070-08-28 16:38:45
+过去时间: 2004-09-03 12:56:23.737031
+过去时间(格式化字符串): 2006-12-06 07:58:37
+整型: 7831034423589443450
+整型32位: 1119927937
+整型64位: 3509365234787490389
+MD5: d0f6c6abbfe1cfeea60ecfdd1ef2f4b9
+UUID: 5fd50475-2723-4a36-a769-1d4c9784223a
+单词: habitasse
+单词组（3个）: уж pede. metus.
+手机号: 13171039843
+手机号(移动): 15165746029
+手机号(联通): 16672812525
+手机号(电信): 17345142737
+```
 
 ### 用例的依赖
 
