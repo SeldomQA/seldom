@@ -23,6 +23,11 @@ class MySQLTest(unittest.TestCase):
         result = self.db.query_sql("select * from api_user")
         self.assertIsInstance(result, list)
 
+    def test_query_one(self):
+        """测试查询SQL一条数据"""
+        result = self.db.query_one("select * from api_user")
+        self.assertIsInstance(result, dict)
+
     def test_execute_sql(self):
         """测试执行SQL"""
         db = self.db
@@ -34,8 +39,10 @@ class MySQLTest(unittest.TestCase):
 
     def test_select_sql(self):
         """测试查询SQL"""
-        result = self.db.select(table="api_user", where={"name": "test"})
-        self.assertEqual(result[0]["name"], "test")
+        result1 = self.db.select(table="api_user", where={"name": "test"})
+        self.assertEqual(result1[0]["name"], "test")
+        result2 = self.db.select(table="api_user", one=True)
+        self.assertIsInstance(result2, dict)
 
     def test_delete_sql(self):
         """测试删除SQL"""
@@ -81,7 +88,7 @@ class SQLite3Test(unittest.TestCase):
     def setUp(self) -> None:
         """"初始化DB连接"""
         self.db = SQLiteDB(r"D:\github\seldom\backend\db.sqlite3")
-        self.db.execute_sql("INSERT INTO api_user (name, age) VALUES ('test', 11) ")
+        self.db.insert(table="api_user", data= {"name": "test", "age": 11})
 
     def tearDown(self) -> None:
         self.db.delete("api_user", {"name": "test"})
@@ -90,6 +97,11 @@ class SQLite3Test(unittest.TestCase):
         """测试查询SQL"""
         result = self.db.query_sql("select * from api_user")
         self.assertIsInstance(result, list)
+
+    def test_query_one(self):
+        """测试查询SQL"""
+        result = self.db.query_one("select * from api_user")
+        self.assertIsInstance(result, tuple)
 
     def test_execute_sql(self):
         """测试执行SQL"""
@@ -104,6 +116,8 @@ class SQLite3Test(unittest.TestCase):
         """测试查询SQL"""
         result = self.db.select(table="api_user", where={"name": "test"})
         self.assertEqual(result[0][1], "test")
+        result = self.db.select(table="api_user", one=True)
+        self.assertIsInstance(result, tuple)
 
     def test_delete_sql(self):
         """测试删除SQL"""

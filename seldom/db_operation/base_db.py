@@ -50,11 +50,11 @@ class SQLBase:
         """
         return self.insert_data(table, data)
 
-    def select(self, table: str, where: dict = None) -> list:
+    def select(self, table: str, where: dict = None, one: bool = False) -> list:
         """
         select sql statement
         """
-        return self.select_data(table, where)
+        return self.select_data(table, where, one)
 
     def update(self, table: str, data: dict, where: dict) -> None:
         """

@@ -1,6 +1,7 @@
 """
 MySQL DB API
 """
+from typing import Any
 import pymysql.cursors
 from seldom.db_operation.base_db import SQLBase
 
@@ -57,6 +58,18 @@ class MySQLDB(SQLBase):
             self.connection.commit()
             return data_list
 
+    def query_one(self, sql: str) -> Any:
+        """
+        Query one data SQL
+        :return:
+        """
+        with self.connection.cursor() as cursor:
+            self.connection.ping(reconnect=True)
+            cursor.execute(sql)
+            row = cursor.fetchone()
+            self.connection.commit()
+            return row
+
     def insert_data(self, table: str, data: dict) -> None:
         """
         insert sql statement
@@ -68,13 +81,16 @@ class MySQLDB(SQLBase):
         sql = f"""insert into {table} ({key}) values ({value})"""
         self.execute_sql(sql)
 
-    def select_data(self, table: str, where: dict = None) -> list:
+    def select_data(self, table: str, where: dict = None, one: bool = False) -> Any:
         """
         select sql statement
         """
         sql = f"""select * from {table} """
         if where is not None:
-            sql += f""" where {self.dict_to_str_and(where)};"""
+            sql += f""" where {self.dict_to_str_and(where)}"""
+        if one is True:
+            return self.query_one(sql)
+
         return self.query_sql(sql)
 
     def update_data(self, table: str, data: dict, where: dict) -> None:

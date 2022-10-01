@@ -1,6 +1,7 @@
 """
 SQLite3 DB API
 """
+from typing import Any
 import sqlite3
 from seldom.db_operation.base_db import SQLBase
 
@@ -45,18 +46,31 @@ class SQLiteDB(SQLBase):
         return: query data
         """
         data_list = []
-        rows = self.cursor.execute(sql)
+        self.cursor.execute(sql)
+        rows = self.cursor.fetchall()
         for row in rows:
             data_list.append(row)
         return data_list
 
-    def select_data(self, table: str, where: dict = None) -> list:
+    def query_one(self, sql: str) -> Any:
+        """
+        Query one data SQL
+        return: query data
+        """
+        self.cursor.execute(sql)
+        row = self.cursor.fetchone()
+        return row
+
+    def select_data(self, table: str, where: dict = None, one: bool = False) -> Any:
         """
         select sql statement
         """
         sql = f"""select * from {table} """
         if where is not None:
-            sql += f""" where {self.dict_to_str_and(where)};"""
+            sql += f""" where {self.dict_to_str_and(where)}"""
+        if one is True:
+            return self.query_one(sql)
+
         return self.query_sql(sql)
 
     def update_data(self, table: str, data: dict, where: dict) -> None:
