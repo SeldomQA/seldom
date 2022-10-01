@@ -1,4 +1,6 @@
-# coding=utf-8
+"""
+seldom main
+"""
 import os
 import re
 import ast
@@ -22,29 +24,45 @@ from seldom.running.loader_extend import seldomTestLoader
 INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 with open(INIT_FILE, 'rb') as f:
-    version = str(ast.literal_eval(_version_re.search(
+    VERSION = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
-seldom_str = """
+SELDOM_STR = f"""
               __    __              
    ________  / /___/ /___  ____ ____ 
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v{v}
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v{VERSION}
 -----------------------------------------
                              @itest.info
-""".format(v=version)
+"""
 
 
-class TestMain(object):
+class TestMain:
     """
     Reimplemented Seldom Runner, Support for Web and API
     """
     TestSuits = []
 
-    def __init__(self, path=None, case=None, browser=None, base_url=None, debug=False, timeout=10,
-                 report=None, title="Seldom Test Report", tester="Anonymous", description="Test case execution",
-                 rerun=0, save_last_run=False, language="en", whitelist=[], blacklist=[], open=True, auto=True):
+    def __init__(
+            self,
+            path: str = None,
+            case: str = None,
+            browser: str = None,
+            base_url: str = None,
+            debug: bool = False,
+            timeout: int = 10,
+            report: str = None,
+            title: str = "Seldom Test Report",
+            tester: str = "Anonymous",
+            description: str = "Test case execution",
+            rerun: int = 0,
+            save_last_run: bool = False,
+            language: str = "en",
+            whitelist: list = [],
+            blacklist: list = [],
+            open: bool = True,
+            auto: bool = True):
         """
         runner test case
         :param path:
@@ -66,7 +84,7 @@ class TestMain(object):
         :param auto:
         :return:
         """
-        print(seldom_str)
+        print(SELDOM_STR)
         self.path = path
         self.case = case
         self.browser = browser
@@ -84,10 +102,10 @@ class TestMain(object):
         self.auto = auto
 
         if isinstance(timeout, int) is False:
-            raise TypeError("Timeout {} is not integer.".format(timeout))
+            raise TypeError(f"Timeout {timeout} is not integer.")
 
         if isinstance(debug, bool) is False:
-            raise TypeError("Debug {} is not Boolean type.".format(debug))
+            raise TypeError(f"Debug {debug} is not Boolean type.")
 
         Seldom.timeout = timeout
         Seldom.debug = debug
@@ -130,7 +148,7 @@ class TestMain(object):
             # ----- Close browser globally -----
             self.close_browser()
 
-    def run(self, suits):
+    def run(self, suits) -> None:
         """
         run test case
         """
@@ -157,10 +175,10 @@ class TestMain(object):
                                             logger=log_cfg)
                     runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
 
-            log.success("generated html file: file:///{}".format(report_path))
-            log.success("generated log file: file:///{}".format(BrowserConfig.LOG_PATH))
+            log.success(f"generated html file: file:///{report_path}")
+            log.success(f"generated log file: file:///{BrowserConfig.LOG_PATH}")
             if self.open is True:
-                webbrowser.open_new("file:///{}".format(report_path))
+                webbrowser.open_new(f"file:///{report_path}")
         else:
             runner = DebugTestRunner(
                 blacklist=self.blacklist,
@@ -169,7 +187,7 @@ class TestMain(object):
             runner.run(suits)
             log.success("A run the test in debug mode without generating HTML report!")
 
-    def open_browser(self):
+    def open_browser(self) -> None:
         """
         If you set up a browser, open the browser
         """
@@ -178,7 +196,7 @@ class TestMain(object):
             Seldom.driver = Browser(BrowserConfig.NAME)
 
     @staticmethod
-    def close_browser():
+    def close_browser() -> None:
         """
         How to open the browser, close the browser
         """
@@ -194,9 +212,20 @@ class TestMainExtend(TestMain):
     2. Execute the use cases based on the use case list
     """
 
-    def __init__(self, path=None, browser=None, base_url=None, debug=False, timeout=10,
-                 report=None, title="Seldom Test Report", description="Test case execution",
-                 rerun=0, save_last_run=False, whitelist=[], blacklist=[]):
+    def __init__(
+            self,
+            path: str = None,
+            browser: str = None,
+            base_url: str = None,
+            debug: bool = False,
+            timeout: int = 10,
+            report: str = None,
+            title: str = "Seldom Test Report",
+            description: str ="Test case execution",
+            rerun: int = 0,
+            save_last_run: bool = False,
+            whitelist: list = [],
+            blacklist: list = []):
 
         if path is None:
             raise FileNotFoundError("Specify a file path")
@@ -207,7 +236,7 @@ class TestMainExtend(TestMain):
                          open=False, auto=False)
 
     @staticmethod
-    def collect_cases(json=False, level="data"):
+    def collect_cases(json=False, level="data") -> Any:
         """
         Return the collected case information.
         SeldomTestLoader.collectCaseInfo = True
@@ -270,7 +299,7 @@ class TestMainExtend(TestMain):
                     file_name = case.__module__
                     class_name = case.__class__.__name__
 
-                    key = "{}.{}".format(file_name, class_name)
+                    key = f"{file_name}.{class_name}"
                     if mapping.get(key, None) is None:
                         mapping[key] = []
 
@@ -300,10 +329,10 @@ class TestMainExtend(TestMain):
             d_method = d.get("method").get("name", None)
             if (d_file is None) or (d_class is None) or (d_method is None):
                 raise SeldomException(
-                    """Use case format error, please refer to: 
+                    """Use case format error, please refer to:
                     https://seldomqa.github.io/platform/platform.html""")
 
-            cases = case_mapping.get("{}.{}".format(d_file, d_class), None)
+            cases = case_mapping.get(f"{d_file}.{d_class}", None)
             if cases is None:
                 continue
 
