@@ -1,15 +1,21 @@
-try:
-    import pymysql.cursors
-except ModuleNotFoundError:
-    raise ModuleNotFoundError("Please install the library. https://pypi.org/project/PyMySQL/")
+"""
+MySQL DB API
+"""
+import pymysql.cursors
 from seldom.db_operation.base_db import SQLBase
 
 
 class MySQLDB(SQLBase):
+    """MySQL DB table API"""
 
-    def __init__(self, host, port, user, password, database):
+    def __init__(self, host: str, port: int, user: str, password: str, database: str):
         """
         Connect to the MySQL database
+        :param host:
+        :param port:
+        :param user:
+        :param password:
+        :param database:
         """
         self.connection = pymysql.connect(host=host,
                                           port=int(port),
@@ -19,13 +25,13 @@ class MySQLDB(SQLBase):
                                           charset='utf8mb4',
                                           cursorclass=pymysql.cursors.DictCursor)
 
-    def close(self):
+    def close(self) -> None:
         """
         Close the database connection
         """
         self.connection.close()
 
-    def execute_sql(self, sql):
+    def execute_sql(self, sql: str) -> None:
         """
         Execute SQL
         """
@@ -36,7 +42,7 @@ class MySQLDB(SQLBase):
             cursor.execute(sql)
         self.connection.commit()
 
-    def query_sql(self, sql):
+    def query_sql(self, sql: str) -> list:
         """
         Query SQL
         return: query data
@@ -51,7 +57,7 @@ class MySQLDB(SQLBase):
             self.connection.commit()
             return data_list
 
-    def insert_data(self, table, data):
+    def insert_data(self, table: str, data: dict) -> None:
         """
         insert sql statement
         """
@@ -59,38 +65,38 @@ class MySQLDB(SQLBase):
             data[key] = "'" + str(data[key]) + "'"
         key = ','.join(data.keys())
         value = ','.join(data.values())
-        sql = """INSERT INTO {t} ({k}) VALUES ({v})""".format(t=table, k=key, v=value)
+        sql = f"""insert into {table} ({key}) values ({value})"""
         self.execute_sql(sql)
 
-    def select_data(self, table, where=None):
+    def select_data(self, table: str, where: dict = None) -> list:
         """
         select sql statement
         """
-        sql = """select * from {} """.format(table)
+        sql = f"""select * from {table} """
         if where is not None:
-            sql += 'where {};'.format(self.dict_to_str_and(where))
+            sql += f""" where {self.dict_to_str_and(where)};"""
         return self.query_sql(sql)
 
-    def update_data(self, table, data, where):
+    def update_data(self, table: str, data: dict, where: dict) -> None:
         """
         update sql statement
         """
-        sql = """update {} set """.format(table)
+        sql = f"""update {table} set """
         sql += self.dict_to_str(data)
         if where:
-            sql += ' where {};'.format(self.dict_to_str_and(where))
+            sql += f""" where {self.dict_to_str_and(where)};"""
         self.execute_sql(sql)
 
-    def delete_data(self, table, where=None):
+    def delete_data(self, table: str, where: dict = None) -> None:
         """
         delete table data
         """
-        sql = """delete from {}""".format(table)
+        sql = f"""delete from {table}"""
         if where is not None:
-            sql += ' where {};'.format(self.dict_to_str_and(where))
+            sql += f""" where {self.dict_to_str_and(where)};"""
         self.execute_sql(sql)
 
-    def init_table(self, table_data):
+    def init_table(self, table_data: dict) -> None:
         """
         init table data
         """
