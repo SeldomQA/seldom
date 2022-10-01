@@ -1,3 +1,6 @@
+"""
+Seldom log
+"""
 import os
 import sys
 import time
@@ -20,6 +23,8 @@ if BrowserConfig.REPORT_PATH is None:
 
 
 class LogConfig:
+    """log config"""
+
     def __init__(self, level: str = "DEBUG", colorlog: bool = True):
         self.logger = logger
         self._colorlog = colorlog
@@ -30,6 +35,13 @@ class LogConfig:
         self.set_level(self._colorlog, self._console_format, self._level)
 
     def set_level(self, colorlog: bool = True, format: str = None, level: str = "DEBUG"):
+        """
+        setting level
+        :param colorlog:
+        :param format:
+        :param level:
+        :return:
+        """
         if format is None:
             format = self._console_format
         self.logger.remove()
