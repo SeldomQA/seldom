@@ -105,11 +105,13 @@ class WebElement:
         return elem[index]
 
     @staticmethod
-    def show_element(elem):
+    def show_element(elem) -> None:
         """
         Show the elements of the operation
         :param elem:
         """
+        if (Seldom.app_server is not None) and (Seldom.app_info is not None):
+            return None
         style_red = 'arguments[0].style.border="2px solid #FF0000"'
         style_blue = 'arguments[0].style.border="2px solid #00FF00"'
         style_null = 'arguments[0].style.border=""'
