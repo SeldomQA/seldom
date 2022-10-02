@@ -388,3 +388,17 @@ def get_phone(operator: str = None) -> str:
     suffix = random.randint(9999999, 100000000)
 
     return f"{top_third}{suffix}"
+
+
+def get_timestamp(level="second") -> str:
+    """
+    get now timestamp
+    :return:
+    """
+    time_list = str(time.time()).split('.', maxsplit=1)
+    if level == "second":
+        return time_list[0]
+    if level == "millisecond":
+        return time_list[0] + time_list[1]
+
+    return ""
