@@ -1,10 +1,11 @@
+"""
+random data file
+"""
 import re
 import sys
 
-"""
-https://www.ssa.gov/oact/babynames/decades/names2010s.html
-"""
 
+# https://www.ssa.gov/oact/babynames/decades/names2010s.html
 en_first_names_male = list(set(re.split(r"\s+", """
 Noah Liam Jacob William Mason Ethan Michael Alexander James Elijah Benjamin Daniel Aiden Logan Jayden 
 Matthew Lucas David Jackson Joseph Anthony Samuel Joshua Gabriel Andrew John Christopher Oliver Dylan 

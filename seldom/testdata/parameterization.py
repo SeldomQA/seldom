@@ -1,8 +1,12 @@
+"""
+test data driver function
+"""
 import os
 import inspect as sys_inspect
 import warnings
-import requests
 from functools import wraps
+
+import requests
 from parameterized.parameterized import inspect
 from parameterized.parameterized import parameterized
 from parameterized.parameterized import skip_on_empty_helper
@@ -14,7 +18,6 @@ from parameterized.parameterized import to_text
 from parameterized import parameterized_class
 from seldom.testdata import conversion
 from seldom.logging.exceptions import FileTypeError
-from seldom.testdata.conversion import _check_data
 from seldom.utils import jmespath as utils_jmespath
 from seldom import Seldom
 
@@ -24,7 +27,7 @@ __all__ = [
 ]
 
 
-def _find_file_path(file_dir, file_name):
+def _search_file_path(file_dir: str, file_name: str) -> str:
     """
     find file path
     :param file_dir:
@@ -33,14 +36,14 @@ def _find_file_path(file_dir, file_name):
     file_path = None
     find_dir = os.path.dirname(os.path.dirname(file_dir))
 
-    for root, dirs, files in os.walk(find_dir, topdown=False):
-        for f in files:
+    for root, _, files in os.walk(find_dir, topdown=False):
+        for file in files:
             if Seldom.env is not None:
-                if root.endswith(Seldom.env) and f == file_name:
+                if root.endswith(Seldom.env) and file == file_name:
                     file_path = os.path.join(root, file_name)
                     break
             else:
-                if f == file_name:
+                if file == file_name:
                     file_path = os.path.join(root, file_name)
                     break
         else:
@@ -50,7 +53,7 @@ def _find_file_path(file_dir, file_name):
     return file_path
 
 
-def _find_env_file_path(file_dir, file_part_path):
+def _search_env_file_path(file_dir: str, file_part_path: str) -> str:
     """
     find environment file path
     :param file_dir:
@@ -61,9 +64,9 @@ def _find_env_file_path(file_dir, file_part_path):
     file_name = file_part_path.split("/")[-1]
     file_part = os.path.join(Seldom.env, file_part_path[:-len(file_name) - 1])
 
-    for root, dirs, files in os.walk(find_dir, topdown=False):
-        for f in files:
-            if root.endswith(file_part) and f == file_name:
+    for root, _, files in os.walk(find_dir, topdown=False):
+        for file in files:
+            if root.endswith(file_part) and file == file_name:
                 file_path = os.path.join(root, file_name)
                 break
         else:
@@ -73,7 +76,7 @@ def _find_env_file_path(file_dir, file_part_path):
     return file_path
 
 
-def find_file(file: str, file_dir: str):
+def find_file(file: str, file_dir: str) -> str:
     """
     find file
     :param file:
@@ -83,9 +86,9 @@ def find_file(file: str, file_dir: str):
         file_path = file
     elif "/" in file or "\\" in file:
         if Seldom.env is not None:
-            file_path = _find_env_file_path(file_dir=file_dir, file_part_path=file)
+            file_path = _search_env_file_path(file_dir=file_dir, file_part_path=file)
             if file_path is None:
-                return None
+                return ""
         else:
             file = file.replace("\\", "/")
             current_dir = os.path.join(file_dir, file)
@@ -105,16 +108,16 @@ def find_file(file: str, file_dir: str):
             elif os.path.isfile(parent_dir_dir_dir_dir) is True:
                 file_path = parent_dir_dir_dir_dir
             else:
-                return None
+                return ""
     else:
-        file_path = _find_file_path(file_dir=file_dir, file_name=file)
+        file_path = _search_file_path(file_dir=file_dir, file_name=file)
         if file_path is None:
-            return None
+            return ""
 
     return file_path
 
 
-def file_data(file, line=1, sheet="Sheet1", key=None):
+def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None):
     """
     Support file parameterization.
 
@@ -159,7 +162,7 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
     elif suffix == "yaml":
         data_list = conversion.yaml_to_list(file_path, key=key)
     else:
-        raise FileTypeError("Your file is not supported: {}".format(file))
+        raise FileTypeError(f"Your file is not supported: {file}")
 
     return data(data_list)
 
@@ -183,15 +186,13 @@ def api_data(url: str = None, params: dict = None, ret: str = None):
         data_ = utils_jmespath(resp, ret)
         if data_ is None:
             raise ValueError(f"Error - return {ret} is None in {resp}")
-        elif isinstance(data_, list) is False:
+        if isinstance(data_, list) is False:
             raise TypeError(f"Error - {data_} is not list")
-        else:
-            return data(data_)
-    else:
-        if isinstance(resp, list) is False:
-            raise TypeError(f"Error - {resp} is not list")
-        else:
-            return data(resp)
+        return data(data_)
+
+    if isinstance(resp, list) is False:
+        raise TypeError(f"Error - {resp} is not list")
+    return data(resp)
 
 
 def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
@@ -209,7 +210,7 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
         ... 'test_add1_foo_0': <function ...> ...
         >>
         """
-    input = _check_data(input)
+    input = conversion.check_data(input)
 
     if "testcase_func_name" in legacy:
         warnings.warn("testcase_func_name= is deprecated; use name_func=",
@@ -272,7 +273,7 @@ def default_name_func(func, num, p):
     return test function name
     """
     base_name = func.__name__
-    name_suffix = "_%s" %(num, )
+    name_suffix = f"_{num}"
 
     if len(p.args) > 0 and isinstance(p.args[0], str):
         # name_suffix += "_" + parameterized.to_safe_name(p.args[0])
