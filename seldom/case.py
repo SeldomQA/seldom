@@ -1,3 +1,6 @@
+"""
+seldom test case
+"""
 import unittest
 from urllib.parse import unquote
 from time import sleep
@@ -14,6 +17,7 @@ from seldom.utils import diff_json, AssertInfo, jmespath
 
 
 class TestCase(unittest.TestCase, WebDriver, HttpRequest):
+    """seldom TestCase class"""
 
     def start_class(self):
         """
@@ -77,7 +81,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         browser = Browser(BrowserConfig.NAME)
         return browser
 
-    def assertTitle(self, title=None, msg=None) -> None:
+    def assertTitle(self, title: str = None, msg: str = None) -> None:
         """
         Asserts whether the current title is in line with expectations.
 
@@ -97,7 +101,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         else:
             self.assertEqual(title, Seldom.driver.title, msg=msg)
 
-    def assertInTitle(self, title=None, msg=None) -> None:
+    def assertInTitle(self, title: str = None, msg: str = None) -> None:
         """
         Asserts whether the current title is in line with expectations.
 
@@ -117,7 +121,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         else:
             self.assertIn(title, Seldom.driver.title, msg=msg)
 
-    def assertUrl(self, url=None, msg=None) -> None:
+    def assertUrl(self, url: str = None, msg: str = None) -> None:
         """
         Asserts whether the current URL is in line with expectations.
 
@@ -138,7 +142,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         else:
             self.assertEqual(url, Seldom.driver.current_url, msg=msg)
 
-    def assertInUrl(self, url=None, msg=None) -> None:
+    def assertInUrl(self, url: str = None, msg: str = None) -> None:
         """
         Asserts whether the current URL is in line with expectations.
 
@@ -160,7 +164,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         else:
             self.assertIn(url, Seldom.driver.current_url, msg=msg)
 
-    def assertText(self, text=None, msg=None) -> None:
+    def assertText(self, text: str = None, msg: str = None) -> None:
         """
         Asserts whether the text of the current page conforms to expectations.
 
@@ -182,7 +186,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         else:
             self.assertIn(text, elem.text, msg=msg)
 
-    def assertNotText(self, text=None, msg=None) -> None:
+    def assertNotText(self, text: str = None, msg: str = None) -> None:
         """
         Asserts that the current page does not contain the specified text.
 
@@ -199,14 +203,13 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             if elem.is_displayed():
                 try:
                     self.assertNotIn(text, elem.text)
-
                     break
                 except AssertionError:
                     sleep(1)
         else:
             self.assertNotIn(text, elem.text, msg=msg)
 
-    def assertAlertText(self, text=None, msg=None) -> None:
+    def assertAlertText(self, text: str = None, msg: str = None) -> None:
         """
         Asserts whether the text of the current page conforms to expectations.
 
@@ -221,12 +224,13 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
         for _ in range(Seldom.timeout + 1):
             try:
                 self.assertEqual(alert_text, text, msg=msg)
+                break
             except AssertionError:
                 sleep(1)
         else:
             self.assertEqual(alert_text, text, msg=msg)
 
-    def assertElement(self, index=0, msg=None, **kwargs) -> None:
+    def assertElement(self, index: int = 0, msg: str = None, **kwargs) -> None:
         """
         Asserts whether the element exists.
 
@@ -249,7 +253,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
 
         self.assertTrue(elem, msg=msg)
 
-    def assertNotElement(self, index=0, msg=None, **kwargs) -> None:
+    def assertNotElement(self, index: int = 0, msg: str = None, **kwargs) -> None:
         """
         Asserts if the element does not exist.
 
@@ -272,7 +276,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
 
         self.assertFalse(elem, msg=msg)
 
-    def assertStatusCode(self, status_code, msg=None) -> None:
+    def assertStatusCode(self, status_code: int, msg: str = None) -> None:
         """
         Asserts the HTTP status code
         """
@@ -293,8 +297,6 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
             validate(instance=response, schema=schema)
         except ValidationError as msg:
             self.assertEqual("Response data", "Schema data", msg)
-        else:
-            self.assertTrue(True)
 
     def assertJSON(self, assert_json, response=None) -> None:
         """
@@ -306,9 +308,7 @@ class TestCase(unittest.TestCase, WebDriver, HttpRequest):
 
         AssertInfo.data = []
         diff_json(response, assert_json)
-        if len(AssertInfo.data) == 0:
-            self.assertTrue(True)
-        else:
+        if len(AssertInfo.data) != 0:
             self.assertEqual("Response data", "Assert data", msg=AssertInfo.data)
 
     def assertPath(self, path, value) -> None:

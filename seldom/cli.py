@@ -1,3 +1,6 @@
+"""
+seldom CLI
+"""
 import os
 import sys
 import ssl
@@ -23,7 +26,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 
 @click.command()
-@click.version_option(version="{}".format(__version__), help="Show version.")
+@click.version_option(version=__version__, help="Show version.")
 @click.option("-P", "--project", help="Create an Seldom automation test project.")
 @click.option("-p", "--path", help="Run test case file path.")
 @click.option("-c/-nc", "--collect/--no-collect", default=False, help="Collect project test cases. Need the `--path`.")
@@ -67,10 +70,11 @@ def main(project, path, collect, level, case_json, env, debug, browser, base_url
             main_extend = TestMainExtend(path=path)
             case_info = main_extend.collect_cases(json=True, level=level)
             case_path = os.path.join(os.getcwd(), case_json)
-            with open(case_path, "w") as f:
-                f.write(case_info)
+            with open(case_path, "w", encoding="utf-8") as json_file:
+                json_file.write(case_info)
             click.echo(f"save them to {case_path}")
             return 0
+
         if collect is False and case_json is not None:
             click.echo(f"Read the {case_json} case file to the {path} directory for execution")
             if os.path.isdir(path) is True:
@@ -80,13 +84,13 @@ def main(project, path, collect, level, case_json, env, debug, browser, base_url
                                          rerun=rerun)
             if os.path.exists(case_json) is False:
                 click.echo(f"The run case file {case_json} does not exist.")
-            with open(case_json, encoding="utf-8") as f:
-                case = json.load(f)
+            with open(case_json, encoding="utf-8") as json_file:
+                case = json.load(json_file)
                 main_extend.run_cases(case)
             return 0
-        else:
-            seldom.main(path=path, debug=debug, browser=browser, base_url=base_url, report=report, rerun=rerun)
-            return 0
+
+        seldom.main(path=path, debug=debug, browser=browser, base_url=base_url, report=report, rerun=rerun)
+        return 0
 
     if mod:
         if PY3:
@@ -106,31 +110,30 @@ def main(project, path, collect, level, case_json, env, debug, browser, base_url
         return 0
 
     if har2case:
-        hp = HarParser(har2case)
-        hp.gen_testcase()
+        har_parser = HarParser(har2case)
+        har_parser.gen_testcase()
         return 0
 
 
-def create_scaffold(project_name):
+def create_scaffold(project_name: str) -> None:
     """
     create scaffold with specified project name.
     """
     if os.path.isdir(project_name):
-        log.info(u"Folder {} exists, please specify a new folder name.".format(project_name))
+        log.info(f"Folder {project_name} exists, please specify a new folder name.")
         return
 
-    log.info("Start to create new test project: {}".format(project_name))
-    log.info("CWD: {}\n".format(os.getcwd()))
+    log.info(f"Start to create new test project: {project_name}")
+    log.info(f"CWD: {os.getcwd()}\n")
 
     def create_folder(path):
         os.makedirs(path)
-        msg = "created folder: {}".format(path)
-        log.info(msg)
+        log.info(f"created folder: {path}")
 
     def create_file(path, file_content=""):
-        with open(path, 'w') as f:
-            f.write(file_content)
-        msg = "created file: {}".format(path)
+        with open(path, 'w', encoding="utf-8") as py_file:
+            py_file.write(file_content)
+        msg = f"created file: {path}"
         log.info(msg)
 
     test_data = '''{
@@ -220,7 +223,7 @@ if __name__ == '__main__':
     create_file(os.path.join(project_name, "run.py"), run_test)
 
 
-def install_driver(browser):
+def install_driver(browser: str) -> None:
     """
     Download and install the browser driver
 

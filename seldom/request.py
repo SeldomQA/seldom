@@ -1,3 +1,6 @@
+"""
+seldom requests
+"""
 import json
 import warnings
 from typing import Any
@@ -34,7 +37,7 @@ def request(func):
         if file_type in IMG:
             img_file = True
 
-        log.info("[method]: {m}      [url]: {u} ".format(m=func_name.upper(), u=url))
+        log.info(f"[method]: {func_name.upper()}      [url]: {url} ")
         auth = kwargs.get("auth", "")
         headers = kwargs.get("headers", "")
         cookies = kwargs.get("cookies", "")
@@ -60,9 +63,9 @@ def request(func):
         ResponseResult.status_code = r.status_code
         log.info("-------------- Response ----------------[🛬️]")
         if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
-            log.info("successful with status {}".format(str(ResponseResult.status_code)))
+            log.info(f"successful with status {ResponseResult.status_code}")
         else:
-            log.warning("unsuccessful with status {}".format(str(ResponseResult.status_code)))
+            log.warning(f"unsuccessful with status {ResponseResult.status_code}")
         resp_time = r.elapsed.total_seconds()
         try:
             resp = r.json()
@@ -70,7 +73,7 @@ def request(func):
             log.debug(f"[response]:\n {formatting(resp)}")
             ResponseResult.response = resp
         except BaseException as msg:
-            log.debug(f"[warning]: failed to convert res to json, try to convert to text")
+            log.debug("[warning]: failed to convert res to json, try to convert to text")
             log.trace(f"[warning]: {msg}")
             if img_file is True:
                 log.debug(f"[type]: {file_type}      [time]: {resp_time}")
@@ -90,7 +93,8 @@ class ResponseResult:
     response = None
 
 
-class HttpRequest(object):
+class HttpRequest:
+    """seldom http request class"""
 
     @request
     def get(self, url, params=None, **kwargs):
@@ -282,8 +286,8 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
                 if data is None:
                     log.error(f"Execute {func_name} - return {ret} is None")
                 return data
-            else:
-                return r.json()
+
+            return r.json()
 
         return wrapper
 

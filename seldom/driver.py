@@ -1,3 +1,6 @@
+"""
+browser driver
+"""
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver import FirefoxOptions
@@ -10,12 +13,9 @@ from selenium.webdriver.chrome.service import Service as cService
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from webdriver_manager.opera import OperaDriverManager
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 
-__all__ = [
-    "ChromeConfig", "FirefoxConfig", "IEConfig", "EdgeConfig", "OperaConfig", "SafariConfig", "Browser"
-]
+__all__ = ["ChromeConfig", "FirefoxConfig", "IEConfig", "EdgeConfig", "OperaConfig", "SafariConfig", "Browser"]
 
 PHONE_LIST = [
     'iPhone 8', 'iPhone 8 Plus', 'iPhone SE', 'iPhone X', 'iPhone XR', 'iPhone 12 Pro',
@@ -55,7 +55,7 @@ class SafariConfig:
     command_executor = ""
 
 
-class Browser(object):
+class Browser:
     """
     Run class initialization method, the default is proper
     to drive the Firefox browser. Of course, you can also
@@ -67,23 +67,24 @@ class Browser(object):
 
         if (name is None) or (name in ["chrome", "google chrome", "gc"]):
             return cls.chrome()
-        elif name in ["firefox", "ff"]:
+        if name in ["firefox", "ff"]:
             return cls.firefox()
-        elif name in ["internet explorer", "ie", "IE"]:
+        if name in ["internet explorer", "ie", "IE"]:
             return cls.ie()
-        elif name == "edge":
+        if name == "edge":
             return cls.edge()
-        elif name == "safari":
+        if name == "safari":
             return cls.safari()
-        elif name in PHONE_LIST:
+        if name in PHONE_LIST:
             return cls.phone(name)
-        elif name in PAD_LIST:
+        if name in PAD_LIST:
             return cls.pad(name)
-        raise NameError(
-            "Not found `{}` browser, See the help doc: https://seldomqa.github.io/other/other.html.".format(name))
+
+        raise NameError(f"Not found `{name}` browser, See the help doc: https://seldomqa.github.io/other/other.html.")
 
     @staticmethod
     def chrome():
+        """Chrome browser driver"""
         if ChromeConfig.options is None:
             chrome_options = ChromeOptions()
         else:
@@ -117,6 +118,7 @@ class Browser(object):
 
     @staticmethod
     def firefox():
+        """firefox browser driver"""
         if FirefoxConfig.options is None:
             firefox_options = FirefoxOptions()
         else:
@@ -140,6 +142,7 @@ class Browser(object):
 
     @staticmethod
     def ie():
+        """internet explorer browser driver"""
         if IEConfig.command_executor == "":
             driver = webdriver.Ie(service=iService(IEDriverManager().install()))
         elif IEConfig.command_executor[:4] == "http":
@@ -152,6 +155,7 @@ class Browser(object):
 
     @staticmethod
     def edge():
+        """edge browser driver"""
         if EdgeConfig.options is None:
             edge_options = EdgeOptions()
         else:
@@ -175,13 +179,15 @@ class Browser(object):
 
     @staticmethod
     def safari():
+        """safari browser driver"""
         if SafariConfig.command_executor != "" and SafariConfig.command_executor[:4] == "http":
             return webdriver.Remote(command_executor=SafariConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.SAFARI.copy())
         return webdriver.Safari(executable_path=SafariConfig.executable_path)
 
     @staticmethod
-    def phone(name):
+    def phone(name: str):
+        """phone mode driver"""
         chrome_options = ChromeOptions()
         chrome_options.add_experimental_option("mobileEmulation", {"deviceName": name})
 
@@ -200,7 +206,8 @@ class Browser(object):
         return driver
 
     @staticmethod
-    def pad(name):
+    def pad(name: str):
+        """pad mode driver"""
         chrome_options = ChromeOptions()
         chrome_options.add_experimental_option("mobileEmulation", {"deviceName": name})
 
