@@ -2,7 +2,6 @@
 send message file
 """
 import os
-from typing import Any
 from XTestRunner import SMTP as XSMTP
 from XTestRunner import DingTalk as XDingTalk
 from seldom.running.config import BrowserConfig
@@ -12,7 +11,7 @@ from seldom.utils import file
 class SMTP(XSMTP):
     """send email class"""
 
-    def sendmail(self, to: Any[str, list], subject: str = None, attachments: str = None, delete: bool = False) -> None:
+    def sendmail(self, to: [str, list], subject: str = None, attachments: str = None, delete: bool = False) -> None:
         """
         seldom send email
         :param to:
@@ -30,7 +29,7 @@ class SMTP(XSMTP):
             file.remove(BrowserConfig.REPORT_PATH)
             is_exist = os.path.isfile(BrowserConfig.LOG_PATH)
             if is_exist is True:
-                with open(BrowserConfig.LOG_PATH, "r+") as log_file:
+                with open(BrowserConfig.LOG_PATH, "r+", encoding="utf-8") as log_file:
                     log_file.truncate(0)
 
 
