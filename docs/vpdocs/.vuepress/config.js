@@ -46,6 +46,12 @@ module.exports = {
         ],
       },
       {
+        text: "App UI 测试",
+        children: [
+          "/app-testing/start",
+        ],
+      },
+      {
         text: "HTTP接口测试",
         children: [
           "/api-testing/start",
