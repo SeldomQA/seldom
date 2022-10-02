@@ -1,4 +1,6 @@
-# coding=utf-8
+"""
+webdriver chaining API
+"""
 import os
 import time
 from selenium.webdriver import Chrome
@@ -6,16 +8,17 @@ from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.service import Service as cService
 from seldom.logging import log
 from seldom.running.config import Seldom
-from selenium.webdriver.chrome.service import Service as cService
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 from seldom.webdriver import WebElement
+from seldom.testdata import get_timestamp
 
 __all__ = ["Steps"]
 
 
-class Steps(object):
+class Steps:
     """
     Webdriver Basic method chaining
     Write test cases quickly.
@@ -25,7 +28,7 @@ class Steps(object):
         self.url = url
         self.element_obj = None
         self.alert_obj = None
-        log.info("🔖 Test Case: {}".format(desc))
+        log.info(f"🔖 Test Case: {desc}")
 
     def open(self, url: str = None):
         """
@@ -37,10 +40,10 @@ class Steps(object):
         if isinstance(Seldom.driver, SeleniumWebDriver) is False:
             Seldom.driver = Chrome(service=cService(ChromeDriverManager().install()))
         if self.url is not None:
-            log.info("📖 {}".format(self.url))
+            log.info(f"📖 {self.url}")
             Seldom.driver.get(self.url)
         else:
-            log.info("📖 {}".format(url))
+            log.info(f"📖 {url}")
             Seldom.driver.get(url)
         return self
 
@@ -76,7 +79,7 @@ class Steps(object):
             web_elem = WebElement(css=css)
         self.element_obj = elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("🔍 find {info}.".format(info=web_elem.info))
+        log.info(f"🔍 find {web_elem.info}.")
         return self
 
     def find_text(self, text: str, index: int = 0):
@@ -89,7 +92,7 @@ class Steps(object):
         web_elem = WebElement(link_text=text)
         self.element_obj = elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("🔍 find {} text.".format(web_elem.info))
+        log.info(f"🔍 find {web_elem.info} text.")
         return self
 
     def type(self, text):
@@ -295,7 +298,7 @@ class Steps(object):
         :Usage:
             switch_to_window(1)
         """
-        log.info("✅ switch to the {} window.".format(str(window)))
+        log.info(f"✅ switch to the {window} window.")
         all_handles = Seldom.driver.window_handles
         Seldom.driver.switch_to.window(all_handles[window])
         return self
@@ -312,7 +315,7 @@ class Steps(object):
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
-            file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
+            file_path = os.path.join(img_dir, get_timestamp() + ".png")
         log.info(f"📷️  screenshot -> ({file_path}).")
         Seldom.driver.save_screenshot(file_path)
         return self
@@ -330,7 +333,7 @@ class Steps(object):
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
-            file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
+            file_path = os.path.join(img_dir, get_timestamp() + ".png")
         log.info(f"📷️ element screenshot -> ({file_path}).")
         elem.screenshot(file_path)
         return self
@@ -373,6 +376,6 @@ class Steps(object):
         Usage:
             self.sleep(seconds)
         """
-        log.info("💤️ sleep: {}s.".format(str(sec)))
+        log.info(f"💤️ sleep: {sec}s.")
         time.sleep(sec)
         return self

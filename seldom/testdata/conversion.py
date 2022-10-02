@@ -3,16 +3,14 @@ Data type conversion of different files
 """
 import csv
 import json
-import yaml
-import codecs
 from itertools import islice
-try:
-    from openpyxl import load_workbook
-except ModuleNotFoundError:
-    raise ModuleNotFoundError("Please install the library. https://pypi.org/project/openpyxl/")
+import codecs
+
+import yaml
+from openpyxl import load_workbook
 
 
-def _check_data(list_data: list) -> list:
+def check_data(list_data: list) -> list:
     """
     Checking test data format.
     :param list_data:
@@ -30,11 +28,11 @@ def _check_data(list_data: list) -> list:
                 line.append(d)
             test_data.append(line)
         return test_data
-    else:
-        return list_data
+
+    return list_data
 
 
-def csv_to_list(file=None, line=1):
+def csv_to_list(file: str = None, line: int = 1) -> list:
     """
     Convert CSV file data to list
     :param file: Path to file
@@ -51,13 +49,13 @@ def csv_to_list(file=None, line=1):
 
     table_data = []
     csv_data = csv.reader(codecs.open(file, 'r', 'utf_8_sig'))
-    for line in islice(csv_data, line - 1, None):
-        table_data.append(line)
+    for i in islice(csv_data, line - 1, None):
+        table_data.append(i)
 
     return table_data
 
 
-def excel_to_list(file=None, sheet="Sheet1", line=1):
+def excel_to_list(file: str = None, sheet: str = "Sheet1", line: int = 1) -> list:
     """
     Convert Excel file data to list
     :param file: Path to file
@@ -77,16 +75,16 @@ def excel_to_list(file=None, sheet="Sheet1", line=1):
     sheet = excel_table[sheet]
 
     table_data = []
-    for line in sheet.iter_rows(line, sheet.max_row):
+    for i in sheet.iter_rows(line, sheet.max_row):
         line_data = []
-        for field in line:
+        for field in i:
             line_data.append(field.value)
         table_data.append(line_data)
 
     return table_data
 
 
-def json_to_list(file, key=None):
+def json_to_list(file: str = None, key: str = None) -> list:
     """
     Convert JSON file data to list
     :param file: Path to file
@@ -102,21 +100,21 @@ def json_to_list(file, key=None):
         raise FileExistsError("Please specify the JSON file to convert.")
 
     if key is None:
-        with open(file, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            list_data = _check_data(data)
+        with open(file, "r", encoding="utf-8") as json_file:
+            data = json.load(json_file)
+            list_data = check_data(data)
     else:
-        with open(file, "r", encoding="utf-8") as f:
+        with open(file, "r", encoding="utf-8") as json_file:
             try:
-                data = json.load(f)[key]
-                list_data = _check_data(data)
-            except KeyError:
-                raise ValueError("Check the test data, no '{}'".format(key))
+                data = json.load(json_file)[key]
+                list_data = check_data(data)
+            except KeyError as exc:
+                raise ValueError(f"Check the test data, no '{key}'.") from exc
 
     return list_data
 
 
-def yaml_to_list(file, key=None):
+def yaml_to_list(file: str = None, key: str = None) -> list:
     """
     Convert JSON file data to list
     :param file: Path to file
@@ -132,15 +130,15 @@ def yaml_to_list(file, key=None):
         raise FileExistsError("Please specify the YAML file to convert.")
 
     if key is None:
-        with open(file, "r", encoding="utf-8") as f:
-            data = yaml.load(f, Loader=yaml.FullLoader)
-            list_data = _check_data(data)
+        with open(file, "r", encoding="utf-8") as yaml_file:
+            data = yaml.load(yaml_file, Loader=yaml.FullLoader)
+            list_data = check_data(data)
     else:
-        with open(file, "r", encoding="utf-8") as f:
+        with open(file, "r", encoding="utf-8") as yaml_file:
             try:
-                data = yaml.load(f, Loader=yaml.FullLoader)[key]
-                list_data = _check_data(data)
-            except KeyError:
-                raise ValueError("Check the test data, no '{}'".format(key))
+                data = yaml.load(yaml_file, Loader=yaml.FullLoader)[key]
+                list_data = check_data(data)
+            except KeyError as exc:
+                raise ValueError(f"Check the YAML test data, no '{key}'") from exc
 
     return list_data

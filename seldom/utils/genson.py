@@ -1,11 +1,14 @@
+"""
+genson:
+https://github.com/wolverdude/GenSON
+"""
 from genson import SchemaBuilder
 from seldom.request import ResponseResult
 
 
-def genson(data=None):
+def genson(data: dict = None):
     """
-    genson:
-    https://github.com/wolverdude/GenSON
+    return schema data
     """
     if (data is None) and ResponseResult.response is not None:
         data = ResponseResult.response

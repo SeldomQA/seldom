@@ -1,11 +1,15 @@
+"""
+file extend
+"""
 import os
 import sys
 import inspect
 
 
 class FindFilePath:
+    """find file path"""
 
-    def __new__(cls, name) -> str:
+    def __new__(cls, name: str = None) -> str:
         if name is None:
             raise NameError("Please specify filename")
         stack_t = inspect.stack()
@@ -13,7 +17,7 @@ class FindFilePath:
         this_file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
 
         _file_path = None
-        for root, dirs, files in os.walk(this_file_dir, topdown=False):
+        for root, _, files in os.walk(this_file_dir, topdown=False):
             for _file in files:
                 if _file == name:
                     _file_path = os.path.join(root, _file)
@@ -28,6 +32,7 @@ find_file_path = FindFilePath
 
 
 class File:
+    """file class"""
 
     @property
     def path(self) -> str:
@@ -78,7 +83,7 @@ class File:
         return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(ins.filename))))
 
     @staticmethod
-    def add_to_path(path=None) -> None:
+    def add_to_path(path: str = None) -> None:
         """
         add path to environment variable path.
         """

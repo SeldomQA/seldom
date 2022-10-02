@@ -10,7 +10,6 @@ from seldom.logging import log
 
 __all__ = ['jsonpath']
 
-
 # For python3 portability
 if sys.version_info[0] == 3:
     xrange = range

@@ -1,4 +1,6 @@
-# coding=utf-8
+"""
+selenium webdriver API
+"""
 import os
 import time
 import platform
@@ -8,11 +10,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.service import Service as cService
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
-from selenium.webdriver.chrome.service import Service as cService
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
+from seldom.testdata import get_timestamp
+
 
 __all__ = ["WebDriver", "WebElement"]
 
@@ -29,7 +33,8 @@ LOCATOR_LIST = {
 }
 
 
-class WebElement(object):
+class WebElement:
+    """web element API"""
 
     def __init__(self, **kwargs) -> None:
         if not kwargs:
@@ -41,7 +46,7 @@ class WebElement(object):
         try:
             LOCATOR_LIST[self.by]
         except KeyError:
-            raise ValueError("Element positioning of type '{}' is not supported. ".format(self.by))
+            raise ValueError(f"Element positioning of type '{self.by}' is not supported. ")
         self.find_elem_info = None
         self.find_elem_warn = None
 
@@ -52,14 +57,11 @@ class WebElement(object):
         for _ in range(Seldom.timeout):
             elems = Seldom.driver.find_elements(by=elem[0], value=elem[1])
             if len(elems) >= 1:
-                self.find_elem_info = "Find {number} element: {by}={value} ".format(
-                    number=str(len(elems)), by=elem[0], value=elem[1])
+                self.find_elem_info = f"Find {len(elems)} element: {elem[0]}={elem[1]} "
                 break
-            else:
-                time.sleep(1)
+            time.sleep(1)
         else:
-            self.find_elem_warn = "❌ Find 0 element through: {by}={value}".format(
-                by=elem[0], value=elem[1])
+            self.find_elem_warn = f"❌ Find 0 element through: {elem[0]}={elem[1]}"
 
     def get_elements(self, index: int = None):
         """
@@ -93,12 +95,14 @@ class WebElement(object):
         else:
             raise NameError(
                 "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
+
         if index is None:
             return elem
-        elif len(elem) == 0:
+
+        if len(elem) == 0:
             raise NotFindElementError(self.find_elem_warn)
-        else:
-            return elem[index]
+
+        return elem[index]
 
     @staticmethod
     def show_element(elem):
@@ -130,14 +134,16 @@ class WebElement(object):
 
     @property
     def info(self):
+        """return element info"""
         return self.find_elem_info
 
     @property
     def warn(self):
+        """return element warn"""
         return self.find_elem_warn
 
 
-class WebDriver(object):
+class WebDriver:
     """
         Seldom framework for the main class, the original
     selenium provided by the method of the two packaging,
@@ -158,55 +164,55 @@ class WebDriver(object):
             self.web_elem.show_element(self.elem)
 
         def input(self, text="") -> None:
-            log.info("✅ {info}, input '{text}'.".format(info=self.web_elem.info, text=text))
+            log.info(f"✅ {self.web_elem.info}, input '{text}'.")
             self.elem.send_keys(text)
 
         def enter(self) -> None:
-            log.info("✅ {info}, enter.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, enter.")
             self.elem.send_keys(Keys.ENTER)
 
         def select_all(self) -> None:
-            log.info("✅ {info}, ctrl+a.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, ctrl+a.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "a")
             else:
                 self.elem.send_keys(Keys.CONTROL, "a")
 
         def cut(self) -> None:
-            log.info("✅ {info}, ctrl+x.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, ctrl+x.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "x")
             else:
                 self.elem.send_keys(Keys.CONTROL, "x")
 
         def copy(self) -> None:
-            log.info("✅ {info}, ctrl+c.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, ctrl+c.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "c")
             else:
                 self.elem.send_keys(Keys.CONTROL, "c")
 
         def paste(self) -> None:
-            log.info("✅ {info}, ctrl+v.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, ctrl+v.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "v")
             else:
                 self.elem.send_keys(Keys.CONTROL, "v")
 
         def backspace(self) -> None:
-            log.info("✅ {info}, backspace.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, backspace.")
             self.elem.send_keys(Keys.BACKSPACE)
 
         def delete(self) -> None:
-            log.info("✅ {info}, delete.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, delete.")
             self.elem.send_keys(Keys.DELETE)
 
         def tab(self) -> None:
-            log.info("✅ {info}, tab.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, tab.")
             self.elem.send_keys(Keys.TAB)
 
         def space(self) -> None:
-            log.info("✅ {info}, space.".format(info=self.web_elem.info))
+            log.info(f"✅ {self.web_elem.info}, space.")
             self.elem.send_keys(Keys.SPACE)
 
     @staticmethod
@@ -217,7 +223,7 @@ class WebDriver(object):
         Usage:
             self.visit("https://www.baidu.com")
         """
-        log.info("📖 {}".format(url))
+        log.info(f"📖 {url}")
         if isinstance(Seldom.driver, SeleniumWebDriver) is False:
             Seldom.driver = Chrome(service=cService(ChromeDriverManager().install()))
         Seldom.driver.get(url)
@@ -273,7 +279,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {info} -> input '{text}'.".format(info=web_elem.info, text=text))
+        log.info(f"✅ {web_elem.info} -> input '{text}'.")
         elem.send_keys(text)
         if enter is True:
             elem.send_keys(Keys.ENTER)
@@ -290,7 +296,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {info} -> input '{text}' and enter.".format(info=web_elem.info, text=text))
+        log.info(f"✅ {web_elem.info} -> input '{text}' and enter.")
         elem.send_keys(text)
         elem.send_keys(Keys.ENTER)
 
@@ -305,7 +311,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> clear input.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> clear input.")
         elem.clear()
 
     @staticmethod
@@ -320,7 +326,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> click.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> click.")
         elem.click()
 
     @staticmethod
@@ -334,7 +340,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> slow click.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> slow click.")
         ActionChains(Seldom.driver).move_to_element(elem).click(elem).perform()
 
     @staticmethod
@@ -348,7 +354,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> right click.".find(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> right click.")
         ActionChains(Seldom.driver).context_click(elem).perform()
 
     @staticmethod
@@ -362,7 +368,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> move to element.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> move to element.")
         ActionChains(Seldom.driver).move_to_element(elem).perform()
 
     @staticmethod
@@ -376,7 +382,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> click and hold.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> click and hold.")
         ActionChains(Seldom.driver).click_and_hold(elem).perform()
 
     @staticmethod
@@ -394,7 +400,7 @@ class WebDriver(object):
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         action = ActionChains(Seldom.driver)
-        log.info("✅ {} -> drag and drop by offset.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> drag and drop by offset.")
         action.drag_and_drop_by_offset(elem, x, y).perform()
 
     @staticmethod
@@ -408,7 +414,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> double click.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> double click.")
         ActionChains(Seldom.driver).double_click(elem).perform()
 
     @staticmethod
@@ -422,7 +428,7 @@ class WebDriver(object):
         web_elem = WebElement(link_text=text)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> click link.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> click link.")
         elem.click()
 
     @staticmethod
@@ -458,7 +464,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> submit.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> submit.")
         elem.submit()
 
     @staticmethod
@@ -489,7 +495,7 @@ class WebDriver(object):
         Usage:
             self.window_scroll(width=300, height=500)
         """
-        js = "window.scrollTo({w},{h});".format(w=str(width), h=str(height))
+        js = f"window.scrollTo({width},{height});"
         self.execute_script(js)
 
     def element_scroll(self, css: str, width: int = 0, height: int = 0) -> None:
@@ -499,8 +505,8 @@ class WebDriver(object):
         Usage:
             self.element_scroll(css=".class", width=300, height=500)
         """
-        scroll_life = 'document.querySelector("{css}").scrollLeft = {w};'.format(css=css, w=str(width))
-        scroll_top = 'document.querySelector("{css}").scrollTop = {h};'.format(css=css, h=str(height))
+        scroll_life = f'document.querySelector("{css}").scrollLeft = {width};'
+        scroll_top = f'document.querySelector("{css}").scrollTop = {height};'
         self.execute_script(scroll_life)
         self.execute_script(scroll_top)
 
@@ -517,7 +523,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {info} -> get attribute：{att}.".format(info=web_elem.info, att=attribute))
+        log.info(f"✅ {web_elem.info} -> get attribute：{attribute}.")
         return elem.get_attribute(attribute)
 
     @staticmethod
@@ -531,7 +537,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {info} -> get text: {text}.".format(info=web_elem.info, text=elem.text))
+        log.info(f"✅ {web_elem.info} -> get text: {elem.text}.")
         return elem.text
 
     @staticmethod
@@ -546,7 +552,7 @@ class WebDriver(object):
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
         result = elem.is_displayed()
-        log.info("✅ {info} -> element is display: {r}.".format(info=web_elem.info, r=result))
+        log.info(f"✅ {web_elem.info} -> element is display: {result}.")
         return result
 
     @property
@@ -557,7 +563,7 @@ class WebDriver(object):
         Usage:
             self.get_title()
         """
-        log.info("✅ get title: {}.".format(Seldom.driver.title))
+        log.info(f"✅ get title: {Seldom.driver.title}.")
         return Seldom.driver.title
 
     @property
@@ -568,7 +574,7 @@ class WebDriver(object):
         Usage:
             self.get_url()
         """
-        log.info("✅ get current url: {}.".format(Seldom.driver.current_url))
+        log.info(f"✅ get current url: {Seldom.driver.current_url}.")
         return Seldom.driver.current_url
 
     @property
@@ -579,7 +585,7 @@ class WebDriver(object):
         Usage:
             self.get_alert_text()
         """
-        log.info("✅ alert text: {}.".format(Seldom.driver.switch_to.alert.text))
+        log.info(f"✅ alert text: {Seldom.driver.switch_to.alert.text}.")
         return Seldom.driver.switch_to.alert.text
 
     @staticmethod
@@ -590,7 +596,7 @@ class WebDriver(object):
         Usage:
             self.wait(10)
         """
-        log.info("⌛️ implicitly wait: {}s.".format(str(secs)))
+        log.info(f"⌛️ implicitly wait: {secs}s.")
         Seldom.driver.implicitly_wait(secs)
 
     @staticmethod
@@ -626,7 +632,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
-        log.info("✅ {} -> switch to frame.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> switch to frame.")
         Seldom.driver.switch_to.frame(elem)
 
     @staticmethod
@@ -664,7 +670,7 @@ class WebDriver(object):
         :Usage:
             self.switch_to_window(1)
         """
-        log.info("✅ switch to the {} window.".format(str(window)))
+        log.info(f"✅ switch to the {window} window.")
         all_handles = Seldom.driver.window_handles
         Seldom.driver.switch_to.window(all_handles[window])
 
@@ -694,7 +700,7 @@ class WebDriver(object):
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
-            file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
+            file_path = os.path.join(img_dir, get_timestamp() + ".png")
         if Seldom.debug is True:
             log.info(f"📷️  screenshot -> ({file_path}).")
             Seldom.driver.save_screenshot(file_path)
@@ -717,7 +723,7 @@ class WebDriver(object):
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
-            file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
+            file_path = os.path.join(img_dir, get_timestamp() + ".png")
         if Seldom.debug is True:
             log.info(f"📷️ element screenshot -> ({file_path}).")
             elem.screenshot(file_path)
@@ -749,7 +755,7 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(0)
         web_elem.show_element(elem)
-        log.info("✅ {} -> select option.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info} -> select option.")
         if value is not None:
             Select(elem).select_by_value(value)
         elif text is not None:
@@ -834,7 +840,7 @@ class WebDriver(object):
         Usage:
             self.sleep(seconds)
         """
-        log.info("💤️ sleep: {}s.".format(str(sec)))
+        log.info(f"💤️ sleep: {sec}s.")
         time.sleep(sec)
 
     @staticmethod
@@ -849,13 +855,13 @@ class WebDriver(object):
             raise NameError("Please enter a CSS selector")
 
         log.info("👀 check element.")
-        js = 'return document.querySelectorAll("{css}")'.format(css=css)
+        js = f'return document.querySelectorAll("{css}")'
         ret = Seldom.driver.execute_script(js)
         if len(ret) > 0:
             for i in range(len(ret)):
-                js = 'return document.querySelectorAll("{css}")[{i}].outerHTML;'.format(css=css, i=i)
+                js = f'return document.querySelectorAll("{css}")[{i}].outerHTML;'
                 ret = Seldom.driver.execute_script(js)
-                log.info("{} ->".format(i), ret)
+                log.info(f"{i} -> {ret}")
         else:
             log.warning("No elements were found.")
 
@@ -871,9 +877,9 @@ class WebDriver(object):
         web_elem = WebElement(**kwargs)
         elems = web_elem.get_elements()
         if len(elems) == 0:
-            log.warning("{}.".format(web_elem.warn))
+            log.warning(f"{web_elem.warn}.")
         else:
-            log.info("✅ {}.".format(web_elem.info))
+            log.info(f"✅ {web_elem.info}.")
         return elems
 
     @staticmethod
@@ -887,7 +893,7 @@ class WebDriver(object):
         """
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
-        log.info("✅ {}.".format(web_elem.info))
+        log.info(f"✅ {web_elem.info}.")
         return elem
 
     @staticmethod

@@ -1,5 +1,10 @@
+"""
+SQL API
+"""
+
 
 class SQLBase:
+    """SQL base API"""
 
     @staticmethod
     def dict_to_str(data: dict) -> str:
@@ -9,11 +14,11 @@ class SQLBase:
         tmp_list = []
         for key, value in data.items():
             if value is None:
-                tmp = "{k}={v}".format(k=key, v='null')
+                tmp = f"{key}=null"
             elif isinstance(value, int):
-                tmp = "{k}={v}".format(k=key, v=str(value))
+                tmp = f"{key}={value}"
             else:
-                tmp = "{k}='{v}'".format(k=key, v=value)
+                tmp = f"{key}='{value}'"
             tmp_list.append(tmp)
         return ','.join(tmp_list)
 
@@ -25,33 +30,33 @@ class SQLBase:
         tmp_list = []
         for key, value in conditions.items():
             if value is None:
-                tmp = "{k}={v}".format(k=key, v='null')
+                tmp = f"{key}=null"
             elif isinstance(value, int):
-                tmp = "{k}={v}".format(k=key, v=str(value))
+                tmp = f"{key}={value}"
             else:
-                tmp = "{k}='{v}'".format(k=key, v=value)
+                tmp = f"{key}='{value}'"
             tmp_list.append(tmp)
         return ' and '.join(tmp_list)
 
-    def delete(self, table, where=None):
+    def delete(self, table: str, where: dict = None) -> None:
         """
         delete table data
         """
         return self.delete_data(table, where)
 
-    def insert(self, table, data):
+    def insert(self, table: str, data: dict) -> None:
         """
         insert sql statement
         """
         return self.insert_data(table, data)
 
-    def select(self, table, where=None):
+    def select(self, table: str, where: dict = None, one: bool = False) -> list:
         """
         select sql statement
         """
-        return self.select_data(table, where)
+        return self.select_data(table, where, one)
 
-    def update(self, table, data, where):
+    def update(self, table: str, data: dict, where: dict) -> None:
         """
         update sql statement
         """

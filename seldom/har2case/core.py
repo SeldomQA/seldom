@@ -1,11 +1,15 @@
+"""
+har to case core
+"""
 import os
 from seldom.logging import log
 from seldom.har2case import utils
 
 
-class HarParser(object):
+class HarParser:
+    """HarParser class"""
 
-    def __init__(self, har_file_path):
+    def __init__(self, har_file_path: str):
         self.har_file_path = har_file_path
         self.case_template = """import seldom
 
@@ -26,7 +30,7 @@ if __name__ == '__main__':
     seldom.main()
 """
 
-    def _make_testcase(self):
+    def _make_testcase(self) -> str:
         """
         make test case.
         test case are parsed from HAR log entries list.
@@ -47,8 +51,7 @@ if __name__ == '__main__':
             if "?" in url:
                 url = url.split("?")[0]
 
-            data_str = ""
-            if method == "post" or method == "put" or method == "delete":
+            if method in ["post", "put", "delete"]:
                 # from-data
                 params = entry_json["request"]["postData"].get("params")
                 if params is not None:
@@ -85,19 +88,21 @@ if __name__ == '__main__':
 
         return testcase
 
-    def create_file(self, save_path, file_content=""):
+    @staticmethod
+    def create_file(save_path: str, file_content: str = "") -> None:
         """
         create test case file
         """
-        with open(save_path, 'w') as f:
-            f.write(file_content)
-        msg = "created file: {}".format(save_path)
-        log.info(msg)
+        with open(save_path, 'w', encoding="utf8") as file:
+            file.write(file_content)
+        log.info(f"created file: {save_path}")
 
-    def gen_testcase(self):
+    def gen_testcase(self) -> None:
+        """
+        generate test case
+        """
         har_file = os.path.splitext(self.har_file_path)[0]
-        output_testcase_file = "{}.py".format(har_file)
-        log.info(output_testcase_file)
+        output_testcase_file = f"{har_file}.py"
 
         log.info("Start to generate testcase.")
         testcase = self._make_testcase()
@@ -107,6 +112,5 @@ if __name__ == '__main__':
 
 
 if __name__ == '__main__':
-    hp = HarParser("./demo.har")
+    hp = HarParser(os.path.join(os.path.dirname(os.path.abspath(__file__)), "demo.har"))
     hp.gen_testcase()
-

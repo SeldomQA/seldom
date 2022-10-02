@@ -2,16 +2,17 @@
 
 seldom 支持sqlite3、MySQL、MongoDB数据库操作。
 
-|  sqlite3   | MySQL  |
-|  ----  | ----  |
-| execute_sql()  | execute_sql() |
-| query_sql()  | query_sql() |
-| delete()  | delete() |
-| insert()  | insert() |
-| select()  | select() |
-| update()  | update() |
-| init_table()  | init_table() |
-| close()  | close() |
+| sqlite3       | MySQL         |
+|---------------|---------------|
+| execute_sql() | execute_sql() |
+| query_sql()   | query_sql()   |
+| query_one()   | query_one()   |
+| delete()      | delete()      |
+| insert()      | insert()      |
+| select()      | select()      |
+| update()      | update()      |
+| init_table()  | init_table()  |
+| close()       | close()       |
 
 ### 连接数据库
 
@@ -37,7 +38,7 @@ __连接MySQL数据库（需要）__
 from seldom.db_operation import MySQLDB
 
 db = MySQLDB(host="127.0.0.1", 
-             port="3306", 
+             port=3306, 
              user="root", 
              password="123", 
              database="db_name")
@@ -61,6 +62,15 @@ db.execute_sql("DELETE FROM user WHERE id = 1")
 
 ```python
 ret = db.query_sql("select * from user")
+print(ret)
+```
+
+* query_one
+
+执行查询sql语句，返回一条结果。
+
+```python
+ret = db.query_one("select * from user")
 print(ret)
 ```
 
@@ -88,6 +98,8 @@ db.insert(table="user", data=data)
 ```py
 result = db.select(table="user", where={"id":1, "name": "tom"})
 print(result)
+result = db.select(table="user", one=True) # one=True 返回一条结果
+print(result)
 ```
 
 * update
@@ -97,7 +109,6 @@ print(result)
 ```py
 db.update(table="user", where={"name": "tom", }, data={"name": "jack"})
 ```
-
 
 * init_table
 
@@ -141,7 +152,7 @@ MongoDB 是一个基于分布式文件存储的数据库，属于非关系型数
 https://github.com/mongodb/mongo-python-driver
 
 ```shell
-pip show pymongo
+> pip show pymongo
 ```
 
 * 连接MongoDB

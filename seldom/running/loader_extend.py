@@ -19,14 +19,19 @@ class SeldomTestLoader(TestLoader):
         """
 
         def shouldIncludeMethod(attrname):
+            """
+            should Include Method
+            :param attrname:
+            :return:
+            """
             if not attrname.startswith(self.testMethodPrefix):
                 return False
             testFunc = getattr(testCaseClass, attrname)
             if not callable(testFunc):
                 return False
-            fullName = f'%s.%s.%s' % (
-                testCaseClass.__module__, testCaseClass.__qualname__, attrname
-            )
+
+            fullName = f"""{testCaseClass.__module__}.{testCaseClass.__qualname__}.{attrname}"""
+
             if self.collectCaseInfo is True:
                 case_info = {
                     "file": testCaseClass.__module__,
@@ -51,4 +56,3 @@ class SeldomTestLoader(TestLoader):
 
 
 seldomTestLoader = SeldomTestLoader()
-

@@ -1,9 +1,12 @@
-import re
+"""
+Run tests in debug mode
+"""
 import unittest
 import functools
 
 
 class DebugTestRunner(unittest.TextTestRunner):
+    """Debug test runner"""
 
     def __init__(self, *args, **kwargs):
         """
@@ -62,36 +65,3 @@ class DebugTestRunner(unittest.TextTestRunner):
 
         # Resume normal TextTestRunner function with the new test suite
         super(DebugTestRunner, self).run(suite)
-
-
-if __name__ == '__main__':
-    import argparse
-
-    # ---- create commandline parser
-    parser = argparse.ArgumentParser(description='Find and run cqparts tests.')
-
-    def label_list(value):
-        return re.split(r'\W+', value)
-
-    parser.add_argument('-w', '--whitelist', dest='whitelist',
-                        type=label_list, default=[],
-                        help="list of labels to test (skip all others)")
-    parser.add_argument('-b', '--blacklist', dest='blacklist',
-                        type=label_list, default=[],
-                        help="list of labels to skip")
-
-    args = parser.parse_args()
-
-    # ---- Discover and run tests
-
-    # Discover Tests
-    loader = unittest.TestLoader()
-    tests = loader.discover('.', pattern='test_*.py')
-
-    # Run tests
-    testRunner = DebugTestRunner(
-        blacklist=args.blacklist,
-        whitelist=args.whitelist,
-        verbosity=2,
-    )
-    testRunner.run(tests)
