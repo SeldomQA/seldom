@@ -1,3 +1,6 @@
+"""
+case more threading
+"""
 from threading import Thread
 from seldom.logging import log
 
@@ -12,6 +15,8 @@ class ThreadWait:
     thread_dict = {}
 
     class SeldomThread(Thread):
+        """seldom thread"""
+
         def __init__(self, func, name='', *args, **kwargs):
             Thread.__init__(self)
             self.func = func

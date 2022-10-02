@@ -3,11 +3,11 @@ The @KLOOK Company API
 """
 import requests
 from requests.exceptions import RetryError
-
 from seldom.logging import log
 
 
 class Lark:
+    """send lark message class"""
 
     def __init__(self, url: str, app_id: str):
         self.url = url
@@ -49,7 +49,7 @@ class Lark:
                           chat_id: str = None,
                           open_id: str = None,
                           user_id: str = None,
-                          email: str = None):
+                          email: str = None) -> dict:
         """
         send card to user
         :param message:
@@ -81,13 +81,15 @@ class Lark:
                     log.success(f'[message] success, {r.json()}')
                     return r.json()
                 log.error(f'[message] got error, {r.text}')
-            else:
-                log.error(f'[message] got error, {r.text}')
+                return {}
+            log.error(f'[message] got error, {r.text}')
+            return {}
         except RetryError as e:
             log.error(f'[message] got retry error, error: {e}')
             return {}
         except Exception as e:
             log.error(f'[message] got exception error, error: {e}')
+            return {}
 
 
 class MockEnv:
@@ -101,7 +103,8 @@ class MockEnv:
         self.json = json
         self.kwargs = kwargs
 
-    def update(self):
+    def update(self) -> dict:
+        """update mock env"""
         try:
             r = requests.post(url=self.url, data=self.data, json=self.json, **self.kwargs)
             if r.status_code == 200:
@@ -110,10 +113,12 @@ class MockEnv:
                     log.success(f'[mock] success, {r.json()}')
                     return r.json()
                 log.error(f'[mock] got error, {r.text}')
-            else:
-                log.error(f'[message] got error, {r.text}')
+                return {}
+            log.error(f'[message] got error, {r.text}')
+            return {}
         except RetryError as e:
             log.error(f'[mock] got retry error, error: {e}')
             return {}
         except Exception as e:
             log.error(f'[mock] got exception error, error: {e}')
+            return {}
