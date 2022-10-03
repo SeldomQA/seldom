@@ -49,6 +49,8 @@ module.exports = {
         text: "App UI 测试",
         children: [
           "/app-testing/start",
+          "/app-testing/appium_lab",
+          "/app-testing/page_object",
         ],
       },
       {

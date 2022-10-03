@@ -32,11 +32,30 @@ v16.17.0
 [Appium] Appium REST http interface listener started on 0.0.0.0:4723
 ```
 
+4. 移动设备
+
+准备一台设备（Android/iOS手机）通过USB数据线连接电脑。通过以下工具确认手机与电脑是否连接。
+
+* adb
+```shell
+> adb devices 
+List of devices attached
+UMXDU000000000000       device
+```
+
+* taobao-iphone-device
+```shell
+> tidevice list
+List of apple devices attached
+00008030-00000000000000 xxx的iPhoneSE
+```
+
+
 ## 编写测试
 
 基于seldom编写app自动化测试, 由于appium 继承自selenium，所以，一部分API是共用的。
 
-```shell
+```python
 import seldom
 
 
