@@ -70,7 +70,7 @@ class KeyEvent:
     def __init__(self, driver):
         self.driver = driver
 
-    def key_text(self, text=""):
+    def key_text(self, text: str = ""):
         """
         keyword input text.
         :param text: input text
@@ -81,16 +81,16 @@ class KeyEvent:
         if text == "":
             return
 
-        for s in text:
-            keycode = keycodes.get(s.upper(), 0)
+        for string in text:
+            keycode = keycodes.get(string.upper(), 0)
             if keycode == 0:
-                raise KeyError(f"The '{s}' character is not supported")
-            if s.isupper():
+                raise KeyError(f"The '{string}' character is not supported")
+            if string.isupper():
                 self.driver.press_keycode(keycode, 64, 59)
             else:
                 self.driver.keyevent(keycode)
 
-    def press_key(self, key):
+    def press_key(self, key: str):
         """
         keyboard
         :param key: keyword name
@@ -107,7 +107,7 @@ class KeyEvent:
         """press home"""
         self.driver.home()
 
-    def hide_keyboard(self, key_name=None, key=None, strategy = None):
+    def hide_keyboard(self, key_name=None, key=None, strategy=None):
         """
         Hides the software keyboard on the device.
 
@@ -120,7 +120,7 @@ class KeyEvent:
             strategy: strategy for closing the keyboard (e.g., `tapOutside`)
 
         """
-        self.driver.hide_keyboard()
+        self.driver.hide_keyboard(key_name=key_name, key=key, strategy=strategy)
 
     def is_keyboard_shown(self) -> bool:
         """Attempts to detect whether a software keyboard is present

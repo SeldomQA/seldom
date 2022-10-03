@@ -1,4 +1,6 @@
-from time import sleep as py_sleep
+"""
+switch app context
+"""
 from seldom.logging import log
 
 
@@ -19,13 +21,13 @@ class Switch:
             log.info("🔀 switch to native app.")
             self.driver.switch_to.context('NATIVE_APP')
 
-    def switch_to_web(self, context=None) -> None:
+    def switch_to_web(self, context_name: str = None) -> None:
         """
         Switch to web view.
         """
         log.info("🔀 switch to webview.")
-        if context is not None:
-            self.driver.switch_to.context(context)
+        if context_name is not None:
+            self.driver.switch_to.context(context_name)
         else:
             all_context = self.driver.contexts
             for context in all_context:
@@ -43,11 +45,3 @@ class Switch:
         if current_context != "FLUTTER":
             log.info("🔀 switch to flutter.")
             self.driver.switch_to.context('FLUTTER')
-
-    @staticmethod
-    def sleep(sec) -> None:
-        """
-        sleep(seconds)
-        :param sec
-        """
-        py_sleep(sec)

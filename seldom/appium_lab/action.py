@@ -1,3 +1,7 @@
+"""
+appium action
+"""
+from time import sleep
 from seldom.logging import log
 from seldom.appium_lab.switch import Switch
 from selenium.webdriver.common.action_chains import ActionChains
@@ -18,7 +22,7 @@ class Action(Switch):
         self.width = size.get("width")     # {'width': 1080, 'height': 2028}
         self.height = size.get("height")   # {'width': 1080, 'height': 2028}
 
-    def tap(self, x, y):
+    def tap(self, x: int, y: int) -> None:
         """
         Tap on the coordinates
         :param x: x coordinates
@@ -34,9 +38,9 @@ class Action(Switch):
         actions.w3c_actions.pointer_action.pause(0.1)
         actions.w3c_actions.pointer_action.release()
         actions.perform()
-        self.sleep(2)
+        sleep(2)
 
-    def swipe_up(self, times=1, upper=False):
+    def swipe_up(self, times: int = 1, upper: bool = False):
         """
         swipe up
         :param times: swipe times
@@ -62,9 +66,9 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
             actions.w3c_actions.pointer_action.release()
             actions.perform()
-            self.sleep(1)
+            sleep(1)
 
-    def swipe_down(self, times=1, upper=False):
+    def swipe_down(self, times: int = 1, upper: bool = False) -> None:
         """
         swipe down
         :param times: swipe times
@@ -90,4 +94,4 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
             actions.w3c_actions.pointer_action.release()
             actions.perform()
-            self.sleep(1)
+            sleep(1)

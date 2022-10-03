@@ -1,8 +1,7 @@
 """
-author: zhiheng.hu
-data: 2022/5/26
-desc: 查找元素
+find element by text
 """
+from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from seldom.logging import log
 from seldom.appium_lab.switch import Switch
@@ -14,12 +13,12 @@ class FindByText(Switch):
     """
 
     @staticmethod
-    def __remove_unprintable_chars(s):
+    def __remove_unprintable_chars(string: str) -> str:
         """
         remove unprintable chars
-        :param s: string
+        :param string: string
         """
-        return ''.join(x for x in s if x.isprintable())
+        return ''.join(x for x in string if x.isprintable())
 
     def __find(self, class_name: str, attribute: str, text: str):
         """
@@ -33,8 +32,7 @@ class FindByText(Switch):
         for _ in range(3):
             if len(elems) > 0:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
 
         for elem in elems:
             if elem.get_attribute(attribute) is None:
@@ -43,10 +41,9 @@ class FindByText(Switch):
             if text in attribute_text:
                 log.info(f'find -> {attribute_text}')
                 return elem
-        else:
-            return None
+        return None
 
-    def find_view(self, text=None, content_desc=None):
+    def find_view(self, text: str = None, content_desc: str = None):
         """
         Android: find view
         :param text:
@@ -56,25 +53,24 @@ class FindByText(Switch):
         self.switch_to_app()
         if text is not None:
             attribute = "text"
-            text = text
+            _text = text
         elif content_desc is not None:
             attribute = "content-desc"
-            text = content_desc
+            _text = content_desc
         else:
-            raise ValueError(f"parameter error, setting text/content_desc")
+            raise ValueError("parameter error, setting text/content_desc")
 
         for _ in range(3):
-            elem = self.__find(class_name="android.view.View", attribute=attribute, text=text)
+            elem = self.__find(class_name="android.view.View", attribute=attribute, text=_text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_edit_text(self, text):
+    def find_edit_text(self, text: str):
         """
         Android: find editText
         :param text:
@@ -85,14 +81,13 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.EditText", attribute="text", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_button(self, text=None, content_desc=None):
+    def find_button(self, text: str = None, content_desc: str = None):
         """
         Android: find button
         :param text:
@@ -102,25 +97,24 @@ class FindByText(Switch):
         self.switch_to_app()
         if text is not None:
             attribute = "text"
-            text = text
+            _text = text
         elif content_desc is not None:
             attribute = "content-desc"
-            text = content_desc
+            _text = content_desc
         else:
-            raise ValueError(f"parameter error, setting text/content_desc")
+            raise ValueError("parameter error, setting text/content_desc")
 
         for _ in range(3):
-            elem = self.__find(class_name="android.widget.Button", attribute=attribute, text=text)
+            elem = self.__find(class_name="android.widget.Button", attribute=attribute, text=_text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_text_view(self, text):
+    def find_text_view(self, text: str):
         """
         Android: find TextView
         :param text:
@@ -131,14 +125,13 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.TextView", attribute="text", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_image_view(self, text):
+    def find_image_view(self, text: str):
         """
         Android: find ImageView
         :param text:
@@ -149,14 +142,13 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.ImageView", attribute="content-desc", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_check_box(self, text):
+    def find_check_box(self, text: str):
         """
         Android: find CheckBox
         :param text:
@@ -167,14 +159,13 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.CheckBox", attribute="text", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_static_text(self, text):
+    def find_static_text(self, text: str):
         """
         iOS: find XCUIElementTypeStaticText
         :param text:
@@ -185,14 +176,13 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeStaticText", attribute="name", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_other(self, text):
+    def find_other(self, text: str):
         """
         iOS: find XCUIElementTypeOther
         :param text:
@@ -203,14 +193,13 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeOther", attribute="name", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_text_field(self, text):
+    def find_text_field(self, text: str):
         """
         iOS: find XCUIElementTypeTextField
         :param text:
@@ -221,14 +210,13 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeTextField", attribute="name", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_image(self, text):
+    def find_image(self, text: str):
         """
         iOS: find XCUIElementTypeImage
         :param text:
@@ -239,14 +227,13 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeImage", attribute="name", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
         return elem
 
-    def find_ios_button(self, text):
+    def find_ios_button(self, text: str):
         """
         iOS: find XCUIElementTypeButton
         :param text:
@@ -257,8 +244,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeButton", attribute="name", text=text)
             if elem is not None:
                 break
-            else:
-                self.sleep(1)
+            sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 

@@ -1,10 +1,13 @@
-from seldom.running.config import Seldom
+"""
+appium API
+"""
 from typing import Any, Dict
+from seldom.running.config import Seldom
 
 
-class AppDriver(object):
+class AppDriver:
     """
-    appium base api
+    appium base API
     """
 
     def background_app(self, seconds: int):

@@ -1,3 +1,6 @@
+"""
+appium laboratory
+"""
 from seldom.logging import log
 from seldom.appium_lab.action import Action
 from seldom.appium_lab.find import FindByText
@@ -14,7 +17,7 @@ class AppiumLab(Action, FindByText, KeyEvent):
     【4】 is running in foreground. (number)
     """
 
-    def check_state(self, app_id):
+    def check_state(self, app_id: str) -> int:
         """
         check app state
         :param app_id:
@@ -35,14 +38,16 @@ class AppiumLab(Action, FindByText, KeyEvent):
             log.info(f"{app_id} state of the unknown.")
         return state
 
-    def launch_app(self, app_id):
+    def launch_app(self, app_id: str) -> None:
+        """launch app"""
         log.info(f"launch App {app_id}")
         self.switch_to_app()
         state = self.check_state(app_id)
         if state != 4:
             self.driver.launch_app()
 
-    def close_app(self, app_id):
+    def close_app(self, app_id: str) -> None:
+        """close app"""
         log.info(f"close App {app_id}")
         self.switch_to_app()
         self.driver.close_app()
