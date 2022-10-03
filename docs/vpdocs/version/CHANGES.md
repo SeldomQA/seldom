@@ -1,5 +1,16 @@
 # 版本更新
 
+### 3.0.0bate1
+* 支持App测试
+  * 依赖`Appium-Python-Client`库。 
+  * `main()` 增加 `app_info`, `app_server` 参数。
+  * 增加`appium_lab` 模块。
+  * 增加`AppDriver` 类。
+* 优化：基于pylint检查分析工具 优化代码。
+* 其他：
+  * 生成随机数，增加`get_timestamp()` 获取当前时间戳。
+  * 数据库查询，增加`query_one()` 查询一条数据。
+
 ### 2.10.6 ~ 2.10.7
 * 功能：`seldom`命令重大更新，支持更多参数和功能。
 * 功能：`@file_data()` 当设置`Seldom.env`时支持更深一级遍历。
