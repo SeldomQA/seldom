@@ -79,6 +79,7 @@ def request(func):
                 log.debug(f"[type]: {file_type}      [time]: {resp_time}")
                 ResponseResult.response = r.content
             else:
+                r.encoding = 'utf-8'
                 log.debug(f"[type]: text      [time]: {resp_time}")
                 log.debug(f"[response]:\n {r.text}")
                 ResponseResult.response = r.text
