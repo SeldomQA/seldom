@@ -89,7 +89,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.launch_app()
+        Seldom.driver.close_app()
         return self
 
     @staticmethod
