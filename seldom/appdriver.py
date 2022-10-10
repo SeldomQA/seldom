@@ -52,7 +52,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.background_app(app_path=app_path, **options)
+        Seldom.driver.install_app(app_path=app_path, **options)
         return self
 
     def remove_app(self, app_id: str, **options: Any):
