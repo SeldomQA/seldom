@@ -233,7 +233,8 @@ class TestMainExtend(TestMain):
             app_info=None,
             report: str = None,
             title: str = "Seldom Test Report",
-            description: str ="Test case execution",
+            tester: str = "Anonymous",
+            description: str = "Test case execution",
             rerun: int = 0,
             save_last_run: bool = False,
             whitelist: list = [],
@@ -244,7 +245,7 @@ class TestMainExtend(TestMain):
 
         super().__init__(path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
                          app_server=app_server, app_info=app_info,
-                         report=report, title=title, description=description,
+                         report=report, title=title, tester=tester, description=description,
                          rerun=rerun, save_last_run=save_last_run, whitelist=whitelist, blacklist=blacklist,
                          open=False, auto=False)
 
