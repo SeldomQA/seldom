@@ -1,6 +1,6 @@
 # 版本更新
 
-### 3.0.0bate1
+### 3.0.0beta1
 * 支持App测试
   * 依赖`Appium-Python-Client`库。 
   * `main()` 增加 `app_info`, `app_server` 参数。
