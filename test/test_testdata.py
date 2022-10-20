@@ -31,6 +31,14 @@ print("日期(当前):", get_date())
 print("日期(昨天):", get_date(-1))
 print("日期(明天):", get_date(1))
 
+print("当月：", get_month())
+print("上个月：", get_month(-1))
+print("下个月：", get_month(1))
+
+print("今年：", get_year())
+print("去年：", get_year(-1))
+print("明年：", get_year(1))
+
 # 数字
 print("数字(8位):", get_digits(8))
 

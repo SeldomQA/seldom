@@ -8,6 +8,7 @@ import uuid
 import random
 import hashlib
 import datetime
+from dateutil.relativedelta import relativedelta
 
 from seldom.testdata.random_data import (
     en_first_names_male,
@@ -364,6 +365,34 @@ def get_date(day=None) -> str:
         date = datetime.datetime.now().strftime("%Y-%m-%d")
     else:
         date = (datetime.datetime.now() + datetime.timedelta(days=day)).strftime("%Y-%m-%d")
+
+    return date
+
+
+def get_month(month: int = None) -> str:
+    """
+    Get month, default to current month.
+    :param month:
+    :return:
+    """
+    if month is None:
+        date = datetime.datetime.now().strftime("%Y-%m")
+    else:
+        date = str(datetime.date.today() + relativedelta(months=+month))[0:7]
+
+    return date
+
+
+def get_year(year: int = None) -> str:
+    """
+    Get year, default to current month.
+    :param year:
+    :return:
+    """
+    if year is None:
+        date = datetime.datetime.now().strftime("%Y")
+    else:
+        date = str(datetime.date.today() + relativedelta(years=+year))[0:4]
 
     return date
 
