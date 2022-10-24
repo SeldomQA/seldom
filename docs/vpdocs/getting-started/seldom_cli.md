@@ -38,6 +38,7 @@ Options:
   -i, --install [chrome|firefox|ie|edge]
                                   Install the browser driver.
   -h2c, --har2case TEXT           HAR file converts an interface test case.
+  --clear-cache                   Clear all caches of seldom.
   --help                          Show this message and exit.
 ```
 
@@ -216,3 +217,10 @@ save them to D:\github\seldom\demo\case.json
   - `-r/--report`: 运行收集用例生成报告: `result.html`。
 
 
+### 清除所有缓存
+
+```shell
+> seldom --clear-cache 
+```
+
+* 说明：默认清空所有缓存，不需要参数。

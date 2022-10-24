@@ -12,6 +12,7 @@ from seldom import SeldomTestLoader
 from seldom import TestMainExtend
 from seldom.logging import log
 from seldom.utils import file
+from seldom.utils import cache
 from seldom.har2case.core import HarParser
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
@@ -49,14 +50,19 @@ ssl._create_default_https_context = ssl._create_unverified_context
               type=click.Choice(['chrome', 'firefox', 'ie', 'edge']),
               help="Install the browser driver.")
 @click.option("-h2c", "--har2case", help="HAR file converts an interface test case.")
-def main(project, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod, install,
-         har2case):
+@click.option('--clear-cache', 'clear_cache', flag_value='clear-cache', default=True, help="Clear all caches of seldom.")
+def main(project,  path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod, install,
+         har2case, clear_cache):
     """
     seldom CLI.
     """
 
     if project:
         create_scaffold(project)
+        return 0
+
+    if clear_cache:
+        cache.clear()
         return 0
 
     if path:

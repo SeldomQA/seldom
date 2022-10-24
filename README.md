@@ -74,6 +74,7 @@ Options:
   -i, --install [chrome|firefox|ie|edge]
                                   Install the browser driver.
   -h2c, --har2case TEXT           HAR file converts an interface test case.
+  --clear-cache                   Clear all caches of seldom.
   --help                          Show this message and exit.
 ```
 
