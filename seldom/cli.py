@@ -29,6 +29,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 @click.command()
 @click.version_option(version=__version__, help="Show version.")
 @click.option("-P", "--project", help="Create an Seldom automation test project.")
+@click.option('-cc', "--clear-cache", default=False, help="Clear all caches of seldom.")
 @click.option("-p", "--path", help="Run test case file path.")
 @click.option("-c/-nc", "--collect/--no-collect", default=False, help="Collect project test cases. Need the `--path`.")
 @click.option("-l", "--level", default="data",
@@ -50,9 +51,8 @@ ssl._create_default_https_context = ssl._create_unverified_context
               type=click.Choice(['chrome', 'firefox', 'ie', 'edge']),
               help="Install the browser driver.")
 @click.option("-h2c", "--har2case", help="HAR file converts an interface test case.")
-@click.option('--clear-cache', 'clear_cache', flag_value='clear-cache', default=True, help="Clear all caches of seldom.")
-def main(project,  path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod, install,
-         har2case, clear_cache):
+def main(project, clear_cache, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod,
+         install, har2case):
     """
     seldom CLI.
     """
@@ -63,7 +63,6 @@ def main(project,  path, collect, level, case_json, env, debug, browser, base_ur
 
     if clear_cache:
         cache.clear()
-        return 0
 
     if path:
         Seldom.env = env
