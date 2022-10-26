@@ -68,13 +68,16 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
         Seldom.env = env
         if collect is True and case_json is not None:
             click.echo(f"Collect use cases for the {path} directory.")
+
             if os.path.isdir(path) is True:
                 click.echo(f"add env Path: {os.path.dirname(path)}.")
                 file.add_to_path(os.path.dirname(path))
+
             SeldomTestLoader.collectCaseInfo = True
             main_extend = TestMainExtend(path=path)
             case_info = main_extend.collect_cases(json=True, level=level)
             case_path = os.path.join(os.getcwd(), case_json)
+
             with open(case_path, "w", encoding="utf-8") as json_file:
                 json_file.write(case_info)
             click.echo(f"save them to {case_path}")
@@ -82,15 +85,23 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
 
         if collect is False and case_json is not None:
             click.echo(f"Read the {case_json} case file to the {path} directory for execution")
-            if os.path.isdir(path) is True:
-                click.echo(f"add env Path: {os.path.dirname(path)}.")
-                file.add_to_path(os.path.dirname(path))
-            main_extend = TestMainExtend(path=path, debug=debug, browser=browser, base_url=base_url, report=report,
-                                         rerun=rerun)
+
             if os.path.exists(case_json) is False:
                 click.echo(f"The run case file {case_json} does not exist.")
+                return 0
+
+            if os.path.isdir(path) is False:
+                click.echo(f"The run cae path {case_json} does not exist.")
+                return 0
+
+            click.echo(f"add env Path: {os.path.dirname(path)}.")
+            file.add_to_path(os.path.dirname(path))
+
             with open(case_json, encoding="utf-8") as json_file:
                 case = json.load(json_file)
+                path, case = reset_case(path, case)
+                main_extend = TestMainExtend(path=path, debug=debug, browser=browser, base_url=base_url, report=report,
+                                             rerun=rerun)
                 main_extend.run_cases(case)
             return 0
 
@@ -250,3 +261,29 @@ def install_driver(browser: str) -> None:
         log.info(f"Edge Driver[==>] {driver_path}")
     else:
         raise NameError(f"Not found '{browser}' browser driver.")
+
+
+def reset_case(path: str, cases: list) -> [str, list]:
+    """
+    Reset the use case data
+    :param path: case base path
+    :param cases: case data
+    """
+    if len(cases) == 0:
+        return path, cases
+
+    for case in cases:
+        if "." not in case["file"]:
+            return path, cases
+
+    case_start = cases[0]["file"].split(".")[0]
+    for case in cases:
+        if case["file"].startswith(f"{case_start}.") is False:
+            break
+    else:
+        path = os.path.join(path, case_start)
+        for case in cases:
+            case["file"] = case["file"][len(case_start)+1:]
+        return path, cases
+
+    return path, cases
