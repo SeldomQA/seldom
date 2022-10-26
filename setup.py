@@ -36,7 +36,8 @@ setup(
         'webdriver-manager==3.8.2',
         'pymysql>=1.0.0',
         'genson==1.2.2',
-        'click~=8.1.3'
+        'click~=8.1.3',
+        'python-dateutil==2.8.2'
     ],
     classifiers=[
         'Intended Audience :: Developers',
