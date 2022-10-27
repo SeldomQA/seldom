@@ -1,3 +1,16 @@
+### 3.0.0beta2
+* 修复： 
+  * 接口测试: 接口返回文本`r.text` 中文乱码问题。[#146](https://github.com/SeldomQA/seldom/issues/146)
+  * app测试：感谢 @986379041 
+    * `install_app()` 错误
+    * `close_app()` 错误
+* 功能：
+  * `TestMainExtend` 类增加 `tester`参数。 [#149](https://github.com/SeldomQA/seldom/issues/149)
+  * 生成随机数，增加`get_month()` 和 `get_year()`方法。 [#152](https://github.com/SeldomQA/seldom/issues/152)
+  * seldom命令增加清除所有缓存。`> seldom --clear-cache true`。 [#153](https://github.com/SeldomQA/seldom/issues/153)
+* 其他:
+  * seldom 运行用例，优化内存使用。
+
 ### 3.0.0beta1
 * 支持App测试
   * 依赖`Appium-Python-Client`库。 
