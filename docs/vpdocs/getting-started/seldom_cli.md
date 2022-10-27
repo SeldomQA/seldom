@@ -15,6 +15,7 @@ Usage: seldom [OPTIONS]
 Options:
   --version                       Show version.
   -P, --project TEXT              Create an Seldom automation test project.
+  -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
   -p, --path TEXT                 Run test case file path.
   -c, --collect BOOLEAN           Collect project test cases. Need the
                                   `--path`.
@@ -38,7 +39,6 @@ Options:
   -i, --install [chrome|firefox|ie|edge]
                                   Install the browser driver.
   -h2c, --har2case TEXT           HAR file converts an interface test case.
-  --clear-cache                   Clear all caches of seldom.
   --help                          Show this message and exit.
 ```
 
@@ -192,7 +192,7 @@ add env Path: .
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.10.6
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v{x}.{x}.{x}
 -----------------------------------------
                              @itest.info
 
@@ -220,7 +220,7 @@ save them to D:\github\seldom\demo\case.json
 ### 清除所有缓存
 
 ```shell
-> seldom --clear-cache 
+> seldom --clear-cache true
 ```
 
-* 说明：默认清空所有缓存，不需要参数。
+* 说明：默认清空seldom所有缓存，即`cache.clear()`
