@@ -171,7 +171,7 @@ class TestMain:
             else:
                 report_path = BrowserConfig.REPORT_PATH = os.path.join(os.getcwd(), "reports", self.report)
 
-            with(open(report_path, 'wb')) as fp:
+            with open(report_path, 'wb') as fp:
                 if report_path.split(".")[-1] == "xml":
                     runner = XMLTestRunner(output=fp, logger=log_cfg)
                     runner.run(suits)
@@ -249,8 +249,7 @@ class TestMainExtend(TestMain):
                          rerun=rerun, save_last_run=save_last_run, whitelist=whitelist, blacklist=blacklist,
                          open=False, auto=False)
 
-    @staticmethod
-    def collect_cases(json=False, level="data") -> Any:
+    def collect_cases(self, json: bool = False, level: str = "data", warning: bool = False) -> Any:
         """
         Return the collected case information.
         SeldomTestLoader.collectCaseInfo = True
@@ -258,6 +257,7 @@ class TestMainExtend(TestMain):
         :param level: Parse the level of use cases:
                 * data: Each piece of test data is parsed into a use case.
                 * method: Each method is resolved into a use case
+        :param warning: Whether to collect warning information
         """
         if level not in ["data", "method"]:
             raise ValueError("level value error.")
@@ -266,47 +266,53 @@ class TestMainExtend(TestMain):
 
         if level == "method":
             # Remove the data-driven use case end number
-            cases_backup_1 = []
+            cases_backup_one = []
             for case in cases:
                 case_name = case["method"]["name"]
                 if "_" not in case_name:
-                    cases_backup_1.append(case)
+                    cases_backup_one.append(case)
                 else:
                     try:
                         int(case_name.split("_")[-1])
                     except ValueError:
-                        cases_backup_1.append(case)
+                        cases_backup_one.append(case)
                     else:
                         case_name_end = case_name.split("_")[-1]
                         case["method"]["name"] = case_name[:-(len(case_name_end) + 1)]
-                        cases_backup_1.append(case)
+                        cases_backup_one.append(case)
 
             # Remove duplicate use cases
-            cases_backup_2 = []
+            cases_backup_two = []
             case_full_list = []
-            for case in cases_backup_1:
+            for case in cases_backup_one:
                 case_full = f'{case["file"]}.{case["class"]["name"]}.{case["method"]["name"]}'
                 if case_full not in case_full_list:
                     case_full_list.append(case_full)
-                    cases_backup_2.append(case)
+                    cases_backup_two.append(case)
 
-            cases = cases_backup_2
+            cases = cases_backup_two
+
+        if warning is True:
+            self._load_testsuite(warning=True)
 
         if json is True:
             return sys_json.dumps(cases, indent=2, ensure_ascii=False)
 
         return cases
 
-    def _load_testsuite(self) -> Dict[str, List[Any]]:
+    def _load_testsuite(self, warning: bool = False) -> Dict[str, List[Any]]:
         """
         load test suite and convert to mapping
+        :param warning: Whether to collect warning information
         """
         mapping = {}
 
+        exception_info = ""
         for suits in self.TestSuits:
             for cases in suits:
                 if isinstance(cases, unittest.suite.TestSuite) is False:
-                    log.warning(f"Case analysis failed. {cases}")
+                    if warning is True:
+                        exception_info = exception_info + str(cases._exception) + "\n"
                     continue
 
                 for case in cases:
@@ -318,6 +324,11 @@ class TestMainExtend(TestMain):
                         mapping[key] = []
 
                     mapping[key].append(case)
+
+        if warning is True:
+            collect_file = os.path.join(os.path.dirname(BrowserConfig.REPORT_PATH), "collect_warning.log")
+            with open(collect_file, "w", encoding="utf-8") as file:
+                file.write(exception_info)
 
         return mapping
 
