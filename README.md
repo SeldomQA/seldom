@@ -28,7 +28,7 @@ Seldom automation testing framework based on unittest.
 
 APP 测试，体验：
 ```shell
-pip install seldom==3.0.0b1
+pip install seldom==3.0.0b2
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -50,6 +50,7 @@ Usage: seldom [OPTIONS]
 Options:
   --version                       Show version.
   -P, --project TEXT              Create an Seldom automation test project.
+  -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
   -p, --path TEXT                 Run test case file path.
   -c, --collect / -nc, --no-collect
                                   Collect project test cases. Need the
@@ -74,7 +75,6 @@ Options:
   -i, --install [chrome|firefox|ie|edge]
                                   Install the browser driver.
   -h2c, --har2case TEXT           HAR file converts an interface test case.
-  --clear-cache                   Clear all caches of seldom.
   --help                          Show this message and exit.
 ```
 
@@ -156,11 +156,11 @@ mypro/
 
 ## 🔬 Demo
 
-### Web 测试
+> seldom继承unittest单元测试框架，完全遵循unittest编写用例规范。
 
 [demo](/demo) 提供了丰富实例，帮你快速了解seldom的用法。
 
-简单的实例 `demo/test_dir/test_first_demo.py` 
+### Web UI 测试
 
 ```python
 import seldom
@@ -182,16 +182,11 @@ class BaiduTest(seldom.TestCase):
         self.assertTitle("seldom_百度搜索")
 
 if __name__ == '__main__':
-    seldom.main()
-
+    seldom.main(browser="chrome")
 ```
 
 __说明：__
-
-* 创建测试类必须继承 `seldom.TestCase`。
-* 测试用例文件命名必须以 `test` 开头。
-* seldom的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
-* `Steps`类提供了一套方法链的API，编写简单的用例更连贯。
+* `seldom.main()` 通过 `browser` 指定运行的浏览器。 
 
 ### HTTP 测试
 
@@ -224,6 +219,10 @@ class TestRequest(seldom.TestCase):
 if __name__ == '__main__':
     seldom.main(base_url="http://httpbin.org")
 ```
+
+__说明：__
+
+* `seldom.main()` 通过 `base_url` 指定接口项目基本URL地址。 
 
 ### App 测试
 
@@ -258,6 +257,9 @@ if __name__ == '__main__':
     }
     seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723")
 ```
+__说明：__
+
+* `seldom.main()` 通过 `app_info` 指定App信息； `app_server` 指定appium server 地址。 
 
 ### Run the test
 
@@ -275,7 +277,6 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 [中文文档](https://seldomqa.github.io/)
 
-[English document(readthedocs)](https://seldomqa.readthedocs.io/en/latest/index.html)
 
 ### 项目实例
 

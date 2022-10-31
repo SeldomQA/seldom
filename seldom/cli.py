@@ -75,7 +75,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
 
             SeldomTestLoader.collectCaseInfo = True
             main_extend = TestMainExtend(path=path)
-            case_info = main_extend.collect_cases(json=True, level=level)
+            case_info = main_extend.collect_cases(json=True, level=level, warning=True)
             case_path = os.path.join(os.getcwd(), case_json)
 
             with open(case_path, "w", encoding="utf-8") as json_file:

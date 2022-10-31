@@ -18,6 +18,7 @@ Usage: seldom [OPTIONS]
 Options:
   --version                       Show version.
   -P, --project TEXT              Create an Seldom automation test project.
+  -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
   -p, --path TEXT                 Run test case file path.
   -c, --collect / -nc, --no-collect
                                   Collect project test cases. Need the
@@ -42,7 +43,6 @@ Options:
   -i, --install [chrome|firefox|ie|edge]
                                   Install the browser driver.
   -h2c, --har2case TEXT           HAR file converts an interface test case.
-  --clear-cache                   Clear all caches of seldom.
   --help                          Show this message and exit.
 ```
 
