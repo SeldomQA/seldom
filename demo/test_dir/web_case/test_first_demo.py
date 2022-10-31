@@ -19,4 +19,3 @@ class BingTest(seldom.TestCase):
 
 if __name__ == '__main__':
     seldom.main(debug=True)
-

@@ -9,25 +9,31 @@ class BaiduTest(seldom.TestCase):
 
     @classmethod
     def start_class(cls):
+        """start class"""
         print("test class start")
         cls.max_window()
 
     @classmethod
     def end_class(cls):
-        print("test class end")
+        """end class"""
+        ...
 
     def start(self):
+        """start"""
         print("test case start")
         self.index_page = "https://www.baidu.com/"
         self.news_page = "https://news.baidu.com/"
 
     def end(self):
-        print("test case end")
+        """end"""
+        ...
 
-    def test_case1(self):
+    def test_open_index(self):
+        """open baidu index page"""
         self.open(self.index_page)
 
-    def test_case2(self):
+    def test_open_news(self):
+        """"open baidu news page"""
         self.open(self.news_page)
 
 

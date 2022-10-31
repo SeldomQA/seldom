@@ -39,6 +39,9 @@ class TestRequest(seldom.TestCase):
 
 
 class TestAssert(seldom.TestCase):
+    """
+    Test Assert
+    """
 
     def test_data_assert(self):
         """
@@ -85,6 +88,9 @@ class TestAssert(seldom.TestCase):
 
 
 class TestRespData(seldom.TestCase):
+    """
+    Test response data
+    """
 
     def test_resp_data(self):
         """
@@ -110,6 +116,9 @@ class TestRespData(seldom.TestCase):
 
 
 class TestDDT(seldom.TestCase):
+    """
+    Test Data Driver
+    """
 
     @data([
         ("key1", 'value1'),
