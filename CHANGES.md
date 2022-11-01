@@ -1,3 +1,7 @@
+### 3.0.0
+* `seldom 3.0` 的核心是支持app测试，并且相关API已稳定，目的已达到，接下来将会在`3.0`基础上继续开发。
+* 功能：`collect_cases()` 支持 `warning` 参数。  
+
 ### 3.0.0beta2
 * 修复： 
   * 接口测试: 接口返回文本`r.text` 中文乱码问题。[#146](https://github.com/SeldomQA/seldom/issues/146)
