@@ -9,26 +9,20 @@ Seldom automation testing framework based on unittest.
 
 > 基于unittest 的 Seldom 自动化测试框架。
 
-### 特点
+### Features
 
-- [x] 移动应用测试 ✔️
-- [x] Web应用测试 ✔️
-- [x] HTTP接口测试 ✔️
-- [x] 脚手架，快速创建自动化项目 ✔️
-- [x] 集成测试报告，现代美观 ✔️
-- [x] 提供强大的`数据驱动` ✔️
-- [x] ...
+- [x] web/app/api全功能测试框架
+- [x] 提供脚手架快速创建自动化项目
+- [x] 集成`XTestRunner`测试报告，现代美观
+- [x] 提供丰富的断言
+- [x] 提供强大的`数据驱动`
+- [x] 平台化支持
 
 ### Install
 > 2.10.0 为了解决[107](https://github.com/SeldomQA/seldom/issues/107) 问题，我们经过反复的讨论和优化，甚至对相关库XTestRunner做了修改；以为完美解决了这个问题，没想到还是引起了一些严重的错误。为此，我们感到非常沮丧，退回到2.9.0的实现方案。请升级到2.10.1以上版本。
 
 ```shell
-> pip install seldom=2.10.7
-```
-
-APP 测试，体验：
-```shell
-pip install seldom==3.0.0b2
+pip install seldom==3.0.0
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -116,7 +110,7 @@ mypro/
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.x.x
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
 -----------------------------------------
                              @itest.info
 ...
