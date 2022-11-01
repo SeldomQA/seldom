@@ -1,5 +1,9 @@
 # 版本更新
 
+### 3.0.0
+* `seldom 3.0` 的核心是支持app测试，并且相关API已稳定，目的已达到，接下来将会在`3.0`基础上继续开发。
+* 功能：`collect_cases()` 支持 `warning` 参数。  
+
 ### 3.0.0beta1
 * 支持App测试
   * 依赖`Appium-Python-Client`库。 

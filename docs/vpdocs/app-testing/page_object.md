@@ -31,18 +31,17 @@ class TestBBS(seldom.TestCase):
         self.bbs_page = BBSPage(self.driver)
 
     def test_bbs(self):
-        # 定义运行环境
         self.sleep(5)
         self.bbs_page.search_input.click()
         self.bbs_page.search_input.send_keys("flyme")
         self.bbs_page.search_button.click()
         elems = self.bbs_page.search_result
         for title in elems:
-            print(title.text)
             self.assertIn("flyme", title.text.lower())
 
 
 if __name__ == '__main__':
+    # 定义运行App
     desired_caps = {
         'deviceName': 'JEF_AN20',
         'automationName': 'UiAutomator2',

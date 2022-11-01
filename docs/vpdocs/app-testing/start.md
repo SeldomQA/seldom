@@ -1,12 +1,12 @@
 # app 测试
 
-`seldom` 3.0 基于appium支持APP测试。
+`seldom 3.0` 基于appium支持APP测试。
 
 appium 官方网站：https://appium.io/
 
 ## 环境安装
 
-app 的自动化测试环境相比较web 要复杂一些。
+app 的自动化测试环境相比较 web 要复杂一些，请参考appium官方。
 
 1. 安装node
 
@@ -53,7 +53,7 @@ List of apple devices attached
 
 ## 编写测试
 
-基于seldom编写app自动化测试, 由于appium 继承自selenium，所以，一部分API是共用的。
+基于seldom编写app自动化测试, 由于appium 继承自selenium，所以，部分API共用。
 
 ```python
 import seldom
@@ -62,7 +62,6 @@ import seldom
 class TestBBS(seldom.TestCase):
 
     def test_bbs_search(self):
-        self.sleep(5)
         self.click(id_="com.meizu.flyme.flymebbs:id/nw")
         self.type(id_="com.meizu.flyme.flymebbs:id/nw", text="flyme")
         self.click(id_="com.meizu.flyme.flymebbs:id/o1")
@@ -98,7 +97,7 @@ python .\test_app.py
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.0.0beta1
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.0.0
 -----------------------------------------
                              @itest.info
 
