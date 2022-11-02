@@ -1,6 +1,6 @@
 module.exports = {
   title: "seldom文档",
-  description: "基于unittest 的 Web UI/HTTP自动化测试框架。",
+  description: "seldom 是基于unittest 的自动化测试框架。",
   base: "/",
   plugins: [
     [

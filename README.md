@@ -5,9 +5,9 @@
 [![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=SeldomQA.seldom)
 
-Seldom automation testing framework based on unittest.
+Seldom is an automation testing framework based on unittest.
 
-> 基于unittest 的 Seldom 自动化测试框架。
+> seldom 是基于unittest 的自动化测试框架。
 
 ### Features
 
