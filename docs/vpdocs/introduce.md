@@ -1,307 +1,81 @@
 # 介绍
-[GitHub](https://github.com/SeldomQA/seldom) | [Gitee](https://gitee.com/fnngj/seldom) |
-
-![](/image/seldom_logo.jpg)
-
-[![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
-![visitors](https://visitor-badge.glitch.me/badge?page_id=SeldomQA.seldom)
-
-seldom automation testing framework based on unittest.
-
-> 基于unittest的seldom自动化测试框架。
-
-### 特点
-
-- [x] web/app/api全功能测试框架
-- [x] 提供脚手架快速创建自动化项目
-- [x] 集成`XTestRunner`测试报告，现代美观
-- [x] 提供丰富的断言
-- [x] 提供强大的`数据驱动`
-- [x] 平台化支持
-
-### Install
-> 2.10.0 为了解决[107](https://github.com/SeldomQA/seldom/issues/107) 问题，我们经过反复的讨论和优化，甚至对相关库XTestRunner做了修改；以为完美解决了这个问题，没想到还是引起了一些严重的错误。为此，我们感到非常沮丧，退回到2.9.0的实现方案。请升级到2.10.1以上版本。
-
-```shell
-> pip install seldom=3.0.0
-```
-
-If you want to keep up with the latest version, you can install with github repository url:
-
-```shell
-> pip install -U git+https://github.com/SeldomQA/seldom.git@master
-```
-
-### 🤖 Quick Start
-
-1、查看帮助：
-
-```shell
-seldom --help
-Usage: seldom [OPTIONS]
-
-  seldom CLI.
-
-Options:
-  --version                       Show version.
-  -P, --project TEXT              Create an Seldom automation test project.
-  -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
-  -p, --path TEXT                 Run test case file path.
-  -c, --collect / -nc, --no-collect
-                                  Collect project test cases. Need the
-                                  `--path`.
-  -l, --level [data|method]       Parse the level of use cases. Need the
-                                  --path.
-  -j, --case-json TEXT            Test case files. Need the `--path`.
-  -e, --env TEXT                  Set the Seldom run environment `Seldom.env`.
-  -b, --browser [chrome|firefox|ie|edge|safari]
-                                  The browser that runs the Web UI automation
-                                  tests. Need the `--path`.
-  -u, --base-url TEXT             The base-url that runs the HTTP automation
-                                  tests. Need the `--path`.
-  -d, --debug / -nd, --no-debug   Debug mode. Need the `--path`.
-  -rr, --rerun INTEGER            The number of times a use case failed to run
-                                  again. Need the `--path`.
-  -r, --report TEXT               Set the test report for output. Need the
-                                  `--path`.
-  -m, --mod TEXT                  Run tests modules, classes or even
-                                  individual test methods from the command
-                                  line.
-  -i, --install [chrome|firefox|ie|edge]
-                                  Install the browser driver.
-  -h2c, --har2case TEXT           HAR file converts an interface test case.
-  --help                          Show this message and exit.
-```
 
-2、创建项目：
+## seldom 提供的能力
 
-```shell
-> seldom -P mypro
-```
+> seldom 是基于 unittest 的自动化测试框架。
 
-目录结构如下：
+__seldom 与 单元测试框架对比__
 
-```shell
-mypro/
-├── test_dir/
-│   ├── test_web_sample.py
-│   ├── test_api_sample.py
-├── test_data/
-│   ├── data.json
-├── reports/
-└── run.py
-```
+`seldom` VS `unittest` VS `pytest` VS `...`
 
-* `test_dir/` 测试用例目录。
-* `test_data/` 测试数据文件目录。
-* `reports/` 测试报告目录。
-* `run.py` 运行测试用例主文件。
+seldom 是一个自动化测试框架，集成诸多测试相关的库，定位全功能自动化测试框架。拿seldom 与 pytest对比，就像拿一台`电脑`与一颗`CPU` 进行比较，`CPU`是电脑的核心，但不是全部，只有`CPU` 无法打游戏，就像只用`pytest` 无法做Web测试自动测试一样。 
 
-3、运行项目：
 
-* ❌️ 在`pyCharm`中右键执行。
+__seldom特点__
 
-* ✔️ 通过命令行工具执行。
+提供的功能:
 
-```shell
-> python run.py
+* 生成随机测试数据
+* 用例依赖
+* 用例分类标签
+* 发送`邮件`、`钉钉`消息等
+* 日志打印
+* 缓存cache
+* 命令行工具
+* 强大的数据驱动（JSON/YAML/CSV/EXCEL）
+* HTML/XML报告
+* 失败重跑&截图
+* 数据库操作（MySQL/sqlite3/Mongodb）
+* 丰富的断言
 
+支持测试类型:
 
-              __    __
-   ________  / /___/ /___  ____ ____
-  / ___/ _ \/ / __  / __ \/ __ ` ___/
- (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
------------------------------------------
-                             @itest.info
-...
+* Web UI测试： 集成selenium。
+* App UI测试： 集成appium。
+* HTTP接口测试：集成reqests。
 
-2022-04-30 18:37:29 log.py | INFO | -------------- Request -----------------[🚀]
-2022-04-30 18:37:29 log.py | INFO | [method]: DELETE      [url]: http://httpbin.org/delete
 
-2022-04-30 18:37:30 log.py | INFO | -------------- Response ----------------[🛬️]
-2022-04-30 18:37:30 log.py | INFO | successful with status 200
+## seldom 的设计理念
 
-2022-04-30 18:37:30 log.py | DEBUG | [type]: json      [time]: 0.725183
+简单一句话就是回到最初写代码的样子。
 
-2022-04-30 18:37:30 log.py | DEBUG | [response]:
- {'args': {}, 'data': '', 'files': {}, 'form': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '0', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-626d1168-457309ad306428ca5bcbb961'}, 'json': None, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/delete'}
+自动化测试框架很多，只有在测试领域有一个比较奇怪的现象，如何用不写代码的方式解决自动化问题。为此，我们发明了用特定领域语言写用例，发明了用 excel 写用例，发明了用 YAML/JSON 写用例。这些方案看似简化了用例的编写，但是，会让解决复杂的问题变得更复杂。比如实现个分支判断/循环，传递参数，调用封装的步骤，编程语言中用 if/for 、变量、函数就实现了，但是用非编程语言的方式写用例处理起来就很麻烦。最终，并不能完全脱离编程，那么为什么不一开始就选择一个编程框架呢？
 
-...
+然而，seldom的定位是尽量用简单的设计去解决复杂问题，例如 Flask、requests、yagmail...等，这些框架/库都有一个共同的特点，用简单的方式去解决复杂的问题，在编程语言这个层面，并不会给你太多限制，你可以完全使用它，也可以只用一部分，也可以平滑的实现它不支持的功能。
 
-2022-04-30 18:37:36 log.py | INFO | ✅ Find 1 element: id=sb_form_q  -> input 'seldom'.
-2022-04-30 18:37:39 log.py | INFO | 👀 assertIn title: seldom - 搜索.
-.52022-04-30 18:37:39 log.py | INFO | 📖 https://cn.bing.com
-2022-04-30 18:37:41 log.py | INFO | ✅ Find 1 element: id=sb_form_q  -> input 'poium'.
-2022-04-30 18:37:42 log.py | INFO | 👀 assertIn title: poium - 搜索.
-.62022-04-30 18:37:42 log.py | INFO | 📖 https://cn.bing.com
-2022-04-30 18:37:43 log.py | INFO | ✅ Find 1 element: id=sb_form_q  -> input 'XTestRunner'.
-2022-04-30 18:37:44 log.py | INFO | 👀 assertIn title: XTestRunner - 搜索.
-.72022-04-30 18:37:44 log.py | INFO | 📖 http://www.itest.info
-2022-04-30 18:37:52 log.py | INFO | 👀 assertIn url: http://www.itest.info/.
-.82022-04-30 18:37:52 log.py | SUCCESS | generated html file: file:///D:\mypro\reports\2022_04_30_18_37_29_result.html
-2022-04-30 18:37:52 log.py | SUCCESS | generated log file: file:///D:\mypro\reports\seldom_log.log
-```
+seldom的目标以就让你用最少的代码编写自动化测试用例，当遇到seldom没有的功能，你可以方便的进行扩展。这就是seldom的设计理念。
 
-4、查看报告
 
-你可以到 `mypro\reports\` 目录查看测试报告。
+## seldom 历史回顾
 
-![test report](/image/test_report.png)
+2015年7月15号我在github上提交一个自动化项目，命名为：`pyse`， 即各取了`python` 和 `selenium`前两个字符。项目非常简单核心就三个文件。
 
-## 🔬 Demo
+* `pyse.py`：针对 selenium API做了简单封装。
+* `HTMLTestRunner.py`: 修改的HTMLTestRunner报告。
+* `TestRunner.py`: 一个简单的 unittest运行器。
 
-> seldom继承unittest单元测试框架，完全遵循unittest编写用例规范。
+之后项目断断续续的在维护，直到2019年，也许是太闲了，加上对UI自动化有了更深入的理解，重新投入主要精力维护pyse项目。
 
-[demo](/demo) 提供了丰富实例，帮你快速了解seldom的用法。
+后来就需要将提交到pypi，这样更方便通过pip安装，发现 `pyse` 早已经被占用了，后来更名为`seldom`，其实命名没有太多寓意，就是看他长得和`selenium`比较接近。
 
-### Web UI 测试
+2020年1月发布1.0版本，之所以发布1.0 是因为自认为框架的功能比较成熟了，并且花费时间补充了文档。大家都不重视文档，其实文档非常重要，也需要花大量的时间更新和维护。有时候你加个功能很简单，编写说明文档和使用示例就要花费等同的时间。
 
-```python
-import seldom
-from seldom import Steps
+1.0 版本之后，项目核心围绕着 selenium API的封装 和 unittest框架扩展（seldom基于unittest）等。
 
+2021年4月正式发布 2.0，集成requests, 正式支持http接口测试。起因是发现cypress支持http调用，哦，原来UI测试工具也可以去做接口，格局一下子打开了！如何在不影响现有selenium API的情况下集成requests是2.0考虑的重点。
 
-class BaiduTest(seldom.TestCase):
+2022年1月seldom项目正式在公司内部推广使用，当时我们做了几版的接口测试平台，平台的开发维护成本比较高，对于复杂的场景用例，编写成本比框架还要复杂简单；功能也依赖于平台所提供的，相比较而言，框架却有最大的灵活性，可以很好的基于业务做各种设计和封装。
 
-    def test_case_one(self):
-        """a simple test case """
-        self.open("https://www.baidu.com")
-        self.type(id_="kw", text="seldom")
-        self.click(css="#su")
-        self.assertTitle("seldom_百度搜索")
+因为在公司得到推广使用，seldom明显进入了更加快速的迭代开发阶段，并且稳定性、可用性灰得到了很大的提升。
 
-    def test_case_two(self):
-        """method chaining """
-        Steps(url="https://www.baidu.com").open().find("#kw").type("seldom").find("#su").click()
-        self.assertTitle("seldom_百度搜索")
+seldom 3.0 背景
+seldom集成App测试是顺理成章的事情，早在几个月前我已经在公司项目中尝试 seldom + appium 进行App自动化测试。App自动化的维护成本确实比接口要高许多，这是由App本身的特点决定的，框架很难做到实质上的改变。
 
-if __name__ == '__main__':
-    seldom.main(browser="chrome")
-```
+2020年10月seldom 3.0 beta发布，之所以选择appium有几个原因：
 
-__说明：__
-* `seldom.main()` 通过 `browser` 指定运行的浏览器。 
+* appium 是由商业工具在维护，历史比较长，不会随意停止维护。
+* appium 应用更加广泛，使用得人更多，支持得平台多（android/ios/flutter）
+* appium 继承selenium，对于seldom来说对原有API改动最小。
 
-### HTTP 测试
+目前，seldom 3.0 正式版已经发布，欢迎使用。
 
-seldom 2.0 支持HTTP测试
-
-```python
-import seldom
-
-
-class TestRequest(seldom.TestCase):
-
-    def test_put_method(self):
-        self.put('/put', data={'key': 'value'})
-        self.assertStatusCode(200)
-
-    def test_post_method(self):
-        self.post('/post', data={'key':'value'})
-        self.assertStatusCode(200)
-
-    def test_get_method(self):
-        payload = {'key1': 'value1', 'key2': 'value2'}
-        self.get("/get", params=payload)
-        self.assertStatusCode(200)
-
-    def test_delete_method(self):
-        self.delete('/delete')
-        self.assertStatusCode(200)
-
-
-if __name__ == '__main__':
-    seldom.main(base_url="http://httpbin.org")
-```
-
-__说明：__
-
-* `seldom.main()` 通过 `base_url` 指定接口项目基本URL地址。 
-
-### App 测试
-
-seldom 3.0 支持App测试
-
-```python
-import seldom
-
-
-class TestBBS(seldom.TestCase):
-
-    def test_bbs_search(self):
-        self.sleep(5)
-        self.click(id_="com.meizu.flyme.flymebbs:id/nw")
-        self.type(id_="com.meizu.flyme.flymebbs:id/nw", text="flyme")
-        self.click(id_="com.meizu.flyme.flymebbs:id/o1")
-        self.sleep(2)
-        elems = self.get_elements(id_="com.meizu.flyme.flymebbs:id/a29")
-        for elem in elems:
-            self.assertIn("flyme", elem.text.lower())
-
-
-if __name__ == '__main__':
-    desired_caps = {
-        'deviceName': 'JEF_AN20',
-        'automationName': 'UiAutomator2',
-        'platformName': 'Android',
-        'platformVersion': '10.0',
-        'appPackage': 'com.meizu.flyme.flymebbs',
-        'appActivity': '.ui.LoadingActivity',
-        'noReset': True,
-    }
-    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723")
-```
-__说明：__
-
-* `seldom.main()` 通过 `app_info` 指定App信息； `app_server` 指定appium server 地址。 
-
-### Run the test
-
-```python
-import seldom
-
-seldom.main()  # 默认运行当前测试文件
-seldom.main(path="./")  # 当前目录下的所有测试文件
-seldom.main(path="./test_dir/")  # 指定目录下的所有测试文件
-seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
-```
-
-
-## 📖 Document
-
-[中文文档](https://seldomqa.github.io/)
-
-
-### 项目实例
-
-基于seldom的web UI自动化项目：
-
-https://github.com/SeldomQA/seldom-web-testing
-
-基于seldom的接口自动化项目:
-
-https://github.com/defnngj/seldom-api-testing
-
-### 感谢
-
-感谢从以下项目中得到思路和帮助。
-
-* [HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
-
-* [parameterized](https://github.com/wolever/parameterized)
-
-* [utx](https://github.com/jianbing/utx)
-
-### 交流
-
-QQ群：948994709
-
-
-## 🔥 company
-
-他们都在用(排名不分先后)
-
-![](/company/samexsys.gif)
-
-![](/company/klook.png)
