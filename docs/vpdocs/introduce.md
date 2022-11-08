@@ -6,26 +6,24 @@
 [![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=SeldomQA.seldom)
 
-WebUI/HTTP automation testing framework based on unittest.
+seldom automation testing framework based on unittest.
 
-> 基于unittest 的 Web UI/HTTP自动化测试框架。
+> 基于unittest的seldom自动化测试框架。
 
 ### 特点
 
-* 集成`selenium`/`requests`，支持Web UI/HTTP测试。
-* 集成`XTestRunner`, 支持HTML/XML格式的测试报告。
-* 提供脚手架，快速生成自动化测试项目。
-* 提供强大的测试数据参数化。
-* 提供丰富的断言。
-* 支持给用例标签，及黑白名单。
-* 支持生成随机测试数据。
-* 支持设置用例依赖。
-
+- [x] web/app/api全功能测试框架
+- [x] 提供脚手架快速创建自动化项目
+- [x] 集成`XTestRunner`测试报告，现代美观
+- [x] 提供丰富的断言
+- [x] 提供强大的`数据驱动`
+- [x] 平台化支持
 
 ### Install
+> 2.10.0 为了解决[107](https://github.com/SeldomQA/seldom/issues/107) 问题，我们经过反复的讨论和优化，甚至对相关库XTestRunner做了修改；以为完美解决了这个问题，没想到还是引起了一些严重的错误。为此，我们感到非常沮丧，退回到2.9.0的实现方案。请升级到2.10.1以上版本。
 
 ```shell
-> pip install seldom
+> pip install seldom=3.0.0
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -39,7 +37,7 @@ If you want to keep up with the latest version, you can install with github repo
 1、查看帮助：
 
 ```shell
-> seldom --help
+seldom --help
 Usage: seldom [OPTIONS]
 
   seldom CLI.
@@ -49,7 +47,8 @@ Options:
   -P, --project TEXT              Create an Seldom automation test project.
   -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
   -p, --path TEXT                 Run test case file path.
-  -c, --collect BOOLEAN           Collect project test cases. Need the
+  -c, --collect / -nc, --no-collect
+                                  Collect project test cases. Need the
                                   `--path`.
   -l, --level [data|method]       Parse the level of use cases. Need the
                                   --path.
@@ -60,7 +59,7 @@ Options:
                                   tests. Need the `--path`.
   -u, --base-url TEXT             The base-url that runs the HTTP automation
                                   tests. Need the `--path`.
-  -d, --debug BOOLEAN             Debug mode. Need the `--path`.
+  -d, --debug / -nd, --no-debug   Debug mode. Need the `--path`.
   -rr, --rerun INTEGER            The number of times a use case failed to run
                                   again. Need the `--path`.
   -r, --report TEXT               Set the test report for output. Need the
@@ -112,7 +111,7 @@ mypro/
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.x.x
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
 -----------------------------------------
                              @itest.info
 ...
@@ -152,11 +151,11 @@ mypro/
 
 ## 🔬 Demo
 
-### Web 测试
+> seldom继承unittest单元测试框架，完全遵循unittest编写用例规范。
 
 [demo](/demo) 提供了丰富实例，帮你快速了解seldom的用法。
 
-简单的实例 `demo/test_dir/test_first_demo.py` 
+### Web UI 测试
 
 ```python
 import seldom
@@ -178,16 +177,11 @@ class BaiduTest(seldom.TestCase):
         self.assertTitle("seldom_百度搜索")
 
 if __name__ == '__main__':
-    seldom.main()
-
+    seldom.main(browser="chrome")
 ```
 
 __说明：__
-
-* 创建测试类必须继承 `seldom.TestCase`。
-* 测试用例文件命名必须以 `test` 开头。
-* seldom的封装了`assertTitle`、`assertUrl` 和 `assertText`等断言方法。
-* `Steps`类提供了一套方法链的API，编写简单的用例更连贯。
+* `seldom.main()` 通过 `browser` 指定运行的浏览器。 
 
 ### HTTP 测试
 
@@ -221,6 +215,47 @@ if __name__ == '__main__':
     seldom.main(base_url="http://httpbin.org")
 ```
 
+__说明：__
+
+* `seldom.main()` 通过 `base_url` 指定接口项目基本URL地址。 
+
+### App 测试
+
+seldom 3.0 支持App测试
+
+```python
+import seldom
+
+
+class TestBBS(seldom.TestCase):
+
+    def test_bbs_search(self):
+        self.sleep(5)
+        self.click(id_="com.meizu.flyme.flymebbs:id/nw")
+        self.type(id_="com.meizu.flyme.flymebbs:id/nw", text="flyme")
+        self.click(id_="com.meizu.flyme.flymebbs:id/o1")
+        self.sleep(2)
+        elems = self.get_elements(id_="com.meizu.flyme.flymebbs:id/a29")
+        for elem in elems:
+            self.assertIn("flyme", elem.text.lower())
+
+
+if __name__ == '__main__':
+    desired_caps = {
+        'deviceName': 'JEF_AN20',
+        'automationName': 'UiAutomator2',
+        'platformName': 'Android',
+        'platformVersion': '10.0',
+        'appPackage': 'com.meizu.flyme.flymebbs',
+        'appActivity': '.ui.LoadingActivity',
+        'noReset': True,
+    }
+    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723")
+```
+__说明：__
+
+* `seldom.main()` 通过 `app_info` 指定App信息； `app_server` 指定appium server 地址。 
+
 ### Run the test
 
 ```python
@@ -235,9 +270,8 @@ seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 
 ## 📖 Document
 
-[中文文档](/docs)
+[中文文档](https://seldomqa.github.io/)
 
-[English document(readthedocs)](https://seldomqa.readthedocs.io/en/latest/index.html)
 
 ### 项目实例
 
@@ -256,8 +290,6 @@ https://github.com/defnngj/seldom-api-testing
 * [HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
 
 * [parameterized](https://github.com/wolever/parameterized)
-
-* [pyderman](https://github.com/shadowmoose/pyderman)
 
 * [utx](https://github.com/jianbing/utx)
 

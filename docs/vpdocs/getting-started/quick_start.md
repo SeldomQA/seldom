@@ -41,6 +41,8 @@ if __name__ == '__main__':
     seldom.main(path="./",
                 browser="chrome",
                 base_url=None,
+                app_info=None,
+                app_server=None,
                 report=None,
                 title="百度测试用例",
                 tester="虫师",
@@ -61,8 +63,10 @@ __参数说明__
 
 * path : 指定测试目录或文件， 与`case`参数互斥。
 * case : 指定测试用例， 与`path`参数互斥。
-* browser : 针对Web UI测试需要指定浏览器（"chrome"、"firefox" 等）。
-* base_url : 针对HTTP接口测试的参数，设置全局的URL。
+* browser : 指定浏览器（"chrome"、"firefox" 等）， Web测试。
+* base_url : 设置全局的基本URL， HTTP测试。
+* app_info : app 启动信息，参考`desired_capabilities`配置， app测试。
+* app_server : appium server 启动地址（默认 http://127.0.0.1:4723）， app测试。
 * report : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`。
 * title : 指定测试报告标题。
 * tester : 指定测试人员, 默认`Anonymous`。
@@ -78,7 +82,7 @@ __参数说明__
 
 ### 运行测试
 
-> seldom 强烈建议通过命令行工具执行
+> seldom 强烈建议通过命令行工具执行。
 
 1. 运行当前文件中的用例
 
@@ -238,7 +242,7 @@ if __name__ == '__main__':
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.x.x
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
 -----------------------------------------
                              @itest.info
 

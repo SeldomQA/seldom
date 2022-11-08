@@ -3,7 +3,7 @@ from seldom import data, file_data
 
 
 class BingTest(seldom.TestCase):
-    """Baidu search test case"""
+    """Bing search test case"""
 
     @data([
         ("First case description", "seldom"),
@@ -91,7 +91,7 @@ class FileDataTest(seldom.TestCase):
         self.sleep(1)
 
     @file_data("yaml_data.yaml", key="login")
-    def test_yaml_list(self, username, password):
+    def test_yaml_dict(self, username, password):
         """
         used file_data test
         """
