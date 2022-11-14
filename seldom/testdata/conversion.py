@@ -46,9 +46,10 @@ def csv_to_list(file: str = None, line: int = 1) -> list:
         raise FileExistsError("Please specify the CSV file to convert.")
 
     table_data = []
-    csv_data = csv.reader(codecs.open(file, 'r', 'utf_8_sig'))
-    for i in islice(csv_data, line - 1, None):
-        table_data.append(i)
+    with codecs.open(file, 'r', encoding='utf_8_sig') as csv_file:
+        csv_data = csv.reader(csv_file)
+        for i in islice(csv_data, line - 1, None):
+            table_data.append(i)
 
     return table_data
 
