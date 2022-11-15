@@ -37,20 +37,19 @@ def csv_to_list(file: str = None, line: int = 1) -> list:
     Convert CSV file data to list
     :param file: Path to file
     :param line: Start line of read data
-    :return:  list data
+    :return: list data
 
-    @data("data.csv", line=1)
-    def test_login(self, username, password):
-        print(username)
-        print(password)
+    Usage:
+        csv_to_list("data.csv", line=1)
     """
     if file is None:
         raise FileExistsError("Please specify the CSV file to convert.")
 
     table_data = []
-    csv_data = csv.reader(codecs.open(file, 'r', 'utf_8_sig'))
-    for i in islice(csv_data, line - 1, None):
-        table_data.append(i)
+    with codecs.open(file, 'r', encoding='utf_8_sig') as csv_file:
+        csv_data = csv.reader(csv_file)
+        for i in islice(csv_data, line - 1, None):
+            table_data.append(i)
 
     return table_data
 
@@ -59,14 +58,12 @@ def excel_to_list(file: str = None, sheet: str = "Sheet1", line: int = 1) -> lis
     """
     Convert Excel file data to list
     :param file: Path to file
-    :param sheet: excel sheet, default name is Sheet1
+    :param sheet: Excel sheet, default name is Sheet1
     :param line: Start line of read data
     :return: list data
 
-    @data("data.xlsx", sheet="Sheet1", line=1)
-    def test_login(self, username, password):
-        print(username)
-        print(password)
+    Usage:
+        excel_to_list("data.xlsx", sheet="Sheet1", line=1)
     """
     if file is None:
         raise FileExistsError("Please specify the Excel file to convert.")
@@ -91,10 +88,8 @@ def json_to_list(file: str = None, key: str = None) -> list:
     :param key: Specifies the key for the dictionary
     :return: list data
 
-    @data("data.json", key="login")
-    def test_login(self, username, password):
-        print(username)
-        print(password)
+    Usage:
+        json_to_list("data.yaml", key="login")
     """
     if file is None:
         raise FileExistsError("Please specify the JSON file to convert.")
@@ -116,15 +111,13 @@ def json_to_list(file: str = None, key: str = None) -> list:
 
 def yaml_to_list(file: str = None, key: str = None) -> list:
     """
-    Convert JSON file data to list
+    Convert YAML file data to list
     :param file: Path to file
     :param key: Specifies the key for the dictionary
     :return: list data
 
-    @data("data.yaml", key="login")
-    def test_login(self, username, password):
-        print(username)
-        print(password)
+    Usage:
+        yaml_to_list("data.yaml", key="login")
     """
     if file is None:
         raise FileExistsError("Please specify the YAML file to convert.")
