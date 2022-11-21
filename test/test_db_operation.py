@@ -158,13 +158,12 @@ class SQLite3Test(unittest.TestCase):
         self.db.init_table(table_data)
 
 
-
-class MySQLTest(unittest.TestCase):
-    """测试操作MySQL数据库API"""
+class MSSQLTest(unittest.TestCase):
+    """测试操作MS SQL Server数据库API"""
 
     def setUp(self) -> None:
         """"初始化DB连接"""
-        self.db = MSSQLDB(server="127.0.0.1", user="SA", password="tc@198876", database="TestDB")
+        self.db = MSSQLDB(server="127.0.0.1", user="SA", password="tc@123", database="TestDB")
         self.db.execute_sql("INSERT INTO users (email, password) VALUES ('test@gmail.com', 'test123') ")
 
     def tearDown(self) -> None:
