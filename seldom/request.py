@@ -9,6 +9,8 @@ from seldom.running.config import Seldom
 from seldom.logging import log
 from seldom.utils import jsonpath as utils_jsonpath
 from seldom.utils import jmespath as utils_jmespath
+from seldom.utils.curlify import to_curl
+
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
@@ -60,6 +62,7 @@ def request(func):
         # running function
         r = func(*args, **kwargs)
 
+        ResponseResult.request = r.request
         ResponseResult.status_code = r.status_code
         log.info("-------------- Response ----------------[🛬️]")
         if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
@@ -92,6 +95,7 @@ def request(func):
 class ResponseResult:
     status_code = 200
     response = None
+    request = None
 
 
 class HttpRequest:
@@ -182,6 +186,20 @@ class HttpRequest:
             raise ValueError("j is 'json' or 'jmes'.")
         log.debug(f"[jresponse]:\n {str(ret)}")
         return ret
+
+    @staticmethod
+    def curl(request=None, compressed: bool = False, verify: bool = True) -> str:
+        """
+        requests to cURL command
+        :param request: request object
+        :param compressed:
+        :param verify:
+        :return:
+        """
+        if request is None:
+            return to_curl(ResponseResult.request, compressed, verify)
+
+        return to_curl(request, compressed, verify)
 
     class Session(requests.Session):
 

@@ -48,6 +48,59 @@ if __name__ == '__main__':
 
 ```
 
+## 请求转 cURL
+
+seldom 支持将请求转成`cCURL`命令， 你可以方便的通过`cURL`命令执行，或者导入到其他接口工具，例如，postman 支持`cURL`命令导入。
+
+```python
+# test_http.py
+import seldom
+
+
+class TestRequest(seldom.TestCase):
+    """
+    http api test demo
+    doc: https://requests.readthedocs.io/en/master/
+    """
+
+    def test_get_curl(self):
+        """
+        test get curl
+        """
+        self.get('http://httpbin.org/get', params={'key': 'value'})
+        curl = self.curl()
+        print(curl)
+        self.post('http://httpbin.org/post', data={'key': 'value'})
+        curl = self.curl()
+        print(curl)
+
+        # or
+        r = self.delete('http://httpbin.org/delete', params={'key': 'value'})
+        curl = self.curl(r.request)
+        print(curl)
+        r = self.put('http://httpbin.org/put', json={'key': 'value'}, headers={"token": "123"})
+        curl = self.curl(r.request)
+        print(curl)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
+
+* 日志结果
+
+```shell
+> python test_http.py
+
+...
+curl -X GET  'Content-Type: application/json'  -H 'token: 123' -d '{"key": "value"}' http://httpbin.org/get
+
+curl -X POST  'Content-Type: application/x-www-form-urlencoded' -H  -d key=value http://httpbin.org/post
+
+curl -X DELETE  'http://httpbin.org/delete?key=value'
+
+curl -X PUT  -H 'Content-Type: application/json' -H 'token: 123' -d '{"key": "value"}' http://httpbin.org/put
+```
 
 ### 接口数据依赖
 

@@ -1,18 +1,18 @@
 # 数据库操作
 
-seldom 支持sqlite3、MySQL、MongoDB数据库操作。
+seldom 支持sqlite3、MySQL、SQL Server、MongoDB数据库操作。
 
-| sqlite3       | MySQL         |
-|---------------|---------------|
-| execute_sql() | execute_sql() |
-| query_sql()   | query_sql()   |
-| query_one()   | query_one()   |
-| delete()      | delete()      |
-| insert()      | insert()      |
-| select()      | select()      |
-| update()      | update()      |
-| init_table()  | init_table()  |
-| close()       | close()       |
+| sqlite3       | MySQL         | SQL Server    | 
+|---------------|---------------|---------------|
+| execute_sql() | execute_sql() | execute_sql() |
+| query_sql()   | query_sql()   | query_sql()   |
+| query_one()   | query_one()   | query_one()   |
+| delete()      | delete()      | delete()      |
+| insert()      | insert()      | insert()      |
+| select()      | select()      | select()      |
+| update()      | update()      | update()      |
+| init_table()  | init_table()  | init_table()  |
+| close()       | close()       | close()       |
 
 ### 连接数据库
 
@@ -24,7 +24,7 @@ from seldom.db_operation import SQLiteDB
 db = SQLiteDB(r"D:\learnAPI\db.sqlite3")
 ```
 
-__连接MySQL数据库（需要）__
+__连接MySQL数据库__
 
 1. 安装pymysql驱动
 
@@ -42,6 +42,25 @@ db = MySQLDB(host="127.0.0.1",
              user="root", 
              password="123", 
              database="db_name")
+```
+
+__连接SQL Server数据库（需要）__
+
+1. 安装pymssql驱动
+
+```shell
+> pip install pymssql
+```
+
+2. 链接
+
+```py
+from seldom.db_operation.mssql_db import MSSQLDB
+
+db = MSSQLDB(server="127.0.0.1",
+             user="SA",
+             password="tc@123",
+             database="TestDB")
 ```
 
 ### 操作方法
