@@ -10,7 +10,7 @@ import seldom
 from seldom import Seldom
 from seldom import SeldomTestLoader
 from seldom import TestMainExtend
-from seldom.logging import log
+from seldom.logging import log, log_cfg
 from seldom.utils import file
 from seldom.utils import cache
 from seldom.har2case.core import HarParser
@@ -50,9 +50,12 @@ ssl._create_default_https_context = ssl._create_unverified_context
 @click.option("-i", "--install",
               type=click.Choice(['chrome', 'firefox', 'ie', 'edge']),
               help="Install the browser driver.")
+@click.option("-ll", "--log-level",
+              type=click.Choice(['TRACE', 'DEBUG', 'INFO', 'SUCCESS', 'WARNING', 'ERROR']),
+              help="Set the log level.")
 @click.option("-h2c", "--har2case", help="HAR file converts an interface test case.")
 def main(project, clear_cache, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod,
-         install, har2case):
+         install, log_level, har2case):
     """
     seldom CLI.
     """
@@ -63,6 +66,9 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
 
     if clear_cache:
         cache.clear()
+
+    if log_level:
+        log_cfg.set_level(level=log_level)
 
     if path:
         Seldom.env = env
