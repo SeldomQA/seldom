@@ -2,6 +2,11 @@
 
 ### seldom 3.x
 
+__3.0.1(2022-11-5)__
+* 功能：支持 `SQL Server` 数据库支持，需要单独安装`pymssql`库。
+* 功能：http接口测试增加`curl()`方法，支持请求转 `cURL`。
+* 功能：`seldom` 命令增加`--log-level` 参数，log类型：`TRACE`, `DEBUG`, `INFO`, `SUCCESS`, `WARNING`, `ERROR` 等。
+
 __3.0.0(2022-10-31)__
 * `seldom 3.0` 的核心是支持app测试，并且相关API已稳定，目的已达到，接下来将会在`3.0`基础上继续开发。
 * 功能：`collect_cases()` 支持 `warning` 参数。  
