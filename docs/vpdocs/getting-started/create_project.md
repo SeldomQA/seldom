@@ -42,6 +42,8 @@ Options:
                                   line.
   -i, --install [chrome|firefox|ie|edge]
                                   Install the browser driver.
+  -ll, --log-level [TRACE|DEBUG|INFO|SUCCESS|WARNING|ERROR]
+                                  Set the log level.
   -h2c, --har2case TEXT           HAR file converts an interface test case.
   --help                          Show this message and exit.
 ```
