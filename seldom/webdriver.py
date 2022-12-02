@@ -443,7 +443,6 @@ class WebDriver:
         """
         if isinstance(Seldom.driver, SeleniumWebDriver) is True:
             Seldom.driver.close()
-            Seldom.driver = None
 
     @staticmethod
     def quit() -> None:
