@@ -145,7 +145,7 @@ class TestMain:
                     else:
                         self.TestSuits = seldomTestLoader.discover(os.getcwd(), pattern=self.path)
                 else:
-                    self.TestSuits = seldomTestLoader.discover(self.path)
+                    self.TestSuits = seldomTestLoader.rediscover(self.path)
             else:
                 self.TestSuits = seldomTestLoader.discover(self.path)
 
