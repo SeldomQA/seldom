@@ -221,50 +221,129 @@ if __name__ == '__main__':
 class TestRequest(seldom.TestCase):
     """api test case"""
 
-    def start(self):
-        self.base_url = "http://httpbin.org"
-
     def test_put_method(self):
-        self.put(f'{self.base_url}/put', data={'key': 'value'})
+        self.put('/put', data={'key': 'value'})
         self.assertStatusCode(200)
 
     def test_post_method(self):
-        self.post(f'{self.base_url}/post', data={'key':'value'})
+        self.post('/post', data={'key':'value'})
         self.assertStatusCode(200)
 
     def test_get_method(self):
         payload = {'key1': 'value1', 'key2': 'value2'}
-        self.get(f'{self.base_url}/get', params=payload)
+        self.get('/get', params=payload)
         self.assertStatusCode(200)
 
     def test_delete_method(self):
-        self.delete(f'{self.base_url}/delete')
+        self.delete('/delete')
         self.assertStatusCode(200)
 
 
 if __name__ == '__main__':
-    seldom.main()
+    seldom.main(base_url="http://httpbin.org")
 
     '''
 
-    run_test = """import seldom
-
-
-if __name__ == '__main__':
-    # run test file
-    # seldom.main("./test_dir/test_web_sample.py")
-    # run test dir
-    seldom.main("./test_dir/")
-
+    run_test = '''"""
+seldom confrun.py hooks function
 """
+
+
+def browser():
+    """
+    web UI test:
+    browser: gc(google chrome)/ff(firefox)/edge/ie/safari
+    """
+    return "gc"
+
+
+def base_url():
+    """
+    http test
+    api base url
+    """
+    return "http://httpbin.org"
+
+
+def debug():
+    """
+    debug mod
+    """
+    return False
+
+
+def rerun():
+    """
+    error/failure rerun times
+    """
+    return 0
+
+
+def report():
+    """
+    setting report path
+    Used:
+    return "d://mypro/result.html"
+    return "d://mypro/result.xml"
+    """
+    return None
+
+
+def timeout():
+    """
+    setting timeout
+    """
+    return 10
+
+
+def title():
+    """
+    setting report title
+    """
+    return "seldom test report"
+
+
+def tester():
+    """
+    setting report tester
+    """
+    return "bugmaster"
+
+
+def description():
+    """
+    setting report description
+    """
+    return ["windows", "jenkins"]
+
+
+def language():
+    """
+    setting report language
+    return "en"
+    return "zh-CN"
+    """
+    return "en"
+
+
+def whitelist():
+    """test label white list"""
+    return []
+
+
+def blacklist():
+    """test label black list"""
+    return []
+'''
     create_folder(project_name)
     create_folder(os.path.join(project_name, "test_dir"))
     create_folder(os.path.join(project_name, "reports"))
     create_folder(os.path.join(project_name, "test_data"))
     create_file(os.path.join(project_name, "test_data", "data.json"), test_data)
+    create_file(os.path.join(project_name, "test_dir", "__init__.py"))
     create_file(os.path.join(project_name, "test_dir", "test_web_sample.py"), test_web_sample)
     create_file(os.path.join(project_name, "test_dir", "test_api_sample.py"), test_api_sample)
-    create_file(os.path.join(project_name, "run.py"), run_test)
+    create_file(os.path.join(project_name, "confrun.py"), run_test)
 
 
 def install_driver(browser: str) -> None:
