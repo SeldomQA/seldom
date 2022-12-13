@@ -18,7 +18,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
-
+from seldom.running.loader_hook import loader
 from seldom import __version__
 
 PY3 = sys.version_info[0] == 3
@@ -70,6 +70,22 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
     if log_level:
         log_cfg.set_level(level=log_level)
 
+    # check hook function(confrun.py)
+    browser = loader("browser") if loader("browser") is not None else browser
+    base_url = loader("base_url") if loader("base_url") is not None else base_url
+    debug = loader("debug") if loader("debug") is not None else debug
+    rerun = loader("rerun") if loader("rerun") is not None else rerun
+    report = loader("report") if loader("report") is not None else report
+    timeout = loader("timeout") if loader("timeout") is not None else 10
+    app_server = loader("app_server") if loader("app_server") is not None else None
+    app_info = loader("app_info") if loader("app_info") is not None else None
+    title = loader("title") if loader("title") is not None else "Seldom Test Report"
+    tester = loader("tester") if loader("tester") is not None else "Anonymous"
+    description = loader("description") if loader("description") is not None else "Test case execution"
+    language = loader("language") if loader("language") is not None else "en"
+    whitelist = loader("whitelist") if loader("whitelist") is not None else []
+    blacklist = loader("blacklist") if loader("blacklist") is not None else []
+
     if path:
         Seldom.env = env
         if collect is True and case_json is not None:
@@ -106,25 +122,31 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
             with open(case_json, encoding="utf-8") as json_file:
                 case = json.load(json_file)
                 path, case = reset_case(path, case)
-                main_extend = TestMainExtend(path=path, debug=debug, browser=browser, base_url=base_url, report=report,
-                                             rerun=rerun)
+                main_extend = TestMainExtend(
+                    path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
+                    app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
+                    description=description, rerun=rerun, language=language,
+                    whitelist=whitelist, blacklist=blacklist)
                 main_extend.run_cases(case)
             return 0
 
-        seldom.main(path=path, debug=debug, browser=browser, base_url=base_url, report=report, rerun=rerun)
+        seldom.main(
+            path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
+            app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
+            description=description, rerun=rerun, language=language,
+            whitelist=whitelist, blacklist=blacklist)
         return 0
 
     if mod:
-        if PY3:
-            ret = os.system("python3 -V")
-            os.system("seldom --version")
-            if ret == 0:
-                command = "python3 -m unittest " + mod
-            else:
-                command = "python -m unittest " + mod
-        else:
-            raise NameError("Does not support python2")
-        os.system(command)
+        file_dir = os.getcwd()
+        sys.path.insert(0, file_dir)
+
+        seldom.main(
+            case=mod, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
+            app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
+            description=description, rerun=rerun, language=language,
+            whitelist=whitelist, blacklist=blacklist)
+
         return 0
 
     if install:
@@ -293,3 +315,7 @@ def reset_case(path: str, cases: list) -> [str, list]:
         return path, cases
 
     return path, cases
+
+
+if __name__ == '__main__':
+    main()
