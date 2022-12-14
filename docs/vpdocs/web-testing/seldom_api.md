@@ -145,13 +145,13 @@ class TestCase(seldom.TestCase):
         self.open("https://www.baidu.com")
         
         # Gets the text of the Alert.
-        self.get_alert_text
+        alert_title = self.get_alert_text
         
         # Gets the value of an element attribute.
         self.get_attribute(css="#el", attribute="type")
         
         # Returns information of cookie with ``name`` as an object.
-        self.get_cookie()
+        self.get_cookie(name="kkk")
         
         # Returns a set of dictionaries, corresponding to cookies visible in the current session.
         self.get_cookies()
@@ -166,10 +166,13 @@ class TestCase(seldom.TestCase):
         self.get_text(css="#el")
         
         # Get window title.
-        self.get_title
+        title = self.get_title
         
         # Get the URL address of the current page.
-        self.get_url
+        url = self.get_url
+        
+        # Gets the log for a given log type
+        logs = self.get_log("browser")
         
         # Set browser window maximized.
         self.max_window()
