@@ -2,6 +2,13 @@
 
 ### seldom 3.x
 
+__3.1.0(2022-12-15)__
+* 功能：提供 `confrun.py` 运行配置文件，配合 `seldom` 命令使用。
+* 功能：Web测试，增加 `self.get_log()` 方法。
+* 升级：`webdriver_manager==3.8.5` ，支持Mac M1芯片的浏览器驱动。[#159](https://github.com/SeldomQA/seldom/issues/159)
+* 修复：seldom-platform平台同步多个项目引起的Bug。[#158](https://github.com/SeldomQA/seldom/issues/158)
+* 修复：Web测试， `self.close()` 关闭浏览器Bug。
+
 __3.0.1(2022-11-5)__
 * 功能：支持 `SQL Server` 数据库支持，需要单独安装`pymssql`库。
 * 功能：http接口测试增加`curl()`方法，支持请求转 `cURL`。
