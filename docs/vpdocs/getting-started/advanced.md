@@ -1,5 +1,93 @@
 # 高级用法
 
+### fixture
+
+有时自动化测试用例的运行需要一些前置&后置步骤，seldom提供了相应的方法。
+
+__start & end__
+
+针对每条用例的fixture，可以放到`start()/end()`方法中。
+
+```python
+import seldom
+
+
+class TestCase(seldom.TestCase):
+
+    def start(self):
+        print("一条测试用例开始")
+
+    def end(self):
+        print("一条测试结果")
+
+    def test_search_seldom(self):
+        self.open("https://www.baidu.com")
+        self.type_enter(id_="kw", text="seldom")
+
+    def test_search_poium(self):
+        self.open("https://www.baidu.com")
+        self.type_enter(id_="kw", text="poium")
+
+```
+
+__start_class & end_class__
+
+针对每个测试类的fixture，可以放到`start_class()/end_class()`方法中。
+
+```python
+import seldom
+
+
+class TestCase(seldom.TestCase):
+    
+    @classmethod
+    def start_class(cls):
+        print("测试类开始执行")
+
+    @classmethod
+    def end_class(cls):
+        print("测试类结束执行")
+
+    def test_search_seldom(self):
+        self.open("https://www.baidu.com")
+        self.type_enter(id_="kw", text="seldom", clear=True)
+
+    def test_search_poium(self):
+        self.open("https://www.baidu.com")
+        self.type_enter(id_="kw", text="poium", clear=True)
+
+```
+
+> 警告：不要把用例的操作步骤写到fixture方法中! 因为它不属于某条用例的一部分，一旦里面的操作步骤运行失败，测试报告都不会生成。
+
+### 跳过测试
+
+seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例。
+
+__装饰器__
+
+* skip: 无条件地跳过一个测试。
+* skip_if： 如果条件为真，则跳过测试。
+* skip_unless: 跳过一个测试，除非条件为真。
+* expected_failure: 预期测试用例会失败。
+
+__使用方法__
+
+```python
+import seldom
+
+@seldom.skip()  # 跳过测试类
+class YouTest(seldom.TestCase):
+
+    @seldom.skip()  # 跳过测试用例
+    def test_case(self):
+        ...
+
+
+if __name__ == '__main__':
+    seldom.main()
+```
+
 ### 随机测试数据
 
 测试数据是测试用例的重要部分，有时不能把测试数据写死在测试用例中，比如注册新用户，一旦执行过用例那么测试数据就已经存在了，所以每次执行注册新用户的数据不能是一样的，这就需要随机生成一些测试数据。

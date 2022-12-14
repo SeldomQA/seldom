@@ -59,18 +59,19 @@ Options:
 ```shell
 mypro/
 ├── test_dir/
+│   ├── __init__.py
 │   ├── test_web_sample.py
 │   ├── test_api_sample.py
 ├── test_data/
 │   ├── data.json
 ├── reports/
-└── run.py
+└── confrun.py
 ```
 
 * `test_dir/` 测试用例目录。
 * `test_data/` 测试数据文件目录。
 * `reports/` 测试报告目录。
-* `run.py` 运行测试用例主文件。
+* `confrun.py` 运行测试用例配置文件。
 
 3. 克隆项目
 
