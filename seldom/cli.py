@@ -96,6 +96,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
                 file.add_to_path(os.path.dirname(path))
 
             SeldomTestLoader.collectCaseInfo = True
+            loader("start_run")
             main_extend = TestMainExtend(path=path)
             case_info = main_extend.collect_cases(json=True, level=level, warning=True)
             case_path = os.path.join(os.getcwd(), case_json)
@@ -119,6 +120,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
             click.echo(f"add env Path: {os.path.dirname(path)}.")
             file.add_to_path(os.path.dirname(path))
 
+            loader("start_run")
             with open(case_json, encoding="utf-8") as json_file:
                 case = json.load(json_file)
                 path, case = reset_case(path, case)
@@ -128,25 +130,28 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
                     description=description, rerun=rerun, language=language,
                     whitelist=whitelist, blacklist=blacklist)
                 main_extend.run_cases(case)
+            loader("end_run")
             return 0
 
+        loader("start_run")
         seldom.main(
             path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
             app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language,
             whitelist=whitelist, blacklist=blacklist)
+        loader("end_run")
         return 0
 
     if mod:
         file_dir = os.getcwd()
         sys.path.insert(0, file_dir)
-
+        loader("start_run")
         seldom.main(
             case=mod, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
             app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language,
             whitelist=whitelist, blacklist=blacklist)
-
+        loader("end_run")
         return 0
 
     if install:
