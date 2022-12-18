@@ -91,6 +91,19 @@ __参数说明__
 seldom confrun.py hooks function
 """
 
+def start_run():
+    """
+    Test the hook function before running
+    """
+    ...
+
+
+def end_run():
+    """
+    Test the hook function after running
+    """
+    ...
+
 
 def browser():
     """
