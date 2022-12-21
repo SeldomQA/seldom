@@ -8,8 +8,7 @@ __seldom 与 单元测试框架对比__
 
 `seldom` VS `unittest` VS `pytest` VS `...`
 
-seldom 是一个自动化测试框架，集成诸多测试相关的库，定位全功能自动化测试框架。拿seldom 与 pytest对比，就像拿一台`电脑`与一颗`CPU` 进行比较，`CPU`是电脑的核心，但不是全部，只有`CPU` 无法打游戏，就像只用`pytest` 无法做Web测试自动测试一样。 
-
+`seldom`不能与`unittest/pytest` 直接对比，这相当于像拿一台`电脑`与一颗`intel CPU/ AMD CPU` 进行比较，因为你无法直接拿一个`CPU`打游戏，对吧！？ seldom 是一个自动化测试框架，集成诸多测试相关的库，定位全功能自动化测试框架。 
 
 __seldom特点__
 
@@ -71,7 +70,7 @@ seldom的目标以就让你用最少的代码编写自动化测试用例，当�
 seldom 3.0 背景
 seldom集成App测试是顺理成章的事情，早在几个月前我已经在公司项目中尝试 seldom + appium 进行App自动化测试。App自动化的维护成本确实比接口要高许多，这是由App本身的特点决定的，框架很难做到实质上的改变。
 
-2020年10月seldom 3.0 beta发布，之所以选择appium有几个原因：
+2022年10月seldom 3.0 beta发布，之所以选择appium有几个原因：
 
 * appium 是由商业工具在维护，历史比较长，不会随意停止维护。
 * appium 应用更加广泛，使用得人更多，支持得平台多（android/ios/flutter）

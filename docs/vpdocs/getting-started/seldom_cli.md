@@ -126,8 +126,6 @@ C:\Python38\Scripts\seldom.exe
 > seldom -m test_first_demo.BingTest.test_case  # 文件名.类名.方法名
 ```
 
-> 注： 这种方式要保持用例的完整性，比如，用例浏览器打开/关闭。
-
 ### 调试模式
 
 * ` -d, --debug/ -nd, --no-debug`

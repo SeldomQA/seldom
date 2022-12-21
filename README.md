@@ -22,7 +22,7 @@ Seldom is an automation testing framework based on unittest.
 > 2.10.0 为了解决[107](https://github.com/SeldomQA/seldom/issues/107) 问题，我们经过反复的讨论和优化，甚至对相关库XTestRunner做了修改；以为完美解决了这个问题，没想到还是引起了一些严重的错误。为此，我们感到非常沮丧，退回到2.9.0的实现方案。请升级到2.10.1以上版本。
 
 ```shell
-pip install seldom==3.0.0
+pip install seldom==3.1.0
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -85,18 +85,19 @@ Options:
 ```shell
 mypro/
 ├── test_dir/
+│   ├── __init__.py
 │   ├── test_web_sample.py
 │   ├── test_api_sample.py
 ├── test_data/
 │   ├── data.json
 ├── reports/
-└── run.py
+└── confrun.py
 ```
 
 * `test_dir/` 测试用例目录。
 * `test_data/` 测试数据文件目录。
 * `reports/` 测试报告目录。
-* `run.py` 运行测试用例主文件。
+* `confrun.py` 运行配置文件。
 
 3、运行项目：
 
@@ -105,7 +106,7 @@ mypro/
 * ✔️ 通过命令行工具执行。
 
 ```shell
-> python run.py
+> seldom -p test_dir # 运行 test_dir 测试目录
 
 
               __    __

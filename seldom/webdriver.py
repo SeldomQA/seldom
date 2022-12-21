@@ -240,6 +240,19 @@ class WebDriver:
         self.visit(url)
 
     @staticmethod
+    def get_log(log_type: str):
+        """
+        Gets the log for a given log type
+
+        :Usage:
+            self.get_log('browser')
+            self.get_log('driver')
+            self.get_log('client')
+            self.get_log('server')
+        """
+        return Seldom.driver.get_log(log_type)
+
+    @staticmethod
     def max_window() -> None:
         """
         Set browser window maximized.

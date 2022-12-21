@@ -99,6 +99,7 @@ class SeldomTestLoader(TestLoader):
             # in sys.path to minimise likelihood of conflicts between installed
             # modules and development versions?
             sys.path.insert(0, top_level_dir)
+        self._top_level_dir = top_level_dir
 
         is_not_importable = False
         is_namespace = False
@@ -131,8 +132,12 @@ class SeldomTestLoader(TestLoader):
                             is_namespace = True
 
                             for path in the_module.__path__:
-                                if not set_implicit_top and not path.startswith(top_level_dir):
+                                if (not set_implicit_top and
+                                    not path.startswith(top_level_dir)):
                                     continue
+                                self._top_level_dir = \
+                                    (path.split(the_module.__name__
+                                         .replace(".", os.path.sep))[0])
                                 tests.extend(self._find_tests(path,
                                                               pattern,
                                                               namespace=True))
@@ -147,6 +152,8 @@ class SeldomTestLoader(TestLoader):
 
                 if set_implicit_top:
                     if not is_namespace:
+                        self._top_level_dir = \
+                           self._get_directory_containing_module(top_part)
                         sys.path.remove(top_level_dir)
                     else:
                         sys.path.remove(top_level_dir)

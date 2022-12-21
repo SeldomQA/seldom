@@ -96,6 +96,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
                 file.add_to_path(os.path.dirname(path))
 
             SeldomTestLoader.collectCaseInfo = True
+            loader("start_run")
             main_extend = TestMainExtend(path=path)
             case_info = main_extend.collect_cases(json=True, level=level, warning=True)
             case_path = os.path.join(os.getcwd(), case_json)
@@ -119,6 +120,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
             click.echo(f"add env Path: {os.path.dirname(path)}.")
             file.add_to_path(os.path.dirname(path))
 
+            loader("start_run")
             with open(case_json, encoding="utf-8") as json_file:
                 case = json.load(json_file)
                 path, case = reset_case(path, case)
@@ -128,25 +130,28 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
                     description=description, rerun=rerun, language=language,
                     whitelist=whitelist, blacklist=blacklist)
                 main_extend.run_cases(case)
+            loader("end_run")
             return 0
 
+        loader("start_run")
         seldom.main(
             path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
             app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language,
             whitelist=whitelist, blacklist=blacklist)
+        loader("end_run")
         return 0
 
     if mod:
         file_dir = os.getcwd()
         sys.path.insert(0, file_dir)
-
+        loader("start_run")
         seldom.main(
             case=mod, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
             app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language,
             whitelist=whitelist, blacklist=blacklist)
-
+        loader("end_run")
         return 0
 
     if install:
@@ -221,50 +226,129 @@ if __name__ == '__main__':
 class TestRequest(seldom.TestCase):
     """api test case"""
 
-    def start(self):
-        self.base_url = "http://httpbin.org"
-
     def test_put_method(self):
-        self.put(f'{self.base_url}/put', data={'key': 'value'})
+        self.put('/put', data={'key': 'value'})
         self.assertStatusCode(200)
 
     def test_post_method(self):
-        self.post(f'{self.base_url}/post', data={'key':'value'})
+        self.post('/post', data={'key':'value'})
         self.assertStatusCode(200)
 
     def test_get_method(self):
         payload = {'key1': 'value1', 'key2': 'value2'}
-        self.get(f'{self.base_url}/get', params=payload)
+        self.get('/get', params=payload)
         self.assertStatusCode(200)
 
     def test_delete_method(self):
-        self.delete(f'{self.base_url}/delete')
+        self.delete('/delete')
         self.assertStatusCode(200)
 
 
 if __name__ == '__main__':
-    seldom.main()
+    seldom.main(base_url="http://httpbin.org")
 
     '''
 
-    run_test = """import seldom
-
-
-if __name__ == '__main__':
-    # run test file
-    # seldom.main("./test_dir/test_web_sample.py")
-    # run test dir
-    seldom.main("./test_dir/")
-
+    run_test = '''"""
+seldom confrun.py hooks function
 """
+
+
+def browser():
+    """
+    web UI test:
+    browser: gc(google chrome)/ff(firefox)/edge/ie/safari
+    """
+    return "gc"
+
+
+def base_url():
+    """
+    http test
+    api base url
+    """
+    return "http://httpbin.org"
+
+
+def debug():
+    """
+    debug mod
+    """
+    return False
+
+
+def rerun():
+    """
+    error/failure rerun times
+    """
+    return 0
+
+
+def report():
+    """
+    setting report path
+    Used:
+    return "d://mypro/result.html"
+    return "d://mypro/result.xml"
+    """
+    return None
+
+
+def timeout():
+    """
+    setting timeout
+    """
+    return 10
+
+
+def title():
+    """
+    setting report title
+    """
+    return "seldom test report"
+
+
+def tester():
+    """
+    setting report tester
+    """
+    return "bugmaster"
+
+
+def description():
+    """
+    setting report description
+    """
+    return ["windows", "jenkins"]
+
+
+def language():
+    """
+    setting report language
+    return "en"
+    return "zh-CN"
+    """
+    return "en"
+
+
+def whitelist():
+    """test label white list"""
+    return []
+
+
+def blacklist():
+    """test label black list"""
+    return []
+'''
     create_folder(project_name)
     create_folder(os.path.join(project_name, "test_dir"))
     create_folder(os.path.join(project_name, "reports"))
     create_folder(os.path.join(project_name, "test_data"))
     create_file(os.path.join(project_name, "test_data", "data.json"), test_data)
+    create_file(os.path.join(project_name, "test_dir", "__init__.py"))
     create_file(os.path.join(project_name, "test_dir", "test_web_sample.py"), test_web_sample)
     create_file(os.path.join(project_name, "test_dir", "test_api_sample.py"), test_api_sample)
-    create_file(os.path.join(project_name, "run.py"), run_test)
+    create_file(os.path.join(project_name, "confrun.py"), run_test)
 
 
 def install_driver(browser: str) -> None:

@@ -43,66 +43,6 @@ self.type(tag="input", index=7, text="seldom")
 通过`tag="input"`匹配出一组元素， `index=7` 指定这一组元素中的第8个，`index`默认下标为`0`。
 
 
-### fixture
-
-有时自动化测试用例的运行需要一些前置&后置步骤，seldom提供了相应的方法。
-
-__start & end__
-
-针对每条用例的fixture，可以放到`start()/end()`方法中。
-
-```python
-import seldom
-
-
-class TestCase(seldom.TestCase):
-
-    def start(self):
-        print("一条测试用例开始")
-
-    def end(self):
-        print("一条测试结果")
-
-    def test_search_seldom(self):
-        self.open("https://www.baidu.com")
-        self.type_enter(id_="kw", text="seldom")
-
-    def test_search_poium(self):
-        self.open("https://www.baidu.com")
-        self.type_enter(id_="kw", text="poium")
-
-```
-
-__start_class & end_class__
-
-针对每个测试类的fixture，可以放到`start_class()/end_class()`方法中。
-
-```python
-import seldom
-
-
-class TestCase(seldom.TestCase):
-    
-    @classmethod
-    def start_class(cls):
-        print("测试类开始执行")
-
-    @classmethod
-    def end_class(cls):
-        print("测试类结束执行")
-
-    def test_search_seldom(self):
-        self.open("https://www.baidu.com")
-        self.type_enter(id_="kw", text="seldom", clear=True)
-
-    def test_search_poium(self):
-        self.open("https://www.baidu.com")
-        self.type_enter(id_="kw", text="poium", clear=True)
-
-```
-
-> 警告：不要把用例的操作步骤写到fixture方法中! 因为它不属于某条用例的一部分，一旦里面的操作步骤运行失败，测试报告都不会生成。
-
 ### 断言
 
 seldom 提供了一组针对Web页面的断言方法。
@@ -138,36 +78,7 @@ self.assertElement(css="#kw")
 self.assertNotElement(css="#kwasdfasdfa")
 ```
 
-### 跳过测试用例
-
-seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例。
-
-__装饰器__
-
-* skip: 无条件地跳过一个测试。
-* skip_if： 如果条件为真，则跳过测试。
-* skip_unless: 跳过一个测试，除非条件为真。
-* expected_failure: 预期测试用例会失败。
-
-__使用方法__
-
-```python
-import seldom
-
-@seldom.skip()  # 跳过测试类
-class YouTest(seldom.TestCase):
-
-    @seldom.skip()  # 跳过测试用例
-    def test_case(self):
-        # ...
-
-
-if __name__ == '__main__':
-    seldom.main()
-```
-
-
-### WebDriverAPI
+### WebDriver API
 
 seldom简化了selenium中的API，使操作Web页面更加简单。
 
@@ -234,13 +145,13 @@ class TestCase(seldom.TestCase):
         self.open("https://www.baidu.com")
         
         # Gets the text of the Alert.
-        self.get_alert_text
+        alert_title = self.get_alert_text
         
         # Gets the value of an element attribute.
         self.get_attribute(css="#el", attribute="type")
         
         # Returns information of cookie with ``name`` as an object.
-        self.get_cookie()
+        self.get_cookie(name="kkk")
         
         # Returns a set of dictionaries, corresponding to cookies visible in the current session.
         self.get_cookies()
@@ -255,10 +166,13 @@ class TestCase(seldom.TestCase):
         self.get_text(css="#el")
         
         # Get window title.
-        self.get_title
+        title = self.get_title
         
         # Get the URL address of the current page.
-        self.get_url
+        url = self.get_url
+        
+        # Gets the log for a given log type
+        logs = self.get_log("browser")
         
         # Set browser window maximized.
         self.max_window()
