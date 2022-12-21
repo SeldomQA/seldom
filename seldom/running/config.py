@@ -11,6 +11,7 @@ class Seldom:
     timeout = 10
     debug = False
     base_url = None
+    compare_url = None
     app_server = None
     app_info = None
     env = None
