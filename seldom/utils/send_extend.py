@@ -4,6 +4,8 @@ send message file
 import os
 from XTestRunner import SMTP as XSMTP
 from XTestRunner import DingTalk as XDingTalk
+from XTestRunner import FeiShu as XFeiShu
+from XTestRunner._weixin import Weinxin as XWeinxin
 from seldom.running.config import BrowserConfig
 from seldom.utils import file
 
@@ -36,4 +38,16 @@ class SMTP(XSMTP):
 class DingTalk(XDingTalk):
     """
     send dingtalk, Inherit XTestRunner DingTalk Class
+    """
+
+
+class FeiShu(XFeiShu):
+    """
+    send FeiShu, Inherit XTestRunner FeiShu Class
+    """
+
+
+class Weinxin(XWeinxin):
+    """
+    send weixin, Inherit XTestRunner weixin Class
     """

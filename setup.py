@@ -25,7 +25,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'Appium-Python-Client>=2.1.0',
-        'XTestRunner>=1.4.5',
+        'XTestRunner>=1.5.0',
         'parameterized==0.8.1',
         'loguru==0.6.0',
         'openpyxl>=3.0.3',
