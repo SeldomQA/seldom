@@ -307,7 +307,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         except ValidationError as msg:
             self.assertEqual("Response data", "Schema data", msg)
 
-    def assertJSON(self, assert_json, response=None) -> None:
+    def assertJSON(self, assert_json, response=None, exclude=None) -> None:
         """
         Assert JSON data
         """
@@ -316,7 +316,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             response = ResponseResult.response
 
         AssertInfo.data = []
-        diff_json(response, assert_json)
+        diff_json(response, assert_json, exclude)
         if len(AssertInfo.data) != 0:
             self.assertEqual("Response data", "Assert data", msg=AssertInfo.data)
 
