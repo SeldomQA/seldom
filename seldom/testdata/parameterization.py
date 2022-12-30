@@ -167,11 +167,12 @@ def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None):
     return data(data_list)
 
 
-def api_data(url: str = None, params: dict = None, ret: str = None):
+def api_data(url: str = None, params: dict = None, headers: dict = None, ret: str = None):
     """
     Support api data parameterization.
     :param url:
     :param params:
+    :param headers:
     :param ret:
     :return:
     """
@@ -180,7 +181,7 @@ def api_data(url: str = None, params: dict = None, ret: str = None):
         raise ValueError("url is not None")
 
     url = url if url is not None else Seldom.api_data_url
-    resp = requests.get(url, params=params).json()
+    resp = requests.get(url, params=params, headers=headers).json()
 
     if ret is not None:
         data_ = utils_jmespath(resp, ret)
