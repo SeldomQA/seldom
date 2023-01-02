@@ -14,6 +14,8 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
+from seldom.logging.exceptions import BrowserTypeError
+
 
 __all__ = ["ChromeConfig", "FirefoxConfig", "IEConfig", "EdgeConfig", "OperaConfig", "SafariConfig", "Browser"]
 
@@ -80,7 +82,7 @@ class Browser:
         if name in PAD_LIST:
             return cls.pad(name)
 
-        raise NameError(f"Not found `{name}` browser, See the help doc: https://seldomqa.github.io/other/other.html.")
+        raise BrowserTypeError(f"Not found `{name}` browser, See the help doc: https://seldomqa.github.io/other/other.html.")
 
     @staticmethod
     def chrome():
