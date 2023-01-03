@@ -344,8 +344,70 @@ if __name__ == '__main__':
 
 > `Seldom.env` 可以随意命名，但最好遵循一定的规范:`test/develop/product`。你还可以利用`Seldom.env`变量本地创建更多的配置。
 
+### @api_data()方法
 
-**支持第三方 ddt 库**
+越来越多的公司落地 数据工厂，通过造数平台/数据工厂 来创建管理测试数据；`@api_data()` 装饰器支持通过URL获取驱动数据。
+
+* 接口数据
+
+`http://127.0.0.1:8080/v1/public/data_service/get_case_data?data_id=1`
+
+```json
+{
+  "success":true,
+  "error": {
+    "code":"",
+    "message":""
+  },
+  "result":[
+    {
+      "scene": "测试1",
+      "email": "li123@126.com",
+      "password": "abc123"
+    },
+    {
+      "scene": "测试2",
+      "email": "li456@126.com",
+      "password": "abc456"
+    }
+  ]
+}
+```
+
+* 调用接口数据
+
+```python
+import seldom
+from seldom import api_data
+
+
+class TestApi(seldom.TestCase):
+
+    @api_data(url="http://127.0.0.1:8080/v1/public/data_service/get_case_data",
+              params={"data_id": 1},
+              headers={"X-Account-Email": "li.li@gmail.com"},
+              ret="result")
+    def test_case(self, scene, email, password):
+        """
+        test get request
+        """
+        print("name:", scene)
+        print("email:", email)
+        print("password:", password)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
+
+__`api_data()`参数说明__
+
+* url: 返回数据的接口url地址；默认仅支持`GET` 接口。
+* params: 请求参数。
+* header: 请求头。
+* ret: 提取接口返回的数据，默认仅支持 list 类型。
+
+### 支持第三方 ddt 库
 
 seldom 仍然允许你使用第三方参数化库，例如：[ddt](https://github.com/datadriventests/ddt)。
 
