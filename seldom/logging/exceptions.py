@@ -5,7 +5,7 @@ Exceptions that may happen in all the seldom code.
 
 class SeldomException(Exception):
     """
-    Base poium exception.
+    Base seldom exception.
     """
 
     def __init__(self, msg: str = None, screen: str = None, stacktrace: str = None):
@@ -21,6 +21,13 @@ class SeldomException(Exception):
             stacktrace = "\n".join(self.stacktrace)
             exception_msg += f"Stacktrace:\n{stacktrace}"
         return exception_msg
+
+
+class BrowserTypeError(SeldomException):
+    """
+    Browser type error
+    """
+    pass
 
 
 class NotFindElementError(SeldomException):
