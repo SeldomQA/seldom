@@ -2,6 +2,13 @@
 
 ### seldom 3.x
 
+__3.1.1(2023-01-03)__
+* 功能：`confrun.py` 增加`start_run()/end_run()` 钩子函数，用于运行前/后相关配置。
+* 优化：`@api_data()` 装饰器增加 `headers` 参数。
+* 优化：`assertJSON()` 断言增加 `exclude` 参数，屏蔽检查的字段，例如 `["start_time", "token"]`。
+* 修复：`rediscover()` 查找用例bug。
+* 依赖：升级`XTestRunner==1.5.0` 支持飞书/微信发送消息。
+
 __3.1.0(2022-12-15)__
 * 功能：提供 `confrun.py` 运行配置文件，配合 `seldom` 命令使用。
 * 功能：Web测试，增加 `self.get_log()` 方法。
