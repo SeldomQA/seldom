@@ -18,7 +18,7 @@ setup(
     license='BSD',
     author='bugmaster',
     author_email='fnngj@126.com',
-    description='WebUI/HTTP automation testing framework based on unittest.',
+    description='Seldom automation testing framework based on unittest.',
     long_description=open(join(abspath(dirname(__file__)), "description.rst"), encoding='utf8').read(),
     packages=find_packages(),
     include_package_data=True,
