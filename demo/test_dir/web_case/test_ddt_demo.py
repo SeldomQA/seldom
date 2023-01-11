@@ -69,7 +69,7 @@ class FileDataTest(seldom.TestCase):
         self.sleep(1)
 
     @file_data("json_data.json", key="login")
-    def test_json_dict(self, username, password):
+    def test_json_dict(self, _, username, password):
         """
         used file_data test
         """
