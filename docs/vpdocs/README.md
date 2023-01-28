@@ -22,5 +22,5 @@ features:
     details: 支持Excel/CSV/JSON/YAML数据文件。
   - title: 平台化
     details: seldom提供了平台化支持。
-footer: MIT Licensed | Copyright © 2022-重定向科技
+footer: MIT Licensed | Copyright © 2023-重定向科技
 ---
