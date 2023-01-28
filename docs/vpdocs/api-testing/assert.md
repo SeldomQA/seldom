@@ -60,9 +60,10 @@ class TestAPI(seldom.TestCase):
             "hobby": ["swim", "basketball"],
             "name": "tom"
         }
-        self.assertJSON(assert_data, self.response["args"])
+        self.assertJSON(assert_data, self.response["args"], exclude=["xxx"])
 ```
 
+* exclude 用于设置跳过的字段，例如一些 时间、随机数 等，每次调用都不一样，但并不影响结果的正确性。通过 exclude 来设置屏蔽这些字段的检查。
 
 ### assertPath
 
