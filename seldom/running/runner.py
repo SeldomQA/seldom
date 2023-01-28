@@ -142,6 +142,10 @@ class TestMain:
                         path_list = self.path.split("/")
                         path_dir = self.path.replace(path_list[-1], "")
                         self.TestSuits = seldomTestLoader.discover(path_dir, pattern=path_list[-1])
+                    elif "\\" in self.path:
+                        path_list = self.path.split("\\")
+                        path_dir = self.path.replace(path_list[-1], "")
+                        self.TestSuits = seldomTestLoader.discover(path_dir, pattern=path_list[-1])
                     else:
                         self.TestSuits = seldomTestLoader.discover(os.getcwd(), pattern=self.path)
                 else:
