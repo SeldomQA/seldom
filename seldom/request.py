@@ -26,7 +26,7 @@ def request(func):
 
     def wrapper(*args, **kwargs):
         func_name = func.__name__
-        log.info('\n-------------- Request -----------------[🚀]')
+        log.info('\n-------------- Request -----------------[*]')
         try:
             url = list(args)[1]
         except IndexError:
@@ -64,7 +64,7 @@ def request(func):
 
         ResponseResult.request = r.request
         ResponseResult.status_code = r.status_code
-        log.info("-------------- Response ----------------[🛬️]")
+        log.info("\n-------------- Response ----------------[*]")
         if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
             log.info(f"successful with status {ResponseResult.status_code}")
         else:

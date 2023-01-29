@@ -21,7 +21,6 @@ from seldom.utils import diff_json, AssertInfo, jmespath
 class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
     """seldom TestCase class"""
 
-
     def start_class(self):
         """
         Hook method for setting up class fixture before running tests in the class.
@@ -100,7 +99,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
 
-        log.info(f"👀 assertTitle -> {title}.")
+        log.info(f"assertTitle -> {title}.")
         for _ in range(Seldom.timeout + 1):
             try:
                 self.assertEqual(title, Seldom.driver.title)
@@ -120,7 +119,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         if title is None:
             raise AssertionError("The assertion title cannot be empty.")
 
-        log.info(f"👀 assertInTitle -> {title}.")
+        log.info(f"assertInTitle -> {title}.")
         for _ in range(Seldom.timeout + 1):
             try:
                 self.assertIn(title, Seldom.driver.title)
@@ -140,7 +139,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
 
-        log.info(f"👀 assertUrl -> {url}.")
+        log.info(f"assertUrl -> {url}.")
         for _ in range(Seldom.timeout + 1):
             current_url = unquote(Seldom.driver.current_url)
             try:
@@ -161,7 +160,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         if url is None:
             raise AssertionError("The assertion URL cannot be empty.")
 
-        log.info(f"👀 assertInUrl -> {url}.")
+        log.info(f"assertInUrl -> {url}.")
         for _ in range(Seldom.timeout + 1):
             current_url = unquote(Seldom.driver.current_url)
             try:
@@ -184,7 +183,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             raise AssertionError("The assertion text cannot be empty.")
 
         elem = Seldom.driver.find_element(By.TAG_NAME, "html")
-        log.info(f"👀 assertText -> {text}.")
+        log.info(f"assertText -> {text}.")
         for _ in range(Seldom.timeout + 1):
             if elem.is_displayed():
                 try:
@@ -207,7 +206,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
 
         elem = Seldom.driver.find_element(By.TAG_NAME, "html")
 
-        log.info(f"👀 assertNotText -> {text}.")
+        log.info(f"assertNotText -> {text}.")
         for _ in range(Seldom.timeout + 1):
             if elem.is_displayed():
                 try:
@@ -228,7 +227,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         if text is None:
             raise NameError("Alert text cannot be empty.")
 
-        log.info(f"👀 assertAlertText -> {text}.")
+        log.info(f"assertAlertText -> {text}.")
         alert_text = Seldom.driver.switch_to.alert.text
         for _ in range(Seldom.timeout + 1):
             try:
@@ -246,7 +245,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         Usage:
         self.assertElement(css="#id")
         """
-        log.info("👀 assertElement.")
+        log.info("assertElement.")
         if msg is None:
             msg = "No element found"
 
@@ -269,7 +268,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         Usage:
         self.assertNotElement(css="#id")
         """
-        log.info("👀 assertNotElement.")
+        log.info("assertNotElement.")
         if msg is None:
             msg = "Find the element"
 
@@ -289,7 +288,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         """
         Asserts the HTTP status code
         """
-        log.info(f"👀 assertStatusCode -> {status_code}.")
+        log.info(f"assertStatusCode -> {status_code}.")
         self.assertEqual(ResponseResult.status_code, status_code, msg=msg)
 
     def assertSchema(self, schema, response=None) -> None:
@@ -297,7 +296,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         Assert JSON Schema
         doc: https://json-schema.org/
         """
-        log.info(f"👀 assertSchema -> {formatting(schema)}.")
+        log.info(f"assertSchema -> {formatting(schema)}.")
 
         if response is None:
             response = ResponseResult.response
@@ -311,7 +310,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         """
         Assert JSON data
         """
-        log.info(f"👀 assertJSON -> {assert_json}.")
+        log.info(f"assertJSON -> {assert_json}.")
         if response is None:
             response = ResponseResult.response
 
@@ -325,7 +324,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         Assert path data
         doc: https://jmespath.org/
         """
-        log.info(f"👀 assertPath -> {path} >> {value}.")
+        log.info(f"assertPath -> {path} >> {value}.")
         search_value = jmespath(ResponseResult.response, path)
         self.assertEqual(search_value, value)
 
@@ -334,7 +333,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         Assert path data
         doc: https://jmespath.org/
         """
-        log.info(f"👀 assertInPath -> {path} >> {value}.")
+        log.info(f"assertInPath -> {path} >> {value}.")
         search_value = jmespath(ResponseResult.response, path)
         self.assertIn(value, search_value)
 

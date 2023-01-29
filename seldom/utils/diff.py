@@ -23,8 +23,8 @@ def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> Non
             if key in exclude:
                 continue
             if key not in response_data:
-                info = f"❌ Response data has no key: {key}"
-                log.info(info)
+                info = f"Error: Response data has no key: {key}"
+                log.error(info)
                 AssertInfo.data.append(info)
         for key in response_data:
             # skip check
@@ -34,8 +34,8 @@ def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> Non
                 # recursion
                 diff_json(response_data[key], assert_data[key], exclude)
             else:
-                info = f"💡 Assert data has not key: {key}"
-                log.info(info)
+                info = f"Warning: Assert data has not key: {key}"
+                log.warning(info)
     elif isinstance(response_data, list) and isinstance(assert_data, list):
         # list format
         if len(response_data) == 0:
@@ -66,6 +66,6 @@ def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> Non
             diff_json(src_list, dst_list, exclude)
     else:
         if str(response_data) != str(assert_data):
-            info = f"❌ Value are not equal: {response_data}"
-            log.info(info)
+            info = f"Error: Value are not equal: {response_data}"
+            log.error(info)
             AssertInfo.data.append(info)
