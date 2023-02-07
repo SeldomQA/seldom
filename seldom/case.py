@@ -21,7 +21,6 @@ from seldom.utils import diff_json, AssertInfo, jmespath
 class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
     """seldom TestCase class"""
 
-
     def start_class(self):
         """
         Hook method for setting up class fixture before running tests in the class.
@@ -141,15 +140,15 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             raise AssertionError("The assertion URL cannot be empty.")
 
         log.info(f"👀 assertUrl -> {url}.")
+        current_url = unquote(Seldom.driver.current_url)
         for _ in range(Seldom.timeout + 1):
-            current_url = unquote(Seldom.driver.current_url)
             try:
                 self.assertEqual(url, current_url)
                 break
             except AssertionError:
                 sleep(1)
         else:
-            self.assertEqual(url, Seldom.driver.current_url, msg=msg)
+            self.assertEqual(url, current_url, msg=msg)
 
     def assertInUrl(self, url: str = None, msg: str = None) -> None:
         """
@@ -166,7 +165,6 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             current_url = unquote(Seldom.driver.current_url)
             try:
                 self.assertIn(url, current_url)
-
                 break
             except AssertionError:
                 sleep(1)
