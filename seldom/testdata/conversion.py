@@ -32,11 +32,12 @@ def check_data(list_data: list) -> list:
     return list_data
 
 
-def csv_to_list(file: str = None, line: int = 1) -> list:
+def csv_to_list(file: str = None, line: int = 1, end_line: int = None) -> list:
     """
     Convert CSV file data to list
     :param file: Path to file
     :param line: Start line of read data
+    :param end_line: End line of read data
     :return: list data
 
     Usage:
@@ -48,18 +49,19 @@ def csv_to_list(file: str = None, line: int = 1) -> list:
     table_data = []
     with codecs.open(file, 'r', encoding='utf_8_sig') as csv_file:
         csv_data = csv.reader(csv_file)
-        for i in islice(csv_data, line - 1, None):
+        for i in islice(csv_data, line - 1, end_line):
             table_data.append(i)
 
     return table_data
 
 
-def excel_to_list(file: str = None, sheet: str = "Sheet1", line: int = 1) -> list:
+def excel_to_list(file: str = None, sheet: str = "Sheet1", line: int = 1, end_line: int = None) -> list:
     """
     Convert Excel file data to list
     :param file: Path to file
     :param sheet: Excel sheet, default name is Sheet1
     :param line: Start line of read data
+    :param end_line: Start line of read data
     :return: list data
 
     Usage:
@@ -70,9 +72,11 @@ def excel_to_list(file: str = None, sheet: str = "Sheet1", line: int = 1) -> lis
 
     excel_table = load_workbook(file)
     sheet = excel_table[sheet]
+    if end_line is None:
+        end_line = sheet.max_row
 
     table_data = []
-    for i in sheet.iter_rows(line, sheet.max_row):
+    for i in sheet.iter_rows(line, end_line):
         line_data = []
         for field in i:
             line_data.append(field.value)
