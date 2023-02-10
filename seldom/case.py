@@ -247,16 +247,11 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         log.info("👀 assertElement.")
         if msg is None:
             msg = "No element found"
-
-        elem = True
-        for _ in range(Seldom.timeout + 1):
-            try:
-                self.get_element(index=index, **kwargs)
-                elem = True
-                break
-            except NotFindElementError:
-                elem = False
-                sleep(1)
+        try:
+            self.get_element(index=index, **kwargs)
+            elem = True
+        except NotFindElementError:
+            elem = False
 
         self.assertTrue(elem, msg=msg)
 
