@@ -308,10 +308,13 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         if response is None:
             response = ResponseResult.response
 
-        AssertInfo.data = []
+        AssertInfo.warning = []
+        AssertInfo.error = []
         diff_json(response, assert_json, exclude)
-        if len(AssertInfo.data) != 0:
-            self.assertEqual("Response data", "Assert data", msg=AssertInfo.data)
+        if len(AssertInfo.warning) != 0:
+            log.warning(AssertInfo.warning)
+        if len(AssertInfo.error) != 0:
+            self.assertEqual("Response data", "Assert data", msg=AssertInfo.error)
 
     def assertPath(self, path, value) -> None:
         """

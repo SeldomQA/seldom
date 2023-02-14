@@ -6,7 +6,8 @@ from seldom.logging import log
 
 
 class AssertInfo:
-    data = []
+    warning = []
+    error = []
 
 
 def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> None:
@@ -23,9 +24,7 @@ def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> Non
             if key in exclude:
                 continue
             if key not in response_data:
-                info = f"❌ Response data has no key: {key}"
-                log.info(info)
-                AssertInfo.data.append(info)
+                AssertInfo.error.append(f"❌ Response data has no key: {key}")
         for key in response_data:
             # skip check
             if key in exclude:
@@ -34,8 +33,7 @@ def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> Non
                 # recursion
                 diff_json(response_data[key], assert_data[key], exclude)
             else:
-                info = f"💡 Assert data has not key: {key}"
-                log.info(info)
+                AssertInfo.warning.append(f"💡 Assert data has not key: {key}")
     elif isinstance(response_data, list) and isinstance(assert_data, list):
         # list format
         if len(response_data) == 0:
@@ -65,7 +63,6 @@ def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> Non
             # recursion
             diff_json(src_list, dst_list, exclude)
     else:
+        # different format
         if str(response_data) != str(assert_data):
-            info = f"❌ Value are not equal: {response_data}"
-            log.info(info)
-            AssertInfo.data.append(info)
+            AssertInfo.error.append(f"❌ Value are not equal: {assert_data} != {response_data}")
