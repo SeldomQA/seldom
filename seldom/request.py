@@ -26,7 +26,7 @@ def request(func):
 
     def wrapper(*args, **kwargs):
         func_name = func.__name__
-        log.info('\n-------------- Request -----------------[🚀]')
+        log.info('-------------- Request -----------------[🚀]')
         try:
             url = list(args)[1]
         except IndexError:
@@ -168,24 +168,6 @@ class HttpRequest:
         :return: status_code
         """
         return ResponseResult.status_code
-
-    def jresponse(self, expr, j="json") -> any:
-        """
-        param j: json or jmes
-        jsonpath
-        doc: https://goessner.net/articles/JsonPath/
-        jmespath
-        doc: https://jmespath.org/
-        """
-        warnings.warn("use self.responses() instead", DeprecationWarning, stacklevel=2)
-        if j == "json":
-            ret = utils_jsonpath(ResponseResult.response, expr)
-        elif j == "jmes":
-            ret = utils_jmespath(ResponseResult.response, expr)
-        else:
-            raise ValueError("j is 'json' or 'jmes'.")
-        log.debug(f"[jresponse]:\n {str(ret)}")
-        return ret
 
     @staticmethod
     def curl(request=None, compressed: bool = False, verify: bool = True) -> str:
