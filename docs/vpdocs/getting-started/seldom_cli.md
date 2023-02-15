@@ -97,10 +97,10 @@ C:\Python38\Scripts\seldom.exe
 * `-h2c/--har2case`
 
 ```shell
-> seldom -h2c .\demo.har
-2022-09-03 11:29:29 core.py | INFO | .\demo.py
+> seldom -h2c demo.har
+2022-09-03 11:29:29 core.py | INFO | demo.py
 2022-09-03 11:29:29 core.py | INFO | Start to generate testcase.
-2022-09-03 11:29:29 core.py | INFO | created file: D:\github\seldom\seldom\har2case\.\demo.py
+2022-09-03 11:29:29 core.py | INFO | created file: D:\github\seldom\seldom\har2case\demo.py
 ```
 
 注：`har` 是fiddler 抓包工具导出的一种格式，即 `HTTPArchive`。
