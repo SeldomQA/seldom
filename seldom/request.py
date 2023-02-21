@@ -2,7 +2,6 @@
 seldom requests
 """
 import json
-import warnings
 from typing import Any
 import requests
 from seldom.running.config import Seldom

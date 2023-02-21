@@ -3,6 +3,7 @@ selenium webdriver API
 """
 import os
 import time
+import warnings
 import platform
 from selenium.webdriver import Chrome
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
@@ -216,6 +217,46 @@ class WebDriver:
         def space(self) -> None:
             log.info(f"✅ {self.web_elem.info}, space.")
             self.elem.send_keys(Keys.SPACE)
+
+    class Alert:
+
+        @property
+        def text(self) -> str:
+            """
+            Gets the text of the Alert.
+            """
+            log.info(f"✅ alert text: {Seldom.driver.switch_to.alert.text}.")
+            return Seldom.driver.switch_to.alert.text
+
+        @staticmethod
+        def dismiss() -> None:
+            """
+            Dismisses the alert available.
+            """
+            log.info("✅ dismiss alert.")
+            return Seldom.driver.switch_to.alert.dismiss()
+
+        @staticmethod
+        def accept():
+            """
+            Accepts the alert available.
+
+            Usage::
+            Alert(driver).accept() # Confirm a alert dialog.
+            """
+            log.info("✅ accept alert.")
+            return Seldom.driver.switch_to.alert.accept()
+
+        @staticmethod
+        def send_keys(text: str) -> None:
+            """
+            Send Keys to the Alert.
+
+            :Args:
+             - text: The text to be sent to Alert.
+            """
+            log.info(f"✅ input alert '{text}'.")
+            return Seldom.driver.switch_to.alert.send_keys(text)
 
     @staticmethod
     def visit(url: str) -> None:
@@ -592,6 +633,12 @@ class WebDriver:
         return Seldom.driver.current_url
 
     @property
+    def alert(self) -> Alert:
+        """return Alert class"""
+        alert = self.Alert()
+        return alert
+
+    @property
     def get_alert_text(self) -> str:
         """
         Gets the text of the Alert.
@@ -599,6 +646,7 @@ class WebDriver:
         Usage:
             self.get_alert_text()
         """
+        warnings.warn("use self.alert.text instead", DeprecationWarning, stacklevel=2)
         log.info(f"✅ alert text: {Seldom.driver.switch_to.alert.text}.")
         return Seldom.driver.switch_to.alert.text
 
@@ -621,6 +669,7 @@ class WebDriver:
         Usage:
             self.accept_alert()
         """
+        warnings.warn("use self.alert.accept() instead", DeprecationWarning, stacklevel=2)
         log.info("✅ accept alert.")
         Seldom.driver.switch_to.alert.accept()
 
@@ -632,6 +681,7 @@ class WebDriver:
         Usage:
             self.dismiss_alert()
         """
+        warnings.warn("use self.alert.dismiss() instead", DeprecationWarning, stacklevel=2)
         log.info("✅ dismiss alert.")
         Seldom.driver.switch_to.alert.dismiss()
 
@@ -724,7 +774,7 @@ class WebDriver:
 
     def element_screenshot(self, file_path: str = None, index: int = 0, **kwargs) -> None:
         """
-        Saves a element screenshot of the element to a PNG image file.
+        Saves an element screenshot of the element to a PNG image file.
 
         Usage:
             self.element_screenshot(css="#id")
