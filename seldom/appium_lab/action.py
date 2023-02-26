@@ -18,9 +18,16 @@ class Action(Switch):
     def __init__(self, driver):
         Switch.__init__(self, driver)
         self.switch_to_app()
-        size = self.driver.get_window_size()
-        self.width = size.get("width")     # {'width': 1080, 'height': 2028}
-        self.height = size.get("height")   # {'width': 1080, 'height': 2028}
+        self._size = self.driver.get_window_size()
+        self.width = self._size.get("width")     # {'width': 1080, 'height': 2028}
+        self.height = self._size.get("height")   # {'width': 1080, 'height': 2028}
+
+    def size(self) -> dict:
+        """
+        return screen resolution.
+        """
+        log.info(f"screen resolution: {self._size}")
+        return self._size
 
     def tap(self, x: int, y: int) -> None:
         """

@@ -1,6 +1,8 @@
 """
 App keyboard operation
 """
+from seldom.logging import log
+
 
 keycodes = {
     '0': 7,
@@ -81,6 +83,7 @@ class KeyEvent:
         if text == "":
             return
 
+        log.info(f'input "{text}"')
         for string in text:
             keycode = keycodes.get(string.upper(), 0)
             if keycode == 0:
@@ -96,15 +99,18 @@ class KeyEvent:
         :param key: keyword name
         press_key("HOME")
         """
+        log.info(f'press key "{key}"')
         keycode = keycodes.get(key)
         self.driver.press_keycode(keycode)
 
     def back(self):
         """go back"""
+        log.info("go back")
         self.driver.back()
 
     def home(self):
         """press home"""
+        log.info("press home")
         self.driver.home()
 
     def hide_keyboard(self, key_name=None, key=None, strategy=None):
@@ -120,6 +126,7 @@ class KeyEvent:
             strategy: strategy for closing the keyboard (e.g., `tapOutside`)
 
         """
+        log.info("hide keyboard")
         self.driver.hide_keyboard(key_name=key_name, key=key, strategy=strategy)
 
     def is_keyboard_shown(self) -> bool:
@@ -128,4 +135,6 @@ class KeyEvent:
         Returns:
             `True` if keyboard is shown
         """
-        return self.driver.is_keyboard_shown()
+        ret = self.driver.is_keyboard_shown()
+        log.info(f"is keyboard shown: {ret}")
+        return ret
