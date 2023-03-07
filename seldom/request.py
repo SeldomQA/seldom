@@ -1,6 +1,7 @@
 """
 seldom requests
 """
+import ast
 import json
 from typing import Any
 import requests
@@ -236,6 +237,35 @@ class HttpRequest:
             if (Seldom.base_url is not None) and ("http" not in url):
                 url = Seldom.base_url + url
             return self.request('DELETE', url, **kwargs)
+
+    @staticmethod
+    def json_to_dict(data: str, replace_quotes: bool = True) -> dict:
+        """
+        json to dict
+        :param data: json data.
+        :param replace_quotes: whether to replace single quotes.
+        """
+        if isinstance(data, dict):
+            return data
+
+        if isinstance(data, str):
+            try:
+                data_dict = ast.literal_eval(data)
+            except ValueError:
+                try:
+                    if replace_quotes:
+                        data = data.replace('\'', '\"')
+                    data_dict = json.loads(data)
+                except json.decoder.JSONDecodeError:
+                    log.error(f"json to dict error. --> {data}")
+                    return {}
+                else:
+                    return data_dict
+            else:
+                return data_dict
+        else:
+            log.error(f"type error --> {data}")
+            return {}
 
 
 def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None, debug: bool = False):
