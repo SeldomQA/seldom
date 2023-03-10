@@ -3,6 +3,7 @@ seldom cache
 """
 import os
 import json
+import fcntl
 from seldom.logging import log
 from seldom.utils import file
 
@@ -28,16 +29,23 @@ class Cache:
         """
         if name is None:
             with open(DATA_PATH, "w", encoding="utf-8") as json_file:
+                fcntl.flock(json_file, fcntl.LOCK_EX)
                 log.info("Clear all cache data")
                 json.dump({}, json_file)
+                fcntl.flock(json_file, fcntl.LOCK_UN)
         else:
             with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
+                fcntl.flock(json_file, fcntl.LOCK_EX)
                 save_data = json.load(json_file)
                 del save_data[name]
                 log.info(f"Clear cache data: {name}")
+                json.dump(save_data, json_file)
+                fcntl.flock(json_file, fcntl.LOCK_UN)
 
             with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
+                fcntl.flock(json_file, fcntl.LOCK_EX)
                 json.dump(save_data, json_file)
+                fcntl.flock(json_file, fcntl.LOCK_UN)
 
     @staticmethod
     def set(data: dict) -> None:
@@ -46,6 +54,7 @@ class Cache:
         :param data:
         """
         with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
+            fcntl.flock(json_file, fcntl.LOCK_EX)
             save_data = json.load(json_file)
             for key, value in data.items():
                 data = save_data.get(key, None)
@@ -54,9 +63,12 @@ class Cache:
                 else:
                     log.info(f"update cache data: {key} = {value}")
                 save_data[key] = value
+            fcntl.flock(json_file, fcntl.LOCK_UN)
 
         with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
+            fcntl.flock(json_file, fcntl.LOCK_EX)
             json.dump(save_data, json_file)
+            fcntl.flock(json_file, fcntl.LOCK_UN)
 
     @staticmethod
     def get(name=None):
@@ -66,6 +78,7 @@ class Cache:
         :return:
         """
         with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
+            fcntl.flock(json_file, fcntl.LOCK_EX)
             save_data = json.load(json_file)
             if name is None:
                 return save_data
@@ -73,6 +86,8 @@ class Cache:
             value = save_data.get(name, None)
             if value is not None:
                 log.info(f"Get cache data: {name} = {value}")
+
+            fcntl.flock(json_file, fcntl.LOCK_UN)
             return value
 
 
