@@ -28,7 +28,7 @@ class Cache:
         :param name: key
         """
         if name is None:
-            with open(DATA_PATH, "w", encoding="utf-8") as json_file:
+            with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
                 fcntl.flock(json_file, fcntl.LOCK_EX)
                 log.info("Clear all cache data")
                 json.dump({}, json_file)
