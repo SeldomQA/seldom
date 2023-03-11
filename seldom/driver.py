@@ -89,8 +89,10 @@ class Browser:
         """Chrome browser driver"""
         if ChromeConfig.options is None:
             chrome_options = ChromeOptions()
+            chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
         else:
             chrome_options = ChromeConfig.options
+            chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
         if ChromeConfig.headless is True:
             chrome_options.add_argument('--headless')
