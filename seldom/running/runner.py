@@ -235,7 +235,7 @@ class TestMainExtend(TestMain):
     def __init__(
             self,
             path: str = None,
-            browser: str = None,
+            browser: [str or dict] = None,
             base_url: str = None,
             debug: bool = False,
             timeout: int = 10,
