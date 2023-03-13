@@ -50,7 +50,6 @@ As with `Selenium`, before you can run automated tests using `seldom`, you need 
                     description="Environment description",
                     debug=False,
                     rerun=0,
-                    save_last_run=False,
                     language="en",
                     timeout=None,
                     whitelist=[],
@@ -148,7 +147,7 @@ Failed Rerun
 
 
     if __name__ == '__main__':
-        seldom.main(rerun=3, save_last_run=False)
+        seldom.main(rerun=3)
 
 
 

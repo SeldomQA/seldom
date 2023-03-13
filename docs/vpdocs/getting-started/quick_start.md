@@ -49,7 +49,6 @@ if __name__ == '__main__':
                 description="测试环境:chrome",
                 debug=False,
                 rerun=0,
-                save_last_run=False,
                 language="en",
                 timeout=10,
                 whitelist=[],
@@ -73,7 +72,6 @@ __参数说明__
 * description : 指定测试报告描述。
 * debug : debug模式，设置为True不生成测试HTML测试，默认为`False`。
 * rerun : 设置失败重新运行次数，默认为 `0`。
-* save_last_run : 设置只保存最后一次的结果，默认为`False`。
 * language : 设置HTML报告中英文，默认`en`, 中文`zh-CN`。
 * timeout : 设置超时时间，默认`10`秒。
 * whitelist :  用例标签（label）设置白名单。
@@ -354,7 +352,6 @@ if __name__ == '__main__':
 参数说明：
 
 * rerun: 指定重跑的次数，默认为 `0`。
-* save_last_run: 设置是否只保存最后一次运行结果，默认为`False`。
 
 运行日志：
 
