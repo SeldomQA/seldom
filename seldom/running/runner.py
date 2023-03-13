@@ -246,7 +246,6 @@ class TestMainExtend(TestMain):
             tester: str = "Anonymous",
             description: str = "Test case execution",
             rerun: int = 0,
-            save_last_run: bool = False,
             language="en",
             whitelist: list = [],
             blacklist: list = []):
@@ -256,7 +255,7 @@ class TestMainExtend(TestMain):
 
         super().__init__(path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
                          app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
-                         description=description, rerun=rerun, save_last_run=save_last_run, language=language,
+                         description=description, rerun=rerun, language=language,
                          whitelist=whitelist, blacklist=blacklist, open=False, auto=False)
 
     def collect_cases(self, json: bool = False, level: str = "data", warning: bool = False) -> Any:
