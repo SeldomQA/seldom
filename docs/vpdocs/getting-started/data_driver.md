@@ -138,7 +138,7 @@ from seldom import file_data
 
 class YouTest(seldom.TestCase):
 
-    @file_data("data.csv", line=2)
+    @file_data("data.csv", line=2, end_line=10)
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -149,6 +149,7 @@ class YouTest(seldom.TestCase):
 
 - file: 指定 csv 文件的路径。
 - line: 指定从第几行开始读取，默认第 1 行。
+- end_line: 指定读取到第几行的数据，默认None, 最后一行。
 
 
 **excel 文件参数化**
@@ -162,7 +163,7 @@ from seldom import file_data
 
 class YouTest(seldom.TestCase):
 
-    @file_data("data.xlsx", sheet="Sheet1", line=2)
+    @file_data("data.xlsx", sheet="Sheet1", line=2, end_line=10)
     def test_login(self, username, password):
         """a simple test case """
         print(username)
@@ -174,6 +175,7 @@ class YouTest(seldom.TestCase):
 - file : 指定 excel 文件的路径。
 - sheet: 指定 excel 的标签页，默认名称为 Sheet1。
 - line : 指定从第几行开始读取，默认第 1 行。
+- end_line: 指定读取到第几行的数据，默认None, 最后一行。
 
 **JSON 文件参数化**
 
@@ -406,6 +408,42 @@ __`api_data()`参数说明__
 * params: 请求参数。
 * header: 请求头。
 * ret: 提取接口返回的数据，默认仅支持 list 类型。
+
+### 使用函数构造数据
+
+如果数据驱动使用的数据比较简单其有规律，可以通过自定义函数生成，并且把函数传给 `@data()` 装饰器即可。
+
+```python
+import seldom
+from seldom import data
+
+
+def register():
+    """生成注册账号信息"""
+    users = []
+    for i in range(10):
+        users.append({
+            "username": f"user{i}",
+            "password": f"abc123{i}",
+            "password2": f"abc123{i}"}
+        )
+
+    return users
+
+
+class DDTTest(seldom.TestCase):
+
+    @data(register())
+    def test_data_func(self, username, password, password2):
+        """ data driver case """
+        print("username->", username)
+        print("password->", password)
+        print("password2->", password2)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
 
 ### 支持第三方 ddt 库
 

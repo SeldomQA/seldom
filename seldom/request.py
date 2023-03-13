@@ -1,8 +1,8 @@
 """
 seldom requests
 """
+import ast
 import json
-import warnings
 from typing import Any
 import requests
 from seldom.running.config import Seldom
@@ -26,12 +26,12 @@ def request(func):
 
     def wrapper(*args, **kwargs):
         func_name = func.__name__
-        log.info('\n-------------- Request -----------------[*]')
+        log.info('-------------- Request -----------------[*]')
         try:
             url = list(args)[1]
         except IndexError:
             url = kwargs.get("url", "")
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
 
         img_file = False
@@ -103,27 +103,33 @@ class HttpRequest:
 
     @request
     def get(self, url, params=None, **kwargs):
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         return requests.get(url, params=params, **kwargs)
 
     @request
     def post(self, url, data=None, json=None, **kwargs):
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         return requests.post(url, data=data, json=json, **kwargs)
 
     @request
     def put(self, url, data=None, **kwargs):
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         return requests.put(url, data=data, **kwargs)
 
     @request
     def delete(self, url, **kwargs):
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         return requests.delete(url, **kwargs)
+
+    @request
+    def patch(self, url, data=None, **kwargs):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
+            url = Seldom.base_url + url
+        return requests.patch(url, data=data, **kwargs)
 
     @property
     def response(self) -> dict:
@@ -168,24 +174,6 @@ class HttpRequest:
         :return: status_code
         """
         return ResponseResult.status_code
-
-    def jresponse(self, expr, j="json") -> any:
-        """
-        param j: json or jmes
-        jsonpath
-        doc: https://goessner.net/articles/JsonPath/
-        jmespath
-        doc: https://jmespath.org/
-        """
-        warnings.warn("use self.responses() instead", DeprecationWarning, stacklevel=2)
-        if j == "json":
-            ret = utils_jsonpath(ResponseResult.response, expr)
-        elif j == "jmes":
-            ret = utils_jmespath(ResponseResult.response, expr)
-        else:
-            raise ValueError("j is 'json' or 'jmes'.")
-        log.debug(f"[jresponse]:\n {str(ret)}")
-        return ret
 
     @staticmethod
     def curl(request=None, compressed: bool = False, verify: bool = True) -> str:
@@ -255,6 +243,35 @@ class HttpRequest:
             if (Seldom.base_url is not None) and ("http" not in url):
                 url = Seldom.base_url + url
             return self.request('DELETE', url, **kwargs)
+
+    @staticmethod
+    def json_to_dict(data: str, replace_quotes: bool = True) -> dict:
+        """
+        json to dict
+        :param data: json data.
+        :param replace_quotes: whether to replace single quotes.
+        """
+        if isinstance(data, dict):
+            return data
+
+        if isinstance(data, str):
+            try:
+                data_dict = ast.literal_eval(data)
+            except ValueError:
+                try:
+                    if replace_quotes:
+                        data = data.replace('\'', '\"')
+                    data_dict = json.loads(data)
+                except json.decoder.JSONDecodeError:
+                    log.error(f"json to dict error. --> {data}")
+                    return {}
+                else:
+                    return data_dict
+            else:
+                return data_dict
+        else:
+            log.error(f"type error --> {data}")
+            return {}
 
 
 def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None, debug: bool = False):

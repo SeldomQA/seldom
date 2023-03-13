@@ -91,7 +91,7 @@ if __name__ == '__main__':
 * 运行日志
 
 ```shell
-python .\test_app.py
+python test_app.py
 
               __    __
    ________  / /___/ /___  ____ ____

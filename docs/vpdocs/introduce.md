@@ -1,23 +1,25 @@
 # 介绍
 
-## seldom 提供的能力
+## seldom 介绍
 
 > seldom 是基于 unittest 的自动化测试框架。
 
 __seldom 与 单元测试框架对比__
 
-`seldom` VS `unittest` VS `pytest` VS `...`
+* `seldom` VS `unittest` VS `pytest`
 
-`seldom`不能与`unittest/pytest` 直接对比，这相当于像拿一台`电脑`与一颗`intel CPU/ AMD CPU` 进行比较，因为你无法直接拿一个`CPU`打游戏，对吧！？ seldom 是一个自动化测试框架，集成诸多测试相关的库，定位全功能自动化测试框架。 
+seldom 基于 unittest 单元测试框架开发，并集成了web/app/api测试库，对于自动化测试达到开箱即用。
+
+> `seldom`不能与`unittest/pytest` 直接对比，这相当于像拿一台“电脑”与一颗“CPU` 进行比较，我们无法直接拿一个”CPU“打游戏，对吧！？ seldom 是一台“电脑”，直接可以用来”打游戏“。 
 
 __seldom特点__
 
-提供的功能:
-
+* 支持测试类型（web/app/api)
+* 丰富的断言
 * 生成随机测试数据
 * 用例依赖
 * 用例分类标签
-* 发送`邮件`、`钉钉`消息等
+* 支持发送（邮件、钉钉、飞书、企微）消息等
 * 日志打印
 * 缓存cache
 * 命令行工具
@@ -25,16 +27,10 @@ __seldom特点__
 * HTML/XML报告
 * 失败重跑&截图
 * 数据库操作（MySQL/sqlite3/Mongodb）
-* 丰富的断言
-
-支持测试类型:
-
-* Web UI测试： 集成selenium。
-* App UI测试： 集成appium。
-* HTTP接口测试：集成reqests。
+* 支持平台化
 
 
-## seldom 的设计理念
+## seldom 理念
 
 简单一句话就是回到最初写代码的样子。
 
@@ -42,10 +38,10 @@ __seldom特点__
 
 然而，seldom的定位是尽量用简单的设计去解决复杂问题，例如 Flask、requests、yagmail...等，这些框架/库都有一个共同的特点，用简单的方式去解决复杂的问题，在编程语言这个层面，并不会给你太多限制，你可以完全使用它，也可以只用一部分，也可以平滑的实现它不支持的功能。
 
-seldom的目标以就让你用最少的代码编写自动化测试用例，当遇到seldom没有的功能，你可以方便的进行扩展。这就是seldom的设计理念。
+seldom的目标以就让你用最少的代码编写自动化测试用例，当遇到seldom没有的功能，你可以方便的进行扩展。-- 这就是seldom的设计理念。
 
 
-## seldom 历史回顾
+## seldom 历史
 
 2015年7月15号我在github上提交一个自动化项目，命名为：`pyse`， 即各取了`python` 和 `selenium`前两个字符。项目非常简单核心就三个文件。
 

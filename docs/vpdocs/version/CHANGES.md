@@ -2,6 +2,16 @@
 
 ### seldom 3.x
 
+__3.1.3(2023-02-15)__
+* 功能：`file_data()` 增加`end_line` 参数，对于csv/excel文件支持读取到第几行结束。[#163](https://github.com/SeldomQA/seldom/issues/163)
+* 优化：`self.assertElement()` 断言元素时间过长的问题。
+* 优化：`self.assertJSON()` 断言日志，区分告警和错误。
+* 移除：`self.jresponse()` 方法。
+
+__3.1.2（internal）__
+> 内部版本：移除了日志打印的 emoji 表情。
+* 功能：`seldom.main()` 方法 path 参数支持斜杠路径`\`（windows系统用`\` 表示路径）。
+
 __3.1.1(2023-01-03)__
 * 功能：`confrun.py` 增加`start_run()/end_run()` 钩子函数，用于运行前/后相关配置。
 * 优化：`@api_data()` 装饰器增加 `headers` 参数。

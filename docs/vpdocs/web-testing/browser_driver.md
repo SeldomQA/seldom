@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
 ```shell
 
-> python .\selenium_sample.py
+> python selenium_sample.py
 
               __    __
    ________  / /___/ /___  ____ ____

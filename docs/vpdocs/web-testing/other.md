@@ -78,7 +78,7 @@ if __name__ == '__main__':
 首先，安装Java环境，然后下载 `selenium-server`。
 
 ```shell
-> java -jar .\selenium-server-4.3.0.jar standalone
+> java -jar selenium-server-4.3.0.jar standalone
 
 00:25:28.023 INFO [LoggingOptions.configureLogEncoding] - Using the system default encoding
 00:25:28.029 INFO [OpenTelemetryTracer.createTracer] - Using OpenTelemetry for tracing

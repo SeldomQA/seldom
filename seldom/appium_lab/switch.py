@@ -12,6 +12,16 @@ class Switch:
     def __init__(self, driver):
         self.driver = driver
 
+    def context(self):
+        """
+        Returns the current context of the current session.
+        """
+        current_context = self.driver.current_context
+        all_context = self.driver.contexts
+        log.info(f"current context: {current_context}.")
+        log.info(f"all context: {all_context}.")
+        return current_context
+
     def switch_to_app(self) -> None:
         """
         Switch to native app.

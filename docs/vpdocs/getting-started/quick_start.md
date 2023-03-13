@@ -301,8 +301,8 @@ mypro/
 
 ```shell
 > cd mypro/  # 进入项目根目录
-> seldom -p .\test_dir\  # 运行目录
-> seldom -p .\test_dir\test_sample.py  # 运行文件
+> seldom -p test_dir  # 运行目录
+> seldom -p test_dir/test_sample.py  # 运行文件
 > seldom -m test_dir.test_sample       # 运行文件
 > seldom -m test_dir.test_sample.SampleTest # 运行 SampleTest 测试类
 > seldom -m test_dir.test_sample.SampleTest.test_case # 运行 test_case 测试方法
@@ -372,7 +372,6 @@ if __name__ == '__main__':
 
 
 
-.\test_sample.py
 
 XTestRunner Running tests...
 

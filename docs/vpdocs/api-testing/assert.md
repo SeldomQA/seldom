@@ -1,6 +1,6 @@
 # 更强大的断言
 
-断言接口返回的数据是我们在做接口自动化很重要的工作。
+断言接口返回的数据是HTTP接口自动化测试非常重要的工作，提供强大的断言方法可以提高用例的编写效率。
 
 ### assertJSON
 
@@ -63,13 +63,13 @@ class TestAPI(seldom.TestCase):
         self.assertJSON(assert_data, self.response["args"], exclude=["xxx"])
 ```
 
-* exclude 用于设置跳过的字段，例如一些 时间、随机数 等，每次调用都不一样，但并不影响结果的正确性。通过 exclude 来设置屏蔽这些字段的检查。
+* exclude 用于设置跳过的检查字段，例如一些 时间、随机数 等，每次调用都不一样，但并不影响结果的正确性。通过 exclude 来设置屏蔽这些字段的检查。
 
 ### assertPath
 
 `assertPath` 是基于 `jmespath` 实现的断言，功能非常强大。
 
-jmespath: https://jmespath.org/specification.html
+* jmespath: https://jmespath.org/specification.html
 
 接口返回数据如下：
 
@@ -106,9 +106,9 @@ class TestAPI(seldom.TestCase):
 
 ### assertSchema
 
-有时并不关心数据本身是什么，而是需要断言数据的结构和类型。 `assertSchema` 是基于 `jsonschema` 实现的断言方法。
+当你不关心数据本身是什么，而是关心数据的结构和类型时，可以使用 `assertSchema` 断言方法。 `assertSchema` 是基于 `jsonschema` 实现的断言方法。
 
-jsonschema: https://json-schema.org/learn/
+* jsonschema: https://json-schema.org/learn/
 
 ```python
 import seldom

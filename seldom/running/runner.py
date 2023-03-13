@@ -60,7 +60,6 @@ class TestMain:
             tester: str = "Anonymous",
             description: str = "Test case execution",
             rerun: int = 0,
-            save_last_run: bool = False,
             language: str = "en",
             whitelist: list = [],
             blacklist: list = [],
@@ -81,7 +80,6 @@ class TestMain:
         :param app_info:
         :param report:
         :param rerun:
-        :param save_last_run:
         :param language:
         :param whitelist:
         :param blacklist:
@@ -99,7 +97,6 @@ class TestMain:
         self.description = description
         self.debug = debug
         self.rerun = rerun
-        self.save_last_run = save_last_run
         self.language = language
         self.whitelist = whitelist
         self.blacklist = blacklist
@@ -177,14 +174,15 @@ class TestMain:
 
             with open(report_path, 'wb') as fp:
                 if report_path.split(".")[-1] == "xml":
-                    runner = XMLTestRunner(output=fp, logger=log_cfg)
+                    runner = XMLTestRunner(output=fp, logger=log_cfg, rerun=self.rerun,
+                                           blacklist=self.blacklist, whitelist=self.whitelist)
                     runner.run(suits)
                 else:
                     runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester,
                                             description=self.description,
-                                            language=self.language, blacklist=self.blacklist, whitelist=self.whitelist,
-                                            logger=log_cfg)
-                    runner.run(suits, rerun=self.rerun, save_last_run=self.save_last_run)
+                                            rerun=self.rerun, logger=log_cfg,
+                                            language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
+                    runner.run(suits)
 
             log.success(f"generated html file: file:///{report_path}")
             log.success(f"generated log file: file:///{BrowserConfig.LOG_PATH}")

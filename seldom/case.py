@@ -140,15 +140,15 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             raise AssertionError("The assertion URL cannot be empty.")
 
         log.info(f"assertUrl -> {url}.")
+        current_url = unquote(Seldom.driver.current_url)
         for _ in range(Seldom.timeout + 1):
-            current_url = unquote(Seldom.driver.current_url)
             try:
                 self.assertEqual(url, current_url)
                 break
             except AssertionError:
                 sleep(1)
         else:
-            self.assertEqual(url, Seldom.driver.current_url, msg=msg)
+            self.assertEqual(url, current_url, msg=msg)
 
     def assertInUrl(self, url: str = None, msg: str = None) -> None:
         """
@@ -165,7 +165,6 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             current_url = unquote(Seldom.driver.current_url)
             try:
                 self.assertIn(url, current_url)
-
                 break
             except AssertionError:
                 sleep(1)
@@ -248,16 +247,11 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         log.info("assertElement.")
         if msg is None:
             msg = "No element found"
-
-        elem = True
-        for _ in range(Seldom.timeout + 1):
-            try:
-                self.get_element(index=index, **kwargs)
-                elem = True
-                break
-            except NotFindElementError:
-                elem = False
-                sleep(1)
+        try:
+            self.get_element(index=index, **kwargs)
+            elem = True
+        except NotFindElementError:
+            elem = False
 
         self.assertTrue(elem, msg=msg)
 
@@ -314,10 +308,13 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         if response is None:
             response = ResponseResult.response
 
-        AssertInfo.data = []
+        AssertInfo.warning = []
+        AssertInfo.error = []
         diff_json(response, assert_json, exclude)
-        if len(AssertInfo.data) != 0:
-            self.assertEqual("Response data", "Assert data", msg=AssertInfo.data)
+        if len(AssertInfo.warning) != 0:
+            log.warning(AssertInfo.warning)
+        if len(AssertInfo.error) != 0:
+            self.assertEqual("Response data", "Assert data", msg=AssertInfo.error)
 
     def assertPath(self, path, value) -> None:
         """

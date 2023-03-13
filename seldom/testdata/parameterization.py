@@ -117,12 +117,13 @@ def find_file(file: str, file_dir: str) -> str:
     return file_path
 
 
-def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None):
+def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None, end_line: int = None):
     """
     Support file parameterization.
 
     :param file: file name
-    :param line:  Line number of an Excel/CSV file
+    :param line: Start line number of an Excel/CSV file
+    :param end_line:  End line number of an Excel/CSV file
     :param sheet: Excel sheet name
     :param key: Key name of an YAML/JSON file
 
@@ -154,9 +155,9 @@ def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None):
 
     suffix = file.split(".")[-1]
     if suffix == "csv":
-        data_list = conversion.csv_to_list(file_path, line=line)
+        data_list = conversion.csv_to_list(file_path, line=line, end_line=end_line)
     elif suffix == "xlsx":
-        data_list = conversion.excel_to_list(file_path, sheet=sheet, line=line)
+        data_list = conversion.excel_to_list(file_path, sheet=sheet, line=line, end_line=end_line)
     elif suffix == "json":
         data_list = conversion.json_to_list(file_path, key=key)
     elif suffix == "yaml":

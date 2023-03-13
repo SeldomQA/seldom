@@ -5,7 +5,7 @@ import os
 from XTestRunner import SMTP as XSMTP
 from XTestRunner import DingTalk as XDingTalk
 from XTestRunner import FeiShu as XFeiShu
-from XTestRunner._weixin import Weinxin as XWeinxin
+from XTestRunner import Weinxin as XWeinxin
 from seldom.running.config import BrowserConfig
 from seldom.utils import file
 
