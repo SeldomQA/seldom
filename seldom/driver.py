@@ -16,40 +16,7 @@ from seldom.logging.exceptions import BrowserTypeError
 from seldom.running.config import BrowserConfig
 
 
-__all__ = ["ChromeConfig", "FirefoxConfig", "IEConfig", "EdgeConfig", "SafariConfig", "Browser"]
-
-PHONE_LIST = [
-    'iPhone 8', 'iPhone 8 Plus', 'iPhone SE', 'iPhone X', 'iPhone XR', 'iPhone 12 Pro',
-    'Pixel 2', 'Pixel XL', 'Pixel 5', 'Samsung Galaxy S8+', 'Samsung Galaxy S20 Ultra'
-]
-PAD_LIST = ['iPad Air', 'iPad Pro', 'iPad Mini']
-
-
-class ChromeConfig:
-    headless = False
-    options = None
-    command_executor = ""
-
-
-class FirefoxConfig:
-    headless = False
-    options = None
-    command_executor = ""
-
-
-class IEConfig:
-    command_executor = ""
-
-
-class EdgeConfig:
-    headless = False
-    options = None
-    command_executor = ""
-
-
-class SafariConfig:
-    executable_path = "/usr/bin/safaridriver"
-    command_executor = ""
+__all__ = ["Browser"]
 
 
 class Browser:
@@ -72,10 +39,6 @@ class Browser:
             return cls.edge()
         if name == "safari":
             return cls.safari()
-        if name in PHONE_LIST:
-            return cls.phone(name)
-        if name in PAD_LIST:
-            return cls.pad(name)
 
         raise BrowserTypeError(f"Not found `{name}` browser, See the help doc: https://seldomqa.github.io/other/other.html.")
 
@@ -156,47 +119,10 @@ class Browser:
     @staticmethod
     def safari():
         """safari browser driver"""
-        if SafariConfig.command_executor != "" and SafariConfig.command_executor.startswith("http"):
-            return webdriver.Remote(command_executor=SafariConfig.command_executor,
+        if BrowserConfig.command_executor != "":
+            return webdriver.Remote(command_executor=BrowserConfig.command_executor,
                                     desired_capabilities=DesiredCapabilities.SAFARI.copy())
-        return webdriver.Safari(executable_path=SafariConfig.executable_path)
-
-    @staticmethod
-    def phone(name: str):
-        """phone mode driver"""
-        chrome_options = ChromeOptions()
-        chrome_options.add_experimental_option("mobileEmulation", {"deviceName": name})
-
-        if ChromeConfig.headless is True:
-            chrome_options.add_argument('--headless')
-
-        driver = webdriver.Chrome(options=chrome_options,
-                                  service=cService(ChromeDriverManager().install()))
-        driver.set_window_size(width=480, height=900)
-        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-            "source": """
-                Object.defineProperty(navigator, 'webdriver', {
-                get: () => undefined
-                })"""
-        })
-        return driver
-
-    @staticmethod
-    def pad(name: str):
-        """pad mode driver"""
-        chrome_options = ChromeOptions()
-        chrome_options.add_experimental_option("mobileEmulation", {"deviceName": name})
-
-        if ChromeConfig.headless is True:
-            chrome_options.add_argument('--headless')
-
-        driver = webdriver.Chrome(options=chrome_options,
-                                  service=cService(ChromeDriverManager().install()))
-        driver.set_window_size(width=1100, height=900)
-        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-            "source": """
-                Object.defineProperty(navigator, 'webdriver', {
-                get: () => undefined
-                })"""
-        })
-        return driver
+        elif BrowserConfig.executable_path != "":
+            return webdriver.Safari(executable_path=BrowserConfig.executable_path)
+        else:
+            return webdriver.Safari()
