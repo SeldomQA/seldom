@@ -49,7 +49,7 @@ class TestMain:
             self,
             path: str = None,
             case: str = None,
-            browser: str = None,
+            browser: [str or dict] = None,
             base_url: str = None,
             debug: bool = False,
             timeout: int = 10,
@@ -201,7 +201,15 @@ class TestMain:
         If you set up a browser, open the browser
         """
         if self.browser is not None:
-            BrowserConfig.NAME = self.browser
+            if isinstance(self.browser, str):
+                BrowserConfig.NAME = self.browser
+            elif isinstance(self.browser, dict):
+                BrowserConfig.NAME = self.browser.get("browser", None)
+                BrowserConfig.command_executor = self.browser.get("command_executor", "")
+                BrowserConfig.executable_path = self.browser.get("executable_path", "")
+                BrowserConfig.options = self.browser.get("option", None)
+            else:
+                raise TypeError("browser type error, str or dict.")
             Seldom.driver = Browser(BrowserConfig.NAME)
 
     @staticmethod
@@ -227,7 +235,7 @@ class TestMainExtend(TestMain):
     def __init__(
             self,
             path: str = None,
-            browser: str = None,
+            browser: [str or dict] = None,
             base_url: str = None,
             debug: bool = False,
             timeout: int = 10,

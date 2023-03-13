@@ -270,7 +270,7 @@ if __name__ == '__main__':
 
     # 使用参数化的用例
     seldom.main(case="test_sample.TestCase.test_ddt")  # 错误用法
-    seldom.main(case="test_sample.TestCase.test_ddt_0_case1")  # 正确用例
+    seldom.main(case="test_sample.TestCase.test_ddt_0")  # 正确用法，0表示第一条数据用例
 ```
 
 `seldom.main()` 提供哪些参数，请参考前面的文档。
