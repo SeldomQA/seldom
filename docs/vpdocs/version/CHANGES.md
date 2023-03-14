@@ -2,6 +2,32 @@
 
 ### seldom 3.x
 
+### 3.2.0(2023-03-14)
+* Web UI测试，增加一组新的警告框 alert 操作。
+  * `self.alert.text`
+  * `self.alert.accept()`
+  * `self.alert.dismiss()`
+  * `self.alert.send_keys("text")`
+* App UI测试。
+  * `AppiumLab()` 类增加 `context()` 方法获取当前上下文。
+  * `AppiumLab()` 类增加 `size()` 当前窗口尺寸。
+* API 测试。
+  * 增加`self.patch()` 请求方法。
+  * 增加`self.json_to_dict()` 支持单引号JSON格式转字典。
+* cache 增加文件锁，防止多线程读写错误（Windows不支持 fcntl）
+* 支持 `XTestRunner=>1.6.2` 版本
+  * XML格式的报告支持 rerun 重跑参数。
+  * HTML 报告skip用例样式微调。
+  * HTML 重跑只显示最后一次结果。
+  * SMTP 发送报告增加 `ssl` 参数。
+* `seldom.main()` 方法 ⚠ 不兼容更新
+  * 移除 `save_last_run` 参数。
+  * `browser` 参数支持`dict` 格式, 所有和浏览器配置相关的有发生修改。 包括
+    * 设置浏览器驱动地址。
+    * 设置 headless 模式。
+    * 设置 options 参数。
+    * 设置 selenium grid 地址。
+
 __3.1.3(2023-02-15)__
 * 功能：`file_data()` 增加`end_line` 参数，对于csv/excel文件支持读取到第几行结束。[#163](https://github.com/SeldomQA/seldom/issues/163)
 * 优化：`self.assertElement()` 断言元素时间过长的问题。
