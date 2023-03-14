@@ -42,6 +42,7 @@ module.exports = {
           "/web-testing/browser_driver",
           "/web-testing/seldom_api",
           "/web-testing/chaining",
+          "/web-testing/page_object",
           "/web-testing/other",
         ],
       },

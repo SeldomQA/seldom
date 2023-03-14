@@ -26,3 +26,8 @@ class BrowserConfig:
     REPORT_PATH = None
     REPORT_TITLE = "Seldom Test Report"
     LOG_PATH = None
+
+    # driver config
+    options = None
+    command_executor = ""
+    executable_path = ""

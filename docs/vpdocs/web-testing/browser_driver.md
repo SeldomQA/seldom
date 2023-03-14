@@ -44,7 +44,7 @@ if __name__ == '__main__':
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.10.2
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
 -----------------------------------------
                              @itest.info
 
@@ -79,17 +79,39 @@ __手动下载__
 
 指定浏览器驱动
 
+> seldom 3.2.0版本通过新的方式指定浏览器驱动。
+
+* chrome
+
 ```python
 import seldom
-from seldom import ChromeConfig
 
 # ...
 
 if __name__ == '__main__':
-    ChromeConfig.command_executor = r"D:\webdriver\chromedriver.exe"
-    seldom.main(browser="gc", tester="虫师")
+    browser = {
+        "browser": "chrome",
+        "executable_path": f"D:\webdriver\chromedriver.exe"
+    }
+    seldom.main(browser=browser, tester="虫师")
 ```
 
+* firefox
+
+```python
+import seldom
+
+# ...
+
+if __name__ == '__main__':
+    browser = {
+        "browser": "firefox",
+        "executable_path": f"D:\webdriver\geckodriver.exe"
+    }
+    seldom.main(browser=browser, tester="虫师")
+```
+
+其他浏览器&驱动配置方式相同，指定 `browser` 名称 和 `executable_path` 驱动路径。
 
 ### 指定不同的浏览器
 
@@ -102,37 +124,12 @@ import seldom
 
 if __name__ == '__main__':
     seldom.main(browser="chrome") # chrome浏览器,默认值
-    seldom.main(browser="gc")     # chrome简写
+    seldom.main(browser="gc")     # google chrome简写
     seldom.main(browser="firefox") # firefox浏览器
     seldom.main(browser="ff")      # firefox简写
     seldom.main(browser="edge")    # edge浏览器
     seldom.main(browser="safari")  # safari浏览器
+    seldom.main(browser="ie")      # internet explore浏览器
 ```
 
 在`main()`方法中通过`browser`参数设置不同的浏览器，默认为`Chrome`浏览器。
-
-
-### Mobile Web 模式
-
-seldom 还支持 Mobile web 模式：
-
-```python
-import seldom
-
-#...
-
-if __name__ == '__main__':
-    seldom.main(browser="iPhone 8") # iPhone 8 手机浏览器展示
-```
-
-支持的设备类型，如下：
-
-```python
-
-PHONE_LIST = [
-    'iPhone 8', 'iPhone 8 Plus', 'iPhone SE', 'iPhone X', 'iPhone XR', 'iPhone 12 Pro',
-    'Pixel 2', 'Pixel XL', 'Pixel 5', 'Samsung Galaxy S8+', 'Samsung Galaxy S20 Ultra'
-]
-PAD_LIST = ['iPad Air', 'iPad Pro', 'iPad Mini']
-
-```

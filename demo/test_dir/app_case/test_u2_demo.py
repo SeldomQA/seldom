@@ -1,5 +1,5 @@
 """
-需要安装 playwright: https://github.com/openatx/uiautomator2
+需要安装 uiautomator2: https://github.com/openatx/uiautomator2
 > pip install uiautomator2
 """
 import seldom
