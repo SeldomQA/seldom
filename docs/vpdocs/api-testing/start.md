@@ -24,13 +24,14 @@ seldom适合个人接口自动化项目，它有以下优势。
 
 Seldom 完全兼容 [Requests](https://docs.python-requests.org/en/master/) API 如下:
 
-| seldom         | requests           |
-|----------------|--------------------|
-| self.get()     | requests.get()     |
-| self.post()    | requests.post()    |
-| self.put()     | requests.put()     |
-| self.delete()  | requests.delete()  |
-| self.session() | requests.session() |
+| seldom          | requests            |
+|-----------------|---------------------|
+| self.get()      | requests.get()      |
+| self.post()     | requests.post()     |
+| self.put()      | requests.put()      |
+| self.delete()   | requests.delete()   |
+| self.patch()    | requests.patch()    |
+| self.session()  | requests.session()  |
 
 ### Seldom VS Request+unittest
 

@@ -90,7 +90,7 @@ import seldom
 class TestCase(seldom.TestCase):
 
     def test_seldom_api(self):
-        # Accept warning box.
+        # Accept warning box. ->  Be removed in the future
         self.accept_alert()
         
         # Adds a cookie to your current session.
@@ -126,7 +126,7 @@ class TestCase(seldom.TestCase):
         # Deletes a single cookie with the given name.
         self.delete_cookie('my_cookie')
         
-        # Dismisses the alert available.
+        # Dismisses the alert available.  ->  Be removed in the future
         self.dismiss_alert()
         
         # Double click element.
@@ -144,7 +144,7 @@ class TestCase(seldom.TestCase):
         # open url.
         self.open("https://www.baidu.com")
         
-        # Gets the text of the Alert.
+        # Gets the text of the Alert.  ->  Be removed in the future
         alert_title = self.get_alert_text
         
         # Gets the value of an element attribute.
@@ -240,6 +240,12 @@ class TestCase(seldom.TestCase):
         
         # Setting width and height of window scroll bar.
         self.window_scroll(width=300, height=500)
+        
+        # alert operation. (seldom>=3.2.0)
+        text  = self.alert.text
+        self.alert.accept()
+        self.alert.dismiss()
+        self.alert.send_keys("text")
 
 ```
 

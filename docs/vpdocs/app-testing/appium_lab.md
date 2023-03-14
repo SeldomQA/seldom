@@ -68,6 +68,8 @@ from seldom.appium_lab import AppiumLab
 
 appium_lab = AppiumLab(self.driver)
 
+# 返回当前上下文
+context = appium_lab.context()
 # 切换原生app
 appium_lab.switch_to_app()
 # 切换webview
@@ -124,6 +126,8 @@ ret = appium_lab.is_keyboard_shown()
 print(ret)
 # 收起虚拟键盘
 appium_lab.hide_keyboard()
+# 返回当前窗口尺寸
+size = appium_lab.size()
 ```
 
 ## appium driver

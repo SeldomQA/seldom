@@ -363,10 +363,18 @@ from seldom import SMTP
 if __name__ == '__main__':
     report_path = "/you/path/report.html"
     seldom.main(report=report_path)
-    smtp = SMTP(user="send@126.com", password="abc123", host="smtp.126.com")
+    smtp = SMTP(user="send@126.com", password="abc123", host="smtp.126.com", ssl=True)
     smtp.sendmail(to="receive@mail.com", subject="Email title", attachments=report_path, delete=False)
 ```
 
+__SMTP()类__
+
+- `user`: 邮箱用户名。
+- `password`: 邮箱密码。
+- `host`: 邮箱服务地址。
+- `ssl`: `True` 使用 `SMTP_SSL()`，`False` 使用 `SMTP()`，两种方式应对不同的邮箱服务。
+
+__sendmail()方法__
 - `subject`: 邮件标题，默认:`Seldom Test Report`。
 - `to`: 添加收件人，支持多个收件人: `["aa@mail.com", "bb@mail.com"]`。
 - `attachments`: 设置附件，默认发送 HTML 测试报告。
