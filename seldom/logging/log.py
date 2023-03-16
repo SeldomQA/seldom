@@ -45,6 +45,7 @@ class LogConfig:
         if format is None:
             format = self._console_format
         self.logger.remove()
+        self._level = level
         self.logger.add(sys.stderr, level=level, colorize=colorlog, format=format)
         self.logger.add(self.logfile, level=level, colorize=False, format=self._log_format, encoding="utf-8")
 
