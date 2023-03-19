@@ -4,9 +4,9 @@ from poium import Page, Element, Elements
 
 class BBSPage(Page):
     """BBS Page"""
-    search_input = Element(id_="com.meizu.flyme.flymebbs:id/nw")
-    search_button = Element(id_="com.meizu.flyme.flymebbs:id/o1")
-    search_result = Elements(id_="com.meizu.flyme.flymebbs:id/a29")
+    search_input = Element("id=com.meizu.flyme.flymebbs:id/nw")
+    search_button = Element("id=com.meizu.flyme.flymebbs:id/o1")
+    search_result = Elements("id=com.meizu.flyme.flymebbs:id/a29")
 
 
 class TestBBS(seldom.TestCase):
@@ -15,7 +15,7 @@ class TestBBS(seldom.TestCase):
     """
 
     def start(self):
-        self.bbs_page = BBSPage(self.driver)
+        self.bbs_page = BBSPage()
 
     def test_bbs(self):
         """
@@ -25,8 +25,8 @@ class TestBBS(seldom.TestCase):
         self.bbs_page.search_input.click()
         self.bbs_page.search_input.send_keys("flyme")
         self.bbs_page.search_button.click()
-        elems = self.bbs_page.search_result
-        for title in elems:
+        titles = self.bbs_page.search_result
+        for title in titles:
             self.assertIn("flyme", title.text.lower())
 
 
