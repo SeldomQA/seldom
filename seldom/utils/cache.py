@@ -35,11 +35,9 @@ class Cache:
         if name is None:
             with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
                 if WINDOWS is False:
-                    fcntl.flock(json_file, fcntl.LOCK_EX)
+                    fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
                 json.dump({}, json_file)
                 log.info("Clear all cache data")
-                if WINDOWS is False:
-                    fcntl.flock(json_file, fcntl.LOCK_UN)
         else:
             with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
                 if WINDOWS is False:
@@ -53,10 +51,8 @@ class Cache:
 
             with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
                 if WINDOWS is False:
-                    fcntl.flock(json_file, fcntl.LOCK_EX)
+                    fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
                 json.dump(save_data, json_file)
-                if WINDOWS is False:
-                    fcntl.flock(json_file, fcntl.LOCK_UN)
 
     @staticmethod
     def set(data: dict) -> None:
@@ -66,7 +62,7 @@ class Cache:
         """
         with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
             if WINDOWS is False:
-                fcntl.flock(json_file, fcntl.LOCK_EX)
+                fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
             save_data = json.load(json_file)
             for key, value in data.items():
                 data = save_data.get(key, None)
@@ -76,15 +72,10 @@ class Cache:
                     log.info(f"update cache data: {key} = {value}")
                 save_data[key] = value
 
-            if WINDOWS is False:
-                fcntl.flock(json_file, fcntl.LOCK_UN)
-
         with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
             if WINDOWS is False:
-                fcntl.flock(json_file, fcntl.LOCK_EX)
+                fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
             json.dump(save_data, json_file)
-            if WINDOWS is False:
-                fcntl.flock(json_file, fcntl.LOCK_UN)
 
     @staticmethod
     def get(name=None):
@@ -95,7 +86,7 @@ class Cache:
         """
         with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
             if WINDOWS is False:
-                fcntl.flock(json_file, fcntl.LOCK_EX)
+                fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
             save_data = json.load(json_file)
             if name is None:
                 return save_data
@@ -104,8 +95,6 @@ class Cache:
             if value is not None:
                 log.info(f"Get cache data: {name} = {value}")
 
-            if WINDOWS is False:
-                fcntl.flock(json_file, fcntl.LOCK_UN)
             return value
 
 
