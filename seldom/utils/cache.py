@@ -6,6 +6,7 @@ import sys
 import json
 from seldom.logging import log
 from seldom.utils import file
+from functools import lru_cache
 
 WINDOWS = True
 if sys.platform != "win32":
@@ -15,9 +16,9 @@ if sys.platform != "win32":
 DATA_PATH = os.path.join(file.dir, "cache_data.json")
 
 
-class Cache:
+class DiskCache:
     """
-    Cache through JSON files
+    Disk Cache through JSON files
     """
 
     def __init__(self):
@@ -98,4 +99,10 @@ class Cache:
             return value
 
 
-cache = Cache()
+cache = DiskCache()
+
+
+def memory_cache(maxsize=None, typed=False):
+    """ memory (Least-recently-used) cache decorator
+    """
+    return lru_cache(maxsize=maxsize, typed=typed)
