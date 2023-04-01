@@ -155,24 +155,21 @@ class DiskCache:
             return val
         return wrapper
 
-    def clear(self, func_name: str) -> None:
+    def clear(self, func_name: str = None) -> None:
         """
         clear function cache
         :param func_name:
         :return:
         """
-        log.info(f"Clear function cache: {func_name}")
-        for cache_file in os.listdir(self.cache_path):
-            if cache_file.startswith(func_name + "-"):
-                os.remove(os.path.join(self.cache_path, cache_file))
-
-    def clear_all(self) -> None:
-        """
-        clear all cache
-        """
-        log.info("Clear all function cache")
-        if os.path.exists(self.cache_path):
-            shutil.rmtree(self.cache_path)
+        if func_name is None:
+            log.info("Clear all function cache")
+            if os.path.exists(self.cache_path):
+                shutil.rmtree(self.cache_path)
+        else:
+            log.info(f"Clear function cache: {func_name}")
+            for cache_file in os.listdir(self.cache_path):
+                if cache_file.startswith(func_name + "-"):
+                    os.remove(os.path.join(self.cache_path, cache_file))
 
 
 disk_cache = DiskCache
