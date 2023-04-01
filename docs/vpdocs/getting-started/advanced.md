@@ -495,6 +495,8 @@ log.error("this error info.")
 
 实际测试过程中，往往需要需要通过cache去记录一些数据，从而减少不必要的操作。例如 登录token，很多条用例都会用到登录token，那么就可以借助缓存来暂存登录token，从而减少重复动作。
 
+* cache
+
 ```python
 from seldom.utils import cache
 
@@ -525,3 +527,88 @@ cache.clear("token")
 ```
 
 > 注：seldom 提供的 `cache` 本质上是通过json文件来临时记录数据，没有失效时间。你需要在适当的位置做清除操作。例如，整个用例开始时清除。
+
+* memery_cache
+
+使用内存的实现的cache 装饰器。
+
+```python
+import time
+import seldom
+from seldom.utils import memory_cache
+
+
+@memory_cache()
+def add(x, y):
+    print("calculating: %s + %s" % (x, y))
+    time.sleep(2)
+    c = x + y
+    return c
+
+
+class MyTest(seldom.TestCase):
+
+    def test_case(self):
+        """test cache 1"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+    def test_case2(self):
+        """test cache 2"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+    def test_case3(self):
+        """test cache 3"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
+
+* disk_cache
+
+使用磁盘实现的cache 装饰器。
+
+```python
+import time
+import seldom
+from seldom.utils import disk_cache
+
+
+@disk_cache()
+def add(x, y):
+    print("calculating: %s + %s" % (x, y))
+    time.sleep(2)
+    c = x + y
+    return c
+
+
+class MyTest(seldom.TestCase):
+
+    def test_case(self):
+        """test cache 1"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+    def test_case2(self):
+        """test cache 2"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+    def test_case3(self):
+        """test cache 3"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+
+if __name__ == '__main__':
+    dc = disk_cache()
+    # 清除所有函数缓存
+    # dc.clear()
+    # 清除 `add()` 函数缓存
+    dc.clear("add")
+    seldom.main(debug=True)
+```
