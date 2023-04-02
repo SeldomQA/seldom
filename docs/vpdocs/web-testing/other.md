@@ -21,7 +21,7 @@ if __name__ == '__main__':
     chrome_options.headless = True  # 开启 headless 模式
     browser = {
         "browser": "chrome",
-        "options": chrome_options
+        "option": chrome_options
     }
     seldom.main(browser=browser)
 ```
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     firefox_options.add_argument("-headless")  # 开启 headless 模式
     browser = {
         "browser": "firefox",
-        "options": firefox_options
+        "option": firefox_options
     }
     seldom.main(browser=browser)
 ```
