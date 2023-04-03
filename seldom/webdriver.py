@@ -12,6 +12,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.service import Service as cService
+from appium.webdriver.common.appiumby import AppiumBy
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
@@ -31,6 +32,17 @@ LOCATOR_LIST = {
     'partial_link_text': By.PARTIAL_LINK_TEXT,
     'tag': By.TAG_NAME,
     'class_name': By.CLASS_NAME,
+    'ios_uiautomation': AppiumBy.IOS_UIAUTOMATION,
+    'ios_predicate': AppiumBy.IOS_PREDICATE,
+    'ios_class_chain': AppiumBy.IOS_CLASS_CHAIN,
+    'android_uiautomator': AppiumBy.ANDROID_UIAUTOMATOR,
+    'android_viewtag': AppiumBy.ANDROID_VIEWTAG,
+    'android_data_matcher': AppiumBy.ANDROID_DATA_MATCHER,
+    'android_view_matcher': AppiumBy.ANDROID_VIEW_MATCHER,
+    'windows_uiautomation': AppiumBy.WINDOWS_UI_AUTOMATION,
+    'accessibility_id': AppiumBy.ACCESSIBILITY_ID,
+    'image': AppiumBy.IMAGE,
+    'custom': AppiumBy.CUSTOM,
 }
 
 
@@ -43,65 +55,34 @@ class WebElement:
         if len(kwargs) > 1:
             raise ValueError("Please specify only one locator")
 
-        self.by, self.value = next(iter(kwargs.items()))
-        try:
-            LOCATOR_LIST[self.by]
-        except KeyError:
-            raise ValueError(f"Element positioning of type '{self.by}' is not supported. ")
+        by, self.value = next(iter(kwargs.items()))
+
+        self.by = LOCATOR_LIST.get(by)
+        if self.by is None:
+            raise ValueError(f"The find element is not supported: {by}. ")
         self.find_elem_info = None
         self.find_elem_warn = None
-
-    def __find_element(self, elem: tuple) -> None:
-        """
-        Find if the element exists.
-        """
-        for _ in range(Seldom.timeout):
-            elems = Seldom.driver.find_elements(by=elem[0], value=elem[1])
-            if len(elems) >= 1:
-                self.find_elem_info = f"Find {len(elems)} element: {elem[0]}={elem[1]} "
-                break
-            time.sleep(1)
-        else:
-            self.find_elem_warn = f"❌ Find 0 element through: {elem[0]}={elem[1]}"
 
     def get_elements(self, index: int = None):
         """
         Judge element positioning way, and returns the element.
         """
 
-        if self.by == "id_":
-            self.__find_element((By.ID, self.value))
-            elem = Seldom.driver.find_elements(By.ID, self.value)
-        elif self.by == "name":
-            self.__find_element((By.NAME, self.value))
-            elem = Seldom.driver.find_elements(By.NAME, self.value)
-        elif self.by == "class_name":
-            self.__find_element((By.CLASS_NAME, self.value))
-            elem = Seldom.driver.find_elements(By.CLASS_NAME, self.value)
-        elif self.by == "tag":
-            self.__find_element((By.TAG_NAME, self.value))
-            elem = Seldom.driver.find_elements(By.TAG_NAME, self.value)
-        elif self.by == "link_text":
-            self.__find_element((By.LINK_TEXT, self.value))
-            elem = Seldom.driver.find_elements(By.LINK_TEXT, self.value)
-        elif self.by == "partial_link_text":
-            self.__find_element((By.PARTIAL_LINK_TEXT, self.value))
-            elem = Seldom.driver.find_elements(By.PARTIAL_LINK_TEXT, self.value)
-        elif self.by == "xpath":
-            self.__find_element((By.XPATH, self.value))
-            elem = Seldom.driver.find_elements(By.XPATH, self.value)
-        elif self.by == "css":
-            self.__find_element((By.CSS_SELECTOR, self.value))
-            elem = Seldom.driver.find_elements(By.CSS_SELECTOR, self.value)
+        for _ in range(Seldom.timeout):
+            elems = Seldom.driver.find_elements(by=self.by, value=self.value)
+            if len(elems) >= 1:
+                self.find_elem_info = f"Find {len(elems)} element: {self.by}={self.value} "
+                break
+            time.sleep(1)
         else:
-            raise NameError(
-                "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
+            self.find_elem_warn = f"❌ Find 0 element through: {self.by}={self.value}"
+
+        elem = Seldom.driver.find_elements(self.by, self.value)
+        if len(elem) == 0:
+            raise NotFindElementError(self.find_elem_warn)
 
         if index is None:
             return elem
-
-        if len(elem) == 0:
-            raise NotFindElementError(self.find_elem_warn)
 
         return elem[index]
 
