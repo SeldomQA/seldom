@@ -3,6 +3,56 @@
 数据驱动是测试框架非常重要的功能之一，它可以有效的节约大量重复的测试代码。seldom针对该功能做强大的支持。
 
 
+### @class_data() 方法
+
+`class_data()` 装饰测试类，测试类下面的任何方法可以共用 `class_data()` 中定义的变量。
+ 
+* 用法一
+
+```python
+import seldom
+from seldom import data_class
+
+
+@data_class([
+    {"username": "user_1", "password": "abc123"},
+    {"username": "user_2", "password": "abc456"},
+])
+class DDTTest(seldom.TestCase):
+
+    def test_data_func(self):
+        """ data driver case """
+        print("username->", self.username)
+        print("password->", self.password)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
+
+* 用法二
+
+```python
+import seldom
+from seldom import data_class
+
+
+@data_class(("username", "password"), [
+    ("user_1", "abc123"),
+    ("user_1", "abc456"),
+])
+class DDTTest(seldom.TestCase):
+
+    def test_data_func(self):
+        """ data driver case """
+        print("username->", self.username)
+        print("password->", self.password)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
+
 ### @data()方法
 
 当测试数据量比较少的情况下，可以通过`@data()`管理测试数据。
@@ -57,29 +107,6 @@ class DataDriverTest(seldom.TestCase):
 ```
 
 通过`@data()` 装饰器来参数化测试用例。
-
-**参数化测试类**
-
-也可以针对测试类进行参数化, 通过`@data_class()` 方法：
-
-```python
-import seldom
-from seldom import data_class
-
-
-@data_class([
-    ("keyword", "assert_tile"),
-    ("seldom", "seldom_百度搜索"),
-    ("python", "python_百度搜索")
-])
-class YouTest(seldom.TestCase):
-
-    def test_case(self):
-        """a simple test case """
-        print(f"test data: {self.keyword}")
-        print(f"test assert: {self.assert_tile}")
-
-```
 
 **动态生成测试数据**
 
