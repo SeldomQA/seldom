@@ -67,6 +67,18 @@ class MSSQLDB(SQLBase):
             self.connection.commit()
             return row
 
+    def insert_get_last_id(self, sql: str) -> int:
+        """
+        insert sql and get last row id
+        :param sql:
+        :return:
+        """
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql)
+            last_id = cursor.lastrowid
+            self.connection.commit()
+            return last_id
+
     def insert_data(self, table: str, data: dict) -> None:
         """
         insert sql statement

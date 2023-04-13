@@ -61,6 +61,17 @@ class SQLiteDB(SQLBase):
         row = self.cursor.fetchone()
         return row
 
+    def insert_get_last_id(self, sql: str) -> int:
+        """
+        insert sql and get last row id
+        :param sql:
+        :return: query data
+        """
+        self.cursor.execute(sql)
+        last_id = self.cursor.lastrowid
+        self.connection.commit()
+        return last_id
+
     def select_data(self, table: str, where: dict = None, one: bool = False) -> Any:
         """
         select sql statement
