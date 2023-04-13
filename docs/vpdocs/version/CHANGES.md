@@ -2,6 +2,13 @@
 
 ### seldom 3.x
 
+### 3.2.1(2023-04-14)
+* 功能：增加`@disk_cache()`、`@memory_cache()` 缓存装饰器。
+* 功能：app测试，seldom支持本身API支持appium定位。
+* 功能：db操作，增加`insert_get_last_id()` 方法，插入数据并返回id。
+* 修复：`@data_class()` 必传`input_values` 参数问题。
+* 修复：设置log等级，HTML报告无法根据等级打印日志问题。
+
 ### 3.2.0(2023-03-14)
 * Web UI测试，增加一组新的警告框 alert 操作。
   * `self.alert.text`
