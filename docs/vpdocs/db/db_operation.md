@@ -2,17 +2,18 @@
 
 seldom 支持sqlite3、MySQL、SQL Server、MongoDB数据库操作。
 
-| sqlite3       | MySQL         | SQL Server    | 
-|---------------|---------------|---------------|
-| execute_sql() | execute_sql() | execute_sql() |
-| query_sql()   | query_sql()   | query_sql()   |
-| query_one()   | query_one()   | query_one()   |
-| delete()      | delete()      | delete()      |
-| insert()      | insert()      | insert()      |
-| select()      | select()      | select()      |
-| update()      | update()      | update()      |
-| init_table()  | init_table()  | init_table()  |
-| close()       | close()       | close()       |
+| sqlite3              | MySQL                | SQL Server           | 
+|----------------------|----------------------|----------------------|
+| execute_sql()        | execute_sql()        | execute_sql()        |
+| query_sql()          | query_sql()          | query_sql()          |
+| query_one()          | query_one()          | query_one()          |
+| insert_get_last_id() | insert_get_last_id() | insert_get_last_id() |
+| delete()             | delete()             | delete()             |
+| insert()             | insert()             | insert()             |
+| select()             | select()             | select()             |
+| update()             | update()             | update()             |
+| init_table()         | init_table()         | init_table()         |
+| close()              | close()              | close()              |
 
 ### 连接数据库
 
@@ -37,10 +38,10 @@ __连接MySQL数据库__
 ```py
 from seldom.db_operation import MySQLDB
 
-db = MySQLDB(host="127.0.0.1", 
-             port=3306, 
-             user="root", 
-             password="123", 
+db = MySQLDB(host="127.0.0.1",
+             port=3306,
+             user="root",
+             password="123",
              database="db_name")
 ```
 
@@ -93,12 +94,21 @@ ret = db.query_one("select * from user")
 print(ret)
 ```
 
+* insert_get_last_id
+
+插入数据并返回最新的ID。
+
+```python
+last_id = db.insert_get_last_id("INSERT INTO user (id, name) VALUES (1, 'tom') ")
+print(last_id)
+```
+
 * delete
 
 删除表数据。
 
 ```py
-db.delete(table="user", where={"id":1})
+db.delete(table="user", where={"id": 1})
 ```
 
 * insert
@@ -115,9 +125,9 @@ db.insert(table="user", data=data)
 查询表数据。
 
 ```py
-result = db.select(table="user", where={"id":1, "name": "tom"})
+result = db.select(table="user", where={"id": 1, "name": "tom"})
 print(result)
-result = db.select(table="user", one=True) # one=True 返回一条结果
+result = db.select(table="user", one=True)  # one=True 返回一条结果
 print(result)
 ```
 
@@ -160,7 +170,6 @@ db.init_table(table_data)
 ```py
 db.close()
 ```
-
 
 ## MongoDB
 
