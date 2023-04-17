@@ -1,5 +1,63 @@
 # appium API
 
+appium API继承 selenium API，所以，操作方法是通用的。在seldom 中，请参考web UI 中的seldom API。
+
+## appium 定位
+
+* 支持定位类型
+
+seldom 支持定位如下，包括selenium/appium。
+
+| 类型              | 定位                   | **kwargs                    |
+|-----------------|----------------------|-----------------------------|
+| selenium/appium | id                   | id_="id"                    |
+| selenium        | mame                 | name="name"                 |
+| selenium/appium | class                | class_name="class"          |
+| selenium        | tag                  | tag="input"                 |
+| selenium        | link_text            | link_text="文字链接"            |
+| selenium        | partial_link_text    | partial_link_text="文字链"     |
+| selenium/appium | xpath                | xpath="//*[@id='11']"       |
+| selenium        | css                  | cass="input#id"             |
+| appium          | ios_uiautomation     | ios_uiautomation = "xx"     |
+| appium          | ios_predicate        | ios_predicate = "xx"        |
+| appium          | ios_class_chain      | ios_class_chain = "xx"      |
+| appium          | android_uiautomator  | android_uiautomator = "xx"  |
+| appium          | android_viewtag      | android_viewtag = "xx"      |
+| appium          | android_data_matcher | android_data_matcher = "xx" |
+| appium          | android_view_matcher | android_view_matcher = "xx" |
+| appium          | windows_uiautomation | windows_uiautomation = "xx" |
+| appium          | accessibility_id     | accessibility_id = "xx"     |
+| appium          | image                | image = "xx"                |
+| appium          | custom               | custom = "xx"               |
+
+* 定位用法
+
+```python
+import seldom
+
+
+class TestBBS(seldom.TestCase):
+
+    def test_bbs(self):
+        """定位方法用法"""
+        self.click(id_="com.meizu.flyme.flymebbs:id/nw")
+        self.sleep(2)
+        self.type(android_uiautomator='new UiSelector().resourceId("com.meizu.flyme.flymebbs:id/nw")', text="flyme")
+        ...
+
+if __name__ == '__main__':
+    desired_caps = {
+        'deviceName': 'JEF_AN20',
+        'automationName': 'UiAutomator2',
+        'platformName': 'Android',
+        'platformVersion': '10.0',
+        'appPackage': 'com.meizu.flyme.flymebbs',
+        'appActivity': '.ui.LoadingActivity',
+        'noReset': True,
+    }
+    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723", debug=True)
+```
+
 ## appium lab
 
 `appium_lab` 封装了常用App操作
