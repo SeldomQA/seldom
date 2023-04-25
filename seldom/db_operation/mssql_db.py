@@ -12,7 +12,7 @@ from seldom.db_operation.base_db import SQLBase
 class MSSQLDB(SQLBase):
     """SQL Server DB table API"""
 
-    def __init__(self, server: str, user: str, password: str, database: str):
+    def __init__(self, server: str, user: str, password: str, database: str, charset="utf8mb4"):
         """
         Connect to the SQL Server database
         :param server:
@@ -23,7 +23,8 @@ class MSSQLDB(SQLBase):
         self.connection = pymssql.connect(server=server,
                                           user=user,
                                           password=password,
-                                          database=database)
+                                          database=database,
+                                          charset=charset)
 
         # self.cursor = self.connection.cursor(as_dict=True)
 

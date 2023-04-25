@@ -9,7 +9,7 @@ from seldom.db_operation.base_db import SQLBase
 class MySQLDB(SQLBase):
     """MySQL DB table API"""
 
-    def __init__(self, host: str, port: int, user: str, password: str, database: str):
+    def __init__(self, host: str, port: int, user: str, password: str, database: str, charset='utf8mb4'):
         """
         Connect to the MySQL database
         :param host:
@@ -23,7 +23,7 @@ class MySQLDB(SQLBase):
                                           user=user,
                                           password=password,
                                           database=database,
-                                          charset='utf8mb4',
+                                          charset=charset,
                                           cursorclass=pymysql.cursors.DictCursor)
 
     def close(self) -> None:
