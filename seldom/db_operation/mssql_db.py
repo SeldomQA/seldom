@@ -122,11 +122,12 @@ class MSSQLDB(SQLBase):
             sql += f""" where {self.dict_to_str_and(where)};"""
         self.execute_sql(sql)
 
-    def init_table(self, table_data: dict) -> None:
+    def init_table(self, table_data: dict, clear: bool = True) -> None:
         """
         init table data
         """
         for table, data_list in table_data.items():
-            self.delete_data(table)
+            if clear:
+                self.delete_data(table)
             for data in data_list:
                 self.insert_data(table, data)
