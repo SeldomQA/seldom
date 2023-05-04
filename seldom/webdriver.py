@@ -733,43 +733,66 @@ class WebDriver:
         log.info("✅ switch to new window.")
         Seldom.driver.switch_to.new_window(type_hint=type_hint)
 
-    def screenshots(self, file_path: str = None) -> None:
+    @staticmethod
+    def save_screenshot(file_path: str = None, index: int = 0, **kwargs) -> None:
         """
         Saves a screenshots of the current window to a PNG image file.
 
         Usage:
-            self.screenshots()
-            self.screenshots('/Screenshots/foo.png')
+            self.save_screenshot()
+            self.save_screenshot('/Screenshots/foo.png')
+            self.save_screenshot(id_="bLogo", index=0)
         """
+
         if file_path is None:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
             file_path = os.path.join(img_dir, get_timestamp() + ".png")
+
+        if len(kwargs) == 0:
+            log.info(f"📷️  screenshot -> ({file_path}).")
+            Seldom.driver.save_screenshot(file_path)
+        else:
+            log.info(f"📷️  element screenshot -> ({file_path}).")
+            web_elem = WebElement(**kwargs)
+            elem = web_elem.get_elements(index)
+            elem.screenshot(file_path)
+
+    def screenshots(self) -> None:
+        """
+        Saves a screenshots of the current window to HTML report.
+
+        Usage:
+            self.screenshots()
+        """
         if Seldom.debug is True:
+            img_dir = os.path.join(os.getcwd(), "reports", "images")
+            if os.path.exists(img_dir) is False:
+                os.mkdir(img_dir)
+            file_path = os.path.join(img_dir, get_timestamp() + ".png")
             log.info(f"📷️  screenshot -> ({file_path}).")
             Seldom.driver.save_screenshot(file_path)
         else:
             log.info("📷️  screenshot -> HTML report.")
             self.images.append(Seldom.driver.get_screenshot_as_base64())
 
-    def element_screenshot(self, file_path: str = None, index: int = 0, **kwargs) -> None:
+    def element_screenshot(self, index: int = 0, **kwargs) -> None:
         """
-        Saves an element screenshot of the element to a PNG image file.
+        Saves an element screenshot of the element to HTML report.
 
         Usage:
             self.element_screenshot(css="#id")
-            self.element_screenshot(css="#id", file_path='/Screenshots/foo.png')
+            self.element_screenshot(css="#id", index=0)
         """
 
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
-        if file_path is None:
+        if Seldom.debug is True:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
             file_path = os.path.join(img_dir, get_timestamp() + ".png")
-        if Seldom.debug is True:
             log.info(f"📷️ element screenshot -> ({file_path}).")
             elem.screenshot(file_path)
         else:
