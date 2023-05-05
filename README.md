@@ -294,6 +294,10 @@ https://github.com/defnngj/seldom-api-testing
 
 * [utx](https://github.com/jianbing/utx)
 
+### Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=SeldomQA/seldom&type=Date)
+
 ### 交流
 
 QQ群：948994709
