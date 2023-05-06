@@ -28,8 +28,8 @@ class LogConfig:
     def __init__(self, level: str = "DEBUG", colorlog: bool = True):
         self.logger = logger
         self._colorlog = colorlog
-        self._console_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> {file} <level>| {level} | {message}</level>"
-        self._log_format = "{time: YYYY-MM-DD HH:mm:ss} {file} | {level} | {message}"
+        self._console_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> <level>| {level: <8} | {file} | {message}</level>"
+        self._log_format = "{time: YYYY-MM-DD HH:mm:ss} | <level>{level: <8}</level> | {file: <10} | {message}"
         self._level = level
         self.logfile = BrowserConfig.LOG_PATH
         self.set_level(self._colorlog, self._console_format, self._level)
