@@ -21,7 +21,7 @@ if __name__ == '__main__':
     chrome_options.headless = True  # 开启 headless 模式
     browser = {
         "browser": "chrome",
-        "option": chrome_options
+        "options": chrome_options
     }
     seldom.main(browser=browser)
 ```
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     firefox_options.add_argument("-headless")  # 开启 headless 模式
     browser = {
         "browser": "firefox",
-        "option": firefox_options
+        "options": firefox_options
     }
     seldom.main(browser=browser)
 ```
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     
     browser = {
         "browser": "chrome",
-        "option": chrome_options,
+        "options": chrome_options,
     }
     seldom.main(debug=True, browser=browser)
 ```
@@ -123,7 +123,7 @@ if __name__ == '__main__':
     chrome_options.add_argument('--ignore-certificate-errors')  # 忽略无效证书的问题
     browser = {
         "browser": "chrome",
-        "option": chrome_options,
+        "options": chrome_options,
     }
     seldom.main(browser=browser)
 ```
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     chrome_options.add_argument('--no-sandbox')  # 关闭沙盒模式
     browser = {
         "browser": "chrome",
-        "option": chrome_options,
+        "options": chrome_options,
     }
     seldom.main(browser=browser)
 ```
@@ -161,7 +161,7 @@ if __name__ == '__main__':
     chrome_options.add_experimental_option("excludeSwitches", ['enable-automation', 'enable-logging'])
     browser = {
         "browser": "chrome",
-        "option": chrome_options,
+        "options": chrome_options,
     }
     seldom.main(browser=browser)
 ```

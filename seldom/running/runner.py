@@ -207,7 +207,7 @@ class TestMain:
                 BrowserConfig.NAME = self.browser.get("browser", None)
                 BrowserConfig.command_executor = self.browser.get("command_executor", "")
                 BrowserConfig.executable_path = self.browser.get("executable_path", "")
-                BrowserConfig.options = self.browser.get("option", None)
+                BrowserConfig.options = self.browser.get("options", None)
             else:
                 raise TypeError("browser type error, str or dict.")
             Seldom.driver = Browser(BrowserConfig.NAME)
