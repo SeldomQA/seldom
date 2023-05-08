@@ -304,7 +304,7 @@ class WebDriver:
         """
         return Seldom.driver.get_window_size()
 
-    def type(self, text: str, clear: bool = False, enter: bool = False, index: int = 0, **kwargs) -> None:
+    def type(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0, **kwargs) -> None:
         """
         Operation input box.
 
@@ -313,6 +313,9 @@ class WebDriver:
         """
         if clear is True:
             self.clear(index, **kwargs)
+        if click is True:
+            self.click(index, **kwargs)
+            self.sleep(0.5)
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
