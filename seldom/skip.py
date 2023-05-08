@@ -5,7 +5,7 @@ import unittest
 import functools
 
 __all__ = [
-    "skip", "skip_if", "skip_unless", "expected_failure", "depend", "if_depend", "label"
+    "skip", "skip_if", "skip_unless", "expected_failure", "depend", "if_depend", "label", "rerun"
 ]
 
 
@@ -107,3 +107,23 @@ def label(*labels):
         return cls
 
     return inner
+
+
+def rerun(times: int = 2):
+    """
+    Repeat a function multiple times.
+    Note: The change method cannot count the number of test cases.
+
+    :param times: Number of runs, default 2
+    return
+    """
+    def wrapper(func):
+
+        @functools.wraps(func)
+        def decorator(*args, **kwargs):
+            for i in range(times):
+                func(*args, **kwargs)
+
+        return decorator
+
+    return wrapper
