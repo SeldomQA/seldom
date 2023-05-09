@@ -88,6 +88,26 @@ if __name__ == '__main__':
     seldom.main()
 ```
 
+### 重复执行
+
+当然某一段测试需要重复执行，使用`for`循环是常规的操作，seldom提供了`rerun()` 方法可以更优雅的完成这个工作。
+
+```python
+import seldom
+from seldom import rerun 
+
+
+class TestCase(seldom.TestCase):
+    
+    @rerun(100)
+    def test_search_seldom(self):
+        self.open("https://www.baidu.com")
+        self.type_enter(id_="kw", text="seldom")
+
+```
+
+通过`@rerun()` 装饰 `test_searchseldom()` 可以执行 100 次，统计结果仍为1条用例，如果想统计为 100 条用例，请使用`@data()` 装饰器。
+
 ### 随机测试数据
 
 测试数据是测试用例的重要部分，有时不能把测试数据写死在测试用例中，比如注册新用户，一旦执行过用例那么测试数据就已经存在了，所以每次执行注册新用户的数据不能是一样的，这就需要随机生成一些测试数据。
