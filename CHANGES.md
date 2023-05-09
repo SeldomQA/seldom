@@ -1,3 +1,17 @@
+### 3.2.2
+* 功能：增加`@threads()`支持多线程运行用例。
+* 功能：增加`@rerun()` 重复执行某个测试方法。
+* 功能：数据库操作
+  * `MySQLDB()`、`MSSQLDB()` 支持`charset` 参数设置字符集。
+  * `init_table()` 批量插入数据库增加`clear` 参数，可以选择是否删除表再插入。
+* 功能：Web自动化
+  * 新增`save_screenshot()` 截图保存本地。
+  * 修改`screenshots()` 自动截图保存到HTML报告，移除`file_path` 参数。
+  * 修改`element_screenshot()` 元素截图保存到HTML报告，移除`file_path` 参数。
+  * `type()` 方法增加 `click` 参数，针对app元素优化，app的输入框往往需要点击以下锁定光标再输入。
+* 修复：浏览器配置参数 `option` 更名为 `options`。
+* 其他：增加 python3.11 支持。
+
 ### 3.2.1
 * 功能：增加`@disk_cache()`、`@memory_cache()` 缓存装饰器。
 * 功能：app测试，seldom支持本身API支持appium定位。
