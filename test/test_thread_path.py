@@ -1,10 +1,9 @@
-import time
 import seldom
 from seldom.utils import threads
 
 
 @threads(3)  # !!!核心!!!! 设置线程数
-def run_case(path):
+def run_case(path: str):
     """
     根据传入的path执行用例
     """
@@ -12,14 +11,11 @@ def run_case(path):
 
 
 if __name__ == "__main__":
-    # 定义三个目录，分别丢给3个线程，当然取决于 @threads(s) 的数量。
+    # 定义3个测试文件，分别丢给3个线程执行。
     paths = [
-        "./demo/test_dir/more_case/test_case1.py",
-        "./demo/test_dir/more_case/test_case2.py",
-        "./demo/test_dir/more_case/test_case3.py"
+        "./test_dir/more_case/test_case1.py",
+        "./test_dir/more_case/test_case2.py",
+        "./test_dir/more_case/test_case3.py"
     ]
-    for url in paths:
-        run_case(url)
-    end = time.time()
-
-
+    for p in paths:
+        run_case(p)
