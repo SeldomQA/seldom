@@ -284,6 +284,10 @@ https://github.com/SeldomQA/seldom-web-testing
 
 https://github.com/defnngj/seldom-api-testing
 
+### Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=SeldomQA/seldom&type=Date)
+
 ### 感谢
 
 感谢从以下项目中得到思路和帮助。
@@ -293,10 +297,6 @@ https://github.com/defnngj/seldom-api-testing
 * [parameterized](https://github.com/wolever/parameterized)
 
 * [utx](https://github.com/jianbing/utx)
-
-### Star History
-
-![Star History Chart](https://api.star-history.com/svg?repos=SeldomQA/seldom&type=Date)
 
 ### 交流
 
