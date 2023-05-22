@@ -58,7 +58,7 @@ class TestMain:
             report: str = None,
             title: str = "Seldom Test Report",
             tester: str = "Anonymous",
-            description: str = "Test case execution",
+            description: [str or list] = "Test case execution",
             rerun: int = 0,
             language: str = "en",
             whitelist: list = [],
