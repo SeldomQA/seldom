@@ -1,3 +1,50 @@
+### 3.2.2
+* 功能：增加`@threads()`支持多线程运行用例。
+* 功能：增加`@rerun()` 重复执行某个测试方法。
+* 功能：数据库操作
+  * `MySQLDB()`、`MSSQLDB()` 支持`charset` 参数设置字符集。
+  * `init_table()` 批量插入数据库增加`clear` 参数，可以选择是否删除表再插入。
+* 功能：Web自动化
+  * 新增`save_screenshot()` 截图保存本地。
+  * 修改`screenshots()` 自动截图保存到HTML报告，移除`file_path` 参数。
+  * 修改`element_screenshot()` 元素截图保存到HTML报告，移除`file_path` 参数。
+  * `type()` 方法增加 `click` 参数，针对app元素优化，app的输入框往往需要点击以下锁定光标再输入。
+* 修复：浏览器配置参数 `option` 更名为 `options`。
+* 其他：增加 python3.11 支持。
+
+### 3.2.1
+* 功能：增加`@disk_cache()`、`@memory_cache()` 缓存装饰器。
+* 功能：app测试，seldom支持本身API支持appium定位。
+* 功能：db操作，增加`insert_get_last_id()` 方法，插入数据并返回id。
+* 修复：`@data_class()` 必传`input_values` 参数问题。
+* 修复：设置log等级，HTML报告无法根据等级打印日志问题。
+
+### 3.2.0
+* Web UI测试，增加一组新的警告框 alert 操作。
+  * `self.alert.text`
+  * `self.alert.accept()`
+  * `self.alert.dismiss()`
+  * `self.alert.send_keys("text")`
+* App UI测试。
+  * `AppiumLab()` 类增加 `context()` 方法获取当前上下文。
+  * `AppiumLab()` 类增加 `size()` 当前窗口尺寸。
+* API 测试。
+  * 增加`self.patch()` 请求方法。
+  * 增加`self.json_to_dict()` 支持单引号JSON格式转字典。
+* cache 增加文件锁，防止多线程读写错误（Windows不支持 fcntl）
+* 支持 `XTestRunner=>1.6.2` 版本
+  * XML格式的报告支持 rerun 重跑参数。
+  * HTML 报告skip用例样式微调。
+  * HTML 重跑只显示最后一次结果。
+  * SMTP 发送报告增加 `ssl` 参数。
+* `seldom.main()` 方法 ⚠ 不兼容更新
+  * 移除 `save_last_run` 参数。
+  * `browser` 参数支持`dict` 格式, 所有和浏览器配置相关的有发生修改。 包括
+    * 设置浏览器驱动地址。
+    * 设置 headless 模式。
+    * 设置 options 参数。
+    * 设置 selenium grid 地址。
+
 ### 3.1.3
 * 功能：`file_data()` 增加`end_line` 参数，对于csv/excel文件支持读取到第几行结束。[#163](https://github.com/SeldomQA/seldom/issues/163)
 * 优化：`self.assertElement()` 断言元素时间过长的问题。

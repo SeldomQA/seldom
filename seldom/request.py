@@ -198,7 +198,7 @@ class HttpRequest:
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
             """
-            if (Seldom.base_url is not None) and ("http" not in url):
+            if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
             kwargs.setdefault('allow_redirects', True)
             return self.request('GET', url, **kwargs)
@@ -214,7 +214,7 @@ class HttpRequest:
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
             """
-            if (Seldom.base_url is not None) and ("http" not in url):
+            if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
             return self.request('POST', url, data=data, json=json, **kwargs)
 
@@ -228,7 +228,7 @@ class HttpRequest:
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
             """
-            if (Seldom.base_url is not None) and ("http" not in url):
+            if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
             return self.request('PUT', url, data=data, **kwargs)
 
@@ -240,7 +240,7 @@ class HttpRequest:
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
             """
-            if (Seldom.base_url is not None) and ("http" not in url):
+            if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
             return self.request('DELETE', url, **kwargs)
 
@@ -253,8 +253,7 @@ class HttpRequest:
         """
         if isinstance(data, dict):
             return data
-
-        if isinstance(data, str):
+        elif isinstance(data, str):
             try:
                 data_dict = ast.literal_eval(data)
             except ValueError:

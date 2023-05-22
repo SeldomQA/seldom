@@ -263,11 +263,11 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
     return parameterized_expand_wrapper
 
 
-def data_class(attrs, input_values):
+def data_class(attrs, input_values=None):
     """
     Parameterizes a test class by setting attributes on the class.
     """
-    return parameterized_class(attrs, input_values)
+    return parameterized_class(attrs, input_values=input_values)
 
 
 def default_name_func(func, num, p):

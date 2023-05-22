@@ -19,10 +19,9 @@ Seldom is an automation testing framework based on unittest.
 - [x] 平台化支持
 
 ### Install
-> 2.10.0 为了解决[107](https://github.com/SeldomQA/seldom/issues/107) 问题，我们经过反复的讨论和优化，甚至对相关库XTestRunner做了修改；以为完美解决了这个问题，没想到还是引起了一些严重的错误。为此，我们感到非常沮丧，退回到2.9.0的实现方案。请升级到2.10.1以上版本。
 
 ```shell
-pip install seldom==3.1.0
+pip install seldom==3.2.0
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -284,6 +283,10 @@ https://github.com/SeldomQA/seldom-web-testing
 基于seldom的接口自动化项目:
 
 https://github.com/defnngj/seldom-api-testing
+
+### Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=SeldomQA/seldom&type=Date)
 
 ### 感谢
 

@@ -12,7 +12,7 @@ from seldom.db_operation.base_db import SQLBase
 class MSSQLDB(SQLBase):
     """SQL Server DB table API"""
 
-    def __init__(self, server: str, user: str, password: str, database: str):
+    def __init__(self, server: str, user: str, password: str, database: str, charset="utf8mb4"):
         """
         Connect to the SQL Server database
         :param server:
@@ -23,7 +23,8 @@ class MSSQLDB(SQLBase):
         self.connection = pymssql.connect(server=server,
                                           user=user,
                                           password=password,
-                                          database=database)
+                                          database=database,
+                                          charset=charset)
 
         # self.cursor = self.connection.cursor(as_dict=True)
 
@@ -67,6 +68,18 @@ class MSSQLDB(SQLBase):
             self.connection.commit()
             return row
 
+    def insert_get_last_id(self, sql: str) -> int:
+        """
+        insert sql and get last row id
+        :param sql:
+        :return:
+        """
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql)
+            last_id = cursor.lastrowid
+            self.connection.commit()
+            return last_id
+
     def insert_data(self, table: str, data: dict) -> None:
         """
         insert sql statement
@@ -109,11 +122,12 @@ class MSSQLDB(SQLBase):
             sql += f""" where {self.dict_to_str_and(where)};"""
         self.execute_sql(sql)
 
-    def init_table(self, table_data: dict) -> None:
+    def init_table(self, table_data: dict, clear: bool = True) -> None:
         """
         init table data
         """
         for table, data_list in table_data.items():
-            self.delete_data(table)
+            if clear:
+                self.delete_data(table)
             for data in data_list:
                 self.insert_data(table, data)

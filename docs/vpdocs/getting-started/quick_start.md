@@ -270,7 +270,7 @@ if __name__ == '__main__':
 
     # 使用参数化的用例
     seldom.main(case="test_sample.TestCase.test_ddt")  # 错误用法
-    seldom.main(case="test_sample.TestCase.test_ddt_0_case1")  # 正确用例
+    seldom.main(case="test_sample.TestCase.test_ddt_0")  # 正确用法，0表示第一条数据用例
 ```
 
 `seldom.main()` 提供哪些参数，请参考前面的文档。
@@ -445,5 +445,84 @@ __XML测试报告__
 import seldom
 
 seldom.main(report="report.xml")
+```
+
+### 多线程运行
+
+多线程无疑可以缩短用例的运行时间，一般由两种方式实现。
+
+1. 设置线程数，交由框架去分配用例，或按照测试用例、测试类、测试模块分配给线程执行。
+
+* 优点：简单，例如 pytest-xdist ，只需要指定 `线程数` 即可。
+* 缺点：无法控制用例的拆分粒度，如果在设计用例时，不同的用例有依赖，刚好被分到的不同的线程，那么必定导致用例失败。
+
+2. 自己分好线程，分别调用框架执行。
+
+* 优点：手动划分线程，可以按照目录、文件、甚至测试类或方法 拆分线程。
+* 缺点：首先会比较麻烦，而且多个线程的执行结果无法很好的合并到一起。
+
+seldom 推荐第二种方法，把线程的划分方式交给用户，无疑是更灵活的方法。至于报告的合并统计就每有什么好办法了。
+
+* 用例维度使用多线程。 
+
+```python
+import seldom
+from seldom.utils import threads
+
+
+class MyTest(seldom.TestCase):
+
+    def test_baidu(self):
+        self.open("https://www.baidu.com")
+        self.sleep(3)
+
+    def test_bing(self):
+        self.open("https://www.bing.com")
+        self.sleep(4)
+
+
+@threads(2)  # !!!核心!!!! 设置线程数
+def run_case(case: str, browser: str):
+    """
+    根据传入的case执行用例
+    """
+    seldom.main(case=case, browser=browser, debug=True)
+
+
+if __name__ == "__main__":
+    # 将两条用例拆分，分别用不同的浏览器执行
+    cases = {
+        "test_thread_case.MyTest.test_baidu": "chrome",
+        "test_thread_case.MyTest.test_bing": "edge"
+    }
+
+    for key, value in cases.items():
+        run_case(key, value)
+```
+
+* 目录或文件维度使用多线程。 
+
+```python
+import seldom
+from seldom.utils import threads
+
+
+@threads(3)  # !!!核心!!!! 设置线程数
+def run_case(path: str):
+    """
+    根据传入的path执行用例
+    """
+    seldom.main(path=path, debug=True)
+
+
+if __name__ == "__main__":
+    # 定义3个测试文件，分别丢给3个线程执行。
+    paths = [
+        "./test_dir/more_case/test_case1.py",
+        "./test_dir/more_case/test_case2.py",
+        "./test_dir/more_case/test_case3.py"
+    ]
+    for p in paths:
+        run_case(p)
 ```
 

@@ -12,6 +12,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.service import Service as cService
+from appium.webdriver.common.appiumby import AppiumBy
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
@@ -31,6 +32,17 @@ LOCATOR_LIST = {
     'partial_link_text': By.PARTIAL_LINK_TEXT,
     'tag': By.TAG_NAME,
     'class_name': By.CLASS_NAME,
+    'ios_uiautomation': AppiumBy.IOS_UIAUTOMATION,
+    'ios_predicate': AppiumBy.IOS_PREDICATE,
+    'ios_class_chain': AppiumBy.IOS_CLASS_CHAIN,
+    'android_uiautomator': AppiumBy.ANDROID_UIAUTOMATOR,
+    'android_viewtag': AppiumBy.ANDROID_VIEWTAG,
+    'android_data_matcher': AppiumBy.ANDROID_DATA_MATCHER,
+    'android_view_matcher': AppiumBy.ANDROID_VIEW_MATCHER,
+    'windows_uiautomation': AppiumBy.WINDOWS_UI_AUTOMATION,
+    'accessibility_id': AppiumBy.ACCESSIBILITY_ID,
+    'image': AppiumBy.IMAGE,
+    'custom': AppiumBy.CUSTOM,
 }
 
 
@@ -43,65 +55,34 @@ class WebElement:
         if len(kwargs) > 1:
             raise ValueError("Please specify only one locator")
 
-        self.by, self.value = next(iter(kwargs.items()))
-        try:
-            LOCATOR_LIST[self.by]
-        except KeyError:
-            raise ValueError(f"Element positioning of type '{self.by}' is not supported. ")
+        by, self.value = next(iter(kwargs.items()))
+
+        self.by = LOCATOR_LIST.get(by)
+        if self.by is None:
+            raise ValueError(f"The find element is not supported: {by}. ")
         self.find_elem_info = None
         self.find_elem_warn = None
-
-    def __find_element(self, elem: tuple) -> None:
-        """
-        Find if the element exists.
-        """
-        for _ in range(Seldom.timeout):
-            elems = Seldom.driver.find_elements(by=elem[0], value=elem[1])
-            if len(elems) >= 1:
-                self.find_elem_info = f"Find {len(elems)} element: {elem[0]}={elem[1]} "
-                break
-            time.sleep(1)
-        else:
-            self.find_elem_warn = f"❌ Find 0 element through: {elem[0]}={elem[1]}"
 
     def get_elements(self, index: int = None):
         """
         Judge element positioning way, and returns the element.
         """
 
-        if self.by == "id_":
-            self.__find_element((By.ID, self.value))
-            elem = Seldom.driver.find_elements(By.ID, self.value)
-        elif self.by == "name":
-            self.__find_element((By.NAME, self.value))
-            elem = Seldom.driver.find_elements(By.NAME, self.value)
-        elif self.by == "class_name":
-            self.__find_element((By.CLASS_NAME, self.value))
-            elem = Seldom.driver.find_elements(By.CLASS_NAME, self.value)
-        elif self.by == "tag":
-            self.__find_element((By.TAG_NAME, self.value))
-            elem = Seldom.driver.find_elements(By.TAG_NAME, self.value)
-        elif self.by == "link_text":
-            self.__find_element((By.LINK_TEXT, self.value))
-            elem = Seldom.driver.find_elements(By.LINK_TEXT, self.value)
-        elif self.by == "partial_link_text":
-            self.__find_element((By.PARTIAL_LINK_TEXT, self.value))
-            elem = Seldom.driver.find_elements(By.PARTIAL_LINK_TEXT, self.value)
-        elif self.by == "xpath":
-            self.__find_element((By.XPATH, self.value))
-            elem = Seldom.driver.find_elements(By.XPATH, self.value)
-        elif self.by == "css":
-            self.__find_element((By.CSS_SELECTOR, self.value))
-            elem = Seldom.driver.find_elements(By.CSS_SELECTOR, self.value)
+        for _ in range(Seldom.timeout):
+            elems = Seldom.driver.find_elements(by=self.by, value=self.value)
+            if len(elems) >= 1:
+                self.find_elem_info = f"Find {len(elems)} element: {self.by}={self.value} "
+                break
+            time.sleep(1)
         else:
-            raise NameError(
-                "Please enter the correct targeting elements,'id_/name/class_name/tag/link_text/xpath/css'.")
+            self.find_elem_warn = f"❌ Find 0 element through: {self.by}={self.value}"
+
+        elem = Seldom.driver.find_elements(self.by, self.value)
+        if len(elem) == 0:
+            raise NotFindElementError(self.find_elem_warn)
 
         if index is None:
             return elem
-
-        if len(elem) == 0:
-            raise NotFindElementError(self.find_elem_warn)
 
         return elem[index]
 
@@ -323,7 +304,7 @@ class WebDriver:
         """
         return Seldom.driver.get_window_size()
 
-    def type(self, text: str, clear: bool = False, enter: bool = False, index: int = 0, **kwargs) -> None:
+    def type(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0, **kwargs) -> None:
         """
         Operation input box.
 
@@ -332,6 +313,9 @@ class WebDriver:
         """
         if clear is True:
             self.clear(index, **kwargs)
+        if click is True:
+            self.click(index, **kwargs)
+            self.sleep(0.5)
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
@@ -752,43 +736,66 @@ class WebDriver:
         log.info("✅ switch to new window.")
         Seldom.driver.switch_to.new_window(type_hint=type_hint)
 
-    def screenshots(self, file_path: str = None) -> None:
+    @staticmethod
+    def save_screenshot(file_path: str = None, index: int = 0, **kwargs) -> None:
         """
         Saves a screenshots of the current window to a PNG image file.
 
         Usage:
-            self.screenshots()
-            self.screenshots('/Screenshots/foo.png')
+            self.save_screenshot()
+            self.save_screenshot('/Screenshots/foo.png')
+            self.save_screenshot(id_="bLogo", index=0)
         """
+
         if file_path is None:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
             file_path = os.path.join(img_dir, get_timestamp() + ".png")
+
+        if len(kwargs) == 0:
+            log.info(f"📷️  screenshot -> ({file_path}).")
+            Seldom.driver.save_screenshot(file_path)
+        else:
+            log.info(f"📷️  element screenshot -> ({file_path}).")
+            web_elem = WebElement(**kwargs)
+            elem = web_elem.get_elements(index)
+            elem.screenshot(file_path)
+
+    def screenshots(self) -> None:
+        """
+        Saves a screenshots of the current window to HTML report.
+
+        Usage:
+            self.screenshots()
+        """
         if Seldom.debug is True:
+            img_dir = os.path.join(os.getcwd(), "reports", "images")
+            if os.path.exists(img_dir) is False:
+                os.mkdir(img_dir)
+            file_path = os.path.join(img_dir, get_timestamp() + ".png")
             log.info(f"📷️  screenshot -> ({file_path}).")
             Seldom.driver.save_screenshot(file_path)
         else:
             log.info("📷️  screenshot -> HTML report.")
             self.images.append(Seldom.driver.get_screenshot_as_base64())
 
-    def element_screenshot(self, file_path: str = None, index: int = 0, **kwargs) -> None:
+    def element_screenshot(self, index: int = 0, **kwargs) -> None:
         """
-        Saves an element screenshot of the element to a PNG image file.
+        Saves an element screenshot of the element to HTML report.
 
         Usage:
             self.element_screenshot(css="#id")
-            self.element_screenshot(css="#id", file_path='/Screenshots/foo.png')
+            self.element_screenshot(css="#id", index=0)
         """
 
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
-        if file_path is None:
+        if Seldom.debug is True:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
             file_path = os.path.join(img_dir, get_timestamp() + ".png")
-        if Seldom.debug is True:
             log.info(f"📷️ element screenshot -> ({file_path}).")
             elem.screenshot(file_path)
         else:

@@ -9,7 +9,7 @@ from seldom.db_operation.base_db import SQLBase
 class MySQLDB(SQLBase):
     """MySQL DB table API"""
 
-    def __init__(self, host: str, port: int, user: str, password: str, database: str):
+    def __init__(self, host: str, port: int, user: str, password: str, database: str, charset='utf8mb4'):
         """
         Connect to the MySQL database
         :param host:
@@ -23,7 +23,7 @@ class MySQLDB(SQLBase):
                                           user=user,
                                           password=password,
                                           database=database,
-                                          charset='utf8mb4',
+                                          charset=charset,
                                           cursorclass=pymysql.cursors.DictCursor)
 
     def close(self) -> None:
@@ -70,6 +70,19 @@ class MySQLDB(SQLBase):
             self.connection.commit()
             return row
 
+    def insert_get_last_id(self, sql: str) -> int:
+        """
+        insert sql and get last row id
+        :param sql:
+        :return:
+        """
+        with self.connection.cursor() as cursor:
+            self.connection.ping(reconnect=True)
+            cursor.execute(sql)
+            last_id = cursor.lastrowid
+            self.connection.commit()
+            return last_id
+
     def insert_data(self, table: str, data: dict) -> None:
         """
         insert sql statement
@@ -112,12 +125,13 @@ class MySQLDB(SQLBase):
             sql += f""" where {self.dict_to_str_and(where)};"""
         self.execute_sql(sql)
 
-    def init_table(self, table_data: dict) -> None:
+    def init_table(self, table_data: dict, clear: bool = True) -> None:
         """
         init table data
         """
         for table, data_list in table_data.items():
-            self.delete_data(table)
+            if clear:
+                self.delete_data(table)
             for data in data_list:
                 self.insert_data(table, data)
         self.close()

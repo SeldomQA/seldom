@@ -88,6 +88,26 @@ if __name__ == '__main__':
     seldom.main()
 ```
 
+### 重复执行
+
+当然某一段测试需要重复执行，使用`for`循环是常规的操作，seldom提供了`rerun()` 方法可以更优雅的完成这个工作。
+
+```python
+import seldom
+from seldom import rerun 
+
+
+class TestCase(seldom.TestCase):
+    
+    @rerun(100)
+    def test_search_seldom(self):
+        self.open("https://www.baidu.com")
+        self.type_enter(id_="kw", text="seldom")
+
+```
+
+通过`@rerun()` 装饰 `test_searchseldom()` 可以执行 100 次，统计结果仍为1条用例，如果想统计为 100 条用例，请使用`@data()` 装饰器。
+
 ### 随机测试数据
 
 测试数据是测试用例的重要部分，有时不能把测试数据写死在测试用例中，比如注册新用户，一旦执行过用例那么测试数据就已经存在了，所以每次执行注册新用户的数据不能是一样的，这就需要随机生成一些测试数据。
@@ -363,10 +383,18 @@ from seldom import SMTP
 if __name__ == '__main__':
     report_path = "/you/path/report.html"
     seldom.main(report=report_path)
-    smtp = SMTP(user="send@126.com", password="abc123", host="smtp.126.com")
+    smtp = SMTP(user="send@126.com", password="abc123", host="smtp.126.com", ssl=True)
     smtp.sendmail(to="receive@mail.com", subject="Email title", attachments=report_path, delete=False)
 ```
 
+__SMTP()类__
+
+- `user`: 邮箱用户名。
+- `password`: 邮箱密码。
+- `host`: 邮箱服务地址。
+- `ssl`: `True` 使用 `SMTP_SSL()`，`False` 使用 `SMTP()`，两种方式应对不同的邮箱服务。
+
+__sendmail()方法__
 - `subject`: 邮件标题，默认:`Seldom Test Report`。
 - `to`: 添加收件人，支持多个收件人: `["aa@mail.com", "bb@mail.com"]`。
 - `attachments`: 设置附件，默认发送 HTML 测试报告。
@@ -487,6 +515,8 @@ log.error("this error info.")
 
 实际测试过程中，往往需要需要通过cache去记录一些数据，从而减少不必要的操作。例如 登录token，很多条用例都会用到登录token，那么就可以借助缓存来暂存登录token，从而减少重复动作。
 
+* cache
+
 ```python
 from seldom.utils import cache
 
@@ -517,3 +547,88 @@ cache.clear("token")
 ```
 
 > 注：seldom 提供的 `cache` 本质上是通过json文件来临时记录数据，没有失效时间。你需要在适当的位置做清除操作。例如，整个用例开始时清除。
+
+* memery_cache
+
+使用内存的实现的cache 装饰器。
+
+```python
+import time
+import seldom
+from seldom.utils import memory_cache
+
+
+@memory_cache()
+def add(x, y):
+    print("calculating: %s + %s" % (x, y))
+    time.sleep(2)
+    c = x + y
+    return c
+
+
+class MyTest(seldom.TestCase):
+
+    def test_case(self):
+        """test cache 1"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+    def test_case2(self):
+        """test cache 2"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+    def test_case3(self):
+        """test cache 3"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
+
+* disk_cache
+
+使用磁盘实现的cache 装饰器。
+
+```python
+import time
+import seldom
+from seldom.utils import disk_cache
+
+
+@disk_cache()
+def add(x, y):
+    print("calculating: %s + %s" % (x, y))
+    time.sleep(2)
+    c = x + y
+    return c
+
+
+class MyTest(seldom.TestCase):
+
+    def test_case(self):
+        """test cache 1"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+    def test_case2(self):
+        """test cache 2"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+    def test_case3(self):
+        """test cache 3"""
+        r = add(1, 2)
+        self.assertEqual(r, 3)
+
+
+if __name__ == '__main__':
+    dc = disk_cache()
+    # 清除所有函数缓存
+    # dc.clear()
+    # 清除 `add()` 函数缓存
+    dc.clear("add")
+    seldom.main(debug=True)
+```

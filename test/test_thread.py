@@ -29,6 +29,14 @@ class MyTest(seldom.TestCase):
         # 存放用例和结果
         cls.assertDict = {}
 
+    def end_class(self):
+        """
+        ** 所有用例运行完成，搜集结果并断言
+        """
+        all_result = ThreadWait.get_all_result()
+        for case, value in all_result.items():
+            self.assertEqual(self.assertDict[case], value)
+
     def test_case_success(self):
         self.sleep(1)
         # 调用slow_event
@@ -51,15 +59,6 @@ class MyTest(seldom.TestCase):
         # 调用slow_event
         slow_event(f"test_case3_{name}", sec)
         self.assertDict[f"test_case3_{name}"] = ret
-
-    def test_zz_result(self):
-        """
-        ** 必须最后一个执行
-        ** 等待前面的所有用例运行完成，搜集结果并断言
-        """
-        all_result = ThreadWait.get_all_result()
-        for case, value in all_result.items():
-            self.assertEqual(self.assertDict[case], value)
 
 
 if __name__ == '__main__':
