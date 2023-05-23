@@ -6,6 +6,7 @@ import json
 from typing import Any
 import requests
 from seldom.running.config import Seldom
+from seldom.running.config import BrowserConfig
 from seldom.logging import log
 from seldom.utils import jsonpath as utils_jsonpath
 from seldom.utils import jmespath as utils_jmespath
@@ -27,6 +28,7 @@ def request(func):
     def wrapper(*args, **kwargs):
         func_name = func.__name__
         log.info('-------------- Request -----------------[*]')
+        request_info = {}
         try:
             url = list(args)[1]
         except IndexError:
@@ -40,6 +42,8 @@ def request(func):
             img_file = True
 
         log.info(f"[method]: {func_name.upper()}      [url]: {url} ")
+        request_info["method"] = func_name.upper()
+        request_info["url"] = url
         auth = kwargs.get("auth", None)
         headers = kwargs.get("headers", None)
         cookies = kwargs.get("cookies", None)
@@ -49,25 +53,34 @@ def request(func):
         files = kwargs.get("files", None)
         if auth is not None:
             log.debug(f"[auth]:\n {auth}")
+            request_info["auth"] = auth
         if headers is not None:
             log.debug(f"[headers]:\n {formatting(headers)}")
+            request_info["headers"] = headers
         if cookies is not None:
             log.debug(f"[cookies]:\n {formatting(cookies)}")
+            request_info["cookies"] = cookies
         if params is not None:
             log.debug(f"[params]:\n {formatting(params)}")
+            request_info["params"] = params
         if data is not None:
             log.debug(f"[data]:\n {formatting(data)}")
+            request_info["data"] = data
         if json_ is not None:
             log.debug(f"[json]:\n {formatting(json_)}")
+            request_info["json"] = json_
         if files is not None:
             log.debug(f"[files]:\n {files}")
+            request_info["files"] = files
 
         # running function
         r = func(*args, **kwargs)
 
         ResponseResult.request = r.request
         ResponseResult.status_code = r.status_code
-        log.info("\n-------------- Response ----------------[*]")
+        if BrowserConfig.REPORT_PATH is not None and BrowserConfig.REPORT_PATH.endswith(".xml"):
+            log.info(f"<request>{json.dumps(request_info)}</request>")
+        log.info("-------------- Response ----------------[*]")
         if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
             log.info(f"successful with status {ResponseResult.status_code}")
         else:
