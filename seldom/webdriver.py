@@ -63,7 +63,7 @@ class WebElement:
         self.find_elem_info = None
         self.find_elem_warn = None
 
-    def get_elements(self, index: int = None):
+    def get_elements(self, index: int = None, empty=False):
         """
         Judge element positioning way, and returns the element.
         """
@@ -78,8 +78,11 @@ class WebElement:
             self.find_elem_warn = f"❌ Find 0 element through: {self.by}={self.value}"
 
         elem = Seldom.driver.find_elements(self.by, self.value)
-        if len(elem) == 0:
+        if len(elem) == 0 and empty is False:
             raise NotFindElementError(self.find_elem_warn)
+
+        if len(elem) == 0 and empty is True:
+            return []
 
         if index is None:
             return elem
@@ -937,7 +940,7 @@ class WebDriver:
         print(len(ret))
         """
         web_elem = WebElement(**kwargs)
-        elems = web_elem.get_elements()
+        elems = web_elem.get_elements(empty=True)
         if len(elems) == 0:
             log.warning(f"{web_elem.warn}.")
         else:
