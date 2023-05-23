@@ -106,15 +106,6 @@ class WebElement:
             Seldom.driver.execute_script(style_blue, elem)
             time.sleep(0.2)
             Seldom.driver.execute_script(style_null, elem)
-        else:
-            for _ in range(2):
-                Seldom.driver.execute_script(style_red, elem)
-                time.sleep(0.1)
-                Seldom.driver.execute_script(style_blue, elem)
-                time.sleep(0.1)
-            Seldom.driver.execute_script(style_blue, elem)
-            time.sleep(0.3)
-            Seldom.driver.execute_script(style_null, elem)
 
     @property
     def info(self):
