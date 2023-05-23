@@ -67,9 +67,16 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             Seldom.driver.quit()
 
     @property
+    def base_url(self):
+        """
+        return base url (http)
+        """
+        return Seldom.base_url
+
+    @property
     def driver(self):
         """
-        return browser driver
+        return browser driver (web)
         """
         return Seldom.driver
 
