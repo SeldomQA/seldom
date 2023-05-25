@@ -79,7 +79,7 @@ def request(func):
         ResponseResult.request = r.request
         ResponseResult.status_code = r.status_code
         if BrowserConfig.REPORT_PATH is not None and BrowserConfig.REPORT_PATH.endswith(".xml"):
-            log.info(f"<request>{json.dumps(request_info)}</request>")
+            log.error(f"<request>{json.dumps(request_info)}</request>")
         log.info("-------------- Response ----------------[*]")
         if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
             log.info(f"successful with status {ResponseResult.status_code}")
