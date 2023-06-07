@@ -150,7 +150,7 @@ def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None, 
     file_dir = os.path.dirname(os.path.abspath(ins.filename))
 
     file_path = find_file(file, file_dir)
-    if file_path is None:
+    if file_path == "":
         raise FileExistsError(f"No '{file}' data file found.")
 
     suffix = file.split(".")[-1]

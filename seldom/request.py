@@ -48,19 +48,19 @@ def request(func):
         json_ = kwargs.get("json", None)
         files = kwargs.get("files", None)
         if auth is not None:
-            log.debug(f"[auth]:\n {auth}")
+            log.debug(f"[auth]:\n{auth}")
         if headers is not None:
-            log.debug(f"[headers]:\n {formatting(headers)}")
+            log.debug(f"[headers]:\n{formatting(headers)}")
         if cookies is not None:
-            log.debug(f"[cookies]:\n {formatting(cookies)}")
+            log.debug(f"[cookies]:\n{formatting(cookies)}")
         if params is not None:
-            log.debug(f"[params]:\n {formatting(params)}")
+            log.debug(f"[params]:\n{formatting(params)}")
         if data is not None:
-            log.debug(f"[data]:\n {formatting(data)}")
+            log.debug(f"[data]:\n{formatting(data)}")
         if json_ is not None:
-            log.debug(f"[json]:\n {formatting(json_)}")
+            log.debug(f"[json]:\n{formatting(json_)}")
         if files is not None:
-            log.debug(f"[files]:\n {files}")
+            log.debug(f"[files]:\n{files}")
 
         # running function
         r = func(*args, **kwargs)
