@@ -6,6 +6,7 @@ import json
 from typing import Any
 import requests
 from seldom.running.config import Seldom
+from seldom.running.loader_hook import loader
 from seldom.logging import log
 from seldom.utils import jsonpath as utils_jsonpath
 from seldom.utils import jmespath as utils_jmespath
@@ -104,34 +105,56 @@ class ResponseResult:
 class HttpRequest:
     """seldom http request class"""
 
+    @staticmethod
+    def mock_url(url: str) -> str:
+        """
+        If the mock hook is set, replace it with the mock url
+        :param url:
+        """
+        configs = loader("mock") if loader("mock") is not None else None
+        if configs is None:
+            return url
+
+        replace_url = configs.get(url, "")
+        if replace_url == "":
+            return url
+
+        log.debug(f"mock url: {replace_url}")
+        return replace_url
+
     @request
     def get(self, url, params=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
+        url = self.mock_url(url)
         return requests.get(url, params=params, **kwargs)
 
     @request
     def post(self, url, data=None, json=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
+        url = self.mock_url(url)
         return requests.post(url, data=data, json=json, **kwargs)
 
     @request
     def put(self, url, data=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
+        url = self.mock_url(url)
         return requests.put(url, data=data, **kwargs)
 
     @request
     def delete(self, url, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
+        url = self.mock_url(url)
         return requests.delete(url, **kwargs)
 
     @request
     def patch(self, url, data=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
+        url = self.mock_url(url)
         return requests.patch(url, data=data, **kwargs)
 
     @property
