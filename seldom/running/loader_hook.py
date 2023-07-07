@@ -3,7 +3,7 @@ import sys
 import importlib
 
 
-def loader(func_name: str, file_name: str = "confrun.py"):
+def loader(func_name: str, file_name: str = "confrun.py", *args, **kwargs):
     """
     Execute the hook function dynamically.
     :param func_name: function name
@@ -23,7 +23,7 @@ def loader(func_name: str, file_name: str = "confrun.py"):
     for per_hook in hooks:
         try:
             func = getattr(per_hook, func_name)
-            return func()
+            return func(*args, **kwargs)
         except AttributeError:
             return None
 
