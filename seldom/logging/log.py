@@ -15,10 +15,15 @@ report_dir = os.path.join(exec_dir, "reports")
 if os.path.exists(report_dir) is False:
     os.mkdir(report_dir)
 
-now_time = time.strftime("%Y_%m_%d_%H_%M_%S")
+
+with open(os.path.join(report_dir, "seldom_log.log"), "w") as log:
+    log.truncate(0)
+
 if BrowserConfig.LOG_PATH is None:
     BrowserConfig.LOG_PATH = os.path.join(report_dir, "seldom_log.log")
+
 if BrowserConfig.REPORT_PATH is None:
+    now_time = time.strftime("%Y_%m_%d_%H_%M_%S")
     BrowserConfig.REPORT_PATH = os.path.join(report_dir, now_time + "_result.html")
 
 
