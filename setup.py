@@ -15,7 +15,7 @@ setup(
     name='seldom',
     version=version,
     url='https://github.com/seldomQA/seldom/',
-    license='BSD',
+    license='Apache-2.0',
     author='bugmaster',
     author_email='fnngj@126.com',
     description='Seldom automation testing framework based on unittest.',
