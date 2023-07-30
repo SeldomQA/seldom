@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "seldom"
-version = "3.2.2"
+version = "3.2.3"
 description = "Seldom automation testing framework based on unittest."
 authors = ["bugmaster <fnngj@126.com>"]
 license = "Apache-2.0"

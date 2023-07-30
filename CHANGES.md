@@ -1,3 +1,17 @@
+### 3.2.3
+* HTTP自动化
+  * `confrun.py` 支持 `mock_url` hook 钩子函数。
+  * 增加 `self.base_url` 获取 `base_url`。
+* Web自动化
+  * 更新：`get_elements()` 增加`empty`参数，设置为`True`, 允许返回空列表 `[]`
+  * 更新： `debug=True` 模式，移除操作元素边框高亮，提高用例执行速度。
+* App测试
+  * 修复：`key_text()` 无法输入点号`.`的问题。
+* 优化：`seldom_log.log` 文件只记录一次运行结果，减少文件大小。
+* 升级：`webdriver_manager==4.0.0`  [#189](https://github.com/SeldomQA/seldom/issues/189)
+* 其他： 添加 `pyproject.toml` 支持。
+* 文档：增加其他库的使用例子。
+
 ### 3.2.2
 * 功能：增加`@threads()`支持多线程运行用例。
 * 功能：增加`@rerun()` 重复执行某个测试方法。

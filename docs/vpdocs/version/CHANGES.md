@@ -1,8 +1,22 @@
 # 版本更新
 
-### seldom 3.x
+### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
-### 3.2.2(2023-05-10)
+__3.2.3(2023-07-30)__
+* HTTP自动化
+  * `confrun.py` 支持 `mock_url` hook 钩子函数。
+  * 增加 `self.base_url` 获取 `base_url`。
+* Web自动化
+  * 更新：`get_elements()` 增加`empty`参数，设置为`True`, 允许返回空列表 `[]`
+  * 更新： `debug=True` 模式，移除操作元素边框高亮，提高用例执行速度。
+* App测试
+  * 修复：`key_text()` 无法输入点号`.`的问题。
+* 优化：`seldom_log.log` 文件只记录一次运行结果，减少文件大小。
+* 升级：`webdriver_manager==4.0.0`  [#189](https://github.com/SeldomQA/seldom/issues/189)
+* 其他： 添加 `pyproject.toml` 支持。
+* 文档：增加其他库的使用例子。
+
+__3.2.2(2023-05-10)__
 * 功能：增加`@threads()`支持多线程运行用例。
 * 功能：增加`@rerun()` 重复执行某个测试方法。
 * 功能：数据库操作
@@ -16,14 +30,14 @@
 * 修复：浏览器配置参数 `option` 更名为 `options`。
 * 其他：增加 python3.11 支持。
 
-### 3.2.1(2023-04-14)
+__3.2.1(2023-04-14)__
 * 功能：增加`@disk_cache()`、`@memory_cache()` 缓存装饰器。
 * 功能：app测试，seldom支持本身API支持appium定位。
 * 功能：db操作，增加`insert_get_last_id()` 方法，插入数据并返回id。
 * 修复：`@data_class()` 必传`input_values` 参数问题。
 * 修复：设置log等级，HTML报告无法根据等级打印日志问题。
 
-### 3.2.0(2023-03-14)
+__3.2.0(2023-03-14)__
 * Web UI测试，增加一组新的警告框 alert 操作。
   * `self.alert.text`
   * `self.alert.accept()`
@@ -107,7 +121,7 @@ __3.0.0beta1(2022-10-03)__
   * 生成随机数，增加`get_timestamp()` 获取当前时间戳。
   * 数据库查询，增加`query_one()` 查询一条数据。
 
-### seldom 2.x
+### seldom 2.x  <Badge type="tip" text="v2" vertical="top" />
 
 __2.10.6/7(2022-09-07)__
 
@@ -341,7 +355,7 @@ __2.0.0.beta(2021-03-24)__
 
 * 支持 HTTP接口测试
 
-### seldom 1.x
+### seldom 1.x  <Badge type="tip" text="v1" vertical="top" />
 
 __1.10.3(2021-03-23)__
 
