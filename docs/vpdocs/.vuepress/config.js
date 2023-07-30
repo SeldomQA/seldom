@@ -67,7 +67,13 @@ module.exports = {
           "/api-testing/more",
         ],
       },
-      "/db/db_operation",
+      {
+        text: "更多能力",
+        children: [
+          "/more-ability/db_operation",
+          "/more-ability/test_library",
+        ],
+      },
       "/platform/platform",
       "/version/CHANGES",
     ],
