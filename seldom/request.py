@@ -16,6 +16,12 @@ from seldom.utils.curlify import to_curl
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
 
+class ResponseResult:
+    status_code = 200
+    response = None
+    request = None
+
+
 def formatting(msg):
     """formatted message"""
     if isinstance(msg, dict):
@@ -96,65 +102,59 @@ def request(func):
     return wrapper
 
 
-class ResponseResult:
-    status_code = 200
-    response = None
-    request = None
+def mock_url(url: str) -> str:
+    """
+    If the mock hook is set, replace it with the mock url
+    :param url:
+    """
+    configs = loader("mock_url") if loader("mock_url") is not None else None
+    if configs is None:
+        return url
+
+    replace_url = configs.get(url, "")
+    if replace_url == "":
+        return url
+
+    log.debug(f"mock url: {replace_url}")
+    return replace_url
 
 
 class HttpRequest:
     """seldom http request class"""
 
-    @staticmethod
-    def mock_url(url: str) -> str:
-        """
-        If the mock hook is set, replace it with the mock url
-        :param url:
-        """
-        configs = loader("mock") if loader("mock") is not None else None
-        if configs is None:
-            return url
-
-        replace_url = configs.get(url, "")
-        if replace_url == "":
-            return url
-
-        log.debug(f"mock url: {replace_url}")
-        return replace_url
-
     @request
     def get(self, url, params=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        url = self.mock_url(url)
+        url = mock_url(url)
         return requests.get(url, params=params, **kwargs)
 
     @request
     def post(self, url, data=None, json=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        url = self.mock_url(url)
+        url = mock_url(url)
         return requests.post(url, data=data, json=json, **kwargs)
 
     @request
     def put(self, url, data=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        url = self.mock_url(url)
+        url = mock_url(url)
         return requests.put(url, data=data, **kwargs)
 
     @request
     def delete(self, url, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        url = self.mock_url(url)
+        url = mock_url(url)
         return requests.delete(url, **kwargs)
 
     @request
     def patch(self, url, data=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        url = self.mock_url(url)
+        url = mock_url(url)
         return requests.patch(url, data=data, **kwargs)
 
     @property
@@ -226,6 +226,7 @@ class HttpRequest:
             """
             if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
+            url = mock_url(url)
             kwargs.setdefault('allow_redirects', True)
             return self.request('GET', url, **kwargs)
 
@@ -242,6 +243,7 @@ class HttpRequest:
             """
             if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
+            url = mock_url(url)
             return self.request('POST', url, data=data, json=json, **kwargs)
 
         @request
@@ -256,6 +258,7 @@ class HttpRequest:
             """
             if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
+            url = mock_url(url)
             return self.request('PUT', url, data=data, **kwargs)
 
         @request
@@ -268,6 +271,7 @@ class HttpRequest:
             """
             if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
+            url = mock_url(url)
             return self.request('DELETE', url, **kwargs)
 
     @staticmethod
