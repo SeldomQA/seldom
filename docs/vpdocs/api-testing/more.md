@@ -406,3 +406,71 @@ json Schema
  {'$schema': 'http://json-schema.org/schema#', 'type': 'object', 'properties': {'args': {'type': 'object', 'properties': {'age': {'type': 'string'}, 'hobby': {'type': 'array', 'items': {'type': 'string'}}, 'name': {'type': 'string'}}, 'required': ['age', 'hobby', 'name']}, 'headers': {'type': 'object', 'properties': {'Accept': {'type': 'string'}, 'Accept-Encoding': {'type': 'string'}, 'Host': {'type': 'string'}, 'User-Agent': {'type': 'string'}, 'X-Amzn-Trace-Id': {'type': 'string'}}, 'required': ['Accept', 'Accept-Encoding', 'Host', 'User-Agent', 'X-Amzn-Trace-Id']}, 'origin': {'type': 'string'}, 'url': {'type': 'string'}}, 'required': ['args', 'headers', 'origin', 'url']}
 ```
 
+### mock URL
+
+> seldom 3.2.3 支持
+
+seldom 运行允许通过`confrun.py`文件中`mock_url()` 配置mock URL映射。
+
+* confrun.py
+
+配置要映射的mock URL。
+
+```python
+...
+
+def mock_url():
+    """
+
+    :return:
+    """
+    config = {
+        "http://httpbin.org/get": "http://127.0.0.1:8000/api/data",
+    }
+    return config
+```
+
+* test_api.py
+
+```python
+import seldom
+
+
+class TestRequest(seldom.TestCase):
+    """
+    http api test demo
+    """
+
+    def test_get_method(self):
+        payload = {'key1': 'value1', 'key2': 'value2'}
+        self.get("/get", params=payload)
+        self.assertStatusCode(200)
+
+
+if __name__ == '__main__':
+    seldom.main(base_url="http://httpbin.org")
+```
+
+* 运行
+
+```shell
+> python test_api.py
+
+2023-07-30 14:47:08 | INFO     | request.py | -------------- Request -----------------[🚀]
+2023-07-30 14:47:08 | INFO     | request.py | [method]: GET      [url]: http://httpbin.org/get
+2023-07-30 14:47:08 | DEBUG    | request.py | [params]:
+{
+  "key1": "value1",
+  "key2": "value2"
+}
+2023-07-30 14:47:08 | DEBUG    | request.py | mock url: http://127.0.0.1:8000/api/data
+2023-07-30 14:47:08 | INFO     | request.py | -------------- Response ----------------[🛬️]
+2023-07-30 14:47:08 | INFO     | request.py | successful with status 200
+2023-07-30 14:47:08 | DEBUG    | request.py | [type]: json      [time]: 0.002738
+2023-07-30 14:47:08 | DEBUG    | request.py | [response]:
+ [{'item_name': 'apple'}, {'item_name': 'banana'}, {'item_name': 'orange'}, {'item_name': 'watermelon'}, {'item_name': 'grape'}]
+2023-07-30 14:47:08 | INFO     | case.py | 👀 assertStatusCode -> 200.
+```
+
+通过日志可以看到 `http://httpbin.org/get` 替换成为 `http://127.0.0.1:8000/api/data` 执行。 当你不想mock的时候只需要修改 mock_url() 即可，对于用例来说无影响。
+

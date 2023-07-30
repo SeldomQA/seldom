@@ -211,6 +211,17 @@ def whitelist():
 def blacklist():
     """test label black list"""
     return []
+
+
+def mock_url():
+    """
+    Replace the fixed url with the mock url
+    :return:
+    """
+    config = {
+        "http://httpbin.org/get": "http://127.0.0.1:8000/api/data",
+    }
+    return config
 ```
 
 以上配置根据需求自动化项目类型配置，相互可能冲突的钩子函数：
@@ -240,6 +251,7 @@ def blacklist():
 | whitelist          | whitelist()      | 通用   | 用例标签（label）设置白名单。                                    |
 | blacklist          | blacklist()      | 通用   | 用例标签（label）设置黑名单。                                    |
 | open               | N/A              | 通用   | 是否使用浏览器自动打开测试报告，默认`True`。                            |
+| N/A                | mock_url()       | HTTP | 定义mock URL 映射。                                       |
 
 ### 运行测试
 
