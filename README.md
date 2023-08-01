@@ -3,7 +3,6 @@
 ![](seldom_logo.jpg)
 
 [![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
-![visitors](https://visitor-badge.glitch.me/badge?page_id=SeldomQA.seldom)
 
 Seldom is an automation testing framework based on unittest.
 
@@ -21,7 +20,7 @@ Seldom is an automation testing framework based on unittest.
 ### Install
 
 ```shell
-pip install seldom==3.2.0
+pip install seldom==3.2.3
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -86,9 +85,9 @@ mypro/
 ├── test_dir/
 │   ├── __init__.py
 │   ├── test_web_sample.py
-│   ├── test_api_sample.py
+│   └── test_api_sample.py
 ├── test_data/
-│   ├── data.json
+│   └── data.json
 ├── reports/
 └── confrun.py
 ```
@@ -291,8 +290,6 @@ https://github.com/defnngj/seldom-api-testing
 ### 感谢
 
 感谢从以下项目中得到思路和帮助。
-
-* [HTMLTestRunner_cn](https://github.com/GoverSky/HTMLTestRunner_cn)
 
 * [parameterized](https://github.com/wolever/parameterized)
 
