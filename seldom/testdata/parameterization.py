@@ -18,6 +18,7 @@ from parameterized.parameterized import to_text
 from parameterized import parameterized_class
 from seldom.testdata import conversion
 from seldom.logging.exceptions import FileTypeError
+from seldom.logging import log
 from seldom.utils import jmespath as utils_jmespath
 from seldom import Seldom
 
@@ -148,6 +149,11 @@ def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None, 
     stack_t = sys_inspect.stack()
     ins = sys_inspect.getframeinfo(stack_t[1][0])
     file_dir = os.path.dirname(os.path.abspath(ins.filename))
+
+    if Seldom.env is not None:
+        log.info(f"env: '{Seldom.env}', find data file: '{file}'")
+    else:
+        log.info(f"find data file: {file}")
 
     file_path = find_file(file, file_dir)
     if file_path == "":
