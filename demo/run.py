@@ -14,15 +14,14 @@ debug： debug模式，设置为True不生成测试用例。
 rerun： 测试失败重跑
 """
 
-
 if __name__ == '__main__':
     # web case 配置
-    seldom.main(path="./test_dir/web_case",
-                browser="chrome",
-                title="seldom自带 Web demo",
-                tester="虫师",
-                description=["Browser: Chrome"],
-                rerun=0)
+    # seldom.main(path="./test_dir/web_case",
+    #             browser="chrome",
+    #             title="seldom自带 Web demo",
+    #             tester="虫师",
+    #             description=["Browser: Chrome"],
+    #             rerun=0)
 
     # api case 配置
     # seldom.main(path="./test_dir/api_case",
@@ -47,3 +46,16 @@ if __name__ == '__main__':
     #             title="seldom自带 API demo",
     #             tester="虫师",
     #             rerun=0)
+
+    # uiautomator2 case 配置
+    desired_caps = {
+        'deviceName': 'JEF_AN20',
+        'platformName': 'Android',
+        'appPackage': 'com.meizu.flyme.flymebbs',
+    }
+    seldom.main(path="./test_dir/app_case",
+                app_info=desired_caps,
+                title="seldom自带 APP demo",
+                tester="Cobb",
+                debug=True,
+                rerun=0)

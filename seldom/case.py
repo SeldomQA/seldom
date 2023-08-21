@@ -1,6 +1,8 @@
 """
 seldom test case
 """
+import wda
+import uiautomator2
 import unittest
 from urllib.parse import unquote
 from time import sleep
@@ -11,6 +13,7 @@ from appium.webdriver import Remote
 from seldom.driver import Browser
 from seldom.webdriver import WebDriver
 from seldom.appdriver import AppDriver
+from seldom.u2driver import U2Driver
 from seldom.request import HttpRequest, ResponseResult, formatting
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.logging import log
@@ -18,7 +21,7 @@ from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
 
 
-class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
+class TestCase(unittest.TestCase, WebDriver, AppDriver, U2Driver, HttpRequest):
     """seldom TestCase class"""
 
     def start_class(self):
@@ -58,6 +61,10 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         # lunch appium
         if (Seldom.app_server is not None) and (Seldom.app_info is not None):
             Seldom.driver = Remote(Seldom.app_server, Seldom.app_info)
+        elif (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
+            Seldom.driver = uiautomator2.connect_usb(Seldom.app_info.get('deviceName'))
+        elif (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'iOS'):
+            Seldom.driver = wda.USBClient(udid=Seldom.app_info.get('udid'))
         self.start()
 
     def tearDown(self):
