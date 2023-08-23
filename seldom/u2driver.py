@@ -3,9 +3,8 @@ uiautomator2 driver API
 """
 import os
 import time
-from selenium.webdriver.common.by import By
 from seldom.logging import log
-from seldom.running.config import Seldom
+from seldom.running.config import Seldom, AppConfig
 from seldom.logging.exceptions import NotFindElementError
 
 __all__ = ["U2Driver", "U2Element"]
@@ -18,11 +17,11 @@ keycodes = {
 }
 
 LOCATOR_LIST = {
-    'id_': By.ID,
-    'name': By.NAME,
-    'xpath': By.XPATH,
+    'id_': "resourceId",
+    'name': "name",
+    'xpath': "xpath",
     'text': 'text',
-    'class_name': By.CLASS_NAME,
+    'class_name': "className",
 }
 
 
@@ -30,6 +29,7 @@ class U2Element:
     """uiautomator2 element API"""
 
     def __init__(self, **kwargs) -> None:
+        self.driver = Seldom.driver
         if not kwargs:
             raise ValueError("Please specify a locator")
         if len(kwargs) > 1:
@@ -48,17 +48,17 @@ class U2Element:
 
     def get_elements(self, index: int = None, empty=False):
         try:
-            if self.by == By.ID:
+            if self.by == 'resourceId':
                 if self.text:
-                    elems = Seldom.driver(resourceId=self.value, text=self.text)
+                    elems = self.driver(resourceId=self.value, text=self.text)
                 else:
-                    elems = Seldom.driver(resourceId=self.value)
-            elif self.by == By.CLASS_NAME:
-                elems = Seldom.driver(className=self.value)
-            elif self.by == By.XPATH:
-                elems = Seldom.driver.xpath(self.value).all()
+                    elems = self.driver(resourceId=self.value)
+            elif self.by == 'className':
+                elems = self.driver(className=self.value)
+            elif self.by == 'xpath':
+                elems = self.driver.xpath(self.value).all()
             elif self.by == 'text':
-                elems = Seldom.driver(text=self.value)
+                elems = self.driver(text=self.value)
             else:
                 raise TypeError
         except TypeError:
@@ -90,9 +90,9 @@ class U2Element:
 
 class U2Driver:
 
-    def __init__(self):
-        self.driver = Seldom.driver
-        self.driver.implicitly_wait(Seldom.timeout)
+    # def __init__(self):
+    #     self.driver = Seldom.driver
+    #     # self.driver.implicitly_wait(Seldom.timeout)
 
     # def background_app(self, seconds: int):
 
@@ -116,6 +116,10 @@ class U2Driver:
     #         `True` if app is installed
     #     """
     #     return Seldom.driver.is_app_installed(bundle_id=bundle_id)
+    @staticmethod
+    def implicitly_wait(timeout=Seldom.timeout):
+        """set uiautomator2 implicitly wait"""
+        Seldom.driver.implicitly_wait(timeout)
 
     def install_app_u2(self, app_path: str):
         """Install the application found at `app_path` on the device.
@@ -139,13 +143,14 @@ class U2Driver:
         Seldom.driver.app_uninstall(app_id)
         return self
 
-    def launch_app_u2(self):
+    def launch_app_u2(self, stop: bool = False):
         """Start on the device the application specified in the desired capabilities.
 
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.app_start(package_name=Seldom.app_info.get('appPackage'))
+        Seldom.driver.app_start(package_name=Seldom.app_info.get('appPackage'), stop=stop)
+        log.info(f'启动APP：{Seldom.app_info.get("appPackage")}')
         return self
 
     def close_app_u2(self):
@@ -158,15 +163,20 @@ class U2Driver:
         Seldom.driver.app_stop(Seldom.app_info.get('appPackage'))
         return self
 
-    def clear_app(self):
+    def clear_app_u2(self):
         """Resets the current application on the device.
 
         """
         Seldom.driver.app_clear(Seldom.app_info.get('appPackage'))
         return self
 
-    def set_text(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0,
-                 **kwargs) -> None:
+    @staticmethod
+    def wait_app_u2():
+        pid = Seldom.driver.app_wait(Seldom.app_info.get('appPackage'))
+        return pid
+
+    def set_text_u2(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0,
+                    **kwargs) -> None:
         """
         Operation input box.
 
@@ -186,7 +196,7 @@ class U2Driver:
             elem.press('enter')
 
     @staticmethod
-    def clear_text(index: int = 0, **kwargs) -> None:
+    def clear_text_u2(index: int = 0, **kwargs) -> None:
         """
         Clear the contents of the input box.
 
@@ -263,6 +273,16 @@ class U2Driver:
         log.info(f"⌛️ implicitly wait: {timeout}s.")
         elem.wait(timeout=timeout)
 
+    @staticmethod
+    def start_recording_u2(output: str = 'record.mp4'):
+        log.info(f"📷️  start_recording -> ({output}).")
+        Seldom.driver.screenrecord(output, fps=AppConfig.fps)
+
+    @staticmethod
+    def stop_recording_u2():
+        log.info(f"📷️  record down.")
+        Seldom.driver.screenrecord.stop()
+
     # @staticmethod
     # def save_screenshot(file_path: str = None, index: int = 0, **kwargs) -> None:
     #     """
@@ -307,6 +327,33 @@ class U2Driver:
     #     else:
     #         log.info("📷️  screenshot -> HTML report.")
     #         self.images.append(Seldom.driver.get_screenshot_as_base64())
+    @staticmethod
+    def save_img_report(image_as_base64):
+        AppConfig.REPORT_IMAGE.extend(image_as_base64)
+
+    @staticmethod
+    def write_log_u2(path):
+        """把Android日志写入本地"""
+        if not os.path.exists(path):
+            open(path, "w").close()
+        Seldom.driver.shell('logcat -c')
+        cmd = Seldom.driver.shell(f"logcat", stream=True)
+        log_list = []
+        for line in cmd.iter_lines():
+            try:
+                log_list.append(line.decode('utf-8'))
+            except Exception as e:
+                log.error(f'Error in write_log: {e}')
+            if not AppConfig.log:
+                break
+        if not AppConfig.log:
+            cmd.close()
+        with open(path, "w") as f:
+            for item in log_list:
+                try:
+                    f.write(item + "\n")
+                except Exception as e:
+                    log.error(f'Error in write_log：{e}')
 
     @staticmethod
     def get_elements_u2(**kwargs):
@@ -347,23 +394,26 @@ class U2Driver:
         """
         log.info(f'press key "{key}"')
         keycode = keycodes.get(key)
-        self.driver.press(keycode)
+        Seldom.driver.press(keycode)
+        return self
 
     def back(self):
         """go back"""
         log.info("go back")
-        self.driver.press(keycodes.get('back'))
+        Seldom.driver.press(keycodes.get('back'))
+        return self
 
     def home(self):
         """press home"""
         log.info("press home")
-        self.driver.press(keycodes.get('home'))
+        Seldom.driver.press(keycodes.get('home'))
+        return self
 
     def size(self) -> dict:
         """
         return screen resolution.
         """
-        size = self.driver.window_size()
+        size = Seldom.driver.window_size()
         log.info(f"screen resolution: {size}")
         return size
 
@@ -375,7 +425,7 @@ class U2Driver:
         :return:
         """
         log.info(f"top x={x},y={y}.")
-        self.driver.click(x=x, y=y)
+        Seldom.driver.click(x=x, y=y)
 
     def swipe_up(self, times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.9,
                  end: float = 0.1) -> None:
@@ -388,7 +438,7 @@ class U2Driver:
             start = (start / 2)
 
         for _ in range(times):
-            self.driver.swipe(width, start, width, end)
+            Seldom.driver.swipe(width, start, width, end)
             time.sleep(1)
 
     # def swipe_up_find(self):
@@ -412,5 +462,8 @@ class U2Driver:
             end = (end / 2)
 
         for _ in range(times):
-            self.driver.swipe(width, start, width, end)
+            Seldom.driver.swipe(width, start, width, end)
             time.sleep(1)
+
+
+u2 = U2Driver()

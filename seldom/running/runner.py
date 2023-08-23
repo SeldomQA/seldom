@@ -19,7 +19,7 @@ from seldom.logging import log
 from seldom.logging import log_cfg
 from seldom.logging.exceptions import SeldomException
 from seldom.running.DebugTestRunner import DebugTestRunner
-from seldom.running.config import Seldom, BrowserConfig
+from seldom.running.config import Seldom, BrowserConfig, AppConfig
 from seldom.running.loader_extend import seldomTestLoader
 
 INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
@@ -167,10 +167,12 @@ class TestMain:
             else:
                 os.mkdir(os.path.join(os.getcwd(), "reports"))
 
+            report_folder = AppConfig.REPORT_FOLDER = os.path.join(os.getcwd(), "reports")
+
             if (self.report is None) and (BrowserConfig.REPORT_PATH is not None):
                 report_path = BrowserConfig.REPORT_PATH
             else:
-                report_path = BrowserConfig.REPORT_PATH = os.path.join(os.getcwd(), "reports", self.report)
+                report_path = BrowserConfig.REPORT_PATH = os.path.join(report_folder, self.report)
 
             with open(report_path, 'wb') as fp:
                 if report_path.split(".")[-1] == "xml":
@@ -183,6 +185,11 @@ class TestMain:
                                             rerun=self.rerun, logger=log_cfg,
                                             language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
                     runner.run(suits)
+            if AppConfig.WRITE_EXCEL:
+                import pandas as pd
+                df = pd.DataFrame(AppConfig.WRITE_EXCEL)
+                with pd.ExcelWriter(report_path.split('_')[0]+'_perf.xlsx', engine='xlsxwriter') as writer:
+                    df.to_excel(writer, sheet_name='Sheet1', index=False)
 
             log.success(f"generated html file: file:///{report_path}")
             log.success(f"generated log file: file:///{BrowserConfig.LOG_PATH}")

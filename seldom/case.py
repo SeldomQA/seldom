@@ -15,7 +15,7 @@ from seldom.webdriver import WebDriver
 from seldom.appdriver import AppDriver
 from seldom.u2driver import U2Driver
 from seldom.request import HttpRequest, ResponseResult, formatting
-from seldom.running.config import Seldom, BrowserConfig
+from seldom.running.config import Seldom, BrowserConfig, AppConfig
 from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
@@ -62,8 +62,10 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, U2Driver, HttpRequest):
         if (Seldom.app_server is not None) and (Seldom.app_info is not None):
             Seldom.driver = Remote(Seldom.app_server, Seldom.app_info)
         elif (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
+            """lunch uiautomator2"""
             Seldom.driver = uiautomator2.connect_usb(Seldom.app_info.get('deviceName'))
         elif (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'iOS'):
+            """lunch facebook-wda"""
             Seldom.driver = wda.USBClient(udid=Seldom.app_info.get('udid'))
         self.start()
 
@@ -72,6 +74,9 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, U2Driver, HttpRequest):
         # close appium
         if (Seldom.app_server is not None) and (Seldom.app_info is not None):
             Seldom.driver.quit()
+        elif (Seldom.app_server is None) and (Seldom.app_info is not None):
+            """upload performance related chart data"""
+            self.images = AppConfig.REPORT_IMAGE
 
     @property
     def base_url(self):

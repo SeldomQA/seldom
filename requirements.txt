@@ -13,4 +13,10 @@ genson==1.2.2
 click==8.1.3
 python-dateutil==2.8.2
 facebook-wda
-uiautomator2
+uiautomator2==2.16.23
+uiautomator2[image]==2.16.23
+solox
+gevent
+matplotlib==3.7.1
+pandas
+xlsxwriter

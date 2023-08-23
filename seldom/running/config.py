@@ -31,3 +31,20 @@ class BrowserConfig:
     options = None
     command_executor = ""
     executable_path = ""
+
+
+class AppConfig:
+    REPORT_FOLDER = None
+    REPORT_IMAGE = []
+    record = False
+    fps = 45
+    frame_second = 5
+    threadLock = False
+    log = False
+    iOS_perf_obj = None
+    duration_times = 3
+    stress_times = 3
+    CASE_ERROR = []
+    PERF_ERROR = []
+    LOGS_ERROR = []
+    WRITE_EXCEL = []

@@ -16,9 +16,11 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+from gevent import monkey  # 引入协程的monkey库
 
+monkey.patch_all()  # 统一修改全局协程等待的耗时为协程的耗时
 from .case import TestCase
-from .running.config import Seldom
+from .running.config import Seldom, AppConfig
 from .running.loader_extend import SeldomTestLoader
 from .running.runner import main, TestMainExtend
 from .utils.send_extend import SMTP, DingTalk
