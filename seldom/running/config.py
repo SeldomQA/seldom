@@ -34,17 +34,13 @@ class BrowserConfig:
 
 
 class AppConfig:
-    REPORT_FOLDER = None
+    """
+    Define run uiautomator2 or facebook-wda config
+    """
+    PERF_OUTPUT_FOLDER = None
     REPORT_IMAGE = []
-    record = False
-    fps = 45
-    frame_second = 5
-    threadLock = False
-    log = False
-    iOS_perf_obj = None
-    duration_times = 3
-    stress_times = 3
-    CASE_ERROR = []
-    PERF_ERROR = []
-    LOGS_ERROR = []
     WRITE_EXCEL = []
+    FPS = 45
+    FRAME_SECONDS = 5
+    DURATION_TIMES = 3
+    STRESS_TIMES = 3

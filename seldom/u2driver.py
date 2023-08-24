@@ -7,7 +7,7 @@ from seldom.logging import log
 from seldom.running.config import Seldom, AppConfig
 from seldom.logging.exceptions import NotFindElementError
 
-__all__ = ["U2Driver", "U2Element"]
+__all__ = ["U2Driver", "U2Element", "u2"]
 
 keycodes = {
     'HOME': 'home',
@@ -29,48 +29,32 @@ class U2Element:
     """uiautomator2 element API"""
 
     def __init__(self, **kwargs) -> None:
-        self.driver = Seldom.driver
         if not kwargs:
             raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
 
-        by, self.value = next(iter(kwargs.items()))
-        if 'text' in kwargs:
-            self.text = kwargs['text']
-        else:
-            self.text = None
-        self.by = LOCATOR_LIST.get(by)
-        if self.by is None:
-            raise ValueError(f"The find element is not supported: {by}. ")
+        self.kwargs = kwargs
+        if 'index' in self.kwargs:
+            self.index = self.kwargs['index']
+            del self.kwargs['index']
+        for by, value in self.kwargs.items():
+            if LOCATOR_LIST.get(by) is None:
+                raise ValueError(f"The find element is not supported: {by}. ")
         self.find_elem_info = None
         self.find_elem_warn = None
 
     def get_elements(self, index: int = None, empty=False):
         try:
-            if self.by == 'resourceId':
-                if self.text:
-                    elems = self.driver(resourceId=self.value, text=self.text)
-                else:
-                    elems = self.driver(resourceId=self.value)
-            elif self.by == 'className':
-                elems = self.driver(className=self.value)
-            elif self.by == 'xpath':
-                elems = self.driver.xpath(self.value).all()
-            elif self.by == 'text':
-                elems = self.driver(text=self.value)
+            if 'xpath' in self.kwargs:
+                elems = Seldom.driver.xpath(**self.kwargs).all()
             else:
-                raise TypeError
-        except TypeError:
-            raise TypeError(f"❌ 请使用uiautomator2支持的定位方式: {self.by}={self.value}")
+                elems = Seldom.driver(**self.kwargs)
         except Exception as e:
             if empty is False:
-                raise NotFindElementError(f"❌ Find element error: {self.by}={self.value} ---> {e}")
+                raise NotFindElementError(f"❌ Find element error: {self.kwargs} ---> {e}")
             else:
                 return []
-
         if len(elems) >= 1:
-            self.find_elem_info = f"Find {len(elems)} element: {self.by}={self.value} "
+            self.find_elem_info = f"Find {len(elems)} element: {self.kwargs} "
 
         if index is None:
             return elems
@@ -89,10 +73,7 @@ class U2Element:
 
 
 class U2Driver:
-
-    # def __init__(self):
-    #     self.driver = Seldom.driver
-    #     # self.driver.implicitly_wait(Seldom.timeout)
+    """uiautomator2 driver"""
 
     # def background_app(self, seconds: int):
 
@@ -184,11 +165,14 @@ class U2Driver:
             self.type(css="#el", text="selenium")
         """
         if clear is True:
-            self.clear_text(index, **kwargs)
+            self.clear_text_u2(index, **kwargs)
         if click is True:
             self.click_u2(index, **kwargs)
             time.sleep(0.5)
-        u2_elem = U2Element(**kwargs)
+        if 'elem' in kwargs:
+            u2_elem = kwargs['elem']
+        else:
+            u2_elem = U2Element(**kwargs)
         elem = u2_elem.get_elements(index)
         log.info(f"✅ {u2_elem.info} -> input '{text}'.")
         elem.set_text(text)
@@ -203,7 +187,10 @@ class U2Driver:
         Usage:
             self.clear(css="#el")
         """
-        u2_elem = U2Element(**kwargs)
+        if 'elem' in kwargs:
+            u2_elem = kwargs['elem']
+        else:
+            u2_elem = U2Element(**kwargs)
         elem = u2_elem.get_elements(index=index)
         log.info(f"✅ {u2_elem.info} -> clear input.")
         elem.clear_text()
@@ -217,7 +204,10 @@ class U2Driver:
         Usage:
             self.click(css="#el")
         """
-        u2_elem = U2Element(**kwargs)
+        if 'elem' in kwargs:
+            u2_elem = kwargs['elem']
+        else:
+            u2_elem = U2Element(**kwargs)
         elem = u2_elem.get_elements(index=index)
         log.info(f"✅ {u2_elem.info} -> click.")
         elem.click()
@@ -243,7 +233,10 @@ class U2Driver:
         Usage:
             self.get_text(css="#el")
         """
-        u2_elem = U2Element(**kwargs)
+        if 'elem' in kwargs:
+            u2_elem = kwargs['elem']
+        else:
+            u2_elem = U2Element(**kwargs)
         elem = u2_elem.get_elements(index)
         text = elem.get_text()
         log.info(f"✅ {u2_elem.info} -> get text: {text}.")
@@ -257,7 +250,10 @@ class U2Driver:
         Usage:
             self.get_display(css="#el")
         """
-        u2_elem = U2Element(**kwargs)
+        if 'elem' in kwargs:
+            u2_elem = kwargs['elem']
+        else:
+            u2_elem = U2Element(**kwargs)
         elem = u2_elem.get_elements(index)
         result = elem.exists
         log.info(f"✅ {u2_elem.info} -> element is display: {result}.")
@@ -268,15 +264,23 @@ class U2Driver:
         """
         Implicitly wait element on the page.
         """
-        u2_elem = U2Element(**kwargs)
+        if 'elem' in kwargs:
+            u2_elem = kwargs['elem']
+        else:
+            u2_elem = U2Element(**kwargs)
         elem = u2_elem.get_elements(index)
         log.info(f"⌛️ implicitly wait: {timeout}s.")
         elem.wait(timeout=timeout)
 
     @staticmethod
-    def start_recording_u2(output: str = 'record.mp4'):
+    def start_recording_u2(output: str = None, fps: int = None):
+        if output is None:
+            log.warning('Please set the storage location for screen recording')
+            output = 'record.mp4'
+        if fps is None:
+            fps = AppConfig.FPS
         log.info(f"📷️  start_recording -> ({output}).")
-        Seldom.driver.screenrecord(output, fps=AppConfig.fps)
+        Seldom.driver.screenrecord(output, fps=fps)
 
     @staticmethod
     def stop_recording_u2():
@@ -327,9 +331,9 @@ class U2Driver:
     #     else:
     #         log.info("📷️  screenshot -> HTML report.")
     #         self.images.append(Seldom.driver.get_screenshot_as_base64())
-    @staticmethod
-    def save_img_report(image_as_base64):
-        AppConfig.REPORT_IMAGE.extend(image_as_base64)
+    # @staticmethod
+    # def save_img_report(image_as_base64):
+    #     AppConfig.REPORT_IMAGE.extend(image_as_base64)
 
     @staticmethod
     def write_log_u2(path):

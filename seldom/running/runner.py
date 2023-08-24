@@ -167,7 +167,7 @@ class TestMain:
             else:
                 os.mkdir(os.path.join(os.getcwd(), "reports"))
 
-            report_folder = AppConfig.REPORT_FOLDER = os.path.join(os.getcwd(), "reports")
+            report_folder = AppConfig.PERF_OUTPUT_FOLDER = os.path.join(os.getcwd(), "reports")
 
             if (self.report is None) and (BrowserConfig.REPORT_PATH is not None):
                 report_path = BrowserConfig.REPORT_PATH
@@ -188,7 +188,7 @@ class TestMain:
             if AppConfig.WRITE_EXCEL:
                 import pandas as pd
                 df = pd.DataFrame(AppConfig.WRITE_EXCEL)
-                with pd.ExcelWriter(report_path.split('_')[0]+'_perf.xlsx', engine='xlsxwriter') as writer:
+                with pd.ExcelWriter(report_path.split('_')[0] + '_perf.xlsx', engine='xlsxwriter') as writer:
                     df.to_excel(writer, sheet_name='Sheet1', index=False)
 
             log.success(f"generated html file: file:///{report_path}")

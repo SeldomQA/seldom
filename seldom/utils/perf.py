@@ -19,6 +19,7 @@ from . import cache
 from seldom.logging import log
 from seldom.running.config import Seldom, AppConfig
 from ..u2driver import u2
+from ..wdadriver import wda_, make_screenrecord
 from matplotlib import pyplot as plt
 from matplotlib import dates as mdates
 from dateutil import parser
@@ -31,8 +32,11 @@ from solox.public.apm import Memory, CPU, FPS
 class MySoloX:
     """iOS and Android perf driver, but iOS used not so good"""
 
-    def __init__(self, pkgName, deviceId=Seldom.app_info.get('deviceName', 'f5ede5e3'),
-                 platform=Seldom.app_info.get('platformName')):
+    def __init__(self, pkgName, deviceId=None, platform=None):
+        if deviceId is None:
+            deviceId = Seldom.app_info.get('deviceName')
+        if platform is None:
+            platform = Seldom.app_info.get('platformName')
         if platform == Seldom.app_info.get('platformName'):
             wait_times = 0
             while wait_times <= 20:
@@ -50,15 +54,14 @@ class MySoloX:
         mem_list = []
         time_list = []
         try:
-            while AppConfig.threadLock:
+            while Common.threadLock:
                 mem_res = self.mem.getProcessMem(noLog=True)
                 now_time = datetime.now().strftime('%H:%M:%S.%f')[:-3]
                 log.trace(f'{now_time} : MEM{mem_res}')
                 mem_list.append(tuple(mem_res))
                 time_list.append(now_time)
         except Exception as e:
-            error_info = f"Error in get_mem: {e}"
-            cache.set({'perf_error': error_info})
+            cache.set({'PERF_ERROR': f"Error in get_mem: {e}"})
 
         return time_list, mem_list
 
@@ -67,14 +70,14 @@ class MySoloX:
         cpu_list = []
         time_list = []
         try:
-            while AppConfig.threadLock:
+            while Common.threadLock:
                 cpu_res = self.cpu.getCpuRate(noLog=True)
                 now_time = datetime.now().strftime('%H:%M:%S.%f')[:-3]
                 log.trace(f'{now_time} : CPU{cpu_res}')
                 cpu_list.append(tuple(cpu_res))
                 time_list.append(now_time)
         except Exception as e:
-            cache.set({'perf_error': f"Error in get_cpu: {e}"})
+            cache.set({'PERF_ERROR': f"Error in get_cpu: {e}"})
 
         return time_list, cpu_list
 
@@ -83,14 +86,14 @@ class MySoloX:
         fps_list = []
         time_list = []
         try:
-            while AppConfig.threadLock:
+            while Common.threadLock:
                 fps_res = self.fps.getFPS(noLog=True)
                 now_time = datetime.now().strftime('%H:%M:%S.%f')[:-3]
                 log.trace(f'{now_time} : FPS{fps_res}')
                 fps_list.append(tuple(fps_res))
                 time_list.append(now_time)
         except Exception as e:
-            cache.set({'perf_error': f"Error in get_fps: {e}"})
+            cache.set({'PERF_ERROR': f"Error in get_fps: {e}"})
 
         return time_list, fps_list
 
@@ -125,7 +128,9 @@ class TidevicePerf:
                 str(((datetime.fromtimestamp(value['timestamp'] / 1000)).strftime('%H:%M:%S.%f'))[:-3]))
             self.fps_list.append((value['value'], 0))
 
-    def start(self, pkgName=Seldom.app_info.get('platformName')):
+    def start(self, pkgName=None):
+        if pkgName is None:
+            pkgName = Seldom.app_info.get('platformName')
         self.mem_list = []
         self.mem_time_list = []
         self.cpu_list = []
@@ -136,9 +141,9 @@ class TidevicePerf:
 
     def stop(self):
         self.perf.stop()
-        cache.set({'cpu_info': (self.cpu_time_list, self.cpu_list)})
-        cache.set({'mem_info': (self.mem_time_list, self.mem_list)})
-        cache.set({'fps_info': (self.fps_time_list, self.fps_list)})
+        cache.set({'CPU_INFO': (self.cpu_time_list, self.cpu_list)})
+        cache.set({'MEM_INFO': (self.mem_time_list, self.mem_list)})
+        cache.set({'FPS_INFO': (self.fps_time_list, self.fps_list)})
 
 
 class RunType:
@@ -149,6 +154,14 @@ class RunType:
 
 
 class Common:
+    iOS_perf_obj = None
+    threadLock = False
+    log = False
+    record = False
+    CASE_ERROR = []
+    PERF_ERROR = []
+    LOGS_ERROR = []
+
     @staticmethod
     def image_to_base64(image_path):
         with open(image_path, "rb") as image_file:
@@ -158,8 +171,8 @@ class Common:
             return base64_string
 
     @staticmethod
-    def extract_frames(video_file, output_dir, start_duration=AppConfig.frame_second,
-                       end_duration=AppConfig.frame_second):
+    def extract_frames(video_file, output_dir, start_duration=AppConfig.FRAME_SECONDS,
+                       end_duration=AppConfig.FRAME_SECONDS):
         """Screen recording framing"""
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
@@ -247,10 +260,10 @@ class Common:
         frame_path_list = os.listdir(image_folder_path)
         best_match = None
         best_distance = float('inf')
-        if len(frame_path_list) <= int(AppConfig.frame_second * AppConfig.fps) * 2:
+        if len(frame_path_list) <= int(AppConfig.FRAME_SECONDS * AppConfig.FPS) * 2:
             start_frame_num = len(frame_path_list) / 2
         else:
-            start_frame_num = AppConfig.frame_second * AppConfig.fps
+            start_frame_num = AppConfig.FRAME_SECONDS * AppConfig.FPS
         for i, filename in enumerate(frame_path_list):
             if is_start and i < start_frame_num:
                 if filename.endswith('.jpg'):
@@ -329,17 +342,18 @@ def run_testcase(func, *args, **kwargs):
     try:
         func(*args, **kwargs)
     except Exception as e:
-        AppConfig.CASE_ERROR.append(f"{e}")
+        Common.CASE_ERROR.append(f"{e}")
         log.error(f'Error in run_testcase: {e}')
+        raise e
     if AppConfig.record and (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
         time.sleep(1)
         u2.stop_recording_u2()
     elif AppConfig.record and (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'iOS'):
-        log.info('用例结束，修改record录制标识为False')
         AppConfig.record = False
-        AppConfig.iOS_perf_obj.stop()
-    AppConfig.threadLock = False
-    AppConfig.log = False
+        if Common.iOS_perf_obj is not None:
+            Common.iOS_perf_obj.stop()
+    Common.threadLock = False
+    Common.log = False
 
 
 def get_log(log_path, run_path):
@@ -351,7 +365,7 @@ def get_log(log_path, run_path):
         if (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
             u2.write_log_u2(log_path)
     except Exception as e:
-        AppConfig.LOGS_ERROR.append(f"{e}")
+        Common.LOGS_ERROR.append(f"{e}")
         log.error(f'Error in get_log: {e}')
 
 
@@ -364,28 +378,29 @@ def get_perf():
             new_mem = gevent.spawn(perf.get_mem)
             new_fps = gevent.spawn(perf.get_fps)
             gevent.joinall([new_cpu, new_mem, new_fps])
-            cache.set({'cpu_info': new_cpu.value})
-            cache.set({'mem_info': new_mem.value})
-            cache.set({'fps_info': new_fps.value})
+            cache.set({'CPU_INFO': new_cpu.value})
+            cache.set({'MEM_INFO': new_mem.value})
+            cache.set({'FPS_INFO': new_fps.value})
         elif (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'iOS'):
-            AppConfig.iOS_perf_obj = TidevicePerf()
-            AppConfig.iOS_perf_obj.start()
+            Common.iOS_perf_obj = TidevicePerf()
+            Common.iOS_perf_obj.start()
     except Exception as e:
-        AppConfig.PERF_ERROR.append(f"{e}")
+        Common.PERF_ERROR.append(f"{e}")
         log.error(f"Error in get_perf: {e}")
 
 
 def start_record(video_path, run_path):
     while not os.path.exists(run_path):
         time.sleep(1)
-    while AppConfig.threadLock and Seldom.driver:
-        if AppConfig.record:
+    while Common.threadLock and Seldom.driver:
+        if Common.record:
             try:
                 if (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'iOS'):
-                    pass
-                    # with make_screenrecord(output_video_path=video_path):
-                    #     while AppConfig.record:
-                    #         time.sleep(1)
+                    # while not WDAObj.c:
+                    #     time.sleep(1)
+                    with make_screenrecord(output_video_path=video_path):
+                        while Common.record:
+                            time.sleep(1)
                 elif (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
                     u2.start_recording_u2(video_path)
             except Exception as e:
@@ -394,7 +409,7 @@ def start_record(video_path, run_path):
         time.sleep(1.5)
 
 
-def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 800,
+def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 800,
             duration_threshold: int = 100, write_excel=True, get_logs=True):
     """Decorator for performance data"""
 
@@ -407,11 +422,13 @@ def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 
             testcase_file_name = os.path.split(inspect.getsourcefile(func))[1]  # 获取被装饰函数所在的模块文件路径
             testcase_class_name = args[0].__class__.__name__  # 获取被装饰函数所在的类名
             testcase_folder_name = os.path.basename(os.path.dirname(os.path.abspath(func.__code__.co_filename)))
-            cache.set({'testcase_name': testcase_name})
-            cache.set({'testcase_class_name': testcase_class_name})
+            cache.set({'TESTCASE_NAME': testcase_name})
+            cache.set({'TESTCASE_CLASS_NAME': testcase_class_name})
             run_times = 1
             folder_time = datetime.now().strftime("%Y_%m_%d_%H_%M")  # 以当前时间来命名文件夹
-            testcase_base_path = os.path.join(AppConfig.REPORT_FOLDER, testcase_folder_name, testcase_class_name,
+            if AppConfig.PERF_OUTPUT_FOLDER is None:
+                raise ValueError('Please do not run in debug mode or specify "AppConfig.PERF_OUTPUT_FOLDER" directory!')
+            testcase_base_path = os.path.join(AppConfig.PERF_OUTPUT_FOLDER, testcase_folder_name, testcase_class_name,
                                               testcase_name)
             if not os.path.exists(testcase_base_path):
                 os.makedirs(testcase_base_path)
@@ -448,9 +465,9 @@ def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 
                 run_path = os.path.join(testcase_base_path, folder_time)
                 video_path = os.path.join(run_path, f'{testcase_name}_{i}.mp4')  # 录屏文件路径
                 log_path = os.path.join(run_path, f'{testcase_name}_{i}.txt')
-                AppConfig.CASE_ERROR = []
-                AppConfig.PERF_ERROR = []
-                AppConfig.LOGS_ERROR = []
+                Common.CASE_ERROR = []
+                Common.PERF_ERROR = []
+                Common.LOGS_ERROR = []
                 if MODE in [RunType.DEBUG, RunType.DURATION]:
                     frame_path = os.path.join(testcase_base_path, folder_time, f'{testcase_name}_frame_{i}')  # 分帧
                     if not os.path.exists(frame_path):
@@ -462,11 +479,11 @@ def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 
                 else:
                     if not os.path.exists(run_path):
                         os.makedirs(run_path)
-                AppConfig.threadLock = True
-                AppConfig.record = False
+                Common.threadLock = True
+                Common.record = False
 
                 # --------------------------Run test case--------------------------
-                if get_logs:
+                if get_logs and (Seldom.app_info.get('platformName') == 'Android'):
                     log_thread = threading.Thread(target=get_log, args=(log_path, run_path))
                     log_thread.start()
                     log.info("日志线程已经启动，继续执行主线程...")
@@ -475,14 +492,14 @@ def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 
                 if MODE in [RunType.DURATION, RunType.STRESS]:  # 判断是否开启性能数据获取，开启的话就在协程队列中增加get_perf执行
                     do_list.append(gevent.spawn(get_perf))
                 gevent.joinall(do_list)
-                if AppConfig.CASE_ERROR:
-                    log.error(f'{AppConfig.CASE_ERROR}')
-                    assert False, f'{AppConfig.CASE_ERROR}'
+                if Common.CASE_ERROR:
+                    log.error(f'{Common.CASE_ERROR}')
+                    assert False, f'{Common.CASE_ERROR}'
                 # --------------------------Frame the recording screen--------------------------
                 if MODE in [RunType.DEBUG, RunType.DURATION]:
-                    log.info("✅正在进行视频分帧")
+                    log.info("✅正在进行录屏分帧")
                     Common.extract_frames(video_path, frame_path)
-                    log.info("✅视频分帧结束")
+                    log.info("✅录屏分帧结束")
                 # --------------------------Find keyframes--------------------------
                 if MODE == RunType.DURATION:
                     log.info("🌝Start searching for the most similar start frame")
@@ -494,8 +511,8 @@ def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 
                     stop_frame = int(os.path.split(stop_frame_path)[1].split('.')[0][-6:])
                     log.info(f"Stop frame:[{stop_frame}]")
                     # --------------------------Calculation time consumption--------------------------
-                    duration = round((stop_frame - start_frame) / AppConfig.fps, 2)
-                    log.info("🌈[{0}]Functional time consumption[{1}]s".format(testcase_name, duration))
+                    duration = round((stop_frame - start_frame) / AppConfig.FPS, 2)
+                    log.info(f"🌈[{testcase_name}]Func time consume[{duration}]s")
                     duration_list.append(duration)
                     start_frame_list.append(Common.image_to_base64(start_frame_path))
                     stop_frame_list.append(Common.image_to_base64(stop_frame_path))
@@ -503,26 +520,26 @@ def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 
                         if (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
                             u2.launch_app_u2(stop=True)
                         elif (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'iOS'):
-                            pass
+                            wda_.launch_app_wda(stop=True)
 
                 # --------------------------Performance image saved locally and converted to base64--------------------
                 if MODE in [RunType.DURATION, RunType.STRESS]:
                     # CPU
-                    cpu_info = cache.get('cpu_info')
-                    cpu_image_path = os.path.join(perf_path, f'{testcase_name}_cpu_{i}.jpg')
+                    cpu_info = cache.get('CPU_INFO')
+                    cpu_image_path = os.path.join(perf_path, f'{testcase_name}_CPU_{i}.jpg')
                     cpu_base64_list.append(
                         Common.draw_chart(cpu_info[1], cpu_info[0], ['appCpuRate', 'sysCpuRate'],
                                           jpg_name=cpu_image_path,
                                           label_title='CPU'))
                     # MEM
-                    mem_info = cache.get('mem_info')
-                    mem_image_path = os.path.join(perf_path, f'{testcase_name}_mem_{i}.jpg')
+                    mem_info = cache.get('MEM_INFO')
+                    mem_image_path = os.path.join(perf_path, f'{testcase_name}_MEM_{i}.jpg')
                     mem_base64_list.append(
                         Common.draw_chart(mem_info[1], mem_info[0], ['totalPass', 'nativePass', 'dalvikPass'],
                                           jpg_name=mem_image_path, label_title='Memory'))
                     # 帧率
-                    fps_info = cache.get('fps_info')
-                    fps_image_path = os.path.join(perf_path, f'{testcase_name}_fps_{i}.jpg')
+                    fps_info = cache.get('FPS_INFO')
+                    fps_image_path = os.path.join(perf_path, f'{testcase_name}_FPS_{i}.jpg')
                     if fps_info is not None:
                         fps_base64_list.append(
                             Common.draw_chart(fps_info[1], fps_info[0], ['fps', 'jank'], jpg_name=fps_image_path,
@@ -531,11 +548,11 @@ def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 
             if MODE in [RunType.DEBUG, RunType.DURATION, RunType.STRESS]:
                 photo_list = cpu_base64_list + mem_base64_list + fps_base64_list + flo_base64_list \
                              + bat_base64_list + start_frame_list + stop_frame_list
-                u2.save_img_report(photo_list)
+                AppConfig.REPORT_IMAGE.extend(photo_list)
                 # --------------------------Data Write Back Table--------------------------
                 mode = 'DurationTest' if MODE == RunType.DURATION else 'StressTest'
                 file_class_name = f"{testcase_file_name} --> {testcase_class_name}"
-                in_excel_times = AppConfig.stress_times if MODE == RunType.STRESS else duration_times
+                in_excel_times = AppConfig.STRESS_TIMES if MODE == RunType.STRESS else duration_times
                 test_case_data = {'Time': folder_time, 'TestCasePath': file_class_name, 'TestCaseName': testcase_name,
                                   'TestCaseDesc': testcase_desc, 'Device': Seldom.app_info.get('platformName'),
                                   'Times': in_excel_times, 'MODE': mode}
@@ -544,14 +561,15 @@ def AppPerf(MODE, duration_times=AppConfig.duration_times, mem_threshold: int = 
                     max_duration_res = round(statistics.mean(duration_list), 2)
                     log.success("🌈Average time consumption of functions[{:.2f}]s".format(max_duration_res))
                     if max_duration_res > duration_threshold:
-                        max_duration_res = f"Average time consumption{max_duration_res},Exceeding threshold{duration_threshold}"
+                        max_duration_res = f"Average time consumption{max_duration_res}," \
+                                           f"Exceeding threshold{duration_threshold}"
                         testcase_assert = False
                         log.warning(max_duration_res)
                     test_case_data.update({'DurationList': str(duration_list), 'DurationAvg': max_duration_res})
                     if testcase_assert is False:
                         assert False, max_duration_res
                 elif MODE == RunType.STRESS:
-                    max_mem_res = max([tup[0] for tup in cache.get('mem_info')[1]])
+                    max_mem_res = max([tup[0] for tup in cache.get('MEM_INFO')[1]])
                     if max_mem_res > mem_threshold:
                         max_mem_res = f"Maximum Memory{max_mem_res},Exceeding threshold{mem_threshold}"
                         testcase_assert = False

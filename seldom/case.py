@@ -14,6 +14,7 @@ from seldom.driver import Browser
 from seldom.webdriver import WebDriver
 from seldom.appdriver import AppDriver
 from seldom.u2driver import U2Driver
+from seldom.wdadriver import WDADriver
 from seldom.request import HttpRequest, ResponseResult, formatting
 from seldom.running.config import Seldom, BrowserConfig, AppConfig
 from seldom.logging import log
@@ -21,7 +22,7 @@ from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
 
 
-class TestCase(unittest.TestCase, WebDriver, AppDriver, U2Driver, HttpRequest):
+class TestCase(unittest.TestCase, WebDriver, AppDriver, U2Driver, WDADriver, HttpRequest):
     """seldom TestCase class"""
 
     def start_class(self):
@@ -267,7 +268,12 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, U2Driver, HttpRequest):
         if msg is None:
             msg = "No element found"
         try:
-            self.get_element(index=index, **kwargs)
+            if Seldom.app_info.get('platformName') == 'Android':
+                self.get_elements_u2(index=index, **kwargs)
+            elif Seldom.app_info.get('platformName') == 'iOS':
+                self.get_element_wda(index=index, **kwargs)
+            else:
+                self.get_element(index=index, **kwargs)
             elem = True
         except NotFindElementError:
             elem = False
@@ -288,7 +294,12 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, U2Driver, HttpRequest):
         timeout_backups = Seldom.timeout
         Seldom.timeout = 2
         try:
-            self.get_element(index=index, **kwargs)
+            if Seldom.app_info.get('platformName') == 'Android':
+                self.get_elements_u2(index=index, **kwargs)
+            elif Seldom.app_info.get('platformName') == 'iOS':
+                self.get_element_wda(index=index, **kwargs)
+            else:
+                self.get_element(index=index, **kwargs)
             elem = True
         except NotFindElementError:
             elem = False
