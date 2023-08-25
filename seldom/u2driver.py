@@ -1,6 +1,7 @@
 """
 uiautomator2 driver API
 """
+import base64
 import os
 import time
 
@@ -380,7 +381,11 @@ class U2Driver:
         log.info(f"📷️  screenshot -> ({file_path}).")
         screenshot.save(file_path)
         if report:
-            AppConfig.REPORT_IMAGE.extend([Common.image_to_base64(file_path)])
+            with open(file_path, "rb") as image_file:
+                image_bytes = image_file.read()
+                base64_data = base64.b64encode(image_bytes)
+                base64_string = base64_data.decode("utf-8")
+            AppConfig.REPORT_IMAGE.extend([base64_string])
 
     @staticmethod
     def write_log_u2(save_path: str = None):
