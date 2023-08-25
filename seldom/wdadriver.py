@@ -84,12 +84,16 @@ class WDAElement:
     def __init__(self, **kwargs) -> None:
         if not kwargs:
             raise ValueError("Please specify a locator")
+        self.desc = None
         self.kwargs = kwargs
         if 'index' in self.kwargs:
             self.index = self.kwargs['index']
             del self.kwargs['index']
         if 'visible' in self.kwargs:
             del self.kwargs['visible']
+        if 'desc' in self.kwargs:
+            self.desc = self.kwargs['desc']
+            del self.kwargs['desc']
         for by, value in self.kwargs.items():
             if LOCATOR_LIST.get(by) is None:
                 raise ValueError(f"The find element is not supported: {by}. ")
@@ -105,10 +109,10 @@ class WDAElement:
                 wda_.implicitly_wait(Seldom.timeout)
         except Exception as e:
             if empty is False:
-                raise NotFindElementError(f"❌ Find element error: {self.kwargs} ---> {e}")
+                raise NotFindElementError(f"❌ Find element error: {self.kwargs}:{self.desc} ---> {e}")
             else:
                 return []
-        self.find_elem_info = f"Find element: {self.kwargs} "
+        self.find_elem_info = f"Find element: {self.kwargs}:{self.desc}."
         return WDAObj.e
 
     @property

@@ -33,11 +33,14 @@ class U2Element:
     def __init__(self, **kwargs) -> None:
         if not kwargs:
             raise ValueError("Please specify a locator")
-
+        self.desc = None
         self.kwargs = kwargs
         if 'index' in self.kwargs:
             self.index = self.kwargs['index']
             del self.kwargs['index']
+        if 'desc' in self.kwargs:
+            self.desc = self.kwargs['desc']
+            del self.kwargs['desc']
         for by, value in self.kwargs.items():
             if LOCATOR_LIST.get(by) is None:
                 raise ValueError(f"The find element is not supported: {by}. ")
@@ -56,11 +59,11 @@ class U2Element:
                 u2.implicitly_wait(Seldom.timeout)
         except Exception as e:
             if empty is False:
-                raise NotFindElementError(f"❌ Find element error: {self.kwargs} ---> {e}")
+                raise NotFindElementError(f"❌ Find element error: {self.kwargs}:{self.desc} ---> {e}")
             else:
                 return []
         if len(elems) >= 1:
-            self.find_elem_info = f"Find {len(elems)} element: {self.kwargs} "
+            self.find_elem_info = f"Find {len(elems)} element: {self.kwargs}:{self.desc}."
 
         if index is None:
             return elems
