@@ -21,11 +21,11 @@ keycodes = {
 }
 
 LOCATOR_LIST = {
-    'id_': "id",
+    'id': "id",
     'name': "name",
     'xpath': "xpath",
     'text': "text",
-    'class_name': "className",
+    'className': "className",
     'value': "value",
     'label': "label"
 }

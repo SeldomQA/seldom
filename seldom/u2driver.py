@@ -22,11 +22,11 @@ keycodes = {
 }
 
 LOCATOR_LIST = {
-    'id_': "resourceId",
+    'resourceId': "resourceId",
     'name': "name",
     'xpath': "xpath",
     'text': 'text',
-    'class_name': "className",
+    'className': "className",
 }
 
 
