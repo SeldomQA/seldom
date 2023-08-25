@@ -12,11 +12,12 @@ pymysql>=1.0.0
 genson==1.2.2
 click==8.1.3
 python-dateutil==2.8.2
-facebook-wda
+solox==2.7.2
+facebook-wda==1.4.6
 uiautomator2==2.16.23
 uiautomator2[image]==2.16.23
-solox
-gevent
 matplotlib==3.7.1
-pandas
-xlsxwriter
+gevent==23.7.0
+pandas==2.0.3
+xlsxwriter==3.1.2
+tidevice==0.11.0
