@@ -96,9 +96,13 @@ class WDAElement:
         self.find_elem_info = None
         self.find_elem_warn = None
 
-    def get_elements(self, index: int = 0, visible: bool = True, empty=False):
+    def get_elements(self, index: int = 0, visible: bool = True, empty: bool = False, timeout: float = None):
         try:
+            if timeout:
+                wda_.implicitly_wait(timeout)
             WDAObj.e = WDAObj.s(**self.kwargs, visible=visible, index=index).get()
+            if timeout:
+                wda_.implicitly_wait(Seldom.timeout)
         except Exception as e:
             if empty is False:
                 raise NotFindElementError(f"❌ Find element error: {self.kwargs} ---> {e}")
@@ -125,10 +129,12 @@ class WDADriver:
         WDAObj.c = Seldom.driver
 
     @staticmethod
-    def implicitly_wait(timeout=Seldom.timeout):
+    def implicitly_wait(timeout: float = None):
         """set facebook-wda implicitly wait"""
-        wda.HTTP_TIMEOUT = timeout
-        wda.DEVICE_WAIT_TIMEOUT = timeout
+        if not timeout:
+            timeout = Seldom.timeout
+        WDAObj.s.implicitly_wait(timeout)
+        log.info(f'Set facebook-wda Driver implicitly wait ---> {timeout}s')
 
     def install_app_wda(self, app_path: str):
         """Install the application found at `app_path` on the device.
@@ -138,19 +144,20 @@ class WDADriver:
 
         """
         os.system(f'tidevice --udid {Seldom.app_info.get("udid")} install {app_path}')
+        log.info(f'Install APP path ---> {app_path}')
         return self
 
     def remove_app_wda(self, package_name: str = None):
         """Remove the specified application from the device.
 
         Args:
-            app_id: the application id to be removed
+            package_name: the application id to be removed
 
         """
         if not package_name:
             package_name = Seldom.app_info.get('appPackage')
-        log.info(f'Remove APP：{package_name}')
         os.system(f'tidevice uninstall {package_name}')
+        log.info(f'Remove APP ---> {package_name}')
         return self
 
     def launch_app_wda(self, package_name: str = None, stop: bool = False):
@@ -159,8 +166,9 @@ class WDADriver:
             package_name = Seldom.app_info.get('appPackage')
         if stop:
             Seldom.driver.session().app_terminate(package_name)
-        log.info(f'Launch APP：{package_name}')
+        log.info(f'Launch APP ---> {package_name} STOP={stop}')
         WDAObj.s = Seldom.driver.session(package_name)
+
         return self
 
     def close_app_wda(self, package_name: str = None):
@@ -172,8 +180,9 @@ class WDADriver:
         """
         if not package_name:
             package_name = Seldom.app_info.get('appPackage')
-        log.info(f'Close APP：{package_name}')
+        log.info(f'Close APP ---> {package_name}')
         Seldom.driver.session().app_terminate(package_name)
+
         return self
 
     def set_text_wda(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0,
@@ -242,7 +251,7 @@ class WDADriver:
         """
         wda_elem = WDAElement(text=text)
         elem = wda_elem.get_elements(index)
-        log.info(f"✅ {wda_elem.info} -> click link.")
+        log.info(f"✅ {wda_elem.info} -> click text.")
         elem.click()
 
     @staticmethod
@@ -262,25 +271,28 @@ class WDADriver:
         log.info(f"✅ {wda_elem.info} -> get text: {text}.")
         return text
 
-    @staticmethod
-    def get_display_wda(index: int = 0, **kwargs) -> bool:
-        """
-        Gets the element to display,The return result is true or false.
+    # @staticmethod
+    # def get_display_u2(index: int = 0, **kwargs) -> bool:
+    #     """
+    #     Gets the element to display,The return result is true or false.
+    #
+    #     Usage:
+    #         self.get_display(css="#el")
+    #     """
+    #     if 'elem' in kwargs:
+    #         wda_elem = kwargs['elem']
+    #     else:
+    #         wda_elem = WDAElement(**kwargs)
+    #     elem = wda_elem.get_elements(index, empty=True)
+    #     if not elem:
+    #         return False
+    #     else:
+    #         result = elem.exists
+    #         log.info(f"✅ {wda_elem.info} -> element is display: {result}.")
+    #         return result
 
-        Usage:
-            self.get_display(css="#el")
-        """
-        if 'elem' in kwargs:
-            wda_elem = kwargs['elem']
-        else:
-            wda_elem = WDAElement(**kwargs)
-        elem = wda_elem.get_elements(index)
-        result = elem.exists
-        log.info(f"✅ {wda_elem.info} -> element is display: {result}.")
-        return result
-
     @staticmethod
-    def wait_wda(timeout: int = Seldom.timeout, index: int = 0, **kwargs) -> None:
+    def wait_wda(timeout: float = 5, index: int = 0, noLog=False, **kwargs) -> bool:
         """
         Implicitly wait element on the page.
         """
@@ -288,19 +300,20 @@ class WDADriver:
             wda_elem = kwargs['elem']
         else:
             wda_elem = WDAElement(**kwargs)
-        elem = wda_elem.get_elements(index)
-        log.info(f"⌛️ implicitly wait: {timeout}s.")
-        elem.wait(timeout=timeout)
 
-    # @staticmethod
-    # def start_recording_u2(output: str = 'record.mp4'):
-    #     log.info(f"📷️  start_recording -> ({output}).")
-    #     Seldom.driver.screenrecord(output, fps=AppConfig.fps)
-    #
-    # @staticmethod
-    # def stop_recording_u2():
-    #     log.info(f"📷️  record down.")
-    #     Seldom.driver.screenrecord.stop()
+        timeout_backups = Seldom.timeout
+        Seldom.timeout = timeout
+        if noLog is not True:
+            log.info(f"⌛️ wait {wda_elem.kwargs} to exist: {timeout}s.")
+        try:
+            wda_elem.get_elements(index, empty=kwargs.get('empty', False)).wait(timeout=timeout)
+            result = True
+        except:
+            if noLog is not True:
+                log.info(f"❌Element {wda_elem.kwargs} not exist")
+            result = False
+        Seldom.timeout = timeout_backups
+        return result
 
     # @staticmethod
     # def save_screenshot(file_path: str = None, index: int = 0, **kwargs) -> None:
@@ -406,7 +419,7 @@ class WDADriver:
         Seldom.driver.click(x=x, y=y)
 
     @staticmethod
-    def swipe_up_wda(times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.9,
+    def swipe_up_wda(times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.8,
                      end: float = 0.1) -> None:
         """
         swipe up
@@ -417,21 +430,27 @@ class WDADriver:
             start = (start / 2)
 
         for _ in range(times):
-            Seldom.driver.swipe(width, start, width, end)
-            time.sleep(1)
+            Seldom.driver.swipe(width, start, width, end, 0.5)
+            if times != 1:
+                time.sleep(1)
 
-    # def swipe_up_find(self):
-    #     swipe_times = 0
-    #     while self.wait(element, timeout=1.0) is False:
-    #         self.d.swipe_ext(direction, scale=0.9)
-    #         swipe_times += 1
-    #         if swipe_times > 15:
-    #             log.error(f'❗未找到元素：{element["element"]}')
-    #             raise ValueError(f'❗未找到元素：{element["element"]}')
-    #     log.info(f'✅{direction}滑动屏幕寻找元素')
+    def swipe_up_find_wda(self, times: int = 15, upper: bool = False, index: int = 0, **kwargs):
+
+        swipe_times = 0
+        if 'elem' in kwargs:
+            wda_elem = kwargs['elem']
+        else:
+            wda_elem = WDAElement(**kwargs)
+        log.info(f'Swipe to find ---> {wda_elem.kwargs}')
+        while not wda_elem.get_elements(index=index, empty=True, timeout=0.5):
+            self.swipe_up_wda(upper=upper)
+            swipe_times += 1
+            if swipe_times > times:
+                raise NotFindElementError(f"❌ Find element error: swipe {times} times no find ---> {wda_elem.kwargs}")
+
     @staticmethod
-    def swipe_down(times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.1,
-                   end: float = 0.9) -> None:
+    def swipe_down_wda(times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.1,
+                       end: float = 0.8) -> None:
         """
         swipe down
         """
@@ -441,8 +460,14 @@ class WDADriver:
             end = (end / 2)
 
         for _ in range(times):
-            Seldom.driver.swipe(width, start, width, end)
-            time.sleep(1)
+            Seldom.driver.swipe(width, start, width, end, 0.5)
+            if times != 1:
+                time.sleep(1)
+
+    @staticmethod
+    def func_wda(func_name, **kwargs):
+        function = getattr(Seldom.driver, func_name)
+        return function(**kwargs)
 
 
 wda_ = WDADriver()

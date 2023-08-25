@@ -35,12 +35,14 @@ class BrowserConfig:
 
 class AppConfig:
     """
-    Define run uiautomator2 or facebook-wda config
+    Define run uiautomator2 and facebook-wda config
     """
     PERF_OUTPUT_FOLDER = None
+    PERF_RUN_FOLDER = None
     REPORT_IMAGE = []
     WRITE_EXCEL = []
     FPS = 45
     FRAME_SECONDS = 5
     DURATION_TIMES = 3
     STRESS_TIMES = 3
+    log = False

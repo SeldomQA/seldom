@@ -3,6 +3,11 @@ uiautomator2 driver API
 """
 import os
 import time
+
+from seldom.utils.perf import Common
+
+from seldom.testdata import get_timestamp
+
 from seldom.logging import log
 from seldom.running.config import Seldom, AppConfig
 from seldom.logging.exceptions import NotFindElementError
@@ -42,12 +47,16 @@ class U2Element:
         self.find_elem_info = None
         self.find_elem_warn = None
 
-    def get_elements(self, index: int = None, empty=False):
+    def get_elements(self, index: int = None, empty: bool = False, timeout: float = None):
         try:
+            if timeout:
+                u2.implicitly_wait(timeout)
             if 'xpath' in self.kwargs:
                 elems = Seldom.driver.xpath(**self.kwargs).all()
             else:
                 elems = Seldom.driver(**self.kwargs)
+            if timeout:
+                u2.implicitly_wait(Seldom.timeout)
         except Exception as e:
             if empty is False:
                 raise NotFindElementError(f"❌ Find element error: {self.kwargs} ---> {e}")
@@ -98,9 +107,12 @@ class U2Driver:
     #     """
     #     return Seldom.driver.is_app_installed(bundle_id=bundle_id)
     @staticmethod
-    def implicitly_wait(timeout=Seldom.timeout):
-        """set uiautomator2 implicitly wait"""
+    def implicitly_wait(timeout: float = None):
+        """set uiautomator2 Driver implicitly wait"""
+        if not timeout:
+            timeout = Seldom.timeout
         Seldom.driver.implicitly_wait(timeout)
+        log.info(f'Set uiautomator2 Driver implicitly wait ---> {timeout}s')
 
     def install_app_u2(self, app_path: str):
         """Install the application found at `app_path` on the device.
@@ -110,50 +122,70 @@ class U2Driver:
 
         """
         os.system(f'adb install -g {app_path}')
+        log.info(f'Install APP path ---> {app_path}')
         return self
 
-    def remove_app_u2(self, app_id: str = None):
+    def remove_app_u2(self, package_name: str = None):
         """Remove the specified application from the device.
 
         Args:
-            app_id: the application id to be removed
+            package_name: the application id to be removed
 
         """
-        if not app_id:
-            app_id = Seldom.app_info.get('appPackage')
-        Seldom.driver.app_uninstall(app_id)
+        if not package_name:
+            package_name = Seldom.app_info.get('appPackage')
+        Seldom.driver.app_uninstall(package_name)
+        log.info(f'Remove APP ---> {package_name}')
         return self
 
-    def launch_app_u2(self, stop: bool = False):
+    @staticmethod
+    def remove_app_all_u2():
+        Seldom.driver.app_stop_all()
+        log.info('Remove all APP')
+
+    def launch_app_u2(self, package_name: str = None, stop: bool = False):
         """Start on the device the application specified in the desired capabilities.
 
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.app_start(package_name=Seldom.app_info.get('appPackage'), stop=stop)
-        log.info(f'启动APP：{Seldom.app_info.get("appPackage")}')
+        if not package_name:
+            package_name = Seldom.app_info.get('appPackage')
+        log.info(f'Launch APP ---> {package_name} STOP={stop}')
+        Seldom.driver.app_start(package_name=package_name, stop=stop)
+
         return self
 
-    def close_app_u2(self):
+    def close_app_u2(self, package_name: str = None):
         """Stop the running application, specified in the desired capabilities, on
         the device.
 
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.app_stop(Seldom.app_info.get('appPackage'))
+        if not package_name:
+            package_name = Seldom.app_info.get('appPackage')
+        log.info(f'Close APP ---> {package_name}')
+        Seldom.driver.app_stop(package_name)
+
         return self
 
-    def clear_app_u2(self):
+    def clear_app_u2(self, package_name: str = None):
         """Resets the current application on the device.
 
         """
-        Seldom.driver.app_clear(Seldom.app_info.get('appPackage'))
+        if not package_name:
+            package_name = Seldom.app_info.get('appPackage')
+        Seldom.driver.app_clear(package_name)
+        log.info(f'Clear APP ---> {package_name}')
         return self
 
     @staticmethod
-    def wait_app_u2():
-        pid = Seldom.driver.app_wait(Seldom.app_info.get('appPackage'))
+    def wait_app_u2(package_name: str = None):
+        log.info(f'Wait APP run ---> {package_name}')
+        if not package_name:
+            package_name = Seldom.app_info.get('appPackage')
+        pid = Seldom.driver.app_wait(package_name)
         return pid
 
     def set_text_u2(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0,
@@ -162,7 +194,7 @@ class U2Driver:
         Operation input box.
 
         Usage:
-            self.type(css="#el", text="selenium")
+            self.set_text_u2(css="#el", text="selenium")
         """
         if clear is True:
             self.clear_text_u2(index, **kwargs)
@@ -222,7 +254,7 @@ class U2Driver:
         """
         u2_elem = U2Element(text=text)
         elem = u2_elem.get_elements(index)
-        log.info(f"✅ {u2_elem.info} -> click link.")
+        log.info(f"✅ {u2_elem.info} -> click text.")
         elem.click()
 
     @staticmethod
@@ -242,25 +274,27 @@ class U2Driver:
         log.info(f"✅ {u2_elem.info} -> get text: {text}.")
         return text
 
-    @staticmethod
-    def get_display_u2(index: int = 0, **kwargs) -> bool:
-        """
-        Gets the element to display,The return result is true or false.
+    # @staticmethod
+    # def get_display_u2(index: int = 0, **kwargs) -> bool:
+    #     """
+    #     Gets the element to display,The return result is true or false.
+    #
+    #     Usage:
+    #         self.get_display(css="#el")
+    #     """
+    #     if 'elem' in kwargs:
+    #         u2_elem = kwargs['elem']
+    #     else:
+    #         u2_elem = U2Element(**kwargs)
+    #     elem = u2_elem.get_elements(index, empty=True)
+    #     if not elem:
+    #         return False
+    #     else:
+    #         result = elem.exists
+    #         log.info(f"✅ {u2_elem.info} -> element is display: {result}.")
+    #         return result
 
-        Usage:
-            self.get_display(css="#el")
-        """
-        if 'elem' in kwargs:
-            u2_elem = kwargs['elem']
-        else:
-            u2_elem = U2Element(**kwargs)
-        elem = u2_elem.get_elements(index)
-        result = elem.exists
-        log.info(f"✅ {u2_elem.info} -> element is display: {result}.")
-        return result
-
-    @staticmethod
-    def wait_u2(timeout: int = Seldom.timeout, index: int = 0, **kwargs) -> None:
+    def wait_u2(self, timeout: int = Seldom.timeout, index: int = 0, noLog=False, **kwargs) -> bool:
         """
         Implicitly wait element on the page.
         """
@@ -268,9 +302,53 @@ class U2Driver:
             u2_elem = kwargs['elem']
         else:
             u2_elem = U2Element(**kwargs)
-        elem = u2_elem.get_elements(index)
-        log.info(f"⌛️ implicitly wait: {timeout}s.")
-        elem.wait(timeout=timeout)
+        timeout_backups = Seldom.timeout
+        Seldom.timeout = timeout
+        if noLog is not True:
+            log.info(f"⌛️ wait {u2_elem.kwargs} to exist: {timeout}s.")
+        try:
+            u2_elem.get_elements(index, empty=kwargs.get('empty', False)).wait(timeout=timeout)
+            result = True
+        except:
+            if noLog is not True:
+                log.info(f"❌Element {u2_elem.kwargs} not exist")
+            self.save_screenshot(report=True)
+            result = False
+        Seldom.timeout = timeout_backups
+        return result
+
+    def wait_gone_u2(self, timeout: int = Seldom.timeout, index: int = 0, **kwargs):
+        """
+        等待元素消失
+
+        """
+        if 'elem' in kwargs:
+            u2_elem = kwargs['elem']
+        else:
+            u2_elem = U2Element(**kwargs)
+        log.info(f"⌛️ wait {u2_elem.kwargs} gone: timeout={timeout}s.")
+        result = u2_elem.get_elements(index, empty=kwargs.get('empty', False)).wait_gone(timeout=timeout)
+        if result:
+            return result
+        else:
+            log.warning(f'⌛️ wait {u2_elem.kwargs} gone failed.')
+            self.save_screenshot(report=True)
+            return result
+
+    def wait_stable(self, switch: bool = True, interval: float = 1.0, retry: int = 10, timeout: float = 20.0) -> bool:
+        if switch:
+            deadline = time.time() + timeout
+            while time.time() < deadline:
+                for _ in range(retry):
+                    first_snapshot = Seldom.driver.dump_hierarchy()
+                    time.sleep(interval)
+                    second_snapshot = Seldom.driver.dump_hierarchy()
+                    if first_snapshot == second_snapshot:
+                        return True
+                    else:
+                        log.info('Wait stable...')
+            self.save_screenshot(report=True)
+            raise EnvironmentError("Unstable page")
 
     @staticmethod
     def start_recording_u2(output: str = None, fps: int = None):
@@ -287,77 +365,57 @@ class U2Driver:
         log.info(f"📷️  record down.")
         Seldom.driver.screenrecord.stop()
 
-    # @staticmethod
-    # def save_screenshot(file_path: str = None, index: int = 0, **kwargs) -> None:
-    #     """
-    #     Saves a screenshots of the current window to a PNG image file.
-    #
-    #     Usage:
-    #         self.save_screenshot()
-    #         self.save_screenshot('/Screenshots/foo.png')
-    #         self.save_screenshot(id_="bLogo", index=0)
-    #     """
-    #
-    #     if file_path is None:
-    #         img_dir = os.path.join(os.getcwd(), "reports", "images")
-    #         if os.path.exists(img_dir) is False:
-    #             os.mkdir(img_dir)
-    #         file_path = os.path.join(img_dir, get_timestamp() + ".png")
-    #
-    #     if len(kwargs) == 0:
-    #         log.info(f"📷️  screenshot -> ({file_path}).")
-    #         Seldom.driver.save_screenshot(file_path)
-    #     else:
-    #         log.info(f"📷️  element screenshot -> ({file_path}).")
-    #         u2_elem = U2Element(**kwargs)
-    #         elem = u2_elem.get_elements(index)
-    #         elem.screenshot(file_path)
-    #
-    # def screenshots(self) -> None:
-    #     """
-    #     Saves a screenshots of the current window to HTML report.
-    #
-    #     Usage:
-    #         self.screenshots()
-    #     """
-    #     image = self.d.screenshot()
-    #     if Seldom.debug is True:
-    #         img_dir = os.path.join(os.getcwd(), "reports", "images")
-    #         if os.path.exists(img_dir) is False:
-    #             os.mkdir(img_dir)
-    #         file_path = os.path.join(img_dir, get_timestamp() + ".png")
-    #         log.info(f"📷️  screenshot -> ({file_path}).")
-    #         Seldom.driver.save_screenshot(file_path)
-    #     else:
-    #         log.info("📷️  screenshot -> HTML report.")
-    #         self.images.append(Seldom.driver.get_screenshot_as_base64())
-    # @staticmethod
-    # def save_img_report(image_as_base64):
-    #     AppConfig.REPORT_IMAGE.extend(image_as_base64)
+    @staticmethod
+    def save_screenshot(file_path: str = None, report: bool = False) -> None:
+        """
+        Saves a screenshots of the current window to a PNG image file.
+
+        Usage:
+            self.save_screenshot('/Screenshots/foo.png')
+        """
+        screenshot = Seldom.driver.screenshot()
+        if file_path is None:
+            file_path = os.path.join(AppConfig.PERF_RUN_FOLDER, f"{get_timestamp()}.png")
+
+        log.info(f"📷️  screenshot -> ({file_path}).")
+        screenshot.save(file_path)
+        if report:
+            AppConfig.REPORT_IMAGE.extend([Common.image_to_base64(file_path)])
 
     @staticmethod
-    def write_log_u2(path):
-        """把Android日志写入本地"""
-        if not os.path.exists(path):
-            open(path, "w").close()
-        Seldom.driver.shell('logcat -c')
-        cmd = Seldom.driver.shell(f"logcat", stream=True)
-        log_list = []
-        for line in cmd.iter_lines():
-            try:
-                log_list.append(line.decode('utf-8'))
-            except Exception as e:
-                log.error(f'Error in write_log: {e}')
-            if not AppConfig.log:
-                break
-        if not AppConfig.log:
-            cmd.close()
-        with open(path, "w") as f:
-            for item in log_list:
+    def write_log_u2(save_path: str = None):
+        """
+        把Android日志写入本地
+
+        Usage:
+        self.write_log_u2('/Log/log.txt')
+        """
+        if not save_path:
+            save_path = os.path.join(AppConfig.PERF_RUN_FOLDER, f"{get_timestamp()}.txt")
+        if not os.path.exists(save_path):
+            open(save_path, "w").close()
+        try:
+            Seldom.driver.shell('logcat -c')
+            cmd = Seldom.driver.shell(f"logcat", stream=True)
+            log_list = []
+            for line in cmd.iter_lines():
                 try:
-                    f.write(item + "\n")
+                    log_list.append(line.decode('utf-8'))
                 except Exception as e:
-                    log.error(f'Error in write_log：{e}')
+                    log.error(f'Error in write_log_u2: {e}')
+                if not AppConfig.log:
+                    break
+            if not AppConfig.log:
+                cmd.close()
+            with open(save_path, "w") as f:
+                for item in log_list:
+                    try:
+                        f.write(item + "\n")
+                    except Exception as e:
+                        log.error(f'Error in write_log：{e}')
+            log.info(f'Log saved in {save_path}')
+        except Exception as e:
+            raise Exception(f'Error in write_log_u2: {e}')
 
     @staticmethod
     def get_elements_u2(**kwargs):
@@ -366,7 +424,6 @@ class U2Driver:
 
         Usage:
         ret = self.get_elements(css="#el")
-        print(len(ret))
         """
         u2_elem = U2Element(**kwargs)
         elems = u2_elem.get_elements(empty=True)
@@ -413,7 +470,8 @@ class U2Driver:
         Seldom.driver.press(keycodes.get('home'))
         return self
 
-    def size(self) -> dict:
+    @staticmethod
+    def size() -> dict:
         """
         return screen resolution.
         """
@@ -421,7 +479,8 @@ class U2Driver:
         log.info(f"screen resolution: {size}")
         return size
 
-    def tap(self, x: int, y: int) -> None:
+    @staticmethod
+    def tap(x: int, y: int) -> None:
         """
         Tap on the coordinates
         :param x: x coordinates
@@ -431,7 +490,8 @@ class U2Driver:
         log.info(f"top x={x},y={y}.")
         Seldom.driver.click(x=x, y=y)
 
-    def swipe_up(self, times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.9,
+    @staticmethod
+    def swipe_up(times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.9,
                  end: float = 0.1) -> None:
         """
         swipe up
@@ -443,20 +503,33 @@ class U2Driver:
 
         for _ in range(times):
             Seldom.driver.swipe(width, start, width, end)
-            time.sleep(1)
+            if times != 1:
+                time.sleep(1)
 
-    # def swipe_up_find(self):
-    #     swipe_times = 0
-    #     while self.wait(element, timeout=1.0) is False:
-    #         self.d.swipe_ext(direction, scale=0.9)
-    #         swipe_times += 1
-    #         if swipe_times > 15:
-    #             log.error(f'❗未找到元素：{element["element"]}')
-    #             raise ValueError(f'❗未找到元素：{element["element"]}')
-    #     log.info(f'✅{direction}滑动屏幕寻找元素')
+    def swipe_up_find_u2(self, times: int = 15, upper: bool = False, index: int = 0, **kwargs):
+        """
+        swipe up to find element.
 
-    def swipe_down(self, times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.1,
-                   end: float = 0.9) -> None:
+        Usage:
+        self.swipe_up_find_u2(elem=ElemObj)
+        self.swipe_up_find_u2(text='login')
+        """
+
+        swipe_times = 0
+        if 'elem' in kwargs:
+            u2_elem = kwargs['elem']
+        else:
+            u2_elem = U2Element(**kwargs)
+        log.info(f'Swipe to find ---> {u2_elem.kwargs}')
+        while not u2_elem.get_elements(index=index, empty=True, timeout=0.5):
+            self.swipe_up(upper=upper)
+            swipe_times += 1
+            if swipe_times > times:
+                raise NotFindElementError(f"❌ Find element error: swipe {times} times no find ---> {u2_elem.kwargs}")
+
+    @staticmethod
+    def swipe_down_u2(times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.1,
+                      end: float = 0.9) -> None:
         """
         swipe down
         """
@@ -467,7 +540,47 @@ class U2Driver:
 
         for _ in range(times):
             Seldom.driver.swipe(width, start, width, end)
-            time.sleep(1)
+            if times != 1:
+                time.sleep(1)
+
+    @staticmethod
+    def screen_on_u2():
+        if not Seldom.driver.info.get('screenOn'):
+            Seldom.driver.screen_on()
+            log.info('Screen ON')
+
+    @staticmethod
+    def open_url_u2(url):
+        Seldom.driver.open_url(url)
+        log.info(f'Open {url}')
+
+    @staticmethod
+    def icon_save_u2(save_path: str = None, package_name: str = None):
+        """
+        save app icon
+        """
+        if not package_name:
+            package_name = Seldom.app_info.get('appPackage')
+        if not save_path:
+            save_path = os.path.join(AppConfig.PERF_OUTPUT_FOLDER, f'{package_name}.png')
+        Seldom.driver.app_icon(package_name).save(save_path)
+        log.info(f'Icon saved in {save_path}')
+
+    @staticmethod
+    def app_info_u2(package_name: str = None):
+        if not package_name:
+            package_name = Seldom.app_info.get('appPackage')
+        info = Seldom.driver.app_info(package_name)
+        log.info(f'App info {package_name} ---> {info}')
+        return info
+
+    @staticmethod
+    def func_u2(func_name, **kwargs):
+        try:
+            function = getattr(Seldom.driver, func_name)
+            return function(**kwargs)
+        except Exception as e:
+            raise ValueError(f'❌ {func_name} is error ---> {e}')
 
 
 u2 = U2Driver()

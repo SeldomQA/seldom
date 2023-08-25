@@ -353,7 +353,7 @@ def run_testcase(func, *args, **kwargs):
         if Common.iOS_perf_obj is not None:
             Common.iOS_perf_obj.stop()
     Common.threadLock = False
-    Common.log = False
+    AppConfig.log = False
 
 
 def get_log(log_path, run_path):
@@ -462,7 +462,7 @@ def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 
             stop_frame_list = []
             testcase_assert = True
             for i in range(run_times):
-                run_path = os.path.join(testcase_base_path, folder_time)
+                run_path = AppConfig.PERF_RUN_FOLDER = os.path.join(testcase_base_path, folder_time)
                 video_path = os.path.join(run_path, f'{testcase_name}_{i}.mp4')  # 录屏文件路径
                 log_path = os.path.join(run_path, f'{testcase_name}_{i}.txt')
                 Common.CASE_ERROR = []
