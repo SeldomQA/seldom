@@ -4,11 +4,7 @@ uiautomator2 driver API
 import base64
 import os
 import time
-
-from seldom.utils.perf import Common
-
 from seldom.testdata import get_timestamp
-
 from seldom.logging import log
 from seldom.running.config import Seldom, AppConfig
 from seldom.logging.exceptions import NotFindElementError
