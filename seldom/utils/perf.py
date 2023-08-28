@@ -40,7 +40,7 @@ class MySoloX:
         if platform == Seldom.app_info.get('platformName'):
             wait_times = 0
             while wait_times <= 20:
-                if u2.wait_app() != 0:
+                if u2.wait_app_u2() != 0:
                     break
                 wait_times += 1
                 log.info(f'Unable to obtain pid,retry...{wait_times}')
@@ -161,6 +161,7 @@ class Common:
     CASE_ERROR = []
     PERF_ERROR = []
     LOGS_ERROR = []
+    RECORD_ERROR = []
 
     @staticmethod
     def image_to_base64(image_path):
@@ -333,7 +334,7 @@ class Common:
 
 def start_recording():
     """Start screen recording identification"""
-    AppConfig.record = True
+    Common.record = True
     time.sleep(2)
 
 
@@ -345,11 +346,11 @@ def run_testcase(func, *args, **kwargs):
         Common.CASE_ERROR.append(f"{e}")
         log.error(f'Error in run_testcase: {e}')
         raise e
-    if AppConfig.record and (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
+    if Common.record and (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
         time.sleep(1)
         u2.stop_recording_u2()
-    elif AppConfig.record and (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'iOS'):
-        AppConfig.record = False
+    elif Common.record and (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'iOS'):
+        Common.record = False
         if Common.iOS_perf_obj is not None:
             Common.iOS_perf_obj.stop()
     Common.threadLock = False
@@ -404,13 +405,14 @@ def start_record(video_path, run_path):
                 elif (Seldom.app_server is None) and (Seldom.app_info.get('platformName') == 'Android'):
                     u2.start_recording_u2(video_path)
             except Exception as e:
+                Common.RECORD_ERROR.append(f"{e}")
                 log.error(f"Error in start_record: {e}")
             break
         time.sleep(1.5)
 
 
 def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 800,
-            duration_threshold: int = 100, write_excel=True, get_logs=True):
+            duration_threshold: int = 100, write_excel: bool = True, get_logs: bool = True):
     """Decorator for performance data"""
 
     def my_decorator(func):
@@ -496,12 +498,12 @@ def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 
                     log.error(f'{Common.CASE_ERROR}')
                     assert False, f'{Common.CASE_ERROR}'
                 # --------------------------Frame the recording screen--------------------------
-                if MODE in [RunType.DEBUG, RunType.DURATION]:
+                if MODE in [RunType.DEBUG, RunType.DURATION] and Common.RECORD_ERROR == []:
                     log.info("✅正在进行录屏分帧")
                     Common.extract_frames(video_path, frame_path)
                     log.info("✅录屏分帧结束")
                 # --------------------------Find keyframes--------------------------
-                if MODE == RunType.DURATION:
+                if MODE == RunType.DURATION and Common.RECORD_ERROR == []:
                     log.info("🌝Start searching for the most similar start frame")
                     start_frame_path = Common.find_best_frame(start_path, frame_path)
                     start_frame = int(os.path.split(start_frame_path)[1].split('.')[0][-6:])
@@ -523,7 +525,7 @@ def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 
                             wda_.launch_app_wda(stop=True)
 
                 # --------------------------Performance image saved locally and converted to base64--------------------
-                if MODE in [RunType.DURATION, RunType.STRESS]:
+                if MODE in [RunType.DURATION, RunType.STRESS] and Common.PERF_ERROR == []:
                     # CPU
                     cpu_info = cache.get('CPU_INFO')
                     cpu_image_path = os.path.join(perf_path, f'{testcase_name}_CPU_{i}.jpg')
@@ -545,7 +547,7 @@ def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 
                             Common.draw_chart(fps_info[1], fps_info[0], ['fps', 'jank'], jpg_name=fps_image_path,
                                               label_title='Fps'))
             # --------------------------Picture Write Back Report--------------------------
-            if MODE in [RunType.DEBUG, RunType.DURATION, RunType.STRESS]:
+            if MODE in [RunType.DEBUG, RunType.DURATION, RunType.STRESS] and Common.PERF_ERROR == []:
                 photo_list = cpu_base64_list + mem_base64_list + fps_base64_list + flo_base64_list \
                              + bat_base64_list + start_frame_list + stop_frame_list
                 AppConfig.REPORT_IMAGE.extend(photo_list)

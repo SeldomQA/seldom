@@ -2,7 +2,6 @@ import os
 import time
 import contextlib
 import io
-import wda
 import socket
 import threading
 import imageio
@@ -86,22 +85,18 @@ class WDAElement:
             raise ValueError("Please specify a locator")
         self.desc = None
         self.kwargs = kwargs
-        if 'index' in self.kwargs:
-            self.index = self.kwargs['index']
-            del self.kwargs['index']
-        if 'visible' in self.kwargs:
-            del self.kwargs['visible']
-        if 'desc' in self.kwargs:
-            self.desc = self.kwargs['desc']
-            del self.kwargs['desc']
-        for by, value in self.kwargs.items():
+        for by, value in list(self.kwargs.items()):
             if LOCATOR_LIST.get(by) is None:
-                raise ValueError(f"The find element is not supported: {by}. ")
+                setattr(self, by, value)
+                del self.kwargs[by]
+                # log.trace(f'del element kwargs -> {by}:{value}')
         self.find_elem_info = None
         self.find_elem_warn = None
 
     def get_elements(self, index: int = 0, visible: bool = True, empty: bool = False, timeout: float = None):
         try:
+            if not self.desc:
+                self.desc = self.kwargs
             if timeout:
                 wda_.implicitly_wait(timeout)
             WDAObj.e = WDAObj.s(**self.kwargs, visible=visible, index=index).get()
@@ -109,10 +104,10 @@ class WDAElement:
                 wda_.implicitly_wait(Seldom.timeout)
         except Exception as e:
             if empty is False:
-                raise NotFindElementError(f"❌ Find element error: {self.kwargs}:{self.desc} ---> {e}")
+                raise NotFindElementError(f"❌ Find element error: {self.desc} ---> {e}")
             else:
                 return []
-        self.find_elem_info = f"Find element: {self.kwargs}:{self.desc}."
+        self.find_elem_info = f"Find element: {self.desc}."
         return WDAObj.e
 
     @property
@@ -202,10 +197,7 @@ class WDADriver:
         if click is True:
             self.click_wda(index, **kwargs)
             time.sleep(0.5)
-        if 'elem' in kwargs:
-            wda_elem = kwargs['elem']
-        else:
-            wda_elem = WDAElement(**kwargs)
+        wda_elem = WDAElement(**kwargs)
         elem = wda_elem.get_elements(index)
         log.info(f"✅ {wda_elem.info} -> input '{text}'.")
         elem.set_text(text)
@@ -220,10 +212,7 @@ class WDADriver:
         Usage:
             self.clear(css="#el")
         """
-        if 'elem' in kwargs:
-            wda_elem = kwargs['elem']
-        else:
-            wda_elem = WDAElement(**kwargs)
+        wda_elem = WDAElement(**kwargs)
         elem = wda_elem.get_elements(index=index)
         log.info(f"✅ {wda_elem.info} -> clear input.")
         elem.clear_text()
@@ -237,10 +226,7 @@ class WDADriver:
         Usage:
             self.click(css="#el")
         """
-        if 'elem' in kwargs:
-            wda_elem = kwargs['elem']
-        else:
-            wda_elem = WDAElement(**kwargs)
+        wda_elem = WDAElement(**kwargs)
         elem = wda_elem.get_elements(index=index)
         log.info(f"✅ {wda_elem.info} -> click.")
         elem.click()
@@ -266,10 +252,7 @@ class WDADriver:
         Usage:
             self.get_text(css="#el")
         """
-        if 'elem' in kwargs:
-            wda_elem = kwargs['elem']
-        else:
-            wda_elem = WDAElement(**kwargs)
+        wda_elem = WDAElement(**kwargs)
         elem = wda_elem.get_elements(index)
         text = elem.get_text()
         log.info(f"✅ {wda_elem.info} -> get text: {text}.")
@@ -300,10 +283,7 @@ class WDADriver:
         """
         Implicitly wait element on the page.
         """
-        if 'elem' in kwargs:
-            wda_elem = kwargs['elem']
-        else:
-            wda_elem = WDAElement(**kwargs)
+        wda_elem = WDAElement(**kwargs)
 
         timeout_backups = Seldom.timeout
         Seldom.timeout = timeout
@@ -373,10 +353,7 @@ class WDADriver:
         elem = self.get_element(index=1, css="#el")
         elem.click()
         """
-        if 'elem' in kwargs:
-            wda_elem = kwargs['elem']
-        else:
-            wda_elem = WDAElement(**kwargs)
+        wda_elem = WDAElement(**kwargs)
         elem = wda_elem.get_elements(index)
         log.info(f"✅ {wda_elem.info}.")
         return elem
@@ -441,10 +418,7 @@ class WDADriver:
     def swipe_up_find_wda(self, times: int = 15, upper: bool = False, index: int = 0, **kwargs):
 
         swipe_times = 0
-        if 'elem' in kwargs:
-            wda_elem = kwargs['elem']
-        else:
-            wda_elem = WDAElement(**kwargs)
+        wda_elem = WDAElement(**kwargs)
         log.info(f'Swipe to find ---> {wda_elem.kwargs}')
         while not wda_elem.get_elements(index=index, empty=True, timeout=0.5):
             self.swipe_up_wda(upper=upper)
