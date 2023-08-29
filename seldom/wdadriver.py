@@ -288,16 +288,32 @@ class WDADriver:
         timeout_backups = Seldom.timeout
         Seldom.timeout = timeout
         if noLog is not True:
-            log.info(f"⌛️ wait {wda_elem.kwargs} to exist: {timeout}s.")
+            log.info(f"⌛️ wait {wda_elem.desc} to exist: {timeout}s.")
         try:
             wda_elem.get_elements(index, empty=kwargs.get('empty', False)).wait(timeout=timeout)
             result = True
         except:
             if noLog is not True:
-                log.info(f"❌Element {wda_elem.kwargs} not exist")
+                log.info(f"❌Element {wda_elem.desc} not exist")
             result = False
         Seldom.timeout = timeout_backups
         return result
+
+    def wait_gone_wda(self, timeout: int = None, index: int = 0, **kwargs) -> bool:
+        """
+        等待元素消失
+
+        """
+        if not timeout:
+            timeout = Seldom.timeout
+        wda_elem = WDAElement(**kwargs)
+        log.info(f"⌛ wait {wda_elem.desc} gone: timeout={timeout}s.")
+        result = wda_elem.get_elements(index, empty=kwargs.get('empty', False)).wait_gone(timeout=timeout)
+        if not result:
+            log.warning(f'⌛ wait {wda_elem.desc} gone failed.')
+            # self.save_screenshot(report=True)
+        return result
+
 
     # @staticmethod
     # def save_screenshot(file_path: str = None, index: int = 0, **kwargs) -> None:
@@ -317,10 +333,10 @@ class WDADriver:
     #         file_path = os.path.join(img_dir, get_timestamp() + ".png")
     #
     #     if len(kwargs) == 0:
-    #         log.info(f"📷️  screenshot -> ({file_path}).")
+    #         log.info(f"📷️ screenshot -> ({file_path}).")
     #         Seldom.driver.save_screenshot(file_path)
     #     else:
-    #         log.info(f"📷️  element screenshot -> ({file_path}).")
+    #         log.info(f"📷️ element screenshot -> ({file_path}).")
     #         wda_elem = WDAElement(**kwargs)
     #         elem = wda_elem.get_elements(index)
     #         elem.screenshot(file_path)
@@ -338,10 +354,10 @@ class WDADriver:
     #         if os.path.exists(img_dir) is False:
     #             os.mkdir(img_dir)
     #         file_path = os.path.join(img_dir, get_timestamp() + ".png")
-    #         log.info(f"📷️  screenshot -> ({file_path}).")
+    #         log.info(f"📷️ screenshot -> ({file_path}).")
     #         Seldom.driver.save_screenshot(file_path)
     #     else:
-    #         log.info("📷️  screenshot -> HTML report.")
+    #         log.info("📷️ screenshot -> HTML report.")
     #         self.images.append(Seldom.driver.get_screenshot_as_base64())
 
     @staticmethod
@@ -419,12 +435,12 @@ class WDADriver:
 
         swipe_times = 0
         wda_elem = WDAElement(**kwargs)
-        log.info(f'Swipe to find ---> {wda_elem.kwargs}')
+        log.info(f'Swipe to find ---> {wda_elem.desc}')
         while not wda_elem.get_elements(index=index, empty=True, timeout=0.5):
             self.swipe_up_wda(upper=upper)
             swipe_times += 1
             if swipe_times > times:
-                raise NotFindElementError(f"❌ Find element error: swipe {times} times no find ---> {wda_elem.kwargs}")
+                raise NotFindElementError(f"❌ Find element error: swipe {times} times no find ---> {wda_elem.desc}")
 
     @staticmethod
     def swipe_down_wda(times: int = 1, upper: bool = False, width: float = 0.5, start: float = 0.1,
@@ -470,7 +486,7 @@ def make_screenrecord(c=None, t=None, output_video_path='record.mp4', fps=AppCon
     buf = SocketBuffer(sock)
     buf.write(b"GET / HTTP/1.0\r\nHost: localhost\r\n\r\n")
     buf.read_until(b'\r\n\r\n')
-    log.info(f"📷️  start_recording -> ({output_video_path}).")
+    log.info(f"📷️ start_recording -> ({output_video_path}).")
 
     wr = imageio.get_writer(output_video_path, fps=_fps)
 
@@ -500,4 +516,4 @@ def make_screenrecord(c=None, t=None, output_video_path='record.mp4', fps=AppCon
     done_event.wait()
     wr.close()
     c.appium_settings({"mjpegServerFramerate": _old_fps})
-    log.info(f"📷️  record down.")
+    log.info(f"📷️ record down.")

@@ -12,7 +12,7 @@ from typing import Dict, List, Any
 
 from XTestRunner import HTMLTestRunner
 from XTestRunner import XMLTestRunner
-from seldom.testdata import get_timestamp
+from seldom.testdata import get_now_datetime
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.common.exceptions import InvalidSessionIdException
 from seldom.driver import Browser
@@ -189,7 +189,7 @@ class TestMain:
             if AppConfig.WRITE_EXCEL:
                 import pandas as pd
                 df = pd.DataFrame(AppConfig.WRITE_EXCEL)
-                with pd.ExcelWriter(os.path.join(report_folder, f'{get_timestamp()}.xlsx'),
+                with pd.ExcelWriter(os.path.join(report_folder, f'{get_now_datetime(strftime=True)}.xlsx'),
                                     engine='xlsxwriter') as writer:
                     df.to_excel(writer, sheet_name='Sheet1', index=False)
 

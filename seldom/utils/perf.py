@@ -488,7 +488,6 @@ def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 
                 if get_logs and (Seldom.app_info.get('platformName') == 'Android'):
                     log_thread = threading.Thread(target=get_log, args=(log_path, run_path))
                     log_thread.start()
-                    log.info("日志线程已经启动，继续执行主线程...")
                 do_list = [gevent.spawn(run_testcase, func, *args, **kwargs),
                            gevent.spawn(start_record, video_path, run_path)]
                 if MODE in [RunType.DURATION, RunType.STRESS]:  # 判断是否开启性能数据获取，开启的话就在协程队列中增加get_perf执行
