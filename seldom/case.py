@@ -360,3 +360,12 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             self.xFail("This case fails.")
         """
         self.fail(msg)
+
+    @staticmethod
+    def sleep(sec: int) -> None:
+        """
+        Usage:
+            self.sleep(seconds)
+        """
+        log.info(f"💤️ sleep: {sec}s.")
+        sleep(sec)

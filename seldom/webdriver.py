@@ -900,15 +900,6 @@ class WebDriver:
         Seldom.driver.delete_all_cookies()
 
     @staticmethod
-    def sleep(sec: int) -> None:
-        """
-        Usage:
-            self.sleep(seconds)
-        """
-        log.info(f"💤️ sleep: {sec}s.")
-        time.sleep(sec)
-
-    @staticmethod
     def check_element(css: str = None) -> None:
         """
         Check that the element exists

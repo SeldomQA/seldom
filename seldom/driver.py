@@ -2,7 +2,6 @@
 browser driver
 """
 from selenium import webdriver
-from selenium.webdriver import ChromeOptions
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.firefox.service import Service as fService
 from selenium.webdriver.ie.service import Service as iService
