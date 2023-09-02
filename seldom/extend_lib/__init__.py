@@ -5,3 +5,4 @@ In order to reduce dependencies,
 from .jsonpath import jsonpath
 from .curlify import to_curl
 from .tomorrow import threads
+from .parameterized import parameterized, param, parameterized_class

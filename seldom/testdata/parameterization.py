@@ -7,15 +7,15 @@ import warnings
 from functools import wraps
 
 import requests
-from parameterized.parameterized import inspect
-from parameterized.parameterized import parameterized
-from parameterized.parameterized import skip_on_empty_helper
-from parameterized.parameterized import reapply_patches_if_need
-from parameterized.parameterized import delete_patches_if_need
-from parameterized.parameterized import parameterized_argument_value_pairs
-from parameterized.parameterized import short_repr
-from parameterized.parameterized import to_text
-from parameterized import parameterized_class
+from seldom.extend_lib.parameterized import inspect
+from seldom.extend_lib.parameterized import parameterized
+from seldom.extend_lib.parameterized import skip_on_empty_helper
+from seldom.extend_lib.parameterized import reapply_patches_if_need
+from seldom.extend_lib.parameterized import delete_patches_if_need
+from seldom.extend_lib.parameterized import parameterized_argument_value_pairs
+from seldom.extend_lib.parameterized import short_repr
+from seldom.extend_lib.parameterized import to_text
+from seldom.extend_lib import parameterized_class
 from seldom.testdata import conversion
 from seldom.logging.exceptions import FileTypeError
 from seldom.logging import log
@@ -269,11 +269,11 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
     return parameterized_expand_wrapper
 
 
-def data_class(attrs, input_values=None):
+def data_class(attrs, input_values=None, class_name_func=None):
     """
     Parameterizes a test class by setting attributes on the class.
     """
-    return parameterized_class(attrs, input_values=input_values)
+    return parameterized_class(attrs, input_values=input_values, class_name_func=class_name_func)
 
 
 def default_name_func(func, num, p):
