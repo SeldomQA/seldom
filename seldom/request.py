@@ -8,9 +8,9 @@ import requests
 from seldom.running.config import Seldom
 from seldom.running.loader_hook import loader
 from seldom.logging import log
-from seldom.utils import jsonpath as utils_jsonpath
 from seldom.utils import jmespath as utils_jmespath
-from seldom.utils.curlify import to_curl
+from seldom.extend_lib import jsonpath as lib_jsonpath
+from seldom.extend_lib import to_curl
 
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
@@ -176,7 +176,7 @@ class HttpRequest:
         if response is None:
             response = ResponseResult.response
 
-        ret = utils_jsonpath(response, expr)
+        ret = lib_jsonpath(response, expr)
         if index is not None:
             ret = ret[index]
         return ret

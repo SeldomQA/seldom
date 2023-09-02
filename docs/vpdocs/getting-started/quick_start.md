@@ -516,7 +516,7 @@ seldom 推荐第二种方法，把线程的划分方式交给用户，无疑是�
 
 ```python
 import seldom
-from seldom.utils import threads
+from seldom.extend_lib import threads
 
 
 class MyTest(seldom.TestCase):
@@ -553,7 +553,7 @@ if __name__ == "__main__":
 
 ```python
 import seldom
-from seldom.utils import threads
+from seldom.extend_lib import threads
 
 
 @threads(3)  # !!!核心!!!! 设置线程数

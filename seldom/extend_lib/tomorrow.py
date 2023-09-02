@@ -1,6 +1,6 @@
 """
 this is tomorrow3 library,Easier way to use thread pool executor
-https://github.com/dflupu/tomorrow3
+github: https://github.com/dflupu/tomorrow3
 """
 from functools import wraps
 from threading import Semaphore

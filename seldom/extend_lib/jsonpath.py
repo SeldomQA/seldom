@@ -1,6 +1,7 @@
 """
 An XPath for JSON
 help: https://goessner.net/articles/JsonPath/
+github: https://gist.github.com/drewr/783585
 """
 from __future__ import print_function
 
