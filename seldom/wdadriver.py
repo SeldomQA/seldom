@@ -32,8 +32,9 @@ LOCATOR_LIST = {
 
 class WDAObj:
     c = None  # device
-    t = tidevice.Device()
-    t.create_inner_connection()
+    if Seldom.app_info.get('platformName') == 'iOS':
+        t = tidevice.Device()
+        t.create_inner_connection()
     s = None  # session
     e = None  # element
 

@@ -563,7 +563,7 @@ def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 
                     log.success("🌈Average time consumption of functions[{:.2f}]s".format(max_duration_res))
                     if max_duration_res > duration_threshold:
                         max_duration_res = f"Average time consumption{max_duration_res}," \
-                                           f"Exceeding threshold{duration_threshold}"
+                                           f"Exceeding threshold: {duration_threshold}"
                         testcase_assert = False
                         log.warning(max_duration_res)
                     test_case_data.update({'DurationList': str(duration_list), 'DurationAvg': max_duration_res})
@@ -572,7 +572,7 @@ def AppPerf(MODE, duration_times=AppConfig.DURATION_TIMES, mem_threshold: int = 
                 elif MODE == RunType.STRESS:
                     max_mem_res = max([tup[0] for tup in cache.get('MEM_INFO')[1]])
                     if max_mem_res > mem_threshold:
-                        max_mem_res = f"Maximum Memory{max_mem_res},Exceeding threshold{mem_threshold}"
+                        max_mem_res = f"Maximum Memory{max_mem_res},Exceeding threshold: {mem_threshold}"
                         testcase_assert = False
                         log.warning(max_mem_res)
                     test_case_data.update({'MemMax': max_mem_res})
