@@ -9,6 +9,8 @@
 
 seldom 集成 [webdriver_manager](https://github.com/SergeyPirogov/webdriver_manager) ，提供了`chrome/firefox/ie/edge/opera`浏览器驱动的自动下载。
 
+> selenium 4.6 之后内置了 selenium-manager 可以自动管理浏览器驱动。 seldom 3.3 版本将 webdriver_manager 替换为官方的 selenium-manager。
+
 
 __自动下载__
 
@@ -31,39 +33,29 @@ class BingTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    seldom.main(browser="gc", debug=True)
+    seldom.main(browser="edge", debug=True)
 ```
 
-* 运行测试
+__驱动检查逻辑:__
+
+1. 首先判断 环境变量 `PATH` 是否配置了浏览器驱动。 通过`where` 查找命令位置，如果可以找到说明，已配置了，环境变量`PATH`。
 
 ```shell
-
-> python selenium_sample.py
-
-              __    __
-   ________  / /___/ /___  ____ ____
-  / ___/ _ \/ / __  / __ \/ __ ` ___/
- (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
------------------------------------------
-                             @itest.info
-
-
-[WDM] - ====== WebDriver manager ======
-[WDM] - Current google-chrome version is 103.0.5060
-[WDM] - Get LATEST chromedriver version for 103.0.5060 google-chrome
-[WDM] - About to download new driver from https://registry.npmmirror.com/-/binary/chromedriver/103.0.5060.53/chromedriver_win32.zip
-[WDM] - Driver has been saved in cache [C:\Users\fnngj\.wdm\drivers\chromedriver\win32\103.0.5060.53]
-...
+> where msedgedriver
+D:\webdriver\msedgedriver.exe
 ```
 
-seldom 检测到的`Chrome`浏览器后，自动化下载对应版本的驱动，并保存到本地，以便于下次执行的时候就不需要下载了。
+2. 如果没有找到浏览器驱动，会根据当前浏览器版本，查找对应驱动文件下载。 `selenium-manager` 可以查看浏览器驱动的默认安装路径。
 
-并且，非常贴心的将`chromedriver`的下载地址从 google 切换成了 taobao 的镜像地址。
+```shell
+> selenium-manager --driver msedgedriver
+INFO    Driver path: C:\Users\xxx\.cache\selenium\msedgedriver\win64\116.0.1938.76\msedgedriver.exe
+INFO    Browser path: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+```
 
 __手动下载__
 
-通过`seldom`命令下载浏览器驱动。
+通过`seldom`命令下载浏览器驱动，基于 webdriver_manager (该库后续版本会移除)。
 
 ```shell
 > seldom -install chrome
@@ -76,42 +68,13 @@ __手动下载__
 2. Chrome: `chromedriver` 驱动，众所周知的原因，使用的taobao的镜像。
 3. Safari: `safaridriver` （macOS系统自带，默认路径:`/usr/bin/safaridriver`）
 
+通过 `selenium-manager` 命令下载浏览器驱动，需要知道每个浏览器驱动的名字。
 
-指定浏览器驱动
-
-> seldom 3.2.0版本通过新的方式指定浏览器驱动。
-
-* chrome
-
-```python
-import seldom
-
-# ...
-
-if __name__ == '__main__':
-    browser = {
-        "browser": "chrome",
-        "executable_path": f"D:\webdriver\chromedriver.exe"
-    }
-    seldom.main(browser=browser, tester="虫师")
+```shell
+> selenium-manager --driver chromedriver  # chrome
+> selenium-manager --driver msedgedriver  # edge
+> selenium-manager --driver geckodriver   # firefox
 ```
-
-* firefox
-
-```python
-import seldom
-
-# ...
-
-if __name__ == '__main__':
-    browser = {
-        "browser": "firefox",
-        "executable_path": f"D:\webdriver\geckodriver.exe"
-    }
-    seldom.main(browser=browser, tester="虫师")
-```
-
-其他浏览器&驱动配置方式相同，指定 `browser` 名称 和 `executable_path` 驱动路径。
 
 ### 指定不同的浏览器
 
