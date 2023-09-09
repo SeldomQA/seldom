@@ -18,7 +18,7 @@ from selenium.webdriver import ChromeOptions
 
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
-    chrome_options.headless = True  # 开启 headless 模式
+    chrome_options.add_argument('--headless=new') # 开启 headless 模式
     browser = {
         "browser": "chrome",
         "options": chrome_options
@@ -43,35 +43,64 @@ if __name__ == '__main__':
     seldom.main(browser=browser)
 ```
 
+* edge
+
+```python
+import seldom
+from selenium.webdriver import EdgeOptions
+#...
+
+if __name__ == '__main__':
+    edge_option = EdgeOptions()
+    edge_option.add_argument('--headless=new')
+
+    browser = {
+        "browser": "edge",
+        "options": edge_option
+    }
+    seldom.main(browser=browser)
+```
+
 ### Selenium Grid
 
 首先，安装Java环境，然后下载 `selenium-server`。
 
 ```shell
-> java -jar selenium-server-4.8.1.jar standalone
+> java -jar .\selenium-server-4.12.0.jar standalone
 
-00:25:28.023 INFO [LoggingOptions.configureLogEncoding] - Using the system default encoding
-00:25:28.029 INFO [OpenTelemetryTracer.createTracer] - Using OpenTelemetry for tracing
-00:25:36.978 INFO [NodeOptions.getSessionFactories] - Detected 16 available processors
-00:25:37.012 INFO [NodeOptions.discoverDrivers] - Discovered 3 driver(s)
-00:25:37.043 INFO [NodeOptions.report] - Adding Chrome for {"browserName": "chrome"} 16 times
-00:25:37.045 INFO [NodeOptions.report] - Adding Firefox for {"browserName": "firefox"} 16 times
-00:25:37.046 INFO [NodeOptions.report] - Adding Edge for {"browserName": "MicrosoftEdge"} 16 times
-00:25:38.260 INFO [Node.<init>] - Binding additional locator mechanisms: id, name, relative
-00:25:38.281 INFO [GridModel.setAvailability] - Switching Node 373df045-cf78-4d52-84c0-d99fd2c7a374 (uri: http://10.2.212.3:4444) from DOWN to UP
-00:25:38.282 INFO [LocalDistributor.add] - Added node 373df045-cf78-4d52-84c0-d99fd2c7a374 at http://10.2.212.3:4444. Health check every 120s
-00:25:42.503 INFO [Standalone.execute] - Started Selenium Standalone 4.3.0 (revision a4995e2c09*): http://10.2.212.3:4444
+23:17:59.476 INFO [LoggingOptions.configureLogEncoding] - Using the system default encoding
+23:17:59.481 INFO [OpenTelemetryTracer.createTracer] - Using OpenTelemetry for tracing
+23:18:03.933 INFO [NodeOptions.getSessionFactories] - Detected 16 available processors
+23:18:03.935 INFO [NodeOptions.discoverDrivers] - Looking for existing drivers on the PATH.
+23:18:03.935 INFO [NodeOptions.discoverDrivers] - Add '--selenium-manager true' to the startup command to setup drivers automatically.
+23:18:04.971 INFO [SeleniumManager.lambda$runCommand$1] - Driver path: C:\Users\fnngj\.cache\selenium\chromedriver\win64\116.0.5845.96\chromedriver.exe
+23:18:04.971 INFO [SeleniumManager.lambda$runCommand$1] - Browser path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+23:18:05.469 INFO [SeleniumManager.lambda$runCommand$1] - Driver path: D:\webdriver\msedgedriver.exe
+23:18:05.470 INFO [SeleniumManager.lambda$runCommand$1] - Browser path: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+23:18:05.847 INFO [SeleniumManager.lambda$runCommand$1] - Driver path: C:\Users\fnngj\.cache\selenium\geckodriver\win64\0.33.0\geckodriver.exe
+23:18:05.848 INFO [SeleniumManager.lambda$runCommand$1] - Browser path: C:\Program Files\Mozilla Firefox\firefox.exe
+23:18:06.223 WARN [SeleniumManager.lambda$runCommand$1] - Unable to discover proper IEDriverServer version in offline mode
+23:18:06.246 INFO [NodeOptions.report] - Adding Edge for {"browserName": "MicrosoftEdge","ms:edgeOptions": {"args": ["--remote-allow-origins=*"]},"platformName": "Windows 11"} 16 times
+23:18:06.247 INFO [NodeOptions.report] - Adding Firefox for {"browserName": "firefox","platformName": "Windows 11"} 16 times
+23:18:06.249 INFO [NodeOptions.report] - Adding Chrome for {"browserName": "chrome","goog:chromeOptions": {"args": ["--remote-allow-origins=*"]},"platformName": "Windows 11"} 16 times
+23:18:06.343 INFO [Node.<init>] - Binding additional locator mechanisms: relative
+23:18:06.360 INFO [GridModel.setAvailability] - Switching Node 35d0ca88-221c-4dba-8ad5-08b20a1280fc (uri: http://192.168.0.202:4444) from DOWN to UP
+23:18:06.361 INFO [LocalDistributor.add] - Added node 35d0ca88-221c-4dba-8ad5-08b20a1280fc at http://192.168.0.202:4444. Health check every 120s
+23:18:07.915 INFO [Standalone.execute] - Started Selenium Standalone 4.12.0 (revision 249f2a7d1b*): http://192.168.0.202:4444
 ```
 
 ```python
 import seldom
-
+from selenium.webdriver import ChromeOptions
 
 # ……
+
 if __name__ == '__main__':
+    chrome_options = ChromeOptions()
     browser = {
         "browser": "chrome",  # or "firefox"
-        "command_executor": "http://10.2.212.3:4444",
+        "options": chrome_options,
+        "command_executor": "http://192.168.0.202:4444",
     }
     seldom.main(browser=browser)
 
