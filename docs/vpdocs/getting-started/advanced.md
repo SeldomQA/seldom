@@ -204,11 +204,15 @@ print("手机号:", get_phone())
 print("手机号(移动):", get_phone(operator="mobile"))
 print("手机号(联通):", get_phone(operator="unicom"))
 print("手机号(电信):", get_phone(operator="telecom"))
+
+# 在线时间
+print("当前时间戳:", online_timestamp())
+print("当前日期时间:", online_now_datetime())
 ```
 
 * 运行结果
 
-```shell
+```
 名字： Hayden
 名字（男）： Brantley
 名字（女）： Julia
@@ -245,6 +249,9 @@ UUID: 5fd50475-2723-4a36-a769-1d4c9784223a
 手机号(移动): 15165746029
 手机号(联通): 16672812525
 手机号(电信): 17345142737
+
+当前时间戳 1695137988672
+当前日期时间 2023-09-19 23:39:48
 ```
 
 ### 用例的依赖

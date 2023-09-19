@@ -8,6 +8,7 @@ import uuid
 import random
 import hashlib
 import datetime
+import requests
 from dateutil.relativedelta import relativedelta
 
 from seldom.testdata.random_data import (
@@ -22,6 +23,8 @@ from seldom.testdata.random_data import (
     unicom,
     telecom,
 )
+
+TAOBAO_TIME = "http://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp"
 
 
 def first_name(gender: str = "", language: str = "en") -> str:
@@ -431,3 +434,24 @@ def get_timestamp(level="second") -> str:
         return time_list[0] + time_list[1]
 
     return ""
+
+
+def online_timestamp() -> str:
+    """
+    get now timestamp
+    :return:
+    """
+    r = requests.get(TAOBAO_TIME)
+    data = r.json()
+    ts = data["data"]["t"]
+    return ts
+
+
+def online_now_datetime() -> [str, datetime]:
+    """
+    Get online date time, default to current day。
+    :return:
+    """
+    ts = online_timestamp()
+    date_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(ts[:10])))
+    return date_time
