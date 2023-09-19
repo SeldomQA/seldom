@@ -6,6 +6,7 @@ import re
 import ast
 import json as sys_json
 import inspect
+import builtins
 import unittest
 import webbrowser
 from typing import Dict, List, Any
@@ -20,6 +21,8 @@ from seldom.logging import log_cfg
 from seldom.logging.exceptions import SeldomException
 from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.config import Seldom, BrowserConfig
+from seldom.running.config import base_url as base_url_func
+from seldom.running.config import driver as driver_func
 from seldom.running.loader_extend import seldomTestLoader
 
 INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
@@ -114,6 +117,8 @@ class TestMain:
         Seldom.timeout = timeout
         Seldom.debug = debug
         Seldom.base_url = base_url
+        setattr(builtins, 'base_url', base_url_func)
+        setattr(builtins, 'driver', driver_func)
 
         # ----- Global open browser -----
         self.open_browser()

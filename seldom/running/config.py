@@ -31,3 +31,13 @@ class BrowserConfig:
     options = None
     command_executor = ""
     executable_path = ""
+
+
+def base_url():
+    """return base url"""
+    return Seldom.base_url
+
+
+def driver():
+    """return driver"""
+    return Seldom.driver
