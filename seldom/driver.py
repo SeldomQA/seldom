@@ -31,7 +31,7 @@ class Browser:
         if name == "safari":
             return cls.safari()
 
-        raise BrowserTypeError(f"Not found `{name}` browser, See the help doc: https://seldomqa.github.io/other/other.html.")
+        raise BrowserTypeError(f"Not found `{name}` browser, See the help doc: https://seldomqa.github.io/web-testing/browser_driver.html.")
 
     @staticmethod
     def chrome():
