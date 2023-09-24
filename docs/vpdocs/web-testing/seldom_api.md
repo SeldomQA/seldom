@@ -147,6 +147,9 @@ class TestCase(seldom.TestCase):
         # Gets the text of the Alert.  ->  Be removed in the future
         alert_title = self.get_alert_text
         
+        # Execute Chrome Devtools Protocol command and get returned result 
+        self.execute_cdp_cmd('Runtime.evaluate', {'expression': "alert('hello world')"})
+        
         # Gets the value of an element attribute.
         self.get_attribute(css="#el", attribute="type")
         

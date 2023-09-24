@@ -256,6 +256,16 @@ class WebDriver:
         self.visit(url)
 
     @staticmethod
+    def execute_cdp_cmd(cmd: str, cmd_args: dict):
+        """
+        Execute Chrome Devtools Protocol command and get returned result The
+        command and command args should follow chrome devtools protocol
+        domains/commands, refer to link
+        https://chromedevtools.github.io/devtools-protocol/
+        """
+        return Seldom.driver.execute_cdp_cmd(cmd, cmd_args)
+
+    @staticmethod
     def get_log(log_type: str):
         """
         Gets the log for a given log type
