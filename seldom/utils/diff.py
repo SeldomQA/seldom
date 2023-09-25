@@ -10,6 +10,22 @@ class AssertInfo:
     error = []
 
 
+def _list_sorted(data):
+    """
+    list sorted
+    """
+    if isinstance(data[0], dict):
+        if len(data[0]) == 0:
+            log.info("data is [{}]")
+        try:
+            data = sorted(data, key=lambda x: x[list(data[0].keys())[0]])
+        except (TypeError, AttributeError, IndexError):
+            data = data
+    else:
+        data = sorted(data)
+    return data
+
+
 def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> None:
     """
     Compare the JSON data format
@@ -39,25 +55,13 @@ def diff_json(response_data: Any, assert_data: Any, exclude: list = None) -> Non
         if len(response_data) == 0:
             log.info("response is []")
         else:
-            if isinstance(response_data[0], dict):
-                try:
-                    response_data = sorted(response_data, key=lambda x: x[list(response_data[0].keys())[0]])
-                except TypeError:
-                    response_data = response_data
-            else:
-                response_data = sorted(response_data)
+            response_data = _list_sorted(response_data)
 
         if len(response_data) != len(assert_data):
             log.info(f"list len: '{len(response_data)}' != '{len(assert_data)}'")
 
         if len(assert_data) > 0:
-            if isinstance(assert_data[0], dict):
-                try:
-                    assert_data = sorted(assert_data, key=lambda x: x[list(assert_data[0].keys())[0]])
-                except TypeError:
-                    assert_data = assert_data
-            else:
-                assert_data = sorted(assert_data)
+            assert_data = _list_sorted(assert_data)
 
         for src_list, dst_list in zip(response_data, assert_data):
             # recursion
