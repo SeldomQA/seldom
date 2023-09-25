@@ -2,6 +2,17 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.3.0(2023-09-26)__
+* web测试
+  * 浏览器驱动`webdriver-manager` 替换为`selenium-manager`。
+  * 增加`execute_cdp_cmd()` 方法。
+* 随机数据
+  * `online_timestamp()` 在线获取时间戳。
+  * `online_now_datetime()` 在线获取当前时间，格式为：`%Y-%m-%d %H:%M:%S`。
+* 增加运行时内嵌（built-in）方法：`base_url()`、`driver()` - 无需导入，可以在自动化程序任意位置使用这两个方法。
+* 移除`parameterized` 库的依赖，改为内置。
+* 修复：`diff_json()` 对比 `[{}]` 数据时报错。 [#197](https://github.com/SeldomQA/seldom/issues/197)
+
 __3.2.3(2023-07-30)__
 * HTTP自动化
   * `confrun.py` 支持 `mock_url` hook 钩子函数。
