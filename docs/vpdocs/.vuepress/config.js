@@ -7,6 +7,11 @@ module.exports = {
   title: "seldom文档",
   description: "seldom 是基于unittest 的自动化测试框架。",
   base: "/",
+  head: [
+    [
+      'link', { rel: 'icon', href: '/logo.jpeg' }
+    ]
+  ],
   plugins: [
     searchPlugin({
       locales: {
