@@ -315,6 +315,45 @@ if __name__ == '__main__':
 2. 在`test_001`用例中，可以根据一些条件来选择是否修改`Test001`的值，如果改为`False`， 那么依赖的用例将被跳过。
 3. 在`test_002`用例中，通过`if_depend`装饰器来判断`Test001`的值，如果为为`False`， 那么装饰的用例跳过，否则执行。
 
+**@depend 和 @data()**
+
+`@depend()` 装饰器可以和 `@data()` 装饰器混合使用。
+
+```pycon
+import seldom
+from seldom import data, depend
+
+
+class DataDriverTest(seldom.TestCase):
+
+    def test_001(self):
+        self.assertEqual(1, 2)
+
+    @data([
+        ("First", "seldom"),
+        ("Second", "selenium"),
+        ("Third", "unittest"),
+    ])
+    @depend("test_001") # 依赖 test_001 的结果
+    def test_002(self, name, keyword):
+        """
+        Used tuple test data
+        :param name: case desc
+        :param keyword: case data
+        """
+        print(f"{name} - test data: {keyword}")
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
+
+使用要求：
+
+1. 被依赖的用例不能用 @data() 装饰器，否则就是一组用例了，只能指定单个用例。
+2. `@depend()` 要放到 `@data()` 下面使用。
+
+
 ### 用例分类标签
 
 > 在 seldom 2.4.0 版本实现了该功能。
