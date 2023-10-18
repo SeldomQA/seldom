@@ -63,7 +63,7 @@ if __name__ == '__main__':
                 text = entry_json["request"]["postData"].get("text")
                 mime_type = entry_json["request"]["postData"].get("mimeType")
                 if mime_type is not None:
-                    if mime_type == "application/json":
+                    if "application/json" in mime_type:
                         data_str = "json=" + text
                 else:
                     data_str = "json={}"
