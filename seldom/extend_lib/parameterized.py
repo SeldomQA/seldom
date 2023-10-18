@@ -1,6 +1,6 @@
 """
 Parameterized testing with any Python test framework.
-github:https://github.com/wolever/parameterized
+GitHub:https://github.com/wolever/parameterized
 """
 import inspect
 import re

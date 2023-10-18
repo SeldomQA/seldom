@@ -1,5 +1,5 @@
 """
-webdriver chaining API
+WebDriver chaining API
 """
 import os
 import time
@@ -20,7 +20,7 @@ __all__ = ["Steps"]
 
 class Steps:
     """
-    Webdriver Basic method chaining
+    WebDriver Basic method chaining
     Write test cases quickly.
     """
 
@@ -322,7 +322,7 @@ class Steps:
 
     def element_screenshot(self, file_path: str = None):
         """
-        Saves a element screenshot of the element to a PNG image file.
+        Saves the element screenshot of the element to a PNG image file.
 
         Usage:
             element_screenshot()

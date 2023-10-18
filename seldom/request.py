@@ -158,10 +158,10 @@ class HttpRequest:
         return requests.patch(url, data=data, **kwargs)
 
     @property
-    def response(self) -> dict:
+    def response(self) -> Any:
         """
-        Returns the result of the response
-        :return: response
+        Returns the result of the response.
+        :return:
         """
         return ResponseResult.response
 

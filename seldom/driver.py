@@ -15,7 +15,7 @@ class Browser:
     Run class initialization method, the default is proper
     to drive the Firefox browser. Of course, you can also
     pass parameter for other browser, Chrome browser for the "Chrome",
-    the Internet Explorer browser for "internet explorer" or "ie".
+    the Internet Explorer browser for "Internet Explorer" or "ie".
     """
 
     def __new__(cls, name: str = None):

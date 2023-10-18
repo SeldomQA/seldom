@@ -1,6 +1,6 @@
 """
 A library to convert python requests object to curl command.
-github: https://github.com/ofw/curlify
+GitHub: https://github.com/ofw/curlify
 """
 from shlex import quote
 

@@ -1,5 +1,5 @@
 """
-selenium webdriver API
+selenium WebDriver API
 """
 import os
 import time
@@ -217,7 +217,7 @@ class WebDriver:
             Accepts the alert available.
 
             Usage::
-            Alert(driver).accept() # Confirm a alert dialog.
+            Alert(driver).accept() # Confirm the alert dialog.
             """
             log.info("✅ accept alert.")
             return Seldom.driver.switch_to.alert.accept()
@@ -319,7 +319,7 @@ class WebDriver:
             self.clear(index, **kwargs)
         if click is True:
             self.click(index, **kwargs)
-            self.sleep(0.5)
+            time.sleep(0.5)
         web_elem = WebElement(**kwargs)
         elem = web_elem.get_elements(index)
         web_elem.show_element(elem)
@@ -362,7 +362,7 @@ class WebDriver:
     def click(index: int = 0, **kwargs) -> None:
         """
         It can click any text / image can be clicked
-        Connection, check box, radio buttons, and even drop-down box etc..
+        Connection, check box, radio buttons, and even drop-down box etc.
 
         Usage:
             self.click(css="#el")
