@@ -18,10 +18,10 @@ from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 from seldom.testdata import get_timestamp
-
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 __all__ = ["WebDriver", "WebElement"]
-
 
 LOCATOR_LIST = {
     'css': By.CSS_SELECTOR,
@@ -246,6 +246,20 @@ class WebDriver:
             Seldom.driver = Chrome(service=cService(ChromeDriverManager().install()))
         Seldom.driver.get(url)
 
+    @staticmethod
+    def visit_electron(app_path: str, chromedriver_path: str) -> None:
+        """
+        visit electron application
+
+        Usage:
+            self.visit_electron('app_path','chromedriver_path')
+        """
+        options = Options()
+        options.binary_location = app_path
+        chromedriver = chromedriver_path
+        log.info(f"📖 {app_path}")
+        Seldom.driver = Chrome(options=options, service=Service(chromedriver))
+
     def open(self, url: str) -> None:
         """
         open url.
@@ -308,7 +322,8 @@ class WebDriver:
         """
         return Seldom.driver.get_window_size()
 
-    def type(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0, **kwargs) -> None:
+    def type(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0,
+             **kwargs) -> None:
         """
         Operation input box.
 
