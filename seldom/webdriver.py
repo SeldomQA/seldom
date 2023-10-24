@@ -247,18 +247,17 @@ class WebDriver:
         Seldom.driver.get(url)
 
     @staticmethod
-    def visit_electron(app_path: str, chromedriver_path: str) -> None:
+    def open_electron(app_path: str) -> None:
         """
-        visit electron application
+        open electron application, default(chrome)
 
         Usage:
-            self.visit_electron('app_path','chromedriver_path')
+            self.open_electron('app_path')
         """
         options = Options()
         options.binary_location = app_path
-        chromedriver = chromedriver_path
-        log.info(f"📖 {app_path}")
-        Seldom.driver = Chrome(options=options, service=Service(chromedriver))
+        log.info(f"📖 open electron app {app_path}")
+        Seldom.driver = Chrome(options=options)
 
     def open(self, url: str) -> None:
         """
@@ -268,6 +267,15 @@ class WebDriver:
             self.open("https://www.baidu.com")
         """
         self.visit(url)
+
+    @property
+    def page_source(self) -> str:
+        """
+        Gets the source of the current page
+        :param self:
+        :return:
+        """
+        return Seldom.driver.page_source
 
     @staticmethod
     def execute_cdp_cmd(cmd: str, cmd_args: dict):
