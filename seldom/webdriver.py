@@ -141,57 +141,66 @@ class WebDriver:
             self.elem = self.web_elem.get_elements(index)
             self.web_elem.show_element(self.elem)
 
-        def input(self, text="") -> None:
+        def input(self, text=""):
             log.info(f"✅ {self.web_elem.info}, input '{text}'.")
             self.elem.send_keys(text)
+            return self
 
-        def enter(self) -> None:
+        def enter(self):
             log.info(f"✅ {self.web_elem.info}, enter.")
             self.elem.send_keys(Keys.ENTER)
+            return self
 
-        def select_all(self) -> None:
+        def select_all(self):
             log.info(f"✅ {self.web_elem.info}, ctrl+a.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "a")
             else:
                 self.elem.send_keys(Keys.CONTROL, "a")
+            return self
 
-        def cut(self) -> None:
+        def cut(self):
             log.info(f"✅ {self.web_elem.info}, ctrl+x.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "x")
             else:
                 self.elem.send_keys(Keys.CONTROL, "x")
+            return self
 
-        def copy(self) -> None:
+        def copy(self):
             log.info(f"✅ {self.web_elem.info}, ctrl+c.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "c")
             else:
                 self.elem.send_keys(Keys.CONTROL, "c")
+            return self
 
-        def paste(self) -> None:
+        def paste(self):
             log.info(f"✅ {self.web_elem.info}, ctrl+v.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "v")
             else:
                 self.elem.send_keys(Keys.CONTROL, "v")
+            return self
 
-        def backspace(self) -> None:
+        def backspace(self):
             log.info(f"✅ {self.web_elem.info}, backspace.")
             self.elem.send_keys(Keys.BACKSPACE)
+            return self
 
-        def delete(self) -> None:
+        def delete(self):
             log.info(f"✅ {self.web_elem.info}, delete.")
             self.elem.send_keys(Keys.DELETE)
+            return self
 
-        def tab(self) -> None:
+        def tab(self):
             log.info(f"✅ {self.web_elem.info}, tab.")
             self.elem.send_keys(Keys.TAB)
 
-        def space(self) -> None:
+        def space(self):
             log.info(f"✅ {self.web_elem.info}, space.")
             self.elem.send_keys(Keys.SPACE)
+            return self
 
     class Alert:
 
