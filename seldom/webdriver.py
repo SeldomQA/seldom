@@ -256,16 +256,20 @@ class WebDriver:
         Seldom.driver.get(url)
 
     @staticmethod
-    def open_electron(app_path: str) -> None:
+    def open_electron(app_path: str, disable_gpu: bool = False) -> None:
         """
         open electron application, default(chrome)
 
+        :param app_path: App executable file path.
+        :param disable_gpu: disable GPU.
         Usage:
-            self.open_electron('app_path')
+            self.open_electron('/User/app/xx.exe')
         """
         options = Options()
+        if disable_gpu is True:
+            options.add_argument('--disable-gpu')
         options.binary_location = app_path
-        log.info(f"📖 open electron app {app_path}")
+        log.info(f"💻 open electron app {app_path}")
         Seldom.driver = Chrome(options=options)
 
     def open(self, url: str) -> None:

@@ -293,3 +293,36 @@ if __name__ == '__main__':
     seldom.main(browser="firefox", debug=True)
 
 ```
+
+### 测试electron应用
+
+Electron是一个使用 JavaScript、HTML 和 CSS 构建桌面应用程序的框架。 嵌入 Chromium 和 Node.js 到 二进制的 Electron 允许您保持一个 JavaScript代码代码库并创建 在Windows、macOS和Linux上运行的跨平台应用。
+
+https://www.electronjs.org/
+
+```python
+import seldom
+
+class DataDriverTest(seldom.TestCase):
+
+    def start(self):
+        # appium-desktop基于Electron开发的桌面应用
+        self.app_path = f"C:\Program Files\Appium Server GUI\Appium Server GUI.exe"
+
+    def test_case(self):
+        """
+        Used tuple test data
+        """
+        self.open_electron(app_path=self.app_path)
+        self.sleep(10)
+        self.switch_to_window(0)
+        self.Keys(css="#simpleHostInput").select_all().delete()
+        self.type(css="#simpleHostInput", text="127.0.0.1")
+        self.Keys(css="#simplePortInput").select_all().delete()
+        self.type(css="#simplePortInput", text="4724")
+        self.click(css="#startServerBtn")
+        self.sleep(5)
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
+```
