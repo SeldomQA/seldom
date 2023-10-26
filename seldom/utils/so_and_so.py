@@ -1,5 +1,5 @@
 """
-The @KLOOK Company API
+The so and so company API
 """
 import requests
 from requests.exceptions import RetryError
