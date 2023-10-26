@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from seldom.utils.klook import MockEnv
+from seldom.utils.so_and_so import MockEnv
 
 
 class TestMockEnv(TestCase):
@@ -22,4 +22,3 @@ class TestMockEnv(TestCase):
     def test_update_case_02(self):
         m = MockEnv(url='https://httpbin.org/post', json={'hello': 'world'})
         m.update()
-
