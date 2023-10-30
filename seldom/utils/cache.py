@@ -43,7 +43,7 @@ class Cache:
                 if WINDOWS is False:
                     fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
                 json.dump({}, json_file)
-                log.info("Clear all cache data")
+                log.info("💾 Clear all cache data")
         else:
             with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
                 if WINDOWS is False:
@@ -51,7 +51,7 @@ class Cache:
                 save_data = json.load(json_file)
                 del save_data[name]
                 json.dump(save_data, json_file)
-                log.info(f"Clear cache data: {name}")
+                log.info(f"💾 Clear cache data: {name}")
                 if WINDOWS is False:
                     fcntl.flock(json_file, fcntl.LOCK_UN)
 
@@ -73,9 +73,9 @@ class Cache:
             for key, value in data.items():
                 data = save_data.get(key, None)
                 if data is None:
-                    log.info(f"Set cache data: {key} = {value}")
+                    log.info(f"💾 Set cache data: {key} = {value}")
                 else:
-                    log.info(f"update cache data: {key} = {value}")
+                    log.info(f"💾 Update cache data: {key} = {value}")
                 save_data[key] = value
 
         with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
@@ -99,7 +99,7 @@ class Cache:
 
             value = save_data.get(name, None)
             if value is not None:
-                log.info(f"Get cache data: {name} = {value}")
+                log.info(f"💾 Get cache data: {name} = {value}")
 
             return value
 
@@ -162,11 +162,11 @@ class DiskCache:
         :return:
         """
         if func_name is None:
-            log.info("Clear all function cache")
+            log.info("💾 Clear all function cache")
             if os.path.exists(self.cache_path):
                 shutil.rmtree(self.cache_path)
         else:
-            log.info(f"Clear function cache: {func_name}")
+            log.info(f"💾 Clear function cache: {func_name}")
             for cache_file in os.listdir(self.cache_path):
                 if cache_file.startswith(func_name + "-"):
                     os.remove(os.path.join(self.cache_path, cache_file))
