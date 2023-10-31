@@ -55,19 +55,6 @@ INFO    Browser path: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.e
 
 __手动下载__
 
-通过`seldom`命令下载浏览器驱动，基于 webdriver_manager (该库后续版本会移除)。
-
-```shell
-> seldom -install chrome
-> seldom -install firefox
-> seldom -install ie
-> seldom -install edge
-```
-
-1. 默认下载到当前的`C:\Users\username\.wdm\drivers\` 目录下面。
-2. Chrome: `chromedriver` 驱动，众所周知的原因，使用的taobao的镜像。
-3. Safari: `safaridriver` （macOS系统自带，默认路径:`/usr/bin/safaridriver`）
-
 通过 `selenium-manager` 命令下载浏览器驱动，需要知道每个浏览器驱动的名字。
 
 ```shell

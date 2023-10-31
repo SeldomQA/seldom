@@ -36,8 +36,6 @@ Options:
   -m, --mod TEXT                  Run tests modules, classes or even
                                   individual test methods from the command
                                   line.
-  -i, --install [chrome|firefox|ie|edge]
-                                  Install the browser driver.
   -ll, --log-level [TRACE|DEBUG|INFO|SUCCESS|WARNING|ERROR]
                                   Set the log level.
   -h2c, --har2case TEXT           HAR file converts an interface test case.
@@ -56,7 +54,7 @@ Options:
 
 ```shell
 > where seldom
-C:\Python38\Scripts\seldom.exe
+C:\Python311\Scripts\seldom.exe
 ```
 
 ## seldom 使用
@@ -79,18 +77,6 @@ C:\Python38\Scripts\seldom.exe
 2022-09-03 11:22:25 cli.py | INFO | created file: mypro\test_dir\test_api_sample.py
 2022-09-03 11:22:25 cli.py | INFO | created file: mypro\run.py
 ```
-
-### 安装浏览器驱动
-
-* `-i/--install`
-
-```shell
-> seldom -i chrome
-
-2022-09-03 11:25:55 cli.py | INFO | Chrome Driver[==>] C:\Users\fnngj\.wdm\drivers\chromedriver\win32\104.0.5112\chromedriver.exe
-```
-
-支持`[chrome|firefox|ie|edge]`等浏览器驱动安装。
 
 ### 生成接口自动化用例
 
