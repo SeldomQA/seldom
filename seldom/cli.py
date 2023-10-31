@@ -14,10 +14,6 @@ from seldom.logging import log, log_cfg
 from seldom.utils import file
 from seldom.utils import cache
 from seldom.har2case.core import HarParser
-from webdriver_manager.firefox import GeckoDriverManager
-from webdriver_manager.microsoft import IEDriverManager
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 from seldom.running.loader_hook import loader
 from seldom import __version__
 
@@ -47,15 +43,12 @@ ssl._create_default_https_context = ssl._create_unverified_context
               help="The number of times a use case failed to run again. Need the `--path`.")
 @click.option("-r", "--report", default=None, help="Set the test report for output. Need the `--path`.")
 @click.option("-m", "--mod", help="Run tests modules, classes or even individual test methods from the command line.")
-@click.option("-i", "--install",
-              type=click.Choice(['chrome', 'firefox', 'ie', 'edge']),
-              help="Install the browser driver.")
 @click.option("-ll", "--log-level",
               type=click.Choice(['TRACE', 'DEBUG', 'INFO', 'SUCCESS', 'WARNING', 'ERROR']),
               help="Set the log level.")
 @click.option("-h2c", "--har2case", help="HAR file converts an interface test case.")
 def main(project, clear_cache, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod,
-         install, log_level, har2case):
+         log_level, har2case):
     """
     seldom CLI.
     """
@@ -152,10 +145,6 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
             description=description, rerun=rerun, language=language,
             whitelist=whitelist, blacklist=blacklist)
         loader("end_run")
-        return 0
-
-    if install:
-        install_driver(install)
         return 0
 
     if har2case:
@@ -349,30 +338,6 @@ def blacklist():
     create_file(os.path.join(project_name, "test_dir", "test_web_sample.py"), test_web_sample)
     create_file(os.path.join(project_name, "test_dir", "test_api_sample.py"), test_api_sample)
     create_file(os.path.join(project_name, "confrun.py"), run_test)
-
-
-def install_driver(browser: str) -> None:
-    """
-    Download and install the browser driver
-
-    :param browser: The Driver to download. Pass as `chrome/firefox/ie/edge`. Default Chrome.
-    :return:
-    """
-
-    if browser == "chrome":
-        driver_path = ChromeDriverManager().install()
-        log.info(f"Chrome Driver[==>] {driver_path}")
-    elif browser == "firefox":
-        driver_path = GeckoDriverManager().install()
-        log.info(f"Firefox Driver[==>] {driver_path}")
-    elif browser == "ie":
-        driver_path = IEDriverManager().install()
-        log.info(f"IE Driver[==>] {driver_path}")
-    elif browser == "edge":
-        driver_path = EdgeChromiumDriverManager().install()
-        log.info(f"Edge Driver[==>] {driver_path}")
-    else:
-        raise NameError(f"Not found '{browser}' browser driver.")
 
 
 def reset_case(path: str, cases: list) -> [str, list]:

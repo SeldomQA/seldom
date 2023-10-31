@@ -8,10 +8,8 @@ from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.chrome.service import Service as cService
 from seldom.logging import log
 from seldom.running.config import Seldom
-from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 from seldom.webdriver import WebElement
 from seldom.testdata import get_timestamp
 
@@ -38,7 +36,7 @@ class Steps:
             open("https://www.baidu.com")
         """
         if isinstance(Seldom.driver, SeleniumWebDriver) is False:
-            Seldom.driver = Chrome(service=cService(ChromeDriverManager().install()))
+            Seldom.driver = Chrome()
         if self.url is not None:
             log.info(f"📖 {self.url}")
             Seldom.driver.get(self.url)

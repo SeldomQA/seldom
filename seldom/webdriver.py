@@ -11,15 +11,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.chrome.service import Service as cService
 from appium.webdriver.common.appiumby import AppiumBy
 from seldom.logging import log
 from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
-from seldom.utils.webdriver_manager_extend import ChromeDriverManager
 from seldom.testdata import get_timestamp
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
+
 
 __all__ = ["WebDriver", "WebElement"]
 
@@ -252,7 +250,7 @@ class WebDriver:
         """
         log.info(f"📖 {url}")
         if isinstance(Seldom.driver, SeleniumWebDriver) is False:
-            Seldom.driver = Chrome(service=cService(ChromeDriverManager().install()))
+            Seldom.driver = Chrome()
         Seldom.driver.get(url)
 
     @staticmethod
