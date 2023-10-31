@@ -11,11 +11,11 @@ from appium.webdriver import Remote
 from seldom.driver import Browser
 from seldom.webdriver import WebDriver
 from seldom.appdriver import AppDriver
-from seldom.request import HttpRequest, ResponseResult, formatting
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
+from seldom.request import HttpRequest, ResponseResult, formatting
 
 
 class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
