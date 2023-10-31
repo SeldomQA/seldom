@@ -287,6 +287,10 @@ class Test(seldom.TestCase):
 
         # 通过回车键来代替单击操作
         self.Keys(id_="kw").enter()
+        
+        # 支持组合操作
+        self.Keys(id_="kw").select_all().cut()  # 全选剪切
+        self.Keys(id_="kw").select_all().delete()  # 全选删除
 
 
 if __name__ == '__main__':
