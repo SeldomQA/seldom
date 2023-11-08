@@ -1,3 +1,15 @@
+### 3.4.0 
+
+* 新增：`dependent_func()`装饰器，支持用例方法依赖调用，具体使用参考文档。
+* api测试
+  * 修复：har2case 请求头参数类型判断不准的问题。
+* web测试
+  * 增加`open_electron()` 方法，支持启动桌面electron应用。
+  * 键盘操作`Key()`支持链式调用，例如: `self.Keys(id_="kw").select_all().cut()` 全选并删除。
+* cache操作日志增加 emoji。
+* 修复：`diff_json()` 优化，支持dict深度排序。 [#197](https://github.com/SeldomQA/seldom/issues/197)
+
+
 ### 3.3.0 
 
 * web测试
