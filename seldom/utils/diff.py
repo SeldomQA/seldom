@@ -10,6 +10,13 @@ class AssertInfo:
     error = []
 
 
+def _all_values_are_same(input_list) -> bool:
+    """
+    Check whether all values in the list are the same amount
+    """
+    return input_list.count(input_list[0]) == len(input_list)
+
+
 def _list_sorted(data):
     """
     list sorted
@@ -18,7 +25,17 @@ def _list_sorted(data):
         if len(data[0]) == 0:
             log.info("data is [{}]")
         try:
-            data = sorted(data, key=lambda x: x[list(data[0].keys())[0]])
+            # Judgment sort item
+            number = 0
+            for i in range(len(data[0].keys())):
+                all_value = []
+                for d in data:
+                    v = list(d.values())[i]
+                    all_value.append(v)
+                if _all_values_are_same(all_value) is False:
+                    number = i
+                    break
+            data = sorted(data, key=lambda x: x[list(data[0].keys())[number]])
         except (TypeError, AttributeError, IndexError):
             data = data
     else:
