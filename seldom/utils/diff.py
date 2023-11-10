@@ -36,7 +36,7 @@ def _list_sorted(data):
                     number = i
                     break
             data = sorted(data, key=lambda x: x[list(data[0].keys())[number]])
-        except (TypeError, AttributeError, IndexError):
+        except (TypeError, AttributeError, IndexError, KeyError):
             data = data
     else:
         data = sorted(data)
