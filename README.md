@@ -20,7 +20,7 @@ Seldom is an automation testing framework based on unittest.
 ### Install
 
 ```shell
-pip install seldom==3.2.3
+pip install seldom==3.4.0
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -64,8 +64,6 @@ Options:
   -m, --mod TEXT                  Run tests modules, classes or even
                                   individual test methods from the command
                                   line.
-  -i, --install [chrome|firefox|ie|edge]
-                                  Install the browser driver.
   -ll, --log-level [TRACE|DEBUG|INFO|SUCCESS|WARNING|ERROR]
                                   Set the log level.
   -h2c, --har2case TEXT           HAR file converts an interface test case.
