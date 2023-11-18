@@ -35,11 +35,17 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
 
     @classmethod
     def setUpClass(cls):
-        cls().start_class()
+        try:
+            cls().start_class()
+        except BaseException as e:
+            log.error(f"start_class Exception: {e}")
 
     @classmethod
     def tearDownClass(cls):
-        cls().end_class()
+        try:
+            cls().end_class()
+        except BaseException as e:
+            log.error(f"end_class Exception: {e}")
 
     def start(self):
         """
