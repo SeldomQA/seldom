@@ -17,6 +17,7 @@ from seldom.running.config import Seldom
 from seldom.logging.exceptions import NotFindElementError
 from seldom.testdata import get_timestamp
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 
 __all__ = ["WebDriver", "WebElement"]
@@ -254,12 +255,13 @@ class WebDriver:
         Seldom.driver.get(url)
 
     @staticmethod
-    def open_electron(app_path: str, disable_gpu: bool = False) -> None:
+    def open_electron(app_path: str, disable_gpu: bool = False, chromedriver_path=None) -> None:
         """
         open electron application, default(chrome)
 
         :param app_path: App executable file path.
         :param disable_gpu: disable GPU.
+        :param chromedriver_path: chromedriver local path.
         Usage:
             self.open_electron('/User/app/xx.exe')
         """
@@ -268,7 +270,7 @@ class WebDriver:
             options.add_argument('--disable-gpu')
         options.binary_location = app_path
         log.info(f"💻 open electron app {app_path}")
-        Seldom.driver = Chrome(options=options)
+        Seldom.driver = Chrome(options=options, service=Service(chromedriver_path))
 
     def open(self, url: str) -> None:
         """
