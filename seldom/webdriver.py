@@ -3,6 +3,7 @@ selenium WebDriver API
 """
 import os
 import time
+import base64
 import warnings
 import platform
 from selenium.webdriver import Chrome
@@ -802,13 +803,18 @@ class WebDriver:
             elem = web_elem.get_elements(index)
             elem.screenshot(file_path)
 
-    def screenshots(self) -> None:
+    def screenshots(self, image=None) -> None:
         """
         Saves a screenshots of the current window to HTML report.
 
         Usage:
             self.screenshots()
         """
+        if image is not None:
+            log.info("📷️  screenshot -> HTML report.")
+            self.images.append(base64.b64encode(image).decode())
+            return None
+
         if Seldom.debug is True:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
