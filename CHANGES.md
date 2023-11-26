@@ -1,3 +1,11 @@
+### 3.4.1
+
+* 修复：`diff_json()` 对比特殊数据的异常没有捕捉到。
+* web测试
+  * `screenshots()` 增加`images`参数，支持传入截图对象 [#202](https://github.com/SeldomQA/seldom/issues/202)。
+  * `open_electron()` 增加`chromedriver_path`参数，支持手动指定驱动地址。
+* `setUpClass()`/`tearDownClass()` 增加异常捕捉，避免报错之后，用例无法统计的问题。
+
 ### 3.4.0 
 
 * 新增：`dependent_func()`装饰器，支持用例方法依赖调用，具体使用参考文档。

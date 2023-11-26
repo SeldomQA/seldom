@@ -31,6 +31,6 @@ from .testdata.parameterization import *
 
 __author__ = "bugmaster"
 
-__version__ = "3.4.0"
+__version__ = "3.4.1"
 
 __description__ = "Seldom is an automation testing framework based on unittest."
