@@ -1,6 +1,9 @@
 from typing import Any
-import psycopg2
-import psycopg2.extras
+try:
+    import psycopg2
+    import psycopg2.extras
+except ModuleNotFoundError as e:
+    raise ModuleNotFoundError("Please install the library. https://github.com/psycopg/psycopg2")
 from seldom.db_operation.base_db import SQLBase
 
 
