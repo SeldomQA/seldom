@@ -1,6 +1,7 @@
 """
 seldom test case
 """
+import pdb
 import unittest
 from urllib.parse import unquote
 from time import sleep
@@ -375,3 +376,8 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         """
         log.info(f"💤️ sleep: {sec}s.")
         sleep(sec)
+
+    @staticmethod
+    def pause() -> None:
+        log.info(f"⏸️ pause. type 'c', and press [Enter] continue run.")
+        pdb.set_trace()
