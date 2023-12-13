@@ -1,7 +1,11 @@
 """
 appium API
 """
+import base64
+from pathlib import Path
 from typing import Any, Dict
+from appium.webdriver.common.appiumby import AppiumBy
+from seldom.logging import log
 from seldom.running.config import Seldom
 
 
@@ -159,3 +163,31 @@ class AppDriver:
         """
         Seldom.driver.reset()
         return self
+
+    @staticmethod
+    def base64_image(image_path: str):
+        """
+        jpg/png file to base64
+        :param image_path:
+        :return:
+        """
+        file_path = Path(image_path)
+        if file_path.is_file() is False:
+            log.error("The file path does not exist.")
+            return
+
+        with open(image_path, 'rb') as png_file:
+            b64_data = base64.b64encode(png_file.read()).decode('UTF-8')
+            return b64_data
+
+    def click_image(self, image_path: str):
+        """
+        click image
+        :param image_path:
+        :return:
+        """
+        log.info(f"✅ image -> click.")
+        Seldom.driver.update_settings({"getMatchedImageResult": True})
+        Seldom.driver.update_settings({"fixImageTemplatescale": True})
+        b64 = self.base64_image(image_path)
+        Seldom.driver.find_element(AppiumBy.IMAGE, b64).click()
