@@ -60,6 +60,7 @@ keycodes = {
     'CAPS_LOCK': 115,
     'HOME': 4,
     'BACK': 3,
+    'ENTER': 66,
 }
 
 
@@ -100,7 +101,9 @@ class KeyEvent:
         press_key("HOME")
         """
         log.info(f'press key "{key}"')
-        keycode = keycodes.get(key)
+        keycode = keycodes.get(key.upper(), 0)
+        if keycode == 0:
+            raise KeyError(f"The '{key}' character is not supported")
         self.driver.press_keycode(keycode)
 
     def back(self):
