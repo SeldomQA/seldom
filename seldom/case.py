@@ -64,7 +64,7 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         self.images = []
         # lunch appium
         if (Seldom.app_server is not None) and (Seldom.app_info is not None):
-            Seldom.driver = Remote(Seldom.app_server, options=Seldom.app_info)
+            Seldom.driver = Remote(Seldom.app_server, options=Seldom.app_info, extensions=Seldom.extensions)
         self.start()
 
     def tearDown(self):

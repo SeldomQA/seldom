@@ -55,3 +55,11 @@ class Switch:
         if current_context != "FLUTTER":
             log.info("🔀 switch to flutter.")
             self.driver.switch_to.context('FLUTTER')
+
+    def switch_to_ocr(self) -> None:
+        """
+        Switch to OCR app.
+        help: https://github.com/jlipps/appium-ocr-plugin
+        """
+        log.info("🔀 switch to OCR.")
+        self.driver.switch_to.context('OCR')

@@ -67,7 +67,9 @@ class TestMain:
             whitelist: list = [],
             blacklist: list = [],
             open: bool = True,
-            auto: bool = True):
+            auto: bool = True,
+            extensions = None,
+    ):
         """
         runner test case
         :param path:
@@ -88,6 +90,7 @@ class TestMain:
         :param blacklist:
         :param open:
         :param auto:
+        :param extensions:
         :return:
         """
         print(SELDOM_STR)
@@ -107,6 +110,7 @@ class TestMain:
         self.auto = auto
         Seldom.app_server = app_server
         Seldom.app_info = app_info
+        Seldom.extensions = extensions
 
         if isinstance(timeout, int) is False:
             raise TypeError(f"Timeout {timeout} is not integer.")
@@ -253,7 +257,9 @@ class TestMainExtend(TestMain):
             rerun: int = 0,
             language="en",
             whitelist: list = [],
-            blacklist: list = []):
+            blacklist: list = [],
+            extensions=None,
+    ):
 
         if path is None:
             raise FileNotFoundError("Specify a file path")
@@ -261,7 +267,7 @@ class TestMainExtend(TestMain):
         super().__init__(path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
                          app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
                          description=description, rerun=rerun, language=language,
-                         whitelist=whitelist, blacklist=blacklist, open=False, auto=False)
+                         whitelist=whitelist, blacklist=blacklist, open=False, auto=False, extensions=extensions)
 
     def collect_cases(self, json: bool = False, level: str = "data", warning: bool = False) -> Any:
         """
