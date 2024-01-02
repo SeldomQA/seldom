@@ -16,6 +16,7 @@ __使用poium__
 
 ```python
 import seldom
+from appium.options.android import UiAutomator2Options
 from poium import Page, Element, Elements
 
 
@@ -42,16 +43,15 @@ class TestBBS(seldom.TestCase):
 
 if __name__ == '__main__':
     # 定义运行App
-    desired_caps = {
-        'deviceName': 'JEF_AN20',
-        'automationName': 'UiAutomator2',
-        'platformName': 'Android',
-        'platformVersion': '10.0',
-        'appPackage': 'com.meizu.flyme.flymebbs',
-        'appActivity': '.ui.LoadingActivity',
-        'noReset': True,
+    capabilities = {
+        "automationName": "UiAutomator2",
+        "platformName": "Android",
+        "appPackage": "com.meizu.flyme.flymebbs",
+        "appActivity": "com.meizu.myplus.ui.splash.SplashActivity",
+        "noReset": True,
     }
-    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723", debug=True)
+    options = UiAutomator2Options().load_capabilities(capabilities)
+    seldom.main(app_server="http://127.0.0.1:4723", app_info=options, debug=True)
 ```
 
 __定位方法__

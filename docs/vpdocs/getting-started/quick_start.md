@@ -51,7 +51,8 @@ if __name__ == '__main__':
                 timeout=10,
                 whitelist=[],
                 blacklist=[],
-                open=True
+                open=True,
+                extensions=None,
                 )
 ```
 
@@ -74,6 +75,7 @@ __参数说明__
 * whitelist :  用例标签（label）设置白名单。
 * blacklist :  用例标签（label）设置黑名单。
 * open :  是否使用浏览器自动打开测试报告，默认`True`。
+* extensions: 加载扩展，appium使用。
 
 ### `confrun.py` 配置文件
 

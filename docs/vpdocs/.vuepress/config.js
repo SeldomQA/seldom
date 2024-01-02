@@ -63,6 +63,7 @@ module.exports = {
           "/app-testing/start",
           "/app-testing/appium_lab",
           "/app-testing/page_object",
+          "/app-testing/extensions",
         ],
       },
       {

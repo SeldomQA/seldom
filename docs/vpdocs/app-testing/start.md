@@ -20,16 +20,20 @@ v16.17.0
 2. 安装appium
 
 ```shell
-> npm install -g appium  # get appium 1.x
-> npm install -g appium@next # get appium 2.x
+> npm i --location=global appium  # appium 2.x
 ```
 
 3. 启动appium
 
 ```shell
-> appium
-[Appium] Welcome to Appium v2.0.0-beta.43
-[Appium] Appium REST http interface listener started on 0.0.0.0:4723
+> appium server --address '127.0.0.1' -p 4723
+
+[Appium] Welcome to Appium v2.2.2
+[Appium] Non-default server args:
+[Appium] {
+[Appium]   address: '127.0.0.1'
+[Appium] }
+...
 ```
 
 4. 移动设备
@@ -57,6 +61,7 @@ List of apple devices attached
 
 ```python
 import seldom
+from appium.options.android import UiAutomator2Options
 
 
 class TestBBS(seldom.TestCase):
@@ -73,16 +78,15 @@ class TestBBS(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    desired_caps = {
-        'deviceName': 'JEF_AN20',
-        'automationName': 'UiAutomator2',
-        'platformName': 'Android',
-        'platformVersion': '10.0',
-        'appPackage': 'com.meizu.flyme.flymebbs',
-        'appActivity': '.ui.LoadingActivity',
-        'noReset': True,
+    capabilities = {
+        "automationName": "UiAutomator2",
+        "platformName": "Android",
+        "appPackage": "com.meizu.flyme.flymebbs",
+        "appActivity": "com.meizu.myplus.ui.splash.SplashActivity",
+        "noReset": True,
     }
-    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723")
+    options = UiAutomator2Options().load_capabilities(capabilities)
+    seldom.main(app_server="http://127.0.0.1:4723", app_info=options)
 ```
 
 > 注：上面的测试用例隐含了appium的一些知识点，你需要对appium有足够的了解。

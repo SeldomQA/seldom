@@ -34,6 +34,7 @@ seldom 支持定位如下，包括selenium/appium。
 
 ```python
 import seldom
+from appium.options.android import UiAutomator2Options
 
 
 class TestBBS(seldom.TestCase):
@@ -46,16 +47,15 @@ class TestBBS(seldom.TestCase):
         ...
 
 if __name__ == '__main__':
-    desired_caps = {
-        'deviceName': 'JEF_AN20',
-        'automationName': 'UiAutomator2',
-        'platformName': 'Android',
-        'platformVersion': '10.0',
-        'appPackage': 'com.meizu.flyme.flymebbs',
-        'appActivity': '.ui.LoadingActivity',
-        'noReset': True,
+    capabilities = {
+        "automationName": "UiAutomator2",
+        "platformName": "Android",
+        "appPackage": "com.meizu.flyme.flymebbs",
+        "appActivity": "com.meizu.myplus.ui.splash.SplashActivity",
+        "noReset": True,
     }
-    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723", debug=True)
+    options = UiAutomator2Options().load_capabilities(capabilities)
+    seldom.main(app_server="http://127.0.0.1:4723", app_info=options, debug=True)
 ```
 
 ## appium lab
@@ -87,16 +87,7 @@ class TestBBS(seldom.TestCase):
         self.sleep(3)
 
 if __name__ == '__main__':
-    desired_caps = {
-        'deviceName': 'JEF_AN20',
-        'automationName': 'UiAutomator2',
-        'platformName': 'Android',
-        'platformVersion': '10.0',
-        'appPackage': 'com.meizu.flyme.flymebbs',
-        'appActivity': '.ui.LoadingActivity',
-        'noReset': True,
-    }
-    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723", debug=True)
+    ...
 ```
 
 `AppiumLab` 类中分以下几类操作:
@@ -134,6 +125,8 @@ appium_lab.switch_to_app()
 appium_lab.switch_to_web()
 # 切换flutter
 appium_lab.switch_to_flutter()
+# 切换OCR
+appium_lab.switch_to_ocr()
 ```
 
 __Find__
@@ -230,6 +223,8 @@ class TestApp(seldom.TestCase):
         print(language, string)
         # 启动起app
         self.reset()
+        # 点击图片
+        self.click_image("/you/path/xxx.png")
 
 ```
 
