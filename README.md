@@ -223,12 +223,13 @@ seldom 3.0 支持App测试
 
 ```python
 import seldom
+from appium.options.android import UiAutomator2Options
 
 
-class TestBBS(seldom.TestCase):
+class TestApp(seldom.TestCase):
 
     def test_bbs_search(self):
-        self.sleep(5)
+        self.wait(10)
         self.click(id_="com.meizu.flyme.flymebbs:id/nw")
         self.type(id_="com.meizu.flyme.flymebbs:id/nw", text="flyme")
         self.click(id_="com.meizu.flyme.flymebbs:id/o1")
@@ -239,16 +240,15 @@ class TestBBS(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    desired_caps = {
-        'deviceName': 'JEF_AN20',
-        'automationName': 'UiAutomator2',
-        'platformName': 'Android',
-        'platformVersion': '10.0',
-        'appPackage': 'com.meizu.flyme.flymebbs',
-        'appActivity': '.ui.LoadingActivity',
-        'noReset': True,
+    capabilities = {
+        "automationName": "UiAutomator2",
+        "platformName": "Android",
+        "appPackage": "com.meizu.flyme.flymebbs",
+        "appActivity": "com.meizu.myplus.ui.splash.SplashActivity",
+        "noReset": True,
     }
-    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723")
+    options = UiAutomator2Options().load_capabilities(capabilities)
+    seldom.main(app_server="http://127.0.0.1:4723", app_info=options)
 ```
 __说明：__
 
