@@ -40,10 +40,11 @@ docs/
 git clone https://github.com/SeldomQA/seldom.git
 ```
 
-2. 进入到文档目录
+2. 进入到文档目录&启动项目
 
 ```bash
 cd docs
+yarn run dev
 ```
 
 3. 编辑相关文档（推荐编辑 vpdocs 目录下的文档，该目录的文档也是 seldom 的主要文档）
