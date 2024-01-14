@@ -1,3 +1,15 @@
+### 3.5.0
+
+* 新增：支持 Postgre SQL 数据库操作。 
+* web测试
+  * `pause()` 用于暂停操作。
+  * 移除`webdriver_manager_extend.py`文件（之前漏移除文件）。
+* App测试
+  * 支持`appium 2.0` 正式版。
+  * 支持appium-OCR-plugin插件。
+  * 增加`click_image()`方法，支持图片点击定位。
+  * `press_key()` 支持`ENTER`参数，模拟键盘回车。
+
 ### 3.4.1
 
 * 修复：`diff_json()` 对比特殊数据的异常没有捕捉到。

@@ -2,6 +2,25 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.5.0(2024-01-14)__
+
+* 新增：支持 Postgre SQL 数据库操作。 
+* web测试
+  * `pause()` 用于暂停操作。
+  * 移除`webdriver_manager_extend.py`文件（之前漏移除文件）。
+* App测试
+  * 支持`appium 2.0` 正式版。
+  * 支持appium-OCR-plugin插件。
+  * 增加`click_image()`方法，支持图片点击定位。
+  * `press_key()` 支持`ENTER`参数，模拟键盘回车。
+
+__3.4.1(2023-11-26)__
+* 修复：`diff_json()` 对比特殊数据的异常没有捕捉到。
+* `setUpClass()`/`tearDownClass()` 增加异常捕捉，避免报错之后，用例无法统计的问题。
+* web测试
+  * `screenshots()` 增加images参数，支持传入截图对象 [#202](https://github.com/SeldomQA/seldom/issues/201)。
+  * `open_electron()` 增加chromedriver_path参数，支持手动指定驱动地址。
+
 __3.4.0(2023-11-18)__
 
 * 新增：`dependent_func()`装饰器，支持用例方法依赖调用，具体使用参考文档。
@@ -13,7 +32,7 @@ __3.4.0(2023-11-18)__
 * cache操作日志增加 emoji。
 * 修复：`diff_json()` 优化，支持dict深度排序。 [#197](https://github.com/SeldomQA/seldom/issues/197)
 
-__3.3.0(2023-09-26)
+__3.3.0(2023-09-26)__
 * web测试
   * 浏览器驱动`webdriver-manager` 替换为`selenium-manager`。
   * 增加`execute_cdp_cmd()` 方法。
