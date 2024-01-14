@@ -1,8 +1,69 @@
 # appium 扩展
 
-appium支持扩展，seldom对OCR插件进行了支持。
+appium支持扩展，通过扩展来增强appium定位元素的能力。
 
-## Apium OCR plugin
+## appium images-plugin
+
+使用此插件支持的`-image`定位器策略，可以通过Appium指定想要定位的元素的图片文件。
+
+* 安装Appium images-plugin插件。
+
+```shell
+> appium plugin install images
+```
+
+* 查看已安装的Appium插件。
+
+```shell
+> appium plugin list --installed
+✔ Listing installed plugins
+- images@2.1.8 [installed (npm)]
+```
+
+* 启动Appium server时指定使用OCR插件。
+
+```shell
+> appium server --address '127.0.0.1' -p 4723  --use-plugins=iamges
+```
+
+* 目录结构
+```tree
+├───test_appium_images.py
+└───phone.jpg
+```
+
+* 编写App自动化测试脚本
+
+```python
+# test_appium_images.py
+import seldom
+from seldom.utils.file_extend import file
+from appium.options.android import UiAutomator2Options
+
+
+class TestApp(seldom.TestCase):
+
+    def test_app_images(self):
+        self.wait(10)
+        file_path = file.join(file.dir, "phone.jpg")
+        self.click_image(file_path)
+
+
+if __name__ == '__main__':
+    capabilities = {
+        "automationName": "UiAutomator2",
+        "platformName": "Android",
+        "appPackage": "com.meizu.flyme.flymebbs",
+        "appActivity": "com.meizu.myplus.ui.splash.SplashActivity",
+        "noReset": True,
+    }
+    options = UiAutomator2Options().load_capabilities(capabilities)
+    seldom.main(app_server="http://127.0.0.1:4723", app_info=options)
+```
+
+通过`click_image()` 来点击图片匹配到整个页面上的元素的坐标位。
+
+## Appium OCR plugin
 
 * 安装Appium OCR plugin插件。
 
