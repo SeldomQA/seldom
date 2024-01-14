@@ -1,19 +1,19 @@
 # 数据库操作
 
-seldom 支持sqlite3、MySQL、SQL Server、MongoDB数据库操作。
+seldom 支持sqlite3、MySQL、SQL Server、MongoDB、PostgreSQL数据库操作。
 
-| sqlite3              | MySQL                | SQL Server           | 
-|----------------------|----------------------|----------------------|
-| execute_sql()        | execute_sql()        | execute_sql()        |
-| query_sql()          | query_sql()          | query_sql()          |
-| query_one()          | query_one()          | query_one()          |
-| insert_get_last_id() | insert_get_last_id() | insert_get_last_id() |
-| delete()             | delete()             | delete()             |
-| insert()             | insert()             | insert()             |
-| select()             | select()             | select()             |
-| update()             | update()             | update()             |
-| init_table()         | init_table()         | init_table()         |
-| close()              | close()              | close()              |
+| sqlite3              | MySQL                | SQL Server           | PostgreSQL           | 
+|----------------------|----------------------|----------------------|----------------------|
+| execute_sql()        | execute_sql()        | execute_sql()        | execute_sql()        |
+| query_sql()          | query_sql()          | query_sql()          | query_sql()          |
+| query_one()          | query_one()          | query_one()          | query_one()          |
+| insert_get_last_id() | insert_get_last_id() | insert_get_last_id() | insert_get_last_id() |
+| delete()             | delete()             | delete()             | delete()             |
+| insert()             | insert()             | insert()             | insert()             |
+| select()             | select()             | select()             | select()             |
+| update()             | update()             | update()             | update()             |
+| init_table()         | init_table()         | init_table()         | init_table()         |
+| close()              | close()              | close()              | close()              |
 
 ### 连接数据库
 

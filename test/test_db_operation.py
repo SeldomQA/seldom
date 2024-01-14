@@ -6,7 +6,7 @@ desc: 数据库操作
 import unittest
 from seldom.db_operation import SQLiteDB, MySQLDB
 from seldom.db_operation.mssql_db import MSSQLDB
-
+from seldom.db_operation.postgres_db import PostgresDB
 
 class MySQLTest(unittest.TestCase):
     """测试操作MySQL数据库API"""
