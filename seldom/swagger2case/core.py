@@ -2,18 +2,17 @@ import json
 import requests
 
 
-def swagger_to_requests(swagger_doc):
+def swagger_to_requests_code(swagger_doc: dict) -> str:
+
     paths = swagger_doc['paths']
-    # definitions = swagger_doc.get('definitions', {})
     seldom_code = '''from seldom.request import HttpRequest
+
 
 class Common(HttpRequest):
 
 '''
-    api_modules = {}
     for path, methods in paths.items():
-        api_name = path.replace('/', '_') + "_api"
-        api_modules[api_name] = {}
+        api_name = path.replace('/', '_').replace('{', '').replace('}', '') + "_api"
 
         for method, opts in methods.items():
 
@@ -37,29 +36,34 @@ class Common(HttpRequest):
                 elif param['in'] == 'formData':
                     form_params.append(name)
 
-            func_params = path_params + query_params + header_params
+            func_params = path_params + query_params + header_params + form_params
             if len(func_params) > 0:
                 func_code += ", "
             func_code += ", ".join(func_params) + "):"
 
             # 请求处理
-            func_code += f'\n        url = "{swagger_doc["schemes"][0]}://{swagger_doc["host"]}{path}"'
+            func_code += f'\n        url = f"{swagger_doc["schemes"][0]}://{swagger_doc["host"]}{path}"'
 
-            query_dict = ", ".join([f"{p}={p}" for p in query_params])
+            query_dict = ", ".join([f"\"{p}\": {p}" for p in query_params])
             if query_dict:
                 func_code += f'\n        params = {{{query_dict}}}'
+            else:
+                func_code += f'\n        params = {{}}'
 
-            func_code += f'\n        headers = {{}}'
             if header_params:
-                headers_dict = ", ".join([f"'{p}': {p}" for p in header_params])
+                headers_dict = ", ".join([f"\"{p}\": {p}" for p in header_params])
                 func_code += f'\n        headers = {{{headers_dict}}}'
+            else:
+                func_code += f'\n        headers = {{}}'
 
             consumes = opts.get('consumes', ['application/json'])
             func_code += f'\n        headers["Content-Type"] = "{consumes[0]}"'
 
             if form_params:
-                form_dict = ", ".join([f"'{p}': {p}" for p in form_params])
+                form_dict = ", ".join([f"\"{p}\": {p}" for p in form_params])
                 func_code += f'\n        data = {{{form_dict}}}'
+            else:
+                func_code += f'\n        data = {{}}'
 
             # 请求发送
             req_method = method.lower()
@@ -70,11 +74,11 @@ class Common(HttpRequest):
             # print(func_code)
             seldom_code += func_code + "\n\n"
 
-    print("\n", seldom_code)
-    return api_modules
+    return seldom_code
 
 
 if __name__ == '__main__':
     # 从Swagger文档URL获取Swagger文档
     swagger_doc = requests.get("https://petstore.swagger.io/v2/swagger.json").json()
-    apis = swagger_to_requests(swagger_doc)
+    code = swagger_to_requests_code(swagger_doc)
+    print(code)
