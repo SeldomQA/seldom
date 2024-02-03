@@ -9,7 +9,7 @@ import inspect
 import builtins
 import unittest
 import webbrowser
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 
 from XTestRunner import HTMLTestRunner
 from XTestRunner import XMLTestRunner
@@ -18,7 +18,7 @@ from selenium.common.exceptions import InvalidSessionIdException
 from seldom.driver import Browser
 from seldom.logging import log
 from seldom.logging import log_cfg
-from seldom.logging.exceptions import SeldomException
+from seldom.logging.exceptions import SeldomException, RunParamError
 from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.config import base_url as base_url_func
@@ -68,7 +68,8 @@ class TestMain:
             blacklist: list = [],
             open: bool = True,
             auto: bool = True,
-            extensions = None,
+            extensions: Optional = None,
+            failfast: bool = False,
     ):
         """
         runner test case
@@ -91,6 +92,7 @@ class TestMain:
         :param open:
         :param auto:
         :param extensions:
+        :parma failfast: only support debug=True
         :return:
         """
         print(SELDOM_STR)
@@ -108,9 +110,13 @@ class TestMain:
         self.blacklist = blacklist
         self.open = open
         self.auto = auto
+        self.failfast = failfast
         Seldom.app_server = app_server
         Seldom.app_info = app_info
         Seldom.extensions = extensions
+
+        if failfast is True and debug is False:
+            raise RunParamError("failfast cannot be true, setting `debug=True`")
 
         if isinstance(timeout, int) is False:
             raise TypeError(f"Timeout {timeout} is not integer.")
@@ -201,7 +207,9 @@ class TestMain:
             runner = DebugTestRunner(
                 blacklist=self.blacklist,
                 whitelist=self.whitelist,
-                verbosity=2)
+                verbosity=2,
+                failfast=self.failfast
+            )
             runner.run(suits)
             log.success("A run the test in debug mode without generating HTML report!")
 

@@ -49,3 +49,10 @@ class FileTypeError(SeldomException):
     Data file type error
     """
     pass
+
+
+class RunParamError(SeldomException):
+    """
+    seldom run param error.
+    """
+    pass

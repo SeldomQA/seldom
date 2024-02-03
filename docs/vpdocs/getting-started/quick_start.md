@@ -53,6 +53,7 @@ if __name__ == '__main__':
                 blacklist=[],
                 open=True,
                 extensions=None,
+                failfast=False
                 )
 ```
 
@@ -76,6 +77,7 @@ __参数说明__
 * blacklist :  用例标签（label）设置黑名单。
 * open :  是否使用浏览器自动打开测试报告，默认`True`。
 * extensions: 加载扩展，appium使用。
+* failfast: 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。
 
 ### `confrun.py` 配置文件
 
@@ -224,6 +226,12 @@ def mock_url():
         "http://httpbin.org/get": "http://127.0.0.1:8000/api/data",
     }
     return config
+
+
+def failfast():
+    """Use case exe failed to stop, only support debug=True"""
+    return False
+
 ```
 
 以上配置根据需求自动化项目类型配置，相互可能冲突的钩子函数：

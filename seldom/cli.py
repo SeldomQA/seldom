@@ -78,6 +78,8 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
     language = loader("language") if loader("language") is not None else "en"
     whitelist = loader("whitelist") if loader("whitelist") is not None else []
     blacklist = loader("blacklist") if loader("blacklist") is not None else []
+    extensions = loader("extensions") if loader("extensions") is not None else None
+    failfast = loader("failfast") if loader("failfast") is not None else False
 
     if path:
         Seldom.env = env
@@ -121,7 +123,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
                     path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
                     app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
                     description=description, rerun=rerun, language=language,
-                    whitelist=whitelist, blacklist=blacklist)
+                    whitelist=whitelist, blacklist=blacklist, extensions=extensions)
                 main_extend.run_cases(case)
             loader("end_run")
             return 0
@@ -131,7 +133,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
             path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
             app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language,
-            whitelist=whitelist, blacklist=blacklist)
+            whitelist=whitelist, blacklist=blacklist, extensions=extensions, failfast=failfast)
         loader("end_run")
         return 0
 
@@ -143,7 +145,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
             case=mod, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
             app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language,
-            whitelist=whitelist, blacklist=blacklist)
+            whitelist=whitelist, blacklist=blacklist, extensions=extensions, failfast=failfast)
         loader("end_run")
         return 0
 
