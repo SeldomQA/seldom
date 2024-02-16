@@ -1,5 +1,5 @@
 import seldom
-from seldom.utils import threads
+from seldom.extend_lib import threads
 
 
 @threads(3)  # !!!核心!!!! 设置线程数

@@ -1,5 +1,5 @@
 import seldom
-from seldom.utils import threads
+from seldom.extend_lib import threads
 
 
 class MyTest(seldom.TestCase):
