@@ -1,4 +1,5 @@
 import seldom
+from appium.options.android import UiAutomator2Options
 
 
 class TestBBS(seldom.TestCase):
@@ -21,7 +22,7 @@ class TestBBS(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    desired_caps = {
+    capabilities = {
         'deviceName': 'JEF_AN20',
         'automationName': 'UiAutomator2',
         'platformName': 'Android',
@@ -30,4 +31,5 @@ if __name__ == '__main__':
         'appActivity': '.ui.LoadingActivity',
         'noReset': True,
     }
-    seldom.main(app_info=desired_caps, app_server="http://127.0.0.1:4723", debug=True)
+    options = UiAutomator2Options().load_capabilities(capabilities)
+    seldom.main(app_server="http://127.0.0.1:4723", app_info=options, debug=True)
