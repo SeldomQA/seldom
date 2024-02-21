@@ -2,8 +2,10 @@
 seldom requests
 """
 import ast
+import time
 import json
 from typing import Any
+from functools import wraps
 import requests
 from seldom.running.config import Seldom
 from seldom.running.loader_hook import loader
@@ -314,6 +316,7 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
     :return:
     """
     def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             func_name = func.__name__
             if debug is True:
@@ -356,4 +359,28 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
 
         return wrapper
 
+    return decorator
+
+
+def retry(times=3, wait=1):
+    """
+    retry the decorator
+    :param: times: times of retries
+    :wait: retry interval, Default（s）
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            attempts = 0
+            while attempts < times:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    log.warning(f"""Attempt to execute <{func.__name__}> failed with error: '{e}'. Attempting retry number {attempts + 1}...""")
+                    time.sleep(wait)
+                    attempts += 1
+
+            return func(*args, **kwargs)
+        return wrapper
     return decorator
