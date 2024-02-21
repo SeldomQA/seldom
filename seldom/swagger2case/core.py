@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 from seldom.logging import log
@@ -6,7 +7,7 @@ from seldom.utils.file_extend import file
 
 class SwaggerParser:
 
-    def __init__(self,  swagger: str, online=False):
+    def __init__(self, swagger: str, online=False):
         """
         :param swagger: file path or http address
         :param online: is online
@@ -15,12 +16,12 @@ class SwaggerParser:
         if online:
             self.doc = self.online_swagger_doc(self.swagger)
         else:
-            self.doc = self.read_swagger_file(self.swagger)
+            self.doc = self.local_swagger_file(self.swagger)
 
     @staticmethod
-    def read_swagger_file(file_path: str) -> dict:
+    def local_swagger_file(file_path: str) -> dict:
         """
-        read swagger file
+        Read swagger local files
         :param file_path:
         :return:
         """
@@ -31,7 +32,7 @@ class SwaggerParser:
     @staticmethod
     def online_swagger_doc(url: str) -> dict:
         """
-        read swagger file
+        Read swagger doc online
         :param url:
         :return:
         """
@@ -128,7 +129,7 @@ if __name__ == '__main__':
         """
         generate test case
         """
-        if "\\" in  self.swagger:
+        if "\\" in self.swagger:
             swagger_file = self.swagger.split("\\")[-1]
         elif "/" in self.swagger:
             swagger_file = self.swagger.split("/")[-1]
@@ -142,8 +143,8 @@ if __name__ == '__main__':
         log.info("Start to generate testcase.")
         testcase = self.swagger_to_seldom_code(self.doc)
 
-        self.create_file(file.join(file.dir, output_testcase_file), testcase)
-
+        swagger_path = os.path.dirname(os.path.abspath(self.swagger))
+        self.create_file(file.join(swagger_path, output_testcase_file), testcase)
 
 
 if __name__ == '__main__':

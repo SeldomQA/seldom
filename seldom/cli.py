@@ -14,6 +14,7 @@ from seldom.logging import log, log_cfg
 from seldom.utils import file
 from seldom.utils import cache
 from seldom.har2case.core import HarParser
+from seldom.swagger2case.core import SwaggerParser
 from seldom.running.loader_hook import loader
 from seldom import __version__
 
@@ -46,9 +47,10 @@ ssl._create_default_https_context = ssl._create_unverified_context
 @click.option("-ll", "--log-level",
               type=click.Choice(['TRACE', 'DEBUG', 'INFO', 'SUCCESS', 'WARNING', 'ERROR']),
               help="Set the log level.")
-@click.option("-h2c", "--har2case", help="HAR file converts an interface test case.")
+@click.option("-h2c", "--har2case", help="HAR file converts an seldom test case.")
+@click.option("-s2c", "--swagger2case", help="Swagger file converts an seldom test case.")
 def main(project, clear_cache, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod,
-         log_level, har2case):
+         log_level, har2case, swagger2case):
     """
     seldom CLI.
     """
@@ -154,6 +156,10 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
         har_parser.gen_testcase()
         return 0
 
+    if swagger2case:
+        sp = SwaggerParser(swagger=swagger2case)
+        sp.gen_testcase()
+        return 0
 
 def create_scaffold(project_name: str) -> None:
     """
