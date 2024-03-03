@@ -2,7 +2,7 @@
 
 ### har to case
 
-对于不熟悉 Requests 库的人来说，通过Seldom来写接口测试用例还是会有一点难度。于是，seldom提供了`har` 文件转 `case` 的命令。
+对于不熟悉 Requests 库的人来说，通过Seldom来写接口测试用例还是会有一点难度。于是，seldom 提供了`har` 文件转 `case` 的命令。
 
 首先，打开fiddler 工具进行抓包，选中某一个请求。
 
@@ -22,7 +22,7 @@
 > seldom -h2c demo.har
 
 2021-06-14 18:05:50 [INFO] Start to generate testcase.
-2021-06-14 18:05:50 [INFO] created file: D:\demo.py
+2021-06-14 18:05:50 [INFO] created file: ...\demo.py
 ```
 
 `demo.py` 文件。
@@ -47,6 +47,49 @@ if __name__ == '__main__':
     seldom.main()
 
 ```
+
+### swagger to case
+
+> seldom 3.6 版本支持。
+
+seldom 提供了`swagger` 转 `case` 的命令。 使用 `seldom -s2c` 命令。
+
+```shell
+> seldom -s2c swagger.json
+
+2024-03-04 00:02:22 | INFO     | core.py | Start to generate testcase.
+2024-03-04 00:02:22 | INFO     | core.py | created file: ...\swagger.py
+```
+
+将swagger文档转为 seldom 自动化测试用例。
+
+```python
+import seldom
+
+
+class TestRequest(seldom.TestCase): 
+    
+    def test_pet_petId_uploadImage_api_post(self):
+        url = f"https://petstore.swagger.io/pet/{petId}/uploadImage"
+        params = {}
+        headers = {}
+        headers["Content-Type"] = "multipart/form-data"
+        data = {"additionalMetadata": additionalMetadata, "file": file}
+        r = self.post(url, headers=headers, params=params, data=data)
+        print(r.status_code)
+
+    def test_pet_api_post(self):
+        url = f"https://petstore.swagger.io/pet"
+        params = {}
+        headers = {}
+        headers["Content-Type"] = "application/json"
+        data = {}
+        r = self.post(url, headers=headers, params=params, data=data)
+        print(r.status_code)
+```
+
+需要注意的是，转换的seldom自动化测试用例有一些`变量`，需要用户根据实际情况进行定义。
+
 
 ### 请求转 cURL
 

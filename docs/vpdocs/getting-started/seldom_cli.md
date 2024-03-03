@@ -38,7 +38,8 @@ Options:
                                   line.
   -ll, --log-level [TRACE|DEBUG|INFO|SUCCESS|WARNING|ERROR]
                                   Set the log level.
-  -h2c, --har2case TEXT           HAR file converts an interface test case.
+  -h2c, --har2case TEXT           HAR file converts an seldom test case.
+  -s2c, --swagger2case TEXT       Swagger file converts an seldom test case.
   --help                          Show this message and exit.
 ```
 
