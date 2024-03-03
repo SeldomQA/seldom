@@ -71,6 +71,7 @@ module.exports = {
         children: [
           "/api-testing/start",
           "/api-testing/assert",
+          "/api-testing/api_object",
           "/api-testing/more",
         ],
       },
