@@ -2,6 +2,14 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.6.0(2024-03-04)__
+
+* `seldom.main()`方法增加`failfast`参数，debug模式，允许第一条用例失败，停止执行。
+* 增加`@retry()`装饰器，用于函数&方法错误重试。
+* HTTP测试
+  * 支持`swagger`文档转seldom用例，使用命令 `seldom -s2c swagger.json` 。
+  * 文档：增加 `API Object model` 概念的介绍，以及在seldom中的应用。 
+
 __3.5.0(2024-01-14)__
 
 * 新增：支持 Postgre SQL 数据库操作。 
