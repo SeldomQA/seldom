@@ -517,3 +517,75 @@ if __name__ == '__main__':
 
 通过日志可以看到 `http://httpbin.org/get` 替换成为 `http://127.0.0.1:8000/api/data` 执行。 当你不想mock的时候只需要修改 mock_url() 即可，对于用例来说无影响。
 
+
+
+
+### @retry装饰器
+
+`@retry()` 装饰器用于用法失败充实，例如封装的登录方法，允许API调用失败后再次尝试。
+
+示例如下:
+
+```python
+from seldom.request import HttpRequest
+from seldom.request import check_response, retry
+
+
+class LoginAPIObject(HttpRequest):
+
+    @retry(times=2, wait=3)
+    @check_response(ret="form.token")
+    def user_login(self, username: str, password: str) -> str:
+        """
+        模拟：登录API
+        """
+        params = {"username": username, "token": password}
+        r = self.post("/error", json=params)
+        return r
+
+
+if __name__ == '__main__':
+    login = LoginAPIObject()
+    login.user_login("tom", "abc123")
+```
+
+* `@retry()`装饰器，`times`参数指定重试次数，默认`3`次，`wait`参数指定重试间隔，默认`1s`。
+
+* `@retry()`装饰器可以单独使用，也可以和 `@check_response()`装饰器一起使用，如果一起使用的话，需要在上方。
+
+运行结果：
+
+```shell
+2024-03-04 22:36:09 | INFO     | request.py | -------------- Request -----------------[🚀]
+2024-03-04 22:36:09 | INFO     | request.py | [method]: POST      [url]: /error
+2024-03-04 22:36:09 | DEBUG    | request.py | [json]:
+{
+  "username": "tom",
+  "token": "abc123"
+}
+2024-03-04 22:36:09 | WARNING  | request.py | Attempt to execute <user_login> failed with error: 'Invalid URL '/error': No scheme supplied. Perhaps you meant https:///error?'. Attempting retry number 1...
+2024-03-04 22:36:12 | INFO     | request.py | -------------- Request -----------------[🚀]
+2024-03-04 22:36:12 | INFO     | request.py | [method]: POST      [url]: /error
+2024-03-04 22:36:12 | DEBUG    | request.py | [json]:
+{
+  "username": "tom",
+  "token": "abc123"
+}
+2024-03-04 22:36:12 | WARNING  | request.py | Attempt to execute <user_login> failed with error: 'Invalid URL '/error': No scheme supplied. Perhaps you meant https:///error?'. Attempting retry number 2...
+2024-03-04 22:36:15 | INFO     | request.py | -------------- Request -----------------[🚀]
+2024-03-04 22:36:15 | INFO     | request.py | [method]: POST      [url]: /error
+2024-03-04 22:36:15 | DEBUG    | request.py | [json]:
+{
+  "username": "tom",
+  "token": "abc123"
+}
+Traceback (most recent call last):
+  File "D:\github\seldom\api\auth_object.py", line 20, in <module>
+    login.user_login("tom", "abc123")
+  ....
+  File "C:\Users\fnngj\.virtualenvs\seldom-wKum2rzm\Lib\site-packages\requests\models.py", line 439, in prepare_url
+    raise MissingSchema(
+requests.exceptions.MissingSchema: Invalid URL '/error': No scheme supplied. Perhaps you meant https:///error?
+```
+
+从运行结果可以看到，调用接口重试了2次，如果仍然错误，抛出异常。

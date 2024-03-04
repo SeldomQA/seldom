@@ -362,7 +362,7 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
     return decorator
 
 
-def retry(times=3, wait=1):
+def retry(times: int = 3, wait: int = 1):
     """
     retry the decorator
     :param: times: times of retries
