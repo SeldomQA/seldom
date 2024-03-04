@@ -14,7 +14,8 @@ mypro/
 │   ├── auth_object.py
 │   └── xxx_object.py
 ├── test_dir/
-│   └── test_case.py
+│   ├── test_auth.py
+│   └── test_xxx.py
 │  ...
 ```
 
@@ -44,10 +45,12 @@ class AuthAPIObject(HttpRequest):
         return r
 ```
 
+定义API接口，根据`get_token()`用于生成token，这里我们通过随机数模拟的生成的token。`check_response()`装饰器用于装饰接口，`form.token` 用于提取API的返回值。
+
 * 创建测试用例
 
 ```python
-# test_dir/test_case.py
+# test_dir/test_auth.py
 import seldom
 from api.auth_object import AuthAPIObject
 
@@ -64,8 +67,10 @@ if __name__ == '__main__':
     seldom.main(debug=True, base_url="https://httpbin.org")
 ```
 
+在用例层调用`AuthAPIObject`类下面的对象，测试API。
+
 * AOM 原则
 
-首先，接口只允许通过的APIObject进行封装，那么在封装之前可以检索一下是否有封装了，如果有，进一步确认是否满足自己的调用需求，我们一般在测试接口的时候一般各种参数验证，当API作为依赖接口调用的时候，一般参数比较少且固定，所以，API在封装的时候要兼顾到这两种情况。
+首先，API只允许通过的APIObject进行封装，那么在封装之前可以检索一下是否有封装了，如果有，进一步确认是否满足自己的调用需求，我们一般在测试API的时候一般各种参数验证，当API作为依赖接口调用的时候，一般参数比较少且固定，所以，API在封装的时候要兼顾到这两种情况。
 
-其次，用例层只能通过APIObject的封装调用接口，像登录token这种大部分接口会用到的信息，可以通过类初始化时传入，后续调用类下面方法的时候就不需要关心的。如果是多个接口组成一个场景，也可以再进行一层业务层的封装。
+其次，用例层只能通过APIObject的封装调用API，像登录token这种大部分API会用到的信息，可以通过类初始化时传入，后续调用类下面方法的时候就不需要关心的。如果是多个API组成一个场景，也可以再进行一层业务层的封装。
