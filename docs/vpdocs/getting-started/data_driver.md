@@ -2,11 +2,10 @@
 
 数据驱动是测试框架非常重要的功能之一，它可以有效的节约大量重复的测试代码。seldom针对该功能做强大的支持。
 
-
 ### @class_data() 方法
 
 `class_data()` 装饰测试类，测试类下面的任何方法可以共用 `class_data()` 中定义的变量。
- 
+
 * 用法一
 
 ```python
@@ -57,7 +56,6 @@ if __name__ == '__main__':
 
 当测试数据量比较少的情况下，可以通过`@data()`管理测试数据。
 
-
 **参数化测试用例**
 
 ```python
@@ -80,7 +78,7 @@ class DataDriverTest(seldom.TestCase):
         :param keyword: case data
         """
         print(f"test data: {keyword}")
-    
+
     @data([
         ["First case", "seldom"],
         ["Second case", "selenium"],
@@ -91,7 +89,7 @@ class DataDriverTest(seldom.TestCase):
         Used list test data
         """
         print(f"test data: {keyword}")
-    
+
     @data([
         {"scene": 'First case', 'keyword': 'seldom'},
         {"scene": 'Second case', 'keyword': 'selenium'},
@@ -103,6 +101,16 @@ class DataDriverTest(seldom.TestCase):
         """
         print(f"case desc: {scene}")
         print(f"test data: {keyword}")
+
+    @data([
+        [1, 2], [3, 4], [5, 6]
+    ],
+        cartesian=True)
+    def test_cartesian_product(self, one, two, three):
+        """
+        cartesian product
+        """
+        print(f"test data: {one}, {two}, {three}")
 
 ```
 
@@ -146,7 +154,6 @@ class MyTest(seldom.TestCase):
 
 当测试数据量比较大的情况下，可以通过`@file_data()`管理测试数据。
 
-
 __CSV 文件参数化__
 
 seldom 支持将`csv`文件的参数化。
@@ -154,7 +161,7 @@ seldom 支持将`csv`文件的参数化。
 表格内容如下（data.csv）：
 
 | username | password |
-| -------- | -------- |
+|----------|----------|
 | admin    | admin123 |
 | guest    | guest123 |
 
@@ -177,7 +184,6 @@ class YouTest(seldom.TestCase):
 - file: 指定 csv 文件的路径。
 - line: 指定从第几行开始读取，默认第 1 行。
 - end_line: 指定读取到第几行的数据，默认None, 最后一行。
-
 
 **excel 文件参数化**
 
@@ -213,8 +219,14 @@ json 文件：
 ```json
 {
   "login1": [
-    ["admin", "admin123"],
-    ["guest", "guest123"]
+    [
+      "admin",
+      "admin123"
+    ],
+    [
+      "guest",
+      "guest123"
+    ]
   ],
   "login2": [
     {
@@ -304,16 +316,18 @@ mypro/
 ...
 ```
 
-在 `test_sample.py` 中使用`@file_data("data.csv")`默认只能向上查找两级目录，即到`module`目录下遍历查找`data.csv`文件。显然这中情况下是无法找到`data.csv` 文件的。
+在 `test_sample.py` 中使用`@file_data("data.csv")`默认只能向上查找两级目录，即到`module`目录下遍历查找`data.csv`
+文件。显然这中情况下是无法找到`data.csv` 文件的。
 
-如果用例层级比较深，只需要指定文件目录的`“相对路径”`即可，使用方式：`@file_data("test_data/module_data/data.csv")`，不要加`./`的前缀。
-
+如果用例层级比较深，只需要指定文件目录的`“相对路径”`即可，使用方式：`@file_data("test_data/module_data/data.csv")`
+，不要加`./`的前缀。
 
 **支持配置测试环境**
 
 在自动化测试过程中，我们往往需要一套代码在不同的环境下运行，seldom支持根据环境使用不同的数据文件。
 
 * 数据文件目录结构（一）
+
 ```shell
 .
 └── test_data
@@ -326,6 +340,7 @@ mypro/
 ```
 
 * 数据文件目录结构（二）
+
 ```shell
 .
 ├── develop
@@ -340,6 +355,7 @@ mypro/
 ```
 
 * 配置测试环境
+
 ```python
 import seldom
 from seldom import file_data
@@ -383,12 +399,12 @@ if __name__ == '__main__':
 
 ```json
 {
-  "success":true,
+  "success": true,
   "error": {
-    "code":"",
-    "message":""
+    "code": "",
+    "message": ""
   },
-  "result":[
+  "result": [
     {
       "scene": "测试1",
       "email": "li123@126.com",

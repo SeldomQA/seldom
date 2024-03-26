@@ -1,27 +1,28 @@
 """
 test data driver function
 """
-import os
 import inspect as sys_inspect
+import itertools
+import os
 import warnings
 from functools import wraps
 
 import requests
+
+from seldom import Seldom
+from seldom.extend_lib import parameterized_class
+from seldom.extend_lib.parameterized import delete_patches_if_need
 from seldom.extend_lib.parameterized import inspect
 from seldom.extend_lib.parameterized import parameterized
-from seldom.extend_lib.parameterized import skip_on_empty_helper
-from seldom.extend_lib.parameterized import reapply_patches_if_need
-from seldom.extend_lib.parameterized import delete_patches_if_need
 from seldom.extend_lib.parameterized import parameterized_argument_value_pairs
+from seldom.extend_lib.parameterized import reapply_patches_if_need
 from seldom.extend_lib.parameterized import short_repr
+from seldom.extend_lib.parameterized import skip_on_empty_helper
 from seldom.extend_lib.parameterized import to_text
-from seldom.extend_lib import parameterized_class
-from seldom.testdata import conversion
-from seldom.logging.exceptions import FileTypeError
 from seldom.logging import log
+from seldom.logging.exceptions import FileTypeError
+from seldom.testdata import conversion
 from seldom.utils import jmespath as utils_jmespath
-from seldom import Seldom
-
 
 __all__ = [
     "file_data", "api_data", "data", "data_class"
@@ -96,7 +97,8 @@ def find_file(file: str, file_dir: str) -> str:
             parent_dir = os.path.join(os.path.dirname(file_dir), file)
             parent_dir_dir = os.path.join(os.path.dirname(os.path.dirname(file_dir)), file)
             parent_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file_dir))), file)
-            parent_dir_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
+            parent_dir_dir_dir_dir = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
 
             if os.path.isfile(current_dir) is True:
                 file_path = current_dir
@@ -203,7 +205,7 @@ def api_data(url: str = None, params: dict = None, headers: dict = None, ret: st
     return data(resp)
 
 
-def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
+def data(input, name_func=None, doc_func=None, skip_on_empty=False, cartesian=False, **legacy):
     """ A "brute force" method of parameterizing test cases. Creates new
         test cases and injects them into the namespace that the wrapped
         function is being defined in. Useful for parameterizing tests in
@@ -218,6 +220,9 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
         ... 'test_add1_foo_0': <function ...> ...
         >>
         """
+    if cartesian is True:
+        input = cartesian_product(input)
+
     input = conversion.check_data(input)
 
     if "testcase_func_name" in legacy:
@@ -300,7 +305,7 @@ def default_doc_func(func, num, p):
     first_args_with_values = [all_args_with_values[0]]
 
     # Assumes that the function passed is a bound method.
-    descs = ["%s=%s" %(n, short_repr(v)) for n, v in first_args_with_values]
+    descs = ["%s=%s" % (n, short_repr(v)) for n, v in first_args_with_values]
 
     # The documentation might be a multiline string, so split it
     # and just work with the first string, ignoring the period
@@ -310,8 +315,18 @@ def default_doc_func(func, num, p):
     if first.endswith("."):
         suffix = "."
         first = first[:-1]
-    args = "%s[%s]" %(len(first) and " " or "", ", ".join(descs))
+    args = "%s[%s]" % (len(first) and " " or "", ", ".join(descs))
     return "".join(
         to_text(x)
         for x in [first.rstrip(), args, suffix, nl, rest]
     )
+
+
+def cartesian_product(arr) -> list:
+    """
+    Cartesian product
+    :param arr: Two-dimensional list
+    return:
+    """
+    cp = list(itertools.product(*arr))
+    return cp
