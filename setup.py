@@ -35,7 +35,8 @@ setup(
         'pymysql>=1.0.0',
         'genson==1.2.2',
         'click~=8.1.3',
-        'python-dateutil==2.8.2'
+        'python-dateutil==2.8.2',
+        'websocket-client==1.7.0'
     ],
     classifiers=[
         'Intended Audience :: Developers',
