@@ -89,6 +89,7 @@ __参数说明__
 """
 seldom confrun.py hooks function
 """
+from appium.options.android import UiAutomator2Options
 
 
 def start_run():
@@ -126,16 +127,15 @@ def app_info():
     app UI test
     appium app config
     """
-    desired_caps = {
-        'deviceName': 'JEF_AN20',
-        'automationName': 'UiAutomator2',
-        'platformName': 'Android',
-        'platformVersion': '10.0',
-        'appPackage': 'com.meizu.flyme.flymebbs',
-        'appActivity': '.ui.LoadingActivity',
-        'noReset': True,
+    capabilities = {
+        "automationName": "UiAutomator2",
+        "platformName": "Android",
+        "appPackage": "com.meizu.flyme.flymebbs",
+        "appActivity": "com.meizu.myplus.ui.splash.SplashActivity",
+        "noReset": True,
     }
-    return desired_caps
+    options = UiAutomator2Options().load_capabilities(capabilities)
+    return options
 
 
 def app_server():
