@@ -22,10 +22,9 @@ class WebSocketTest(seldom.TestCase):
     def test_send_and_receive_message(self):
         # 发送消息
         self.client.send_message("Hello, WebSocket!")
-        # 等待接收消息（这里简单使用time.sleep等待，实际中可能需要更复杂的同步机制）
-        self.sleep(1)
+        self.client.join(1)  # 等待接收消息
         self.client.send_message("How are you?")
-        self.sleep(1)
+        self.client.join(1)  # 等待接收消息
         # 验证是否收到消息
         log.info(self.client.received_messages)
         self.assertEqual(len(self.client.received_messages), 2)
