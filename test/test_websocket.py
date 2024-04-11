@@ -12,7 +12,7 @@ class WebSocketTest(seldom.TestCase):
         # 等待客户端连接建立
         self.sleep(1)
 
-    def tearDown(self):
+    def end(self):
         """发送关闭消息"""
         self.client.send_message("close")
         # 停止WebSocket客户端线程
