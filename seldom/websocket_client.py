@@ -1,9 +1,14 @@
-import websocket
 from threading import Thread
+
+import websocket
+
 from seldom.logging import log
 
 
 class WebSocketClient(Thread):
+    """
+    WebSocket Client class
+    """
 
     def __init__(self, url):
         Thread.__init__(self)
@@ -13,6 +18,10 @@ class WebSocketClient(Thread):
         self.received_messages = []
 
     def run(self):
+        """
+        Run WebSocket.
+        Returns:
+        """
         self.running = True
         try:
             self.ws = websocket.create_connection(self.url)
@@ -38,6 +47,11 @@ class WebSocketClient(Thread):
                 break
 
     def send_message(self, message):
+        """
+        send message.
+        :param message:
+        :return:
+        """
         try:
             if self.ws:
                 self.ws.send(message)
@@ -45,16 +59,34 @@ class WebSocketClient(Thread):
             self.on_error(e)
 
     def stop(self):
+        """
+        stop and close WebSocket.
+        """
         self.running = False
         if self.ws:
             self.ws.close()
 
-    def on_open(self):
+    @staticmethod
+    def on_open():
+        """
+        Open WebSocket connection.
+        :return:
+        """
         log.info("WebSocket connection opened.")
 
-    def on_error(self, error):
+    @staticmethod
+    def on_error(error):
+        """
+        WebSocket error info.
+        :param error:
+        :return:
+        """
         log.error(f"WebSocket error: {error}")
 
     def on_close(self):
+        """
+        Close WebSocket connection.
+        :return:
+        """
         log.info("WebSocket connection closed.")
         self.running = False
