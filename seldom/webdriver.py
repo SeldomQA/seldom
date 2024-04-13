@@ -1,25 +1,26 @@
 """
 selenium WebDriver API
 """
-import os
-import time
 import base64
-import warnings
+import os
 import platform
-from selenium.webdriver import Chrome
-from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.common.action_chains import ActionChains
+import time
+import warnings
+
 from appium.webdriver.common.appiumby import AppiumBy
-from seldom.logging import log
-from seldom.running.config import Seldom
-from seldom.logging.exceptions import NotFindElementError
-from seldom.testdata import get_timestamp
+from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
+from selenium.webdriver.support.select import Select
 
+from seldom.logging import log
+from seldom.logging.exceptions import NotFindElementError
+from seldom.running.config import Seldom
+from seldom.testdata import get_timestamp
 
 __all__ = ["WebDriver", "WebElement"]
 
@@ -141,16 +142,29 @@ class WebDriver:
             self.web_elem.show_element(self.elem)
 
         def input(self, text=""):
+            """
+            input text
+            :param text:
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, input '{text}'.")
             self.elem.send_keys(text)
             return self
 
         def enter(self):
+            """
+            enter.
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, enter.")
             self.elem.send_keys(Keys.ENTER)
             return self
 
         def select_all(self):
+            """
+            select all.
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, ctrl+a.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "a")
@@ -159,6 +173,10 @@ class WebDriver:
             return self
 
         def cut(self):
+            """
+            cut.
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, ctrl+x.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "x")
@@ -167,6 +185,10 @@ class WebDriver:
             return self
 
         def copy(self):
+            """
+            copy.
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, ctrl+c.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "c")
@@ -175,6 +197,10 @@ class WebDriver:
             return self
 
         def paste(self):
+            """
+            paste.
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, ctrl+v.")
             if platform.system().lower() == "darwin":
                 self.elem.send_keys(Keys.COMMAND, "v")
@@ -183,25 +209,43 @@ class WebDriver:
             return self
 
         def backspace(self):
+            """
+            Backspace key.
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, backspace.")
             self.elem.send_keys(Keys.BACKSPACE)
             return self
 
         def delete(self):
+            """
+            Delete key.
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, delete.")
             self.elem.send_keys(Keys.DELETE)
             return self
 
         def tab(self):
+            """
+            Tab key.
+            """
             log.info(f"✅ {self.web_elem.info}, tab.")
             self.elem.send_keys(Keys.TAB)
 
         def space(self):
+            """
+            Space key.
+            :return:
+            """
             log.info(f"✅ {self.web_elem.info}, space.")
             self.elem.send_keys(Keys.SPACE)
             return self
 
     class Alert:
+        """
+        Alert operation.
+        """
 
         @property
         def text(self) -> str:
