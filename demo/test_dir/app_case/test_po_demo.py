@@ -5,20 +5,20 @@ import seldom
 from seldom.appium_lab.keyboard import KeyEvent
 
 
-class BBSPage(Page):
+class BingPage(Page):
     """BBS Page"""
     search_button = Element("id=com.microsoft.bing:id/sa_hp_header_search_box")
     search_input = Element("id=com.microsoft.bing:id/sapphire_search_header_input")
     search_count = Element('//android.widget.TextView[@resource-id="count"]')
 
 
-class TestBBS(seldom.TestCase):
+class TestBingApp(seldom.TestCase):
     """
-    Test BBS
+    Test Bing App
     """
 
     def start(self):
-        self.bbs_page = BBSPage(self.driver)
+        self.bing_page = BingPage(self.driver)
         self.ke = KeyEvent(self.driver)
 
     def test_bbs(self):
@@ -26,12 +26,12 @@ class TestBBS(seldom.TestCase):
         test bbs search
         """
         self.sleep(2)
-        self.bbs_page.search_button.click()
+        self.bing_page.search_button.click()
         self.sleep(1)
-        self.bbs_page.search_input.send_keys("seldom")
+        self.bing_page.search_input.send_keys("seldom")
         self.ke.press_key("ENTER")
         self.sleep(1)
-        counts = self.bbs_page.search_count
+        counts = self.bing_page.search_count
         self.assertIn("个结果", counts.text.lower())
 
 
