@@ -175,12 +175,14 @@ class BaiduTest(seldom.TestCase):
         Steps(url="https://www.baidu.com").open().find("#kw").type("seldom").find("#su").click()
         self.assertTitle("seldom_百度搜索")
 
+
 if __name__ == '__main__':
     seldom.main(browser="chrome")
 ```
 
 __说明：__
-* `seldom.main()` 通过 `browser` 指定运行的浏览器。 
+
+* `seldom.main()` 通过 `browser` 指定运行的浏览器。
 
 ### HTTP 测试
 
@@ -197,7 +199,7 @@ class TestRequest(seldom.TestCase):
         self.assertStatusCode(200)
 
     def test_post_method(self):
-        self.post('/post', data={'key':'value'})
+        self.post('/post', data={'key': 'value'})
         self.assertStatusCode(200)
 
     def test_get_method(self):
@@ -216,44 +218,56 @@ if __name__ == '__main__':
 
 __说明：__
 
-* `seldom.main()` 通过 `base_url` 指定接口项目基本URL地址。 
+* `seldom.main()` 通过 `base_url` 指定接口项目基本URL地址。
 
 ### App 测试
 
 seldom 3.0 支持App测试
 
 ```python
-import seldom
 from appium.options.android import UiAutomator2Options
 
+import seldom
+from seldom.appium_lab.keyboard import KeyEvent
 
-class TestApp(seldom.TestCase):
 
-    def test_bbs_search(self):
-        self.wait(10)
-        self.click(id_="com.meizu.flyme.flymebbs:id/nw")
-        self.type(id_="com.meizu.flyme.flymebbs:id/nw", text="flyme")
-        self.click(id_="com.meizu.flyme.flymebbs:id/o1")
+class TestBingApp(seldom.TestCase):
+    """
+    Test Bing APP
+    """
+
+    def start(self):
+        self.ke = KeyEvent(self.driver)
+
+    def test_bing_search(self):
+        """
+        test bing bbs search
+        """
         self.sleep(2)
-        elems = self.get_elements(id_="com.meizu.flyme.flymebbs:id/a29")
-        for elem in elems:
-            self.assertIn("flyme", elem.text.lower())
+        self.click(id_="com.microsoft.bing:id/sa_hp_header_search_box")
+        self.type(id_="com.microsoft.bing:id/sapphire_search_header_input", text="seldom")
+        self.ke.press_key("ENTER")
+        self.sleep(1)
+        elem = self.get_element(xpath='//android.widget.TextView[@resource-id="count"]')
+        self.assertIn("个结果", elem.text.lower())
 
 
 if __name__ == '__main__':
     capabilities = {
-        "automationName": "UiAutomator2",
-        "platformName": "Android",
-        "appPackage": "com.meizu.flyme.flymebbs",
-        "appActivity": "com.meizu.myplus.ui.splash.SplashActivity",
-        "noReset": True,
+        'deviceName': 'ELS-AN00',
+        'automationName': 'UiAutomator2',
+        'platformName': 'Android',
+        'appPackage': 'com.microsoft.bing',
+        'appActivity': 'com.microsoft.sapphire.app.main.MainSapphireActivity',
+        'noReset': True,
     }
     options = UiAutomator2Options().load_capabilities(capabilities)
-    seldom.main(app_server="http://127.0.0.1:4723", app_info=options)
+    seldom.main(app_server="http://127.0.0.1:4723", app_info=options, debug=True)
 ```
+
 __说明：__
 
-* `seldom.main()` 通过 `app_info` 指定App信息； `app_server` 指定appium server 地址。 
+* `seldom.main()` 通过 `app_info` 指定App信息； `app_server` 指定appium server 地址。
 
 ### Run the test
 
@@ -266,11 +280,9 @@ seldom.main(path="./test_dir/")  # 指定目录下的所有测试文件
 seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
 ```
 
-
 ## 📖 Document
 
 [中文文档](https://seldomqa.github.io/)
-
 
 ### 项目实例
 
