@@ -1,34 +1,37 @@
-import seldom
 from appium.options.android import UiAutomator2Options
 
+import seldom
+from seldom.appium_lab.keyboard import KeyEvent
 
-class TestBBS(seldom.TestCase):
+
+class TestBingApp(seldom.TestCase):
     """
-    Test Flyme BBS
+    Test Bing APP
     """
 
-    def test_bbs_search(self):
+    def start(self):
+        self.ke = KeyEvent(self.driver)
+
+    def test_bing_search(self):
         """
-        test flyme bbs search
+        test bing bbs search
         """
-        self.sleep(5)
-        self.click(id_="com.meizu.flyme.flymebbs:id/nw")
-        self.type(id_="com.meizu.flyme.flymebbs:id/nw", text="flyme")
-        self.click(id_="com.meizu.flyme.flymebbs:id/o1")
         self.sleep(2)
-        elems = self.get_elements(id_="com.meizu.flyme.flymebbs:id/a29")
-        for elem in elems:
-            self.assertIn("flyme", elem.text.lower())
+        self.click(id_="com.microsoft.bing:id/sa_hp_header_search_box")
+        self.type(id_="com.microsoft.bing:id/sapphire_search_header_input", text="seldom")
+        self.ke.press_key("ENTER")
+        self.sleep(1)
+        elem = self.get_element(xpath='//android.widget.TextView[@resource-id="count"]')
+        self.assertIn("个结果", elem.text.lower())
 
 
 if __name__ == '__main__':
     capabilities = {
-        'deviceName': 'JEF_AN20',
+        'deviceName': 'ELS-AN00',
         'automationName': 'UiAutomator2',
         'platformName': 'Android',
-        'platformVersion': '10.0',
-        'appPackage': 'com.meizu.flyme.flymebbs',
-        'appActivity': '.ui.LoadingActivity',
+        'appPackage': 'com.microsoft.bing',
+        'appActivity': 'com.microsoft.sapphire.app.main.MainSapphireActivity',
         'noReset': True,
     }
     options = UiAutomator2Options().load_capabilities(capabilities)
