@@ -294,6 +294,14 @@ https://github.com/SeldomQA/seldom-web-testing
 
 https://github.com/defnngj/seldom-api-testing
 
+## 微信（WeChat）
+
+> 欢迎添加微信，交流和反馈问题。
+
+<div style="display: flex;justify-content: space-between;width: 100%">
+    <p><img alt="微信" src="wechat.jpg" style="width: 200px;height: 100%" ></p>
+</div>
+
 ### Star History
 
 ![Star History Chart](https://api.star-history.com/svg?repos=SeldomQA/seldom&type=Date)
