@@ -1,11 +1,15 @@
 """
 browser driver
 """
-import warnings
-from selenium import webdriver
-from seldom.logging.exceptions import BrowserTypeError
-from seldom.running.config import BrowserConfig
 
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FireFoxService
+from selenium.webdriver.ie.service import Service as IEService
+from selenium.webdriver.safari.service import Service as SafariService
+
+from seldom.logging.exceptions import BrowserTypeError
 
 __all__ = ["Browser"]
 
@@ -18,35 +22,42 @@ class Browser:
     the Internet Explorer browser for "Internet Explorer" or "ie".
     """
 
-    def __new__(cls, name: str = None):
+    def __new__(cls, name: str = None, executable_path=None, options=None, command_executor=""):
+        """
+        new browser driver
+        :param name: browser name.
+        :param executable_path: browser driver path.
+        :param options:
+        :param command_executor:
+        """
 
         if (name is None) or (name in ["chrome", "google chrome", "gc"]):
-            return cls.chrome()
+            return cls.chrome(executable_path, options, command_executor)
         if name in ["firefox", "ff"]:
-            return cls.firefox()
+            return cls.firefox(executable_path, options, command_executor)
         if name in ["internet explorer", "ie", "IE"]:
-            return cls.ie()
+            return cls.ie(executable_path, options, command_executor)
         if name == "edge":
-            return cls.edge()
+            return cls.edge(executable_path, options, command_executor)
+        if name == "chromium":
+            return cls.edge(executable_path, options, command_executor)
         if name == "safari":
-            return cls.safari()
+            return cls.safari(executable_path, options, command_executor)
 
-        raise BrowserTypeError(f"Not found `{name}` browser, See the help doc: https://seldomqa.github.io/web-testing/browser_driver.html.")
+        raise BrowserTypeError(
+            f"Not found `{name}` browser, See the help doc: https://seldomqa.github.io/web-testing/browser_driver.html.")
 
     @staticmethod
-    def chrome():
+    def chrome(executable_path, options, command_executor):
         """
         Chrome browser driver
         """
-        if BrowserConfig.executable_path != "":
-            warnings.warn("selenium manager browser driver. Not need to set the `executable_path`",  stacklevel=2)
         is_grid = False
-        if BrowserConfig.command_executor != "":
+        if command_executor != "":
             is_grid = True
-            driver = webdriver.Remote(options=BrowserConfig.options,
-                                      command_executor=BrowserConfig.command_executor)
+            driver = webdriver.Remote(options=options, command_executor=command_executor)
         else:
-            driver = webdriver.Chrome(options=BrowserConfig.options)
+            driver = webdriver.Chrome(options=options, service=ChromeService(executable_path=executable_path))
 
         if is_grid is False:
             driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
@@ -59,54 +70,47 @@ class Browser:
         return driver
 
     @staticmethod
-    def firefox():
+    def firefox(executable_path, options, command_executor):
         """
         firefox browser driver
         """
-        if BrowserConfig.executable_path != "":
-            warnings.warn("selenium manager browser driver. Not need to set the `executable_path`",  stacklevel=2)
-        if BrowserConfig.command_executor != "":
-            driver = webdriver.Remote(options=BrowserConfig.options,
-                                      command_executor=BrowserConfig.command_executor)
+        if command_executor != "":
+            driver = webdriver.Remote(options=options, command_executor=command_executor)
         else:
-            driver = webdriver.Firefox(options=BrowserConfig.options)
+            driver = webdriver.Firefox(options=options, service=FireFoxService(executable_path=executable_path))
 
         return driver
 
     @staticmethod
-    def ie():
+    def ie(executable_path, options, command_executor):
         """
         internet explorer browser driver
         """
-        if BrowserConfig.executable_path != "":
-            warnings.warn("selenium manager browser driver. Not need to set the `executable_path`",  stacklevel=2)
-        if BrowserConfig.command_executor != "":
-            driver = webdriver.Remote(options=BrowserConfig.options,
-                                      command_executor=BrowserConfig.command_executor)
+        if command_executor != "":
+            driver = webdriver.Remote(options=options, command_executor=command_executor)
         else:
-            driver = webdriver.Ie(options=BrowserConfig.options)
+            driver = webdriver.Ie(options=options, service=IEService(executable_path=executable_path))
 
         return driver
 
     @staticmethod
-    def edge():
+    def edge(executable_path, options, command_executor):
         """
         edge browser driver
         """
-        if BrowserConfig.executable_path != "":
-            warnings.warn("selenium manager browser driver. Not need to set the `executable_path`",  stacklevel=2)
-        if BrowserConfig.command_executor != "":
-            driver = webdriver.Remote(options=BrowserConfig.options,
-                                      command_executor=BrowserConfig.command_executor)
+        if command_executor != "":
+            driver = webdriver.Remote(options=options, command_executor=command_executor)
         else:
-            driver = webdriver.Edge(options=BrowserConfig.options)
+            driver = webdriver.Edge(options=options, service=EdgeService(executable_path=executable_path))
 
         return driver
 
     @staticmethod
-    def safari():
-        """safari browser driver"""
-        if BrowserConfig.command_executor != "":
-            return webdriver.Remote(command_executor=BrowserConfig.command_executor)
+    def safari(executable_path, options, command_executor):
+        """
+        safari browser driver
+        """
+        if command_executor != "":
+            return webdriver.Remote(options=options, command_executor=command_executor)
         else:
-            return webdriver.Safari()
+            return webdriver.Safari(options=options, service=SafariService(executable_path=executable_path))

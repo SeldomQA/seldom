@@ -1,20 +1,21 @@
 """
 seldom main
 """
+import ast
+import builtins
+import inspect
+import json as sys_json
 import os
 import re
-import ast
-import json as sys_json
-import inspect
-import builtins
 import unittest
 import webbrowser
 from typing import Dict, List, Any, Optional
 
 from XTestRunner import HTMLTestRunner
 from XTestRunner import XMLTestRunner
-from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.common.exceptions import InvalidSessionIdException
+from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
+
 from seldom.driver import Browser
 from seldom.logging import log
 from seldom.logging import log_cfg
@@ -222,12 +223,13 @@ class TestMain:
                 BrowserConfig.NAME = self.browser
             elif isinstance(self.browser, dict):
                 BrowserConfig.NAME = self.browser.get("browser", None)
-                BrowserConfig.command_executor = self.browser.get("command_executor", "")
-                BrowserConfig.executable_path = self.browser.get("executable_path", "")
+                BrowserConfig.executable_path = self.browser.get("executable_path", None)
                 BrowserConfig.options = self.browser.get("options", None)
+                BrowserConfig.command_executor = self.browser.get("command_executor", "")
             else:
                 raise TypeError("browser type error, str or dict.")
-            Seldom.driver = Browser(BrowserConfig.NAME)
+            Seldom.driver = Browser(BrowserConfig.NAME, BrowserConfig.executable_path, BrowserConfig.options,
+                                    BrowserConfig.command_executor)
 
     @staticmethod
     def close_browser() -> None:

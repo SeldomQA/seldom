@@ -31,7 +31,7 @@ class BrowserConfig:
     # driver config
     options = None
     command_executor = ""
-    executable_path = ""
+    executable_path = None
 
 
 def base_url():
