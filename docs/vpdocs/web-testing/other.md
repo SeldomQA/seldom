@@ -2,7 +2,7 @@
 
 selenium 在启动浏览器的时候可以做很多配置，seldom 试图简化这些配置，但是总有很多情况兼顾不到。
 
-> `seldom 3.2` 版本开放了这些配置，你只需要将配置传给 seldom 即可。 
+> `seldom 3.2` 版本开放了这些配置，你只需要将配置传给 seldom 即可。
 
 ### 使用headless模式
 
@@ -14,11 +14,11 @@ Firefox和Chrome浏览器支持`headless`模式，将浏览器置于后台运行
 import seldom
 from selenium.webdriver import ChromeOptions
 
-#...
+# ...
 
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
-    chrome_options.add_argument('--headless=new') # 开启 headless 模式
+    chrome_options.add_argument("--headless=new")  # 开启 headless 模式
     browser = {
         "browser": "chrome",
         "options": chrome_options
@@ -31,7 +31,8 @@ if __name__ == '__main__':
 ```python
 import seldom
 from selenium.webdriver import FirefoxOptions
-#...
+
+# ...
 
 if __name__ == '__main__':
     firefox_options = FirefoxOptions()
@@ -48,15 +49,38 @@ if __name__ == '__main__':
 ```python
 import seldom
 from selenium.webdriver import EdgeOptions
-#...
+
+# ...
 
 if __name__ == '__main__':
     edge_option = EdgeOptions()
-    edge_option.add_argument('--headless=new')
+    edge_option.add_argument("--headless=new")
 
     browser = {
         "browser": "edge",
         "options": edge_option
+    }
+    seldom.main(browser=browser)
+```
+
+### 支持指定浏览器驱动
+
+虽然，`selenium-manager`可以方便的管理浏览器驱动，但`selenium-manager`自动下载浏览器驱动很慢，有些环境也不是方便。
+
+> seldom 3.7 版本重新支持 `executable_path` 参数，指定浏览器驱动。
+
+```python
+import seldom
+from selenium.webdriver import ChromeOptions
+
+# ……
+
+if __name__ == '__main__':
+    chrome_options = ChromeOptions()
+    browser = {
+        "browser": "chrome",
+        "executable_path": "D:\webdriver\chromedriver.exe",  # 设置chrome浏览器驱动位置，其他浏览器类似。
+        "options": chrome_options,
     }
     seldom.main(browser=browser)
 ```
@@ -73,7 +97,7 @@ if __name__ == '__main__':
 23:18:03.933 INFO [NodeOptions.getSessionFactories] - Detected 16 available processors
 23:18:03.935 INFO [NodeOptions.discoverDrivers] - Looking for existing drivers on the PATH.
 23:18:03.935 INFO [NodeOptions.discoverDrivers] - Add '--selenium-manager true' to the startup command to setup drivers automatically.
-23:18:04.971 INFO [SeleniumManager.lambda$runCommand$1] - Driver path: C:\Users\fnngj\.cache\selenium\chromedriver\win64\116.0.5845.96\chromedriver.exe
+23:18:04.971 INFO [SeleniumManager.lambda$runCommand$1] - Driver path: C:\webdriver\chromedriver.exe
 23:18:04.971 INFO [SeleniumManager.lambda$runCommand$1] - Browser path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
 23:18:05.469 INFO [SeleniumManager.lambda$runCommand$1] - Driver path: D:\webdriver\msedgedriver.exe
 23:18:05.470 INFO [SeleniumManager.lambda$runCommand$1] - Browser path: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
@@ -98,12 +122,10 @@ from selenium.webdriver import ChromeOptions
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
     browser = {
-        "browser": "chrome",  # or "firefox"
-        "options": chrome_options,
+        "options": chrome_options,  # chrome浏览器配置，其他类似
         "command_executor": "http://192.168.0.202:4444",
     }
     seldom.main(browser=browser)
-
 ```
 
 * 设置远程节点，[selenium Grid doc](https://www.selenium.dev/documentation/grid/getting_started/)。
@@ -116,12 +138,12 @@ seldom 还支持 Mobile web 模式：
 import seldom
 from selenium.webdriver import ChromeOptions
 
-#...
+# ...
 
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
     chrome_options.add_experimental_option("mobileEmulation", {"deviceName": "iPhone 8"})
-    
+
     browser = {
         "browser": "chrome",
         "options": chrome_options,
@@ -136,7 +158,6 @@ if __name__ == '__main__':
 'Pixel 2', 'Pixel XL', 'Pixel 5', 'Samsung Galaxy S8+', 'Samsung Galaxy S20 Ultra',
 'iPad Air', 'iPad Pro', 'iPad Mini'。
 
-
 ### 更多浏览器配置
 
 * 浏览器忽略无效证书
@@ -145,7 +166,7 @@ if __name__ == '__main__':
 import seldom
 from selenium.webdriver import ChromeOptions
 
-#...
+# ...
 
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
@@ -157,13 +178,11 @@ if __name__ == '__main__':
     seldom.main(browser=browser)
 ```
 
-
 * 浏览器关闭沙盒模式
 
 ```python
 import seldom
 from selenium.webdriver import ChromeOptions
-
 
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
@@ -183,7 +202,6 @@ chrome开启实验性功能参数 `excludeSwitches`。
 
 import seldom
 from selenium.webdriver import ChromeOptions
-
 
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
