@@ -4,7 +4,7 @@
 
 __3.7.0(2024-05-06)__
 
-* `data()`数据驱动方法增加`cartesian=True`参数，支持笛卡尔积。
+* `@data()`数据驱动装饰器增加`cartesian=True`参数，支持笛卡尔积。
 * 新增`WebSocket`接口测试支持。
 * App测试。
     * 支持`Appium-Python-Client==4.0.0`，修复`4.0.0` 引起的问题。
@@ -226,7 +226,9 @@ __2.10.3(2022-07-17)__
 __2.10.2(2022-06-25)__
 
 *
+
 更新：移动模式列表更新，去掉旧设备，增加新设备 [link](https://github.com/SeldomQA/seldom/blob/master/docs/vpdocs/other/other.md)
+
 * 功能：测试报告显示断言信息。
 * 功能：`main()` 通过`open=False`可以控制运行完测试 不自动化打开测试报告。
 * Web 测试：

@@ -1,6 +1,6 @@
 ### 3.7.0
 
-* `data()`数据驱动方法增加`cartesian=True`参数，支持笛卡尔积。
+* `@data()`数据驱动装饰器增加`cartesian=True`参数，支持笛卡尔积。
 * 新增`WebSocket`接口测试支持。
 * App测试。
     * 支持`Appium-Python-Client==4.0.0`，修复`4.0.0` 引起的问题。
