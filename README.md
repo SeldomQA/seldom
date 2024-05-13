@@ -20,7 +20,7 @@ Seldom is an automation testing framework based on unittest.
 ### Install
 
 ```shell
-pip install seldom==3.6.0
+pip install seldom==3.7.0
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -232,24 +232,21 @@ from seldom.appium_lab.keyboard import KeyEvent
 
 
 class TestBingApp(seldom.TestCase):
-    """
-    Test Bing APP
-    """
 
     def start(self):
         self.ke = KeyEvent(self.driver)
 
     def test_bing_search(self):
         """
-        test bing bbs search
+        test bing App search
         """
         self.sleep(2)
         self.click(id_="com.microsoft.bing:id/sa_hp_header_search_box")
-        self.type(id_="com.microsoft.bing:id/sapphire_search_header_input", text="seldom")
+        self.type(id_="com.microsoft.bing:id/sapphire_search_header_input", text="seldomQA")
         self.ke.press_key("ENTER")
         self.sleep(1)
-        elem = self.get_element(xpath='//android.widget.TextView[@resource-id="count"]')
-        self.assertIn("个结果", elem.text.lower())
+        elem = self.get_elements(xpath='//android.widget.TextView')
+        self.assertIn("seldom", elem[0].text.lower())
 
 
 if __name__ == '__main__':
