@@ -32,12 +32,12 @@ with open(INIT_FILE, 'rb') as f:
     VERSION = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
-SELDOM_STR = f"""
+SELDOM_STR = r"""
               __    __              
    ________  / /___/ /___  ____ ____ 
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v{VERSION}
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v""" + VERSION + """
 -----------------------------------------
                              @itest.info
 """
