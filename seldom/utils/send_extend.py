@@ -2,10 +2,13 @@
 send message file
 """
 import os
-from XTestRunner import SMTP as XSMTP
+
 from XTestRunner import DingTalk as XDingTalk
 from XTestRunner import FeiShu as XFeiShu
+from XTestRunner import SMTP as XSMTP
 from XTestRunner import Weinxin as XWeinxin
+from XTestRunner.config import RunResult as XRunResult
+
 from seldom.running.config import BrowserConfig
 from seldom.utils import file
 
@@ -50,4 +53,10 @@ class FeiShu(XFeiShu):
 class Weinxin(XWeinxin):
     """
     send weixin, Inherit XTestRunner weixin Class
+    """
+
+
+class RunResult(XRunResult):
+    """
+    XTestRunner Test run results
     """
