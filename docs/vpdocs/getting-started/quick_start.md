@@ -37,18 +37,19 @@ import seldom
 
 if __name__ == '__main__':
     seldom.main(path="./",
+                case="test_file.MyClassTest.test_case",
                 browser="chrome",
                 base_url=None,
-                app_info=None,
+                debug=False,
+                timeout=10,
                 app_server=None,
+                app_info=None,
                 report=None,
                 title="百度测试用例",
                 tester="虫师",
                 description="测试环境:chrome",
-                debug=False,
                 rerun=0,
                 language="en",
-                timeout=10,
                 whitelist=[],
                 blacklist=[],
                 open=True,
@@ -59,7 +60,7 @@ if __name__ == '__main__':
 
 __参数说明__
 
-* path : 指定测试目录或文件， 与`case`参数互斥。
+* path : 指定测试目录或文件， 与`case`参数互斥。`seldom > 3.7.0 支持 list 传多个目录或文件`。
 * case : 指定测试用例， 与`path`参数互斥。
 * browser : 指定浏览器（"chrome"、"firefox" 等）， Web测试。
 * base_url : 设置全局的基本URL， HTTP测试。
@@ -324,7 +325,6 @@ if __name__ == '__main__':
 
 ```python
 import seldom
-
 
 if __name__ == '__main__':
     # 指定运行其他目录&文件
