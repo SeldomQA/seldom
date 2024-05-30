@@ -51,7 +51,7 @@ class TestMain:
 
     def __init__(
             self,
-            path: str = None,
+            path: [str, list] = None,
             case: str = None,
             browser: [str or dict] = None,
             base_url: str = None,
@@ -149,22 +149,35 @@ class TestMain:
                 this_file = file_path
             self.TestSuits = seldomTestLoader.discover(file_dir, this_file)
         else:
-            if len(self.path) > 3:
-                if self.path[-3:] == ".py":
-                    if "/" in self.path:
-                        path_list = self.path.split("/")
-                        path_dir = self.path.replace(path_list[-1], "")
-                        self.TestSuits = seldomTestLoader.discover(path_dir, pattern=path_list[-1])
-                    elif "\\" in self.path:
-                        path_list = self.path.split("\\")
-                        path_dir = self.path.replace(path_list[-1], "")
-                        self.TestSuits = seldomTestLoader.discover(path_dir, pattern=path_list[-1])
-                    else:
-                        self.TestSuits = seldomTestLoader.discover(os.getcwd(), pattern=self.path)
-                else:
-                    self.TestSuits = seldomTestLoader.rediscover(self.path)
+            paths = []
+            if isinstance(self.path, str):
+                paths.append(self.path)
+            elif isinstance(self.path, list):
+                paths = self.path
             else:
-                self.TestSuits = seldomTestLoader.discover(self.path)
+                raise TypeError("The `path` type is incorrect. Only list or string is supported.")
+
+            self.TestSuits = unittest.TestSuite()
+            for path in paths:
+                log.info(f"TestLoader: {path}")
+                if len(path) > 3:
+                    if path[-3:] == ".py":
+                        if "/" in path:
+                            path_list = path.split("/")
+                            path_dir = path.replace(path_list[-1], "")
+                            test_suits = seldomTestLoader.discover(path_dir, pattern=path_list[-1])
+                        elif "\\" in path:
+                            path_list = path.split("\\")
+                            path_dir = path.replace(path_list[-1], "")
+                            test_suits = seldomTestLoader.discover(path_dir, pattern=path_list[-1])
+                        else:
+                            test_suits = seldomTestLoader.discover(os.getcwd(), pattern=path)
+                    else:
+                        test_suits = seldomTestLoader.rediscover(path)
+                else:
+                    test_suits = seldomTestLoader.discover(path)
+
+                self.TestSuits.addTest(test_suits)
 
         if self.auto is True:
             self.run(self.TestSuits)
