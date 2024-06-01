@@ -26,13 +26,13 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-Appium-Python-Client = "^3.1.0"
-XTestRunner = "^1.7.0"
-loguru = "~0.6.0"
+python = ">=3.8"
+Appium-Python-Client = ">=3.1.0"
+XTestRunner = ">=1.7.2"
+loguru = "~0.7.0"
 openpyxl = "^3.0.3"
 pyyaml = "^6.0"
-requests = "^2.22.0"
+requests = ">=2.22.0"
 jsonschema = "^4.10.0"
 jmespath = "^0.10.0"
 pymysql = "^1.0.0"
