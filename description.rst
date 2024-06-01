@@ -1,7 +1,7 @@
 seldom
 ---------------
 
-WebUI/HTTP automation testing framework based on unittest.
+Seldom is an automation testing framework based on unittest.
 
 Installation
 ------------
@@ -12,4 +12,4 @@ Installation
 Documentation
 ++++++++++++++++++
 
-https://github.com/SeldomQA/seldom
+https://seldomqa.github.io
