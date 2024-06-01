@@ -1,13 +1,14 @@
 """
 appium action
 """
-from time import sleep
-from seldom.logging import log
-from seldom.appium_lab.switch import Switch
+
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.actions import interaction
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
-from selenium.webdriver.common.actions import interaction
+
+from seldom.appium_lab.switch import Switch
+from seldom.logging import log
 
 
 class Action(Switch):
@@ -19,8 +20,8 @@ class Action(Switch):
         Switch.__init__(self, driver)
         self.switch_to_app()
         self._size = self.driver.get_window_size()
-        self.width = self._size.get("width")     # {'width': 1080, 'height': 2028}
-        self.height = self._size.get("height")   # {'width': 1080, 'height': 2028}
+        self.width = self._size.get("width")  # {'width': 1080, 'height': 2028}
+        self.height = self._size.get("height")  # {'width': 1080, 'height': 2028}
 
     def size(self) -> dict:
         """
@@ -45,7 +46,7 @@ class Action(Switch):
         actions.w3c_actions.pointer_action.pause(0.1)
         actions.w3c_actions.pointer_action.release()
         actions.perform()
-        sleep(2)
+        self.sleep(2)
 
     def swipe_up(self, times: int = 1, upper: bool = False):
         """
@@ -55,7 +56,7 @@ class Action(Switch):
         :return:
         """
         self.switch_to_app()
-        log.info(f"swipe up {times} times")
+        log.info(f"⬆️ swipe up {times} times")
         x_start = int(self.width / 2)
         x_end = int(self.width / 2)
 
@@ -73,7 +74,7 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
             actions.w3c_actions.pointer_action.release()
             actions.perform()
-            sleep(1)
+            self.sleep(1)
 
     def swipe_down(self, times: int = 1, upper: bool = False) -> None:
         """
@@ -83,7 +84,7 @@ class Action(Switch):
         :return:
         """
         self.switch_to_app()
-        log.info(f"swipe down {times} times")
+        log.info(f"⬇️ swipe down {times} times")
         x_start = int(self.width / 2)
         x_end = int(self.width / 2)
 
@@ -101,4 +102,54 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
             actions.w3c_actions.pointer_action.release()
             actions.perform()
-            sleep(1)
+            self.sleep(1)
+
+    def swipe_left(self, times: int = 1, width_percentage: float = 0.8):
+        """
+        Swipe left
+        :param times: swipe times
+        :param width_percentage: Percentage of the screen width to swipe (default 80%)
+        :return:
+        """
+        self.switch_to_app()
+        log.info(f"⬅️ swipe left {times} times")
+
+        x_start = int(self.width * (1 - width_percentage / 2))
+        x_end = int(self.width * width_percentage / 2)
+        y_start = int(self.height / 2)
+        y_end = int(self.height / 2)
+
+        for _ in range(times):
+            actions = ActionChains(self.driver)
+            actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+            actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
+            actions.w3c_actions.pointer_action.pointer_down()
+            actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
+            actions.w3c_actions.pointer_action.release()
+            actions.perform()
+            self.sleep(1)
+
+    def swipe_right(self, times: int = 1, width_percentage: float = 0.8):
+        """
+        Swipe right
+        :param times: swipe times
+        :param width_percentage: Percentage of the screen width to swipe (default 80%)
+        :return:
+        """
+        self.switch_to_app()
+        log.info(f"➡️ swipe right {times} times")
+
+        x_start = int(self.width * width_percentage / 2)
+        x_end = int(self.width * (1 - width_percentage / 2))
+        y_start = int(self.height / 2)
+        y_end = int(self.height / 2)
+
+        for _ in range(times):
+            actions = ActionChains(self.driver)
+            actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+            actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
+            actions.w3c_actions.pointer_action.pointer_down()
+            actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
+            actions.w3c_actions.pointer_action.release()
+            actions.perform()
+            self.sleep(1)

@@ -1,6 +1,8 @@
 """
 switch app context
 """
+import time
+
 from seldom.logging import log
 
 
@@ -63,3 +65,11 @@ class Switch:
         """
         log.info("🔀 switch to OCR.")
         self.driver.switch_to.context('OCR')
+
+    @staticmethod
+    def sleep(sec):
+        """
+        python time.sleep()
+        :param sec:
+        """
+        time.sleep(sec)
