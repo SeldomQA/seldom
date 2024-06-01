@@ -2,6 +2,16 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.7.1(2024-06-01)__
+
+* 优化：`main()` 中的`path`参数支持列表，可以指定多个目录或文件。
+* 新增：提供`from seldom.utils.send_extend import RunResult` 获取用例的执行数据。
+* App测试。
+    * 增加`swipe_right()`左滑 和 `swipe_left()`右滑支持。
+    * `AppiumLab()` 默认允许不传`driver`参数。
+* 其他：
+    * `Python 3.12` 测试通过。
+
 __3.7.0(2024-05-06)__
 
 * `@data()`数据驱动装饰器增加`cartesian=True`参数，支持笛卡尔积。
