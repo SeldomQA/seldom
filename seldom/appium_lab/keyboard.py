@@ -3,7 +3,6 @@ App keyboard operation
 """
 from seldom.logging import log
 
-
 keycodes = {
     '0': 7,
     '1': 8,

@@ -4,6 +4,7 @@ help: https://github.com/jlipps/appium-ocr-plugin
 """
 from appium.webdriver.webdriver import ExtensionBase
 
+
 class OCRCommand(ExtensionBase):
     def method_name(self):
         return 'ocr_command'

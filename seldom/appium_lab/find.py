@@ -1,10 +1,11 @@
 """
 find element by text
 """
-from time import sleep
+
 from appium.webdriver.common.appiumby import AppiumBy
-from seldom.logging import log
+
 from seldom.appium_lab.switch import Switch
+from seldom.logging import log
 
 
 class FindByText(Switch):
@@ -32,7 +33,7 @@ class FindByText(Switch):
         for _ in range(3):
             if len(elems) > 0:
                 break
-            sleep(1)
+            self.sleep(1)
 
         for elem in elems:
             if elem.get_attribute(attribute) is None:
@@ -64,7 +65,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.view.View", attribute=attribute, text=_text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -81,7 +82,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.EditText", attribute="text", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -108,7 +109,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.Button", attribute=attribute, text=_text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -125,7 +126,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.TextView", attribute="text", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -142,7 +143,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.ImageView", attribute="content-desc", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -159,7 +160,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="android.widget.CheckBox", attribute="text", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -176,7 +177,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeStaticText", attribute="name", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -193,7 +194,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeOther", attribute="name", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -210,7 +211,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeTextField", attribute="name", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -227,7 +228,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeImage", attribute="name", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
@@ -244,7 +245,7 @@ class FindByText(Switch):
             elem = self.__find(class_name="XCUIElementTypeButton", attribute="name", text=text)
             if elem is not None:
                 break
-            sleep(1)
+            self.sleep(1)
         else:
             raise ValueError(f"Unable to find -> {text}")
 
