@@ -4,6 +4,7 @@ switch app context
 import time
 
 from seldom.logging import log
+from seldom import Seldom
 
 
 class Switch:
@@ -11,8 +12,10 @@ class Switch:
     switch context by appium
     """
 
-    def __init__(self, driver):
-        self.driver = driver
+    def __init__(self, driver=None):
+        self.driver = Seldom.driver
+        if driver is not None:
+            self.driver = driver
 
     def context(self):
         """

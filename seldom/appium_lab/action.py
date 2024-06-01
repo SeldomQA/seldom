@@ -16,7 +16,7 @@ class Action(Switch):
     Encapsulate basic actions: swipe, tap, etc
     """
 
-    def __init__(self, driver):
+    def __init__(self, driver=None):
         Switch.__init__(self, driver)
         self.switch_to_app()
         self._size = self.driver.get_window_size()
