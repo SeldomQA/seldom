@@ -46,6 +46,7 @@ class TestBBS(seldom.TestCase):
         self.type(android_uiautomator='new UiSelector().resourceId("com.meizu.flyme.flymebbs:id/nw")', text="flyme")
         ...
 
+
 if __name__ == '__main__':
     capabilities = {
         "automationName": "UiAutomator2",
@@ -86,6 +87,7 @@ class TestBBS(seldom.TestCase):
         self.appium_lab.hide_keyboard()
         self.sleep(3)
 
+
 if __name__ == '__main__':
     ...
 ```
@@ -99,13 +101,17 @@ __Action__
 ```python
 from seldom.appium_lab import AppiumLab
 
-appium_lab = AppiumLab(self.driver)
+appium_lab = AppiumLab()
 # 触摸坐标位
 appium_lab.tap(x=100, y=200)
 # 上划
 appium_lab.swipe_up()
 # 下划
 appium_lab.swipe_down()
+# 左划
+appium_lab.swipe_left()
+# 右划
+appium_lab.swipe_right()
 ```
 
 __Switch__
@@ -115,7 +121,7 @@ __Switch__
 ```python
 from seldom.appium_lab import AppiumLab
 
-appium_lab = AppiumLab(self.driver)
+appium_lab = AppiumLab()
 
 # 返回当前上下文
 context = appium_lab.context()
@@ -136,7 +142,7 @@ __Find__
 ```python
 from seldom.appium_lab import AppiumLab
 
-appium_lab = AppiumLab(self.driver)
+appium_lab = AppiumLab()
 
 # Android
 appium_lab.find_view(text="xxx标题").click()
@@ -156,7 +162,6 @@ appium_lab.find_image(text="xxx标题").click()
 appium_lab.find_ios_button(text="xxx标题").click()
 ```
 
-
 __keyboard__
 
 `keyboard`中提供基于键盘的输入和操作。
@@ -164,7 +169,7 @@ __keyboard__
 ```python
 from seldom.appium_lab import AppiumLab
 
-appium_lab = AppiumLab(self.driver)
+appium_lab = AppiumLab()
 
 # 基于键盘输入（支持大小写）
 appium_lab.key_text("Hello123")
@@ -184,7 +189,6 @@ size = appium_lab.size()
 ## appium driver
 
 `AppDriver` 封装了App相关的操作。
-
 
 ```python
 import seldom
@@ -228,4 +232,5 @@ class TestApp(seldom.TestCase):
 
 ```
 
-> 目前 seldom 集成的 appium API 并不完整，在使用过程中如有问题，欢迎提 [issues](https://github.com/SeldomQA/seldom/issues)。
+> 目前 seldom 集成的 appium API
+> 并不完整，在使用过程中如有问题，欢迎提 [issues](https://github.com/SeldomQA/seldom/issues)。
