@@ -191,3 +191,12 @@ class AppDriver:
         Seldom.driver.update_settings({"fixImageTemplatescale": True})
         b64 = self.base64_image(image_path)
         Seldom.driver.find_element(AppiumBy.IMAGE, b64).click()
+
+    @staticmethod
+    def keyboard_search() -> None:
+        """
+        appium API
+        App keyboard search key.
+        """
+        log.info("🔍 keyboard search key.")
+        Seldom.driver.execute_script('mobile: performEditorAction', {'action': 'search'})
