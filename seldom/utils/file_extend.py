@@ -4,6 +4,7 @@ file extend
 import os
 import sys
 import inspect
+from pathlib import Path
 
 
 class FindFilePath:
@@ -14,7 +15,8 @@ class FindFilePath:
             raise NameError("Please specify filename")
         stack_t = inspect.stack()
         ins = inspect.getframeinfo(stack_t[1][0])
-        this_file_dir = os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
+        file_path = Path(ins.filename).resolve()
+        this_file_dir = file_path.parent.parent
 
         _file_path = None
         for root, _, files in os.walk(this_file_dir, topdown=False):
@@ -35,7 +37,7 @@ class File:
     """file class"""
 
     @property
-    def path(self) -> str:
+    def path(self) -> Path:
         """
         Returns the absolute path to the directory where the current file resides
         For example:
@@ -44,10 +46,11 @@ class File:
         """
         stack_t = inspect.stack()
         ins = inspect.getframeinfo(stack_t[1][0])
-        return os.path.abspath(ins.filename)
+        file_path = Path(ins.filename).resolve()
+        return file_path
 
     @property
-    def dir(self) -> str:
+    def dir(self) -> Path:
         """
         Returns the absolute path to the directory where the current file resides
         For example:
@@ -56,10 +59,11 @@ class File:
         """
         stack_t = inspect.stack()
         ins = inspect.getframeinfo(stack_t[1][0])
-        return os.path.dirname(os.path.abspath(ins.filename))
+        file_path = Path(ins.filename).resolve()
+        return file_path.parent
 
     @property
-    def dir_dir(self) -> str:
+    def dir_dir(self) -> Path:
         """
         Returns the absolute directory path of the current file directory.
         For example:
@@ -68,10 +72,11 @@ class File:
         """
         stack_t = inspect.stack()
         ins = inspect.getframeinfo(stack_t[1][0])
-        return os.path.dirname(os.path.dirname(os.path.abspath(ins.filename)))
+        file_path = Path(ins.filename).resolve()
+        return file_path.parent.parent
 
     @property
-    def dir_dir_dir(self) -> str:
+    def dir_dir_dir(self) -> Path:
         """
         Returns the absolute directory path of the current file directory
         For example:
@@ -80,7 +85,8 @@ class File:
         """
         stack_t = inspect.stack()
         ins = inspect.getframeinfo(stack_t[1][0])
-        return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(ins.filename))))
+        file_path = Path(ins.filename).resolve()
+        return file_path.parent.parent.parent
 
     @staticmethod
     def add_to_path(path: str = None) -> None:
@@ -106,7 +112,7 @@ class File:
         :param path:
         :return:
         """
-        if os.path.isfile(path):
+        if Path(path).exists():
             os.remove(path)
         else:
             raise FileNotFoundError("file does not exist")
