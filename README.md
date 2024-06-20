@@ -311,6 +311,11 @@ https://github.com/defnngj/seldom-api-testing
 
 * [utx](https://github.com/jianbing/utx)
 
+### 贡献者
+<a href="https://github.com/SeldomQA/seldom/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=SeldomQA/seldom" />
+</a>
+
 ### 交流
 
 QQ群：948994709
