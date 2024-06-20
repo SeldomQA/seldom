@@ -27,7 +27,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.8,<4.0"
 Appium-Python-Client = ">=3.1.0"
 XTestRunner = ">=1.7.2"
 loguru = "~0.7.0"
