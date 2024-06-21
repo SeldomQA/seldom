@@ -6,6 +6,7 @@ import itertools
 import os
 import warnings
 from functools import wraps
+from pathlib import Path
 
 import requests
 
@@ -29,16 +30,16 @@ __all__ = [
 ]
 
 
-def _search_file_path(file_dir: str, file_name: str) -> str:
+def _search_file_path(file_name: str, file_dir: Path) -> str:
     """
     find file path
-    :param file_dir:
     :param file_name:
+    :param file_dir:
     """
-    file_path = None
-    find_dir = os.path.dirname(os.path.dirname(file_dir))
+    file_path = ""
+    find_root_dir = file_dir.parent.parent
 
-    for root, _, files in os.walk(find_dir, topdown=False):
+    for root, _, files in os.walk(find_root_dir, topdown=False):
         for file in files:
             if Seldom.env is not None:
                 if root.endswith(Seldom.env) and file == file_name:
@@ -55,18 +56,18 @@ def _search_file_path(file_dir: str, file_name: str) -> str:
     return file_path
 
 
-def _search_env_file_path(file_dir: str, file_part_path: str) -> str:
+def _search_env_file_path(file_dir: Path, file_part_path: str) -> str:
     """
-    find environment file path
+    find environment file path, Seldom.env != None
     :param file_dir:
     :param file_part_path:
     """
-    file_path = None
-    find_dir = os.path.dirname(file_dir)
+    file_path = ""
+    find_root_dir = file_dir.parent
     file_name = file_part_path.split("/")[-1]
     file_part = os.path.join(Seldom.env, file_part_path[:-len(file_name) - 1])
 
-    for root, _, files in os.walk(find_dir, topdown=False):
+    for root, _, files in os.walk(find_root_dir, topdown=False):
         for file in files:
             if root.endswith(file_part) and file == file_name:
                 file_path = os.path.join(root, file_name)
@@ -78,46 +79,33 @@ def _search_env_file_path(file_dir: str, file_part_path: str) -> str:
     return file_path
 
 
-def find_file(file: str, file_dir: str) -> str:
+def find_file(file: str, file_dir: Path) -> str:
     """
     find file
     :param file:
     :param file_dir:
     """
     if os.path.isfile(file) is True:
-        file_path = file
-    elif "/" in file or "\\" in file:
+        return file
+
+    if "/" in file or "\\" in file:
+        file = file.replace("\\", "/")
+
         if Seldom.env is not None:
             file_path = _search_env_file_path(file_dir=file_dir, file_part_path=file)
-            if file_path is None:
-                return ""
+            return file_path
         else:
-            file = file.replace("\\", "/")
-            current_dir = os.path.join(file_dir, file)
-            parent_dir = os.path.join(os.path.dirname(file_dir), file)
-            parent_dir_dir = os.path.join(os.path.dirname(os.path.dirname(file_dir)), file)
-            parent_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file_dir))), file)
-            parent_dir_dir_dir_dir = os.path.join(
-                os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
-
-            if os.path.isfile(current_dir) is True:
-                file_path = current_dir
-            elif os.path.isfile(parent_dir) is True:
-                file_path = parent_dir
-            elif os.path.isfile(parent_dir_dir) is True:
-                file_path = parent_dir_dir
-            elif os.path.isfile(parent_dir_dir_dir) is True:
-                file_path = parent_dir_dir_dir
-            elif os.path.isfile(parent_dir_dir_dir_dir) is True:
-                file_path = parent_dir_dir_dir_dir
+            # Starting at file_dir, search up the 5 levels of parent directories
+            for _ in range(5):
+                current_dir = os.path.join(file_dir, file)
+                if os.path.isfile(current_dir):
+                    return current_dir
+                file_dir = file_dir.parent  # Move up to the parent directory
             else:
                 return ""
     else:
         file_path = _search_file_path(file_dir=file_dir, file_name=file)
-        if file_path is None:
-            return ""
-
-    return file_path
+        return file_path
 
 
 def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None, end_line: int = None):
@@ -150,7 +138,7 @@ def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None, 
 
     stack_t = sys_inspect.stack()
     ins = sys_inspect.getframeinfo(stack_t[1][0])
-    file_dir = os.path.dirname(os.path.abspath(ins.filename))
+    file_dir = Path(ins.filename).resolve().parent
 
     if Seldom.env is not None:
         log.info(f"env: '{Seldom.env}', find data file: '{file}'")
@@ -159,6 +147,8 @@ def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None, 
 
     file_path = find_file(file, file_dir)
     if file_path == "":
+        if Seldom.env is not None:
+            raise FileExistsError(f"No '{Seldom.env}/{file}' data file found.")
         raise FileExistsError(f"No '{file}' data file found.")
 
     suffix = file.split(".")[-1]
