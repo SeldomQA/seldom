@@ -6,6 +6,7 @@ import sys
 import ssl
 import json
 import click
+from pathlib import Path
 import seldom
 from seldom import Seldom
 from seldom import SeldomTestLoader
@@ -16,6 +17,7 @@ from seldom.utils import cache
 from seldom.har2case.core import HarParser
 from seldom.swagger2case.core import SwaggerParser
 from seldom.running.loader_hook import loader
+from seldom.running.config import FileRunningConfig
 from seldom import __version__
 
 PY3 = sys.version_info[0] == 3
@@ -49,8 +51,9 @@ ssl._create_default_https_context = ssl._create_unverified_context
               help="Set the log level.")
 @click.option("-h2c", "--har2case", help="HAR file converts an seldom test case.")
 @click.option("-s2c", "--swagger2case", help="Swagger file converts an seldom test case.")
+@click.option("--api-excel", help="Run the api test cases in the excel file.")
 def main(project, clear_cache, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod,
-         log_level, har2case, swagger2case):
+         log_level, har2case, swagger2case, api_excel):
     """
     seldom CLI.
     """
@@ -160,6 +163,23 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
         sp = SwaggerParser(swagger=swagger2case)
         sp.gen_testcase()
         return 0
+
+    if api_excel:
+        click.echo(f"run {api_excel} file.")
+        if Path(api_excel).exists() is False:
+            raise FileNotFoundError(f"{api_excel} file does not exist")
+
+        FileRunningConfig.api_excel_file_name = api_excel
+        script_path = file.join(file.dir, "file_runner", "api_excel.py")
+        loader("start_run")
+        seldom.main(
+            path=script_path, base_url=base_url, debug=debug, timeout=timeout,
+            report=report, title=title, tester=tester,
+            description=description, rerun=rerun, language=language,
+            whitelist=whitelist, blacklist=blacklist, failfast=failfast)
+        loader("end_run")
+        return 0
+
 
 def create_scaffold(project_name: str) -> None:
     """
@@ -368,7 +388,7 @@ def reset_case(path: str, cases: list) -> [str, list]:
     else:
         path = os.path.join(path, case_start)
         for case in cases:
-            case["file"] = case["file"][len(case_start)+1:]
+            case["file"] = case["file"][len(case_start) + 1:]
         return path, cases
 
     return path, cases

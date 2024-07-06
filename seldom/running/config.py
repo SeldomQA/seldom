@@ -42,3 +42,10 @@ def base_url():
 def driver():
     """return driver"""
     return Seldom.driver
+
+
+class FileRunningConfig:
+    """
+    file runner config
+    """
+    api_excel_file_name = None
