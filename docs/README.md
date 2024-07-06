@@ -44,6 +44,11 @@ git clone https://github.com/SeldomQA/seldom.git
 
 ```bash
 cd docs
+
+npm install yarn -g
+
+yarn install
+
 yarn run dev
 ```
 
