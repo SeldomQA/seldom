@@ -175,8 +175,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
         seldom.main(
             path=script_path, base_url=base_url, debug=debug, timeout=timeout,
             report=report, title=title, tester=tester,
-            description=description, rerun=rerun, language=language,
-            whitelist=whitelist, blacklist=blacklist, failfast=failfast)
+            description=description, rerun=rerun, language=language, failfast=failfast)
         loader("end_run")
         return 0
 
