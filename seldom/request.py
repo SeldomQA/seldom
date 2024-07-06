@@ -14,7 +14,6 @@ from seldom.utils import jmespath as utils_jmespath
 from seldom.extend_lib import jsonpath as lib_jsonpath
 from seldom.extend_lib import to_curl
 
-
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
 
 
@@ -32,7 +31,6 @@ def formatting(msg):
 
 
 def request(func):
-
     def wrapper(*args, **kwargs):
         func_name = func.__name__
         log.info('-------------- Request -----------------[🚀]')
@@ -129,35 +127,35 @@ class HttpRequest:
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
-        return requests.get(url, params=params, **kwargs)
+        return requests.get(url, params=params, timeout=Seldom.timeout, **kwargs)
 
     @request
     def post(self, url, data=None, json=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
-        return requests.post(url, data=data, json=json, **kwargs)
+        return requests.post(url, data=data, json=json, timeout=Seldom.timeout, **kwargs)
 
     @request
     def put(self, url, data=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
-        return requests.put(url, data=data, **kwargs)
+        return requests.put(url, data=data, timeout=Seldom.timeout, **kwargs)
 
     @request
     def delete(self, url, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
-        return requests.delete(url, **kwargs)
+        return requests.delete(url, timeout=Seldom.timeout, **kwargs)
 
     @request
     def patch(self, url, data=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
-        return requests.patch(url, data=data, **kwargs)
+        return requests.patch(url, data=data, timeout=Seldom.timeout, **kwargs)
 
     @property
     def response(self) -> Any:
@@ -305,7 +303,8 @@ class HttpRequest:
             return {}
 
 
-def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None, debug: bool = False):
+def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None,
+                   debug: bool = False):
     """
     checkout response data
     :param describe: interface describe
@@ -315,6 +314,7 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
     :param debug: debug Ture/False
     :return:
     """
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -377,10 +377,13 @@ def retry(times: int = 3, wait: int = 1):
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
-                    log.warning(f"""Attempt to execute <{func.__name__}> failed with error: '{e}'. Attempting retry number {attempts + 1}...""")
+                    log.warning(
+                        f"""Attempt to execute <{func.__name__}> failed with error: '{e}'. Attempting retry number {attempts + 1}...""")
                     time.sleep(wait)
                     attempts += 1
 
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
