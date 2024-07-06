@@ -73,6 +73,7 @@ module.exports = {
           "/api-testing/assert",
           "/api-testing/api_object",
           "/api-testing/more",
+          "/api-testing/api_case",
           "/api-testing/webscocket",
         ],
       },

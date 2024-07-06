@@ -9,6 +9,8 @@ seldom支持了这种用例的编写。
 
 ### 编写Excel用例
 
+[查看例子](https://github.com/SeldomQA/seldom/tree/master/api_case)
+
 首先，创建一个Excel文件，格式如下。
 
 | name            | api   | method | headers | param_type | params | assert | exclude |
@@ -41,104 +43,147 @@ def base_url():
     """
     return "http://www.httpbin.org"
 
+
+def debug():
+    """
+    debug mod
+    """
+    return False
+
+
+def rerun():
+    """
+    error/failure rerun times
+    """
+    return 0
+
+
+def report():
+    """
+    setting report path
+    Used:
+    return "d://mypro/result.html" or "d://mypro/result.xml"
+    """
+    return None
+
+
+def timeout():
+    """
+    setting timeout
+    """
+    return 10
+
+
+def title():
+    """
+    setting report title
+    """
+    return "seldom 执行 excel 接口用例"
+
+
+def tester():
+    """
+    setting report tester
+    """
+    return "bugmaster"
+
+
+def description():
+    """
+    setting report description
+    """
+    return ["windows", "api"]
+
+
+def language():
+    """
+    setting report language
+    return "en" or "zh-CN"
+    """
+    return "zh-CN"
+
+
+def failfast():
+    """
+    fail fast
+    :return:
+    """
+    return False
 ```
 
-### seldom测试WebSocket
+### 运行测试用例
 
-在seldom中测试WebSocket非常简单。
-
-* 首先，需要一个WebSocket服务。
-
-通过`aiohttp`实现`websocket_server.py`。
+* 目录结构
 
 ```shell
-# websocket_server.py
-from aiohttp import web
-import aiohttp
-
-
-async def websocket_handler(request):
-    ws = web.WebSocketResponse()
-    await ws.prepare(request)
-
-    async for msg in ws:
-        if msg.type == aiohttp.WSMsgType.TEXT:
-            print("message", msg.data)
-            if msg.data == 'close':
-                await ws.close()
-            else:
-                await ws.send_str(f"Message text was: {msg.data}")
-        elif msg.type == aiohttp.WSMsgType.ERROR:
-            print('ws connection closed with exception %s' %
-                  ws.exception())
-
-    print('websocket connection closed')
-
-    return ws
-
-
-app = web.Application()
-app.router.add_get('/ws', websocket_handler)
-
-web.run_app(app, port=8765)
+mypro/
+├── api_case.xlsx
+└── confrun.py
 ```
 
-* 然后，通过seldom编写WebSocket测试用例。
+* 运行测试
 
 ```shell
-import seldom
-from seldom.logging import log
-from seldom.websocket_client import WebSocketClient
-
-
-class WebSocketTest(seldom.TestCase):
-
-    def start(self):
-        # 创建WebSocket客户端线程
-        self.client = WebSocketClient("ws://0.0.0.0:8765/ws")
-        self.client.start()
-        # 等待客户端连接建立
-        self.sleep(1)  # 这里假设服务器可以在1秒内响应连接
-
-    def tearDown(self):
-        # 发送关闭消息
-        self.client.send_message("close")
-        # 停止WebSocket客户端线程
-        self.client.stop()
-        self.client.join()
-
-    def test_send_and_receive_message(self):
-        # 发送消息
-        self.client.send_message("Hello, WebSocket!")
-        self.client.join(1)  # 等待接收消息
-        self.client.send_message("How are you?")
-        self.client.join(1)  # 等待接收消息
-        # 验证是否收到消息
-        log.info(self.client.received_messages)
-        self.assertEqual(len(self.client.received_messages), 2)
-        self.assertIn("Hello, WebSocket!", self.client.received_messages[0])
-        self.assertIn("How are you?", self.client.received_messages[1])
-
-
-if __name__ == '__main__':
-    seldom.main(debug=True)
+> cd mypro
+> seldom --api-excel api_case.xlsx
 ```
 
 * 运行日志
 
 ```shell
-> python test_websocket.py
 
-test_send_and_receive_message (test_websocket.WebSocketTest.test_send_and_receive_message) ... 
-2024-04-05 23:36:33 | INFO     | case.py | 💤️ sleep: 1s.
-2024-04-05 23:36:33 | INFO     | websocket_client.py | WebSocket connection opened.
-2024-04-05 23:36:36 | INFO     | test_websocket.py | ['Message text was: Hello, WebSocket!', 'Message text was: How are you?']
-ok
+ seldom --api-excel .\api_case.xlsx
+run .\api_case.xlsx file.
+
+              __    __
+   ________  / /___/ /___  ____ ____
+  / ___/ _ \/ / __  / __ \/ __ ` ___/
+ (__  )  __/ / /_/ / /_/ / / / / / /
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
+-----------------------------------------
+                             @itest.info
+
+2024-07-06 21:00:35 | INFO     | runner.py | TestLoader: ...\Lib\site-packages\seldom\file_runner\api_excel.py
+2024-07-06 21:00:35 | INFO     | parameterization.py | find data file: .\api_case.xlsx
+
+XTestRunner Running tests...
 
 ----------------------------------------------------------------------
-Ran 1 test in 3.006s
+2024-07-06 21:00:35 | INFO     | api_excel.py | execute api case: [简单GET接口]
+2024-07-06 21:00:35 | INFO     | request.py | -------------- Request -----------------[🚀]
+2024-07-06 21:00:35 | INFO     | request.py | [method]: GET      [url]: http://www.httpbin.org/get
+2024-07-06 21:00:35 | DEBUG    | request.py | [headers]:
+{
+  "user-agent": "my-app/0.0.1"
+}
+2024-07-06 21:00:35 | DEBUG    | request.py | [params]:
+{
+  "key": "value"
+}
+2024-07-06 21:00:35 | INFO     | request.py | -------------- Response ----------------[🛬️]
+2024-07-06 21:00:35 | INFO     | request.py | successful with status 200
+2024-07-06 21:00:35 | DEBUG    | request.py | [type]: json      [time]: 0.481752
+2024-07-06 21:00:35 | DEBUG    | request.py | [response]:
+ {
+  "args": {
+    "key": "value"
+  },
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate",
+    "Host": "www.httpbin.org",
+    "User-Agent": "my-app/0.0.1",
+    "X-Amzn-Trace-Id": "Root=1-66893ff2-60ed7c5378ca01452917ea0c"
+  },
+  "origin": "14.155.89.115",
+  "url": "http://www.httpbin.org/get?key=value"
+}
+2024-07-06 21:00:35 | INFO     | case.py | 👀 assertJSON -> {'args': {'key': 'value'}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'www.httpbin.org', 'User-Agent': 'my-app/0.0.1', 'X-Amzn-Trace-Id': 'Root=1-668906ef-2e2d8c4c3f36a228264da1ab'}, 'origin': '14.155.89.115', 'url': 'http://www.httpbin.org/get?key=value'}.
 
-OK
-2024-04-05 23:36:36 | SUCCESS  | runner.py | A run the test in debug mode without generating HTML report!
+...
 
 ```
+
+* 生成测试报告
+
+![](/image/api_excel_report.png)

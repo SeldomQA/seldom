@@ -2,7 +2,6 @@
 
 seldom已经安装完成，那么现在已经迫不及待的想体验seldom的使用。
 
-
 ### 自动生成项目
 
 seldom 通过`seldom`命令提供了脚手架，可以快速的帮我们创建自动化测试项目。
@@ -44,6 +43,7 @@ Options:
                                   Set the log level.
   -h2c, --har2case TEXT           HAR file converts an seldom test case.
   -s2c, --swagger2case TEXT       Swagger file converts an seldom test case.
+  --api-excel TEXT                Run the api test cases in the excel file.
   --help                          Show this message and exit.
 ```
 
@@ -76,7 +76,6 @@ mypro/
 
 如果无法使用`seldom`命令，可以通过git克隆相关项目进行学习。
 
-
 * seldom-web-testing
 
 ```shell
@@ -88,7 +87,6 @@ mypro/
 ```shell
 > git clone https://github.com/defnngj/seldom-api-testing
 ```
-
 
 ### 创建测试用例
 
