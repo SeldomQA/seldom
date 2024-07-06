@@ -20,7 +20,7 @@ Seldom is an automation testing framework based on unittest.
 ### Install
 
 ```shell
-pip install seldom==3.7.0
+pip install seldom==3.8.0
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -68,6 +68,7 @@ Options:
                                   Set the log level.
   -h2c, --har2case TEXT           HAR file converts an seldom test case.
   -s2c, --swagger2case TEXT       Swagger file converts an seldom test case.
+  --api-excel TEXT                Run the api test cases in the excel file.
   --help                          Show this message and exit.
 ```
 
@@ -312,6 +313,7 @@ https://github.com/defnngj/seldom-api-testing
 * [utx](https://github.com/jianbing/utx)
 
 ### 贡献者
+
 <a href="https://github.com/SeldomQA/seldom/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=SeldomQA/seldom" />
 </a>
