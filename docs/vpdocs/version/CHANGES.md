@@ -2,6 +2,14 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.8.0(2024-07-06)__
+
+* API测试：
+    * 支持执行Excel测试用例, `seldom --api-excel api_case.xlsx` 具体用法查看文档。
+* App：
+    * 增加 `self.keyboard_search()`模拟键盘上的搜索按键。
+* 优化: `@file_data()`参数化装饰器代码。
+
 __3.7.1(2024-06-01)__
 
 * 优化：`main()` 中的`path`参数支持列表，可以指定多个目录或文件。
