@@ -177,6 +177,9 @@ class TestMain:
                 else:
                     test_suits = seldomTestLoader.discover(path)
 
+                if isinstance(self.path, str):
+                    self.TestSuits = test_suits
+                    break
                 self.TestSuits.addTest(test_suits)
 
         if self.auto is True:
