@@ -24,10 +24,16 @@ PY3 = sys.version_info[0] == 3
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+# Current file and directory
+current_file = Path(__file__).resolve()
+current_dir = current_file.parent
+
 
 @click.command()
 @click.version_option(version=__version__, help="Show version.")
-@click.option("-P", "--project", help="Create an Seldom automation test project.")
+@click.option("--project-api", help="Create an API automation test project.")
+@click.option("--project-app", help="Create an App automation test project.")
+@click.option("--project-web", help="Create an Web automation test project.")
 @click.option('-cc', "--clear-cache", default=False, help="Clear all caches of seldom.")
 @click.option("-p", "--path", help="Run test case file path.")
 @click.option("-c/-nc", "--collect/--no-collect", default=False, help="Collect project test cases. Need the `--path`.")
@@ -52,14 +58,20 @@ ssl._create_default_https_context = ssl._create_unverified_context
 @click.option("-h2c", "--har2case", help="HAR file converts an seldom test case.")
 @click.option("-s2c", "--swagger2case", help="Swagger file converts an seldom test case.")
 @click.option("--api-excel", help="Run the api test cases in the excel file.")
-def main(project, clear_cache, path, collect, level, case_json, env, debug, browser, base_url, rerun, report, mod,
-         log_level, har2case, swagger2case, api_excel):
+def main(project_api, project_app, project_web, clear_cache, path, collect, level, case_json, env, debug, browser,
+         base_url, rerun, report, mod, log_level, har2case, swagger2case, api_excel):
     """
     seldom CLI.
     """
 
-    if project:
-        create_scaffold(project)
+    if project_api:
+        create_scaffold(project_api, "api")
+        return 0
+    if project_app:
+        create_scaffold(project_app, "app")
+        return 0
+    if project_web:
+        create_scaffold(project_web, "web")
         return 0
 
     if clear_cache:
@@ -180,7 +192,7 @@ def main(project, clear_cache, path, collect, level, case_json, env, debug, brow
         return 0
 
 
-def create_scaffold(project_name: str) -> None:
+def create_scaffold(project_name: str, project_type: str) -> None:
     """
     create scaffold with specified project name.
     """
@@ -192,178 +204,39 @@ def create_scaffold(project_name: str) -> None:
     log.info(f"CWD: {os.getcwd()}\n")
 
     def create_folder(path):
+        """create folder"""
         os.makedirs(path)
         log.info(f"created folder: {path}")
 
     def create_file(path, file_content=""):
+        """create file"""
         with open(path, 'w', encoding="utf-8") as py_file:
             py_file.write(file_content)
         msg = f"created file: {path}"
         log.info(msg)
 
-    test_data = '''{
- "bing":  [
-    ["case1", "seldom"],
-    ["case2", "poium"],
-    ["case3", "XTestRunner"]
- ]
-}
+    data_path = current_dir / "project_temp" / "data.json"
 
-'''
-    test_web_sample = '''import seldom
-from seldom import file_data
+    confrun_path = current_dir / "project_temp" / "confrun_web.py"
+    sample_path = current_dir / "project_temp" / "test_web_sample.py"
+    if project_type == "api":
+        confrun_path = current_dir / "project_temp" / "confrun_api.py"
+        sample_path = current_dir / "project_temp" / "test_api_sample.py"
+    elif project_type == "app":
+        confrun_path = current_dir / "project_temp" / "confrun_app.py"
+        sample_path = current_dir / "project_temp" / "test_app_sample.py"
 
+    test_data = data_path.read_text(encoding='utf-8')
+    run_test = confrun_path.read_text(encoding='utf-8')
+    test_web_sample = sample_path.read_text(encoding='utf-8')
 
-class SampleTest(seldom.TestCase):
-
-    def test_case(self):
-        """a simple test case """
-        self.open("http://www.itest.info")
-        self.assertInUrl("itest.info")
-
-
-class DDTTest(seldom.TestCase):
-
-    @file_data(file="data.json", key="bing")
-    def test_data_driver(self, _, keyword):
-        """ data driver case """
-        self.open("https://cn.bing.com")
-        self.type(id_="sb_form_q", text=keyword, enter=True)
-        self.assertInTitle(keyword)
-
-
-if __name__ == '__main__':
-    seldom.main(debug=True)
-
-'''
-    test_api_sample = '''import seldom
-
-
-class TestRequest(seldom.TestCase):
-    """api test case"""
-
-    def test_put_method(self):
-        self.put('/put', data={'key': 'value'})
-        self.assertStatusCode(200)
-
-    def test_post_method(self):
-        self.post('/post', data={'key':'value'})
-        self.assertStatusCode(200)
-
-    def test_get_method(self):
-        payload = {'key1': 'value1', 'key2': 'value2'}
-        self.get('/get', params=payload)
-        self.assertStatusCode(200)
-
-    def test_delete_method(self):
-        self.delete('/delete')
-        self.assertStatusCode(200)
-
-
-if __name__ == '__main__':
-    seldom.main(base_url="http://httpbin.org")
-
-    '''
-
-    run_test = '''"""
-seldom confrun.py hooks function
-"""
-
-
-def browser():
-    """
-    web UI test:
-    browser: gc(google chrome)/ff(firefox)/edge/ie/safari
-    """
-    return "gc"
-
-
-def base_url():
-    """
-    http test
-    api base url
-    """
-    return "http://httpbin.org"
-
-
-def debug():
-    """
-    debug mod
-    """
-    return False
-
-
-def rerun():
-    """
-    error/failure rerun times
-    """
-    return 0
-
-
-def report():
-    """
-    setting report path
-    Used:
-    return "d://mypro/result.html"
-    return "d://mypro/result.xml"
-    """
-    return None
-
-
-def timeout():
-    """
-    setting timeout
-    """
-    return 10
-
-
-def title():
-    """
-    setting report title
-    """
-    return "seldom test report"
-
-
-def tester():
-    """
-    setting report tester
-    """
-    return "bugmaster"
-
-
-def description():
-    """
-    setting report description
-    """
-    return ["windows", "jenkins"]
-
-
-def language():
-    """
-    setting report language
-    return "en"
-    return "zh-CN"
-    """
-    return "en"
-
-
-def whitelist():
-    """test label white list"""
-    return []
-
-
-def blacklist():
-    """test label black list"""
-    return []
-'''
     create_folder(project_name)
     create_folder(os.path.join(project_name, "test_dir"))
     create_folder(os.path.join(project_name, "reports"))
     create_folder(os.path.join(project_name, "test_data"))
     create_file(os.path.join(project_name, "test_data", "data.json"), test_data)
     create_file(os.path.join(project_name, "test_dir", "__init__.py"))
-    create_file(os.path.join(project_name, "test_dir", "test_web_sample.py"), test_web_sample)
-    create_file(os.path.join(project_name, "test_dir", "test_api_sample.py"), test_api_sample)
+    create_file(os.path.join(project_name, "test_dir", "test_sample.py"), test_web_sample)
     create_file(os.path.join(project_name, "confrun.py"), run_test)
 
 
