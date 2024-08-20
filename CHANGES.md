@@ -1,3 +1,10 @@
+### 3.8.1
+
+* App测试。
+    * 支持`Appium-Python-Client==4.0.1`，修复`4.0.0` 引起的问题。
+* `seldom` 命令，创建项目命令区分`web/app/api`项目。
+* 修复`seldom-platform`平台运行错误。
+
 ### 3.8.0
 
 * API测试：支持执行Excel测试用例, `seldom --api-excel api_case.xlsx` 具体用法查看文档。

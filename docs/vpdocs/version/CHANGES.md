@@ -2,6 +2,13 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.8.1(2024-08-20)__
+
+* App测试。
+    * 支持`Appium-Python-Client==4.0.1`，修复`4.0.0` 引起的问题。
+* `seldom` 命令，创建项目命令区分`web/app/api`项目。
+* 修复`seldom-platform`平台运行错误。
+
 __3.8.0(2024-07-06)__
 
 * API测试：
