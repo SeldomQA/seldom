@@ -77,17 +77,18 @@ Options:
 2、创建项目：
 
 ```shell
-> seldom -P mypro
+> seldom --project-api myapi  # API automation test project.
+> seldom --project-app myapp  # or App automation test project.
+> seldom --project-web myweb  # or Web automation test project.
 ```
 
 目录结构如下：
 
 ```shell
-mypro/
+myweb/
 ├── test_dir/
 │   ├── __init__.py
-│   ├── test_web_sample.py
-│   └── test_api_sample.py
+│   └── test_sample.py
 ├── test_data/
 │   └── data.json
 ├── reports/
@@ -116,19 +117,6 @@ mypro/
 /____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
 -----------------------------------------
                              @itest.info
-...
-
-2022-04-30 18:37:29 log.py | INFO | -------------- Request -----------------[🚀]
-2022-04-30 18:37:29 log.py | INFO | [method]: DELETE      [url]: http://httpbin.org/delete
-
-2022-04-30 18:37:30 log.py | INFO | -------------- Response ----------------[🛬️]
-2022-04-30 18:37:30 log.py | INFO | successful with status 200
-
-2022-04-30 18:37:30 log.py | DEBUG | [type]: json      [time]: 0.725183
-
-2022-04-30 18:37:30 log.py | DEBUG | [response]:
- {'args': {}, 'data': '', 'files': {}, 'form': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '0', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.25.0', 'X-Amzn-Trace-Id': 'Root=1-626d1168-457309ad306428ca5bcbb961'}, 'json': None, 'origin': '173.248.248.88', 'url': 'http://httpbin.org/delete'}
-
 ...
 
 2022-04-30 18:37:36 log.py | INFO | ✅ Find 1 element: id=sb_form_q  -> input 'seldom'.
@@ -268,17 +256,6 @@ if __name__ == '__main__':
 __说明：__
 
 * `seldom.main()` 通过 `app_info` 指定App信息； `app_server` 指定appium server 地址。
-
-### Run the test
-
-```python
-import seldom
-
-seldom.main()  # 默认运行当前测试文件
-seldom.main(path="./")  # 当前目录下的所有测试文件
-seldom.main(path="./test_dir/")  # 指定目录下的所有测试文件
-seldom.main(path="./test_dir/test_sample.py")  # 指定目录下的测试文件
-```
 
 ## 📖 Document
 
