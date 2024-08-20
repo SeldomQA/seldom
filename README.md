@@ -20,7 +20,7 @@ Seldom is an automation testing framework based on unittest.
 ### Install
 
 ```shell
-pip install seldom==3.8.0
+pip install seldom==3.8.1
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -41,7 +41,9 @@ Usage: seldom [OPTIONS]
 
 Options:
   --version                       Show version.
-  -P, --project TEXT              Create an Seldom automation test project.
+  --project-api TEXT              Create an API automation test project.
+  --project-app TEXT              Create an App automation test project.
+  --project-web TEXT              Create an Web automation test project.
   -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
   -p, --path TEXT                 Run test case file path.
   -c, --collect / -nc, --no-collect
