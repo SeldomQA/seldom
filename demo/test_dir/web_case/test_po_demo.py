@@ -3,7 +3,7 @@ page object model
 Using the poium Library
 https://github.com/SeldomQA/poium
 ```
-> pip install poium>=1.3.2
+> pip install poium>=1.6.1
 ```
 """
 import seldom

@@ -2,12 +2,12 @@ import seldom
 from seldom import testdata
 
 
-class FileDataTest(seldom.TestCase):
+class RandomDataTest(seldom.TestCase):
     """
     Randomly generate test data
     """
 
-    def test_testdata(self):
+    def test_case(self):
         """
         used testdata test
         """
