@@ -14,7 +14,9 @@ Usage: seldom [OPTIONS]
 
 Options:
   --version                       Show version.
-  -P, --project TEXT              Create an Seldom automation test project.
+  --project-api TEXT              Create an API automation test project.
+  --project-app TEXT              Create an App automation test project.
+  --project-web TEXT              Create an Web automation test project.
   -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
   -p, --path TEXT                 Run test case file path.
   -c, --collect BOOLEAN           Collect project test cases. Need the
@@ -40,6 +42,7 @@ Options:
                                   Set the log level.
   -h2c, --har2case TEXT           HAR file converts an seldom test case.
   -s2c, --swagger2case TEXT       Swagger file converts an seldom test case.
+  --api-excel TEXT                Run the api test cases in the excel file.
   --help                          Show this message and exit.
 ```
 
@@ -62,7 +65,7 @@ C:\Python311\Scripts\seldom.exe
 
 ### 创建项目
 
--  `-P/--project`
+- `-P/--project`
 
 ```shell
 > seldom -P mypro
@@ -105,7 +108,7 @@ C:\Python311\Scripts\seldom.exe
 
 ### 运行文件&类&方法
 
-* `-m\--mod` 
+* `-m\--mod`
 
 ```shell
 > seldom -m test_first_demo            # 文件名，不要.py后缀
@@ -149,7 +152,6 @@ C:\Python311\Scripts\seldom.exe
 > seldom -p test_first_demo.py -r result.xml  # XML报告
 ```
 
-
 ### 失败/错误重跑次数
 
 * `-rr/--rerun`
@@ -187,10 +189,10 @@ save them to D:\github\seldom\demo\case.json
 ```
 
 * 说明：
-  - `-p/--path`: 指定收集用例的目录：`test_dir`。
-  - `-c, --collect / -nc, --no-collect`: 是否收集用例, 默认`false`。
-  - `-l/--level`: 是否收集用例级别: `data/method`。
-  - `-j/--case-json`: 收集用例保存文件: `case.json`。
+    - `-p/--path`: 指定收集用例的目录：`test_dir`。
+    - `-c, --collect / -nc, --no-collect`: 是否收集用例, 默认`false`。
+    - `-l/--level`: 是否收集用例级别: `data/method`。
+    - `-j/--case-json`: 收集用例保存文件: `case.json`。
 
 ### 运行收集测试用例
 
@@ -199,10 +201,9 @@ save them to D:\github\seldom\demo\case.json
 ```
 
 * 说明：
-  - `-p/--path`: 指定运行用例的根目录：`test_dir`。
-  - `-j/--case-json`: 运行收集用例文件: `case.json`。
-  - `-r/--report`: 运行收集用例生成报告: `result.html`。
-
+    - `-p/--path`: 指定运行用例的根目录：`test_dir`。
+    - `-j/--case-json`: 运行收集用例文件: `case.json`。
+    - `-r/--report`: 运行收集用例生成报告: `result.html`。
 
 ### 清除所有缓存
 
@@ -211,3 +212,11 @@ save them to D:\github\seldom\demo\case.json
 ```
 
 * 说明：默认清空seldom所有缓存，即`cache.clear()`
+
+### 执行 API（excel文件）测试用例
+
+```shell
+> seldom  --api-excel api_case.xlsx
+```
+
+* 说明：简单的HTTP接口测试可以使用excel编写，seldom支持运行excel文件。excel的具体定义可以参考`HTTP接口测试`章节。

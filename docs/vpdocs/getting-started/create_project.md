@@ -16,7 +16,9 @@ Usage: seldom [OPTIONS]
 
 Options:
   --version                       Show version.
-  -P, --project TEXT              Create an Seldom automation test project.
+  --project-api TEXT              Create an API automation test project.
+  --project-app TEXT              Create an App automation test project.
+  --project-web TEXT              Create an Web automation test project.
   -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
   -p, --path TEXT                 Run test case file path.
   -c, --collect / -nc, --no-collect
