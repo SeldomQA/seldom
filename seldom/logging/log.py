@@ -15,7 +15,6 @@ report_dir = os.path.join(exec_dir, "reports")
 if os.path.exists(report_dir) is False:
     os.mkdir(report_dir)
 
-
 with open(os.path.join(report_dir, "seldom_log.log"), "w") as log:
     log.truncate(0)
 
@@ -33,8 +32,8 @@ class LogConfig:
     def __init__(self, level: str = "DEBUG", colorlog: bool = True):
         self.logger = logger
         self._colorlog = colorlog
-        self._console_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> <level>| {level: <8} | {file} | {message}</level>"
-        self._log_format = "{time: YYYY-MM-DD HH:mm:ss} | <level>{level: <8}</level> | {file: <10} | {message}"
+        self._console_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> <level>| {level: <8} | {file} | {thread.name} | {message}</level>"
+        self._log_format = "{time: YYYY-MM-DD HH:mm:ss} | <level>{level: <8}</level> | {file: <10} | {thread.name} | {message}"
         self._level = level
         self.logfile = BrowserConfig.LOG_PATH
         self.set_level(self._colorlog, self._console_format, self._level)
