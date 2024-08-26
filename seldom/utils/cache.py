@@ -2,21 +2,15 @@
 seldom cache
 """
 import os
-import sys
 import json
 import uuid
 import pickle
 import shutil
 import tempfile
+import threading
 from seldom.logging import log
 from functools import lru_cache
 from functools import wraps as func_wraps
-
-
-WINDOWS = True
-if sys.platform != "win32":
-    WINDOWS = False
-    import fcntl
 
 DATA_PATH = os.path.join(tempfile.gettempdir(), "cache_data.json")
 
@@ -25,6 +19,7 @@ class Cache:
     """
     Disk Cache through JSON files
     """
+    _lock = threading.Lock()  # 创建类级别的锁
 
     def __init__(self):
         is_exist = os.path.isfile(DATA_PATH)
@@ -38,27 +33,21 @@ class Cache:
         Clearing cached
         :param name: key
         """
-        if name is None:
-            with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
-                if WINDOWS is False:
-                    fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
-                json.dump({}, json_file)
-                log.info("💾 Clear all cache data")
-        else:
-            with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
-                if WINDOWS is False:
-                    fcntl.flock(json_file, fcntl.LOCK_EX)
-                save_data = json.load(json_file)
-                del save_data[name]
-                json.dump(save_data, json_file)
-                log.info(f"💾 Clear cache data: {name}")
-                if WINDOWS is False:
-                    fcntl.flock(json_file, fcntl.LOCK_UN)
+        with Cache._lock:
+            if name is None:
+                with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
+                    json.dump({}, json_file)
+                    log.info("💾 Clear all cache data.")
+            else:
+                with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
+                    save_data = json.load(json_file)
+                    if name in set(save_data.keys()):
+                        del save_data[name]
+                        log.info(f"💾 Clear cache data: {name}")
 
-            with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
-                if WINDOWS is False:
-                    fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
-                json.dump(save_data, json_file)
+                        json_file.seek(0)
+                        json_file.truncate()
+                        json.dump(save_data, json_file)
 
     @staticmethod
     def set(data: dict) -> None:
@@ -66,22 +55,20 @@ class Cache:
         Setting cached
         :param data:
         """
-        with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
-            if WINDOWS is False:
-                fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
-            save_data = json.load(json_file)
-            for key, value in data.items():
-                data = save_data.get(key, None)
-                if data is None:
-                    log.info(f"💾 Set cache data: {key} = {value}")
-                else:
-                    log.info(f"💾 Update cache data: {key} = {value}")
-                save_data[key] = value
+        with Cache._lock:
+            with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
+                save_data = json.load(json_file)
+                for key, value in data.items():
+                    data = save_data.get(key, None)
+                    if data is None:
+                        log.info(f"💾 Set cache data: {key} = {value}")
+                    else:
+                        log.info(f"💾 Update cache data: {key} = {value}")
+                    save_data[key] = value
 
-        with open(DATA_PATH, "w+", encoding="utf-8") as json_file:
-            if WINDOWS is False:
-                fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
-            json.dump(save_data, json_file)
+                json_file.seek(0)
+                json_file.truncate()
+                json.dump(save_data, json_file)
 
     @staticmethod
     def get(name=None):
@@ -90,18 +77,17 @@ class Cache:
         :param name: key
         :return:
         """
-        with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
-            if WINDOWS is False:
-                fcntl.flock(json_file.fileno(), fcntl.LOCK_EX)
-            save_data = json.load(json_file)
-            if name is None:
-                return save_data
+        with Cache._lock:
+            with open(DATA_PATH, "r+", encoding="utf-8") as json_file:
+                save_data = json.load(json_file)
+                if name is None:
+                    return save_data
 
-            value = save_data.get(name, None)
-            if value is not None:
-                log.info(f"💾 Get cache data: {name} = {value}")
+                value = save_data.get(name, None)
+                if value is not None:
+                    log.info(f"💾 Get cache data: {name} = {value}")
 
-            return value
+                return value
 
 
 cache = Cache()
@@ -133,6 +119,7 @@ class DiskCache:
         If there is a cache on the disk, the cached result is returned directly
         :param func:
         """
+
         @func_wraps(func)
         def wrapper(*args, **kw):
             params_uuid = uuid.uuid5(self._NAMESPACE, "-".join(map(str, (args, kw))))
@@ -153,6 +140,7 @@ class DiskCache:
                 except Exception:
                     pass
             return val
+
         return wrapper
 
     def clear(self, func_name: str = None) -> None:
