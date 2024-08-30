@@ -3,16 +3,18 @@ seldom test case
 """
 import pdb
 import unittest
-from urllib.parse import unquote
 from time import sleep
+from urllib.parse import unquote
+
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from appium.webdriver import Remote
 from seldom.driver import Browser
 from seldom.webdriver import WebDriver
 from seldom.appdriver import AppDriver
-from seldom.running.config import Seldom, BrowserConfig
+from seldom.running.config import Seldom
 from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
@@ -37,6 +39,8 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
     @classmethod
     def setUpClass(cls):
         try:
+            if isinstance(Seldom.driver, SeleniumWebDriver):
+                WebDriver.__init__(cls)
             cls().start_class()
         except BaseException as e:
             log.error(f"start_class Exception: {e}")
@@ -95,13 +99,13 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         """
         Seldom.driver = Browser(name=name)
 
-    @staticmethod
-    def new_browser():
+    def new_browser(self):
         """
         launch new browser
         """
-        browser = Browser(BrowserConfig.NAME)
-        return browser
+        wd = WebDriver(is_new=True, images=self.images)
+
+        return wd
 
     def assertTitle(self, title: str = None, msg: str = None) -> None:
         """
