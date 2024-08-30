@@ -26,8 +26,8 @@ def dependent_func(func_obj: Callable, key_name: Text = None, *out_args, **out_k
                 key = depend_func_name
 
             if not cache.get(key):
-                dependence_res = _call_dependence(func_obj, func_name,*out_args, **out_kwargs)
-                cache.set({key: dependence_res })
+                dependence_res = _call_dependence(func_obj, func_name, *out_args, **out_kwargs)
+                cache.set({key: dependence_res})
 
             else:
                 log.info(f"🔗 <{depend_func_name}> a has been executed, obtain it in cache through `{key}`.")

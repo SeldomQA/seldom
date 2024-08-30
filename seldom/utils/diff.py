@@ -6,6 +6,9 @@ from seldom.logging import log
 
 
 class AssertInfo:
+    """
+    Save assert warning/error info.
+    """
     warning = []
     error = []
 
