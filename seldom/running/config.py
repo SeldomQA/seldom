@@ -37,6 +37,7 @@ class Seldom:
     compare_url = None
     app_server = None
     app_info = None
+    app_package = None
     extensions = None
     env = None
     api_data_url = None

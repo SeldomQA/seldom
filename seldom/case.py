@@ -54,9 +54,13 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
     def tearDownClass(cls):
         try:
             # close appium
-            if (Seldom.app_server is not None) and (Seldom.app_info is not None) and isinstance(Seldom.driver,
-                                                                                                AppiumWebdriver):
-                pass
+            if all([
+                Seldom.app_server is not None,
+                Seldom.app_info is not None,
+                isinstance(Seldom.driver, AppiumWebdriver),
+                Seldom.app_package is not None]
+            ):
+                Seldom.driver.terminate_app(Seldom.app_package)
             cls().end_class()
         except BaseException as e:
             log.error(f"end_class Exception: {e}")
