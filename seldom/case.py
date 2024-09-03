@@ -10,7 +10,7 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
-from appium.webdriver import Remote
+from appium.webdriver.webdriver import WebDriver as AppiumWebdriver
 from seldom.driver import Browser
 from seldom.webdriver import WebDriver
 from seldom.appdriver import AppDriver
@@ -39,7 +39,12 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
     @classmethod
     def setUpClass(cls):
         try:
-            if isinstance(Seldom.driver, SeleniumWebDriver):
+            if (Seldom.app_server is not None) and (Seldom.app_info is not None):
+                # lunch appium driver
+                AppDriver.__init__(cls)
+                WebDriver.__init__(cls)
+            elif isinstance(Seldom.driver, SeleniumWebDriver):
+                # init selenium driver
                 WebDriver.__init__(cls)
             cls().start_class()
         except BaseException as e:
@@ -48,6 +53,10 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
     @classmethod
     def tearDownClass(cls):
         try:
+            # close appium
+            if (Seldom.app_server is not None) and (Seldom.app_info is not None) and isinstance(Seldom.driver,
+                                                                                                AppiumWebdriver):
+                pass
             cls().end_class()
         except BaseException as e:
             log.error(f"end_class Exception: {e}")
@@ -66,16 +75,10 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
 
     def setUp(self):
         self.images = []
-        # lunch appium
-        if (Seldom.app_server is not None) and (Seldom.app_info is not None):
-            Seldom.driver = Remote(Seldom.app_server, options=Seldom.app_info, extensions=Seldom.extensions)
         self.start()
 
     def tearDown(self):
         self.end()
-        # close appium
-        if (Seldom.app_server is not None) and (Seldom.app_info is not None):
-            Seldom.driver.quit()
 
     @property
     def base_url(self):

@@ -5,6 +5,7 @@ import base64
 from pathlib import Path
 from typing import Any, Dict
 from appium.webdriver.common.appiumby import AppiumBy
+from appium.webdriver import Remote as AppiumRemote
 from seldom.logging import log
 from seldom.running.config import Seldom
 
@@ -14,6 +15,11 @@ class AppDriver:
     appium base API
     """
 
+    def __init__(self):
+        self.application = AppiumRemote(command_executor=Seldom.app_server, options=Seldom.app_info,
+                                        extensions=Seldom.extensions)
+        Seldom.driver = self.application
+
     def background_app(self, seconds: int):
         """
         Puts the application in the background on the device for a certain duration.
@@ -21,11 +27,10 @@ class AppDriver:
         Args:
             seconds: the duration for the application to remain in the background
         """
-        Seldom.driver.background_app(seconds=seconds)
+        self.application.background_app(seconds=seconds)
         return self
 
-    @staticmethod
-    def is_app_installed(bundle_id: str) -> bool:
+    def is_app_installed(self, bundle_id: str) -> bool:
         """Checks whether the application specified by `bundle_id` is installed on the device.
 
         Args:
@@ -34,7 +39,7 @@ class AppDriver:
         Returns:
             `True` if app is installed
         """
-        return Seldom.driver.is_app_installed(bundle_id=bundle_id)
+        return self.application.is_app_installed(bundle_id=bundle_id)
 
     def install_app(self, app_path: str, **options: Any):
         """Install the application found at `app_path` on the device.
@@ -56,7 +61,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.install_app(app_path=app_path, **options)
+        self.application.install_app(app_path=app_path, **options)
         return self
 
     def remove_app(self, app_id: str, **options: Any):
@@ -74,7 +79,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.remove_app(app_id=app_id, **options)
+        self.application.remove_app(app_id=app_id, **options)
         return self
 
     def launch_app(self):
@@ -83,7 +88,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.launch_app()
+        self.application.launch_app()
         return self
 
     def close_app(self):
@@ -93,11 +98,10 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.close_app()
+        self.application.close_app()
         return self
 
-    @staticmethod
-    def terminate_app(app_id: str, **options: Any) -> bool:
+    def terminate_app(self, app_id: str, **options: Any) -> bool:
         """Terminates the application if it is running.
 
         Args:
@@ -111,7 +115,7 @@ class AppDriver:
             True if the app has been successfully terminated
         """
 
-        return Seldom.driver.terminate_app(app_id=app_id, **options)
+        return self.application.terminate_app(app_id=app_id, **options)
 
     def activate_app(self, app_id: str):
         """Activates the application if it is not running
@@ -123,11 +127,10 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.activate_app(app_id=app_id)
+        self.application.activate_app(app_id=app_id)
         return self
 
-    @staticmethod
-    def query_app_state(app_id: str) -> int:
+    def query_app_state(self, app_id: str) -> int:
         """Queries the state of the application.
 
         Args:
@@ -138,10 +141,9 @@ class AppDriver:
             class for more details.
         """
 
-        return Seldom.driver.query_app_state(app_id=app_id)
+        return self.application.query_app_state(app_id=app_id)
 
-    @staticmethod
-    def app_strings(language: str = None, string_file: str = None) -> Dict[str, str]:
+    def app_strings(self, language: str = None, string_file: str = None) -> Dict[str, str]:
         """Returns the application strings from the device for the specified
         language.
 
@@ -153,7 +155,7 @@ class AppDriver:
             The key is string id and the value is the content.
         """
 
-        return Seldom.driver.app_strings(language=language, string_file=string_file)
+        return self.application.app_strings(language=language, string_file=string_file)
 
     def reset(self):
         """Resets the current application on the device.
@@ -161,7 +163,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        Seldom.driver.reset()
+        self.application.reset()
         return self
 
     @staticmethod
@@ -180,23 +182,22 @@ class AppDriver:
             b64_data = base64.b64encode(png_file.read()).decode('UTF-8')
             return b64_data
 
-    def click_image(self, image_path: str):
+    def click_image(self, image_path: str) -> None:
         """
         click image
         :param image_path:
         :return:
         """
         log.info(f"✅ image -> click.")
-        Seldom.driver.update_settings({"getMatchedImageResult": True})
-        Seldom.driver.update_settings({"fixImageTemplatescale": True})
+        self.application.update_settings({"getMatchedImageResult": True})
+        self.application.update_settings({"fixImageTemplatescale": True})
         b64 = self.base64_image(image_path)
-        Seldom.driver.find_element(AppiumBy.IMAGE, b64).click()
+        self.application.find_element(AppiumBy.IMAGE, b64).click()
 
-    @staticmethod
-    def keyboard_search() -> None:
+    def keyboard_search(self) -> None:
         """
         appium API
         App keyboard search key.
         """
         log.info("🔍 keyboard search key.")
-        Seldom.driver.execute_script('mobile: performEditorAction', {'action': 'search'})
+        self.application.execute_script('mobile: performEditorAction', {'action': 'search'})
