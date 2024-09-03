@@ -82,25 +82,6 @@ class AppDriver:
         self.application.remove_app(app_id=app_id, **options)
         return self
 
-    def launch_app(self):
-        """Start on the device the application specified in the desired capabilities.
-
-        Returns:
-            Union['WebDriver', 'Applications']: Self instance
-        """
-        self.application.launch_app()
-        return self
-
-    def close_app(self):
-        """Stop the running application, specified in the desired capabilities, on
-        the device.
-
-        Returns:
-            Union['WebDriver', 'Applications']: Self instance
-        """
-        self.application.close_app()
-        return self
-
     def terminate_app(self, app_id: str, **options: Any) -> bool:
         """Terminates the application if it is running.
 
@@ -156,15 +137,6 @@ class AppDriver:
         """
 
         return self.application.app_strings(language=language, string_file=string_file)
-
-    def reset(self):
-        """Resets the current application on the device.
-
-        Returns:
-            Union['WebDriver', 'Applications']: Self instance
-        """
-        self.application.reset()
-        return self
 
     @staticmethod
     def base64_image(image_path: str):
