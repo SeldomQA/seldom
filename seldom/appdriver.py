@@ -27,6 +27,7 @@ class AppDriver:
         Args:
             seconds: the duration for the application to remain in the background
         """
+        log.info(f"📱 background app {seconds}s")
         self.application.background_app(seconds=seconds)
         return self
 
@@ -39,6 +40,7 @@ class AppDriver:
         Returns:
             `True` if app is installed
         """
+        log.info(f"📱 is app installed: {bundle_id}")
         return self.application.is_app_installed(bundle_id=bundle_id)
 
     def install_app(self, app_path: str, **options: Any):
@@ -61,6 +63,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
+        log.info(f"📱 install app: {app_path}")
         self.application.install_app(app_path=app_path, **options)
         return self
 
@@ -79,6 +82,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
+        log.info(f"📱 remove app: {app_id}")
         self.application.remove_app(app_id=app_id, **options)
         return self
 
@@ -95,7 +99,7 @@ class AppDriver:
         Returns:
             True if the app has been successfully terminated
         """
-
+        log.info(f"📱 terminate app: {app_id}")
         return self.application.terminate_app(app_id=app_id, **options)
 
     def activate_app(self, app_id: str):
@@ -121,7 +125,7 @@ class AppDriver:
             One of possible application state constants. See ApplicationState
             class for more details.
         """
-
+        log.info(f"📱 query app state: {app_id}")
         return self.application.query_app_state(app_id=app_id)
 
     def app_strings(self, language: str = None, string_file: str = None) -> Dict[str, str]:
@@ -135,7 +139,7 @@ class AppDriver:
         Returns:
             The key is string id and the value is the content.
         """
-
+        log.info(f"📱 app strings")
         return self.application.app_strings(language=language, string_file=string_file)
 
     @staticmethod
