@@ -11,10 +11,10 @@ from jsonschema.exceptions import ValidationError
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from appium.webdriver.webdriver import WebDriver as AppiumWebdriver
-from seldom.driver import Browser
+
 from seldom.webdriver import WebDriver
 from seldom.appdriver import AppDriver
-from seldom.running.config import Seldom
+from seldom.running.config import Seldom, BrowserConfig
 from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
@@ -98,15 +98,14 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
         """
         return Seldom.driver
 
-    @staticmethod
-    def browser(name: str):
+    def browser(self, name: str) -> None:
         """
         launch browser.
         :param:
         """
-        Seldom.driver = Browser(name=name)
+        WebDriver.__init__(self, browser_name=name, images=self.images)
 
-    def new_browser(self):
+    def new_browser(self) -> SeleniumWebDriver:
         """
         launch new browser
         """

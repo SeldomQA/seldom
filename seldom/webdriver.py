@@ -128,9 +128,13 @@ class WebDriver:
     making it easier to use.
     """
 
-    def __init__(self, is_new: bool = False, images: list = []):
+    def __init__(self, browser_name: str = None, is_new: bool = False, images: list = []):
         self.images = images
-        if is_new:
+        if browser_name is not None:
+            self.browser = Browser(BrowserConfig.NAME, BrowserConfig.executable_path, BrowserConfig.options,
+                                   BrowserConfig.command_executor)
+            Seldom.driver = self.browser
+        elif is_new is True:
             self.browser = Browser(BrowserConfig.NAME, BrowserConfig.executable_path, BrowserConfig.options,
                                    BrowserConfig.command_executor)
         else:
