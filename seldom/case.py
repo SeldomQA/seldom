@@ -101,9 +101,30 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
     def browser(self, name: str) -> None:
         """
         launch browser.
-        :param:
+        :param: browser name.
+
+        Usage:
+            self.browser()
+            self.browser(cls)
         """
+        try:
+            self.images
+        except AttributeError:
+            self.images = []
         WebDriver.__init__(self, browser_name=name, images=self.images)
+
+    def quit(self) -> None:
+        """
+        Quit browser
+         - quit the driver and close all the windows.
+
+        Usage:
+            self.quit()
+            self.quit(cls)
+        """
+        if isinstance(self.browser, SeleniumWebDriver) is True:
+            self.browser.quit()
+            Seldom.driver = None
 
     def new_browser(self) -> SeleniumWebDriver:
         """

@@ -131,7 +131,7 @@ class WebDriver:
     def __init__(self, browser_name: str = None, is_new: bool = False, images: list = []):
         self.images = images
         if browser_name is not None:
-            self.browser = Browser(BrowserConfig.NAME, BrowserConfig.executable_path, BrowserConfig.options,
+            self.browser = Browser(browser_name, BrowserConfig.executable_path, BrowserConfig.options,
                                    BrowserConfig.command_executor)
             Seldom.driver = self.browser
         elif is_new is True:
@@ -317,8 +317,6 @@ class WebDriver:
             self.visit("https://www.baidu.com")
         """
         log.info(f"📖 {url}")
-        if isinstance(self.browser, SeleniumWebDriver) is False:
-            self.browser = Chrome()
         self.browser.get(url)
 
     def open_electron(self, app_path: str, disable_gpu: bool = False, chromedriver_path=None) -> None:
@@ -572,15 +570,6 @@ class WebDriver:
         """
         if isinstance(self.browser, SeleniumWebDriver) is True:
             self.browser.close()
-
-    def quit(self) -> None:
-        """
-        Quit the driver and close all the windows.
-
-        Usage:
-            self.quit()
-        """
-        self.browser.quit()
 
     def submit(self, index: int = 0, **kwargs) -> None:
         """
