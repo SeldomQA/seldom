@@ -8,17 +8,18 @@ from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver import Remote as AppiumRemote
 from seldom.logging import log
 from seldom.running.config import Seldom
+from seldom.webdriver import WebDriver
 
 
-class AppDriver:
+class AppDriver(WebDriver):
     """
     appium base API
     """
 
     def __init__(self):
-        self.application = AppiumRemote(command_executor=Seldom.app_server, options=Seldom.app_info,
-                                        extensions=Seldom.extensions)
-        Seldom.driver = self.application
+        self.browser = AppiumRemote(command_executor=Seldom.app_server, options=Seldom.app_info,
+                                    extensions=Seldom.extensions)
+        Seldom.driver = self.browser
 
     def background_app(self, seconds: int):
         """
@@ -28,7 +29,7 @@ class AppDriver:
             seconds: the duration for the application to remain in the background
         """
         log.info(f"📱 background app {seconds}s")
-        self.application.background_app(seconds=seconds)
+        self.browser.background_app(seconds=seconds)
         return self
 
     def is_app_installed(self, bundle_id: str) -> bool:
@@ -41,7 +42,7 @@ class AppDriver:
             `True` if app is installed
         """
         log.info(f"📱 is app installed: {bundle_id}")
-        return self.application.is_app_installed(bundle_id=bundle_id)
+        return self.browser.is_app_installed(bundle_id=bundle_id)
 
     def install_app(self, app_path: str, **options: Any):
         """Install the application found at `app_path` on the device.
@@ -64,7 +65,7 @@ class AppDriver:
             Union['WebDriver', 'Applications']: Self instance
         """
         log.info(f"📱 install app: {app_path}")
-        self.application.install_app(app_path=app_path, **options)
+        self.browser.install_app(app_path=app_path, **options)
         return self
 
     def remove_app(self, app_id: str, **options: Any):
@@ -83,7 +84,7 @@ class AppDriver:
             Union['WebDriver', 'Applications']: Self instance
         """
         log.info(f"📱 remove app: {app_id}")
-        self.application.remove_app(app_id=app_id, **options)
+        self.browser.remove_app(app_id=app_id, **options)
         return self
 
     def terminate_app(self, app_id: str, **options: Any) -> bool:
@@ -100,7 +101,7 @@ class AppDriver:
             True if the app has been successfully terminated
         """
         log.info(f"📱 terminate app: {app_id}")
-        return self.application.terminate_app(app_id=app_id, **options)
+        return self.browser.terminate_app(app_id=app_id, **options)
 
     def activate_app(self, app_id: str):
         """Activates the application if it is not running
@@ -112,7 +113,7 @@ class AppDriver:
         Returns:
             Union['WebDriver', 'Applications']: Self instance
         """
-        self.application.activate_app(app_id=app_id)
+        self.browser.activate_app(app_id=app_id)
         return self
 
     def query_app_state(self, app_id: str) -> int:
@@ -140,7 +141,7 @@ class AppDriver:
             The key is string id and the value is the content.
         """
         log.info(f"📱 app strings")
-        return self.application.app_strings(language=language, string_file=string_file)
+        return self.browser.app_strings(language=language, string_file=string_file)
 
     @staticmethod
     def base64_image(image_path: str):
@@ -165,10 +166,10 @@ class AppDriver:
         :return:
         """
         log.info(f"✅ image -> click.")
-        self.application.update_settings({"getMatchedImageResult": True})
-        self.application.update_settings({"fixImageTemplatescale": True})
+        self.browser.update_settings({"getMatchedImageResult": True})
+        self.browser.update_settings({"fixImageTemplatescale": True})
         b64 = self.base64_image(image_path)
-        self.application.find_element(AppiumBy.IMAGE, b64).click()
+        self.browser.find_element(AppiumBy.IMAGE, b64).click()
 
     def keyboard_search(self) -> None:
         """
@@ -176,4 +177,4 @@ class AppDriver:
         App keyboard search key.
         """
         log.info("🔍 keyboard search key.")
-        self.application.execute_script('mobile: performEditorAction', {'action': 'search'})
+        self.browser.execute_script('mobile: performEditorAction', {'action': 'search'})

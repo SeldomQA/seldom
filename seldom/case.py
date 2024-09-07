@@ -14,14 +14,14 @@ from appium.webdriver.webdriver import WebDriver as AppiumWebdriver
 
 from seldom.webdriver import WebDriver
 from seldom.appdriver import AppDriver
-from seldom.running.config import Seldom, BrowserConfig
+from seldom.running.config import Seldom
 from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
 from seldom.request import HttpRequest, ResponseResult, formatting
 
 
-class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
+class TestCase(unittest.TestCase, AppDriver, HttpRequest):
     """seldom TestCase class"""
 
     def start_class(self):
@@ -42,7 +42,6 @@ class TestCase(unittest.TestCase, WebDriver, AppDriver, HttpRequest):
             if (Seldom.app_server is not None) and (Seldom.app_info is not None):
                 # lunch appium driver
                 AppDriver.__init__(cls)
-                WebDriver.__init__(cls)
             elif isinstance(Seldom.driver, SeleniumWebDriver):
                 # init selenium driver
                 WebDriver.__init__(cls)
