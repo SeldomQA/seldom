@@ -252,7 +252,11 @@ class TestMain:
         """
         How to open the browser, close the browser
         """
-        if isinstance(Seldom.driver, SeleniumWebDriver):
+        if all([
+            isinstance(Seldom.driver, SeleniumWebDriver),
+            Seldom.app_server is None,
+            Seldom.app_info is None]
+        ):
             try:
                 Seldom.driver.quit()
             except InvalidSessionIdException:
