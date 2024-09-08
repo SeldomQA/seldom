@@ -11,7 +11,7 @@ class BaiduTest(seldom.TestCase):
     def start_class(cls):
         """start class"""
         print("test class start")
-        cls.max_window()
+        cls.max_window(cls)
 
     @classmethod
     def end_class(cls):
@@ -33,7 +33,7 @@ class BaiduTest(seldom.TestCase):
         self.open(self.index_page)
 
     def test_open_news(self):
-        """"open baidu news page"""
+        """open baidu news page"""
         self.open(self.news_page)
 
 

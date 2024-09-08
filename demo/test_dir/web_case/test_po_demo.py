@@ -20,7 +20,7 @@ class BaiduPage(Page):
 class BaiduTest(seldom.TestCase):
     """Baidu search test case"""
 
-    def test_case(self):
+    def test_baidu_page(self):
         """
         A simple test
         """
@@ -33,17 +33,17 @@ class BaiduTest(seldom.TestCase):
         self.assertTrue(page.button.is_exist())
 
         # operation element
-        page.input.send_keys("seldom")
+        page.input.send_keys("(title:seldom)")
         page.button.click()
         self.sleep(3)
 
         # assert title
-        self.assertTitle("seldom_百度搜索")
+        self.assertTitle("(title:seldom)_百度搜索")
 
         # Loop assertion result
         for r in page.result:
             # assert text in
-            self.assertIn("seldom", r.text)
+            self.assertIn("seldom", r.text.lower())
 
 
 if __name__ == '__main__':

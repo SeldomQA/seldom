@@ -19,7 +19,7 @@ class Playwright(seldom.TestCase):
 
     def test_start(self):
         page = self.page
-        page.goto("http://playwright.dev")
+        page.goto("https://playwright.dev")
         print(page.title())
         expect(page).to_have_title("Fast and reliable end-to-end testing for modern web apps | Playwright")
 
@@ -27,9 +27,8 @@ class Playwright(seldom.TestCase):
         expect(get_started).to_have_attribute('href', '/docs/intro')
         get_started.click()
 
-        expect(page).to_have_url('http://playwright.dev/docs/intro')
+        expect(page).to_have_url('https://playwright.dev/docs/intro')
 
 
 if __name__ == '__main__':
     seldom.main()
-
