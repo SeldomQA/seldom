@@ -3,8 +3,6 @@ WebDriver chaining API
 """
 import os
 import time
-from selenium.webdriver import Chrome
-from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains

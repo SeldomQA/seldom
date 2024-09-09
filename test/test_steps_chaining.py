@@ -12,7 +12,7 @@ class WebTestChaining(seldom.TestCase):
 
     def test_bing(self):
         """test bing search"""
-        Steps().open("https://www.bing.com").find("#sb_form_q").type("seldomqa").find("#sb_form_q").submit().sleep(2)
+        Steps().open("https://www.bing.com").find("#sb_form_q").type("seldomqa").submit().sleep(2)
         self.assertInTitle("seldomqa")
 
 
