@@ -63,28 +63,6 @@ if __name__ == '__main__':
     seldom.main(browser=browser)
 ```
 
-### 支持指定浏览器驱动
-
-虽然，`selenium-manager`可以方便的管理浏览器驱动，但`selenium-manager`自动下载浏览器驱动很慢，有些环境也不是方便。
-
-> seldom 3.7 版本重新支持 `executable_path` 参数，指定浏览器驱动。
-
-```python
-import seldom
-from selenium.webdriver import ChromeOptions
-
-# ……
-
-if __name__ == '__main__':
-    chrome_options = ChromeOptions()
-    browser = {
-        "browser": "chrome",
-        "executable_path": "D:\webdriver\chromedriver.exe",  # 设置chrome浏览器驱动位置，其他浏览器类似。
-        "options": chrome_options,
-    }
-    seldom.main(browser=browser)
-```
-
 ### Selenium Grid
 
 首先，安装Java环境，然后下载 `selenium-server`。

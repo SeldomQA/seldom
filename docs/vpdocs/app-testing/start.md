@@ -41,6 +41,7 @@ v16.17.0
 准备一台设备（Android/iOS手机）通过USB数据线连接电脑。通过以下工具确认手机与电脑是否连接。
 
 * adb
+
 ```shell
 > adb devices 
 List of devices attached
@@ -48,12 +49,12 @@ UMXDU000000000000       device
 ```
 
 * taobao-iphone-device
+
 ```shell
 > tidevice list
 List of apple devices attached
 00008030-00000000000000 xxx的iPhoneSE
 ```
-
 
 ## 编写测试
 
@@ -61,7 +62,7 @@ List of apple devices attached
 
 ```python
 import seldom
-from appium.options.android import UiAutomator2Options
+from seldom.appium_lab.android import UiAutomator2Options
 
 
 class TestBBS(seldom.TestCase):
@@ -90,7 +91,6 @@ if __name__ == '__main__':
 ```
 
 > 注：上面的测试用例隐含了appium的一些知识点，你需要对appium有足够的了解。
-
 
 * 运行日志
 

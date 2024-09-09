@@ -1,6 +1,7 @@
 # Page Object
 
-在编写App自动化测试时，推荐使用`page object models`(简称 PO设计模式)。你可以看到seldom并没有完全封装appium的API，我们可以借助 poium 来实现基于元素的定位。
+在编写App自动化测试时，推荐使用`page object models`(简称 PO设计模式)。你可以看到seldom并没有完全封装appium的API，我们可以借助
+poium 来实现基于元素的定位。
 
 github: https://github.com/SeldomQA/poium
 
@@ -16,7 +17,7 @@ __使用poium__
 
 ```python
 import seldom
-from appium.options.android import UiAutomator2Options
+from seldom.appium_lab.android import UiAutomator2Options
 from poium import Page, Element, Elements
 
 

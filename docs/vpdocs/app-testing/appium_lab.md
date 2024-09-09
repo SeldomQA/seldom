@@ -34,7 +34,7 @@ seldom 支持定位如下，包括selenium/appium。
 
 ```python
 import seldom
-from appium.options.android import UiAutomator2Options
+from seldom.appium_lab.android import UiAutomator2Options
 
 
 class TestBBS(seldom.TestCase):

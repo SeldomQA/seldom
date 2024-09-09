@@ -27,6 +27,7 @@ appium支持扩展，通过扩展来增强appium定位元素的能力。
 ```
 
 * 目录结构
+
 ```tree
 ├───test_appium_images.py
 └───phone.jpg
@@ -38,7 +39,7 @@ appium支持扩展，通过扩展来增强appium定位元素的能力。
 # test_appium_images.py
 import seldom
 from seldom.utils.file_extend import file
-from appium.options.android import UiAutomator2Options
+from seldom.appium_lab.android import UiAutomator2Options
 
 
 class TestApp(seldom.TestCase):
@@ -90,15 +91,14 @@ if __name__ == '__main__':
 ```python
 # test_appium_orc.py
 import seldom
-from appium.options.android import UiAutomator2Options
 from seldom.appium_lab.switch import Switch
 from seldom.appium_lab.ocr_plugin import OCRCommand
+from seldom.appium_lab.android import UiAutomator2Options
 
 
 class TestApp(seldom.TestCase):
     def start(self):
         self.switch = Switch(self.driver)
-
 
     def test_orc_case(self):
         ocr = self.driver.ocr_command({})
@@ -168,7 +168,6 @@ if __name__ == '__main__':
 }
 ```
 
-
 JSON结构体说明：
 
 * wrods - Tesseract识别的单个单词的列表。
@@ -179,7 +178,7 @@ JSON结构体说明：
 
 每项都引用一个OCR对象，它们本身包含3个数据：
 
-  - text：识别的文本。
-  - confidence：Tesseract对于给定文本的OCR处理结果的置信度（范围在0到100之间）。
-  - bbox：发现文本的边界框，`边界框`标记为x0、x1、y0和y1的值的对象。分别表文本的上下左右坐标位置，其中。这里，x0表示发现文本的左边x坐标，x1表示右边x坐标，y0表示上部y坐标，y1表示下部y坐标。
+- text：识别的文本。
+- confidence：Tesseract对于给定文本的OCR处理结果的置信度（范围在0到100之间）。
+- bbox：发现文本的边界框，`边界框`标记为x0、x1、y0和y1的值的对象。分别表文本的上下左右坐标位置，其中。这里，x0表示发现文本的左边x坐标，x1表示右边x坐标，y0表示上部y坐标，y1表示下部y坐标。
 

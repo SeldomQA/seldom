@@ -109,4 +109,4 @@ if __name__ == '__main__':
     seldom.main()
 ```
 
-根据自己的需求编写`Web UI` or`HTTP接口`自动化测试。
+根据自己的需求编写`Web UI`、`App UI`或`HTTP接口`自动化测试。

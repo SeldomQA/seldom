@@ -90,7 +90,7 @@ __参数说明__
 """
 seldom confrun.py hooks function
 """
-from appium.options.android import UiAutomator2Options
+from seldom.appium_lab.android import UiAutomator2Options
 
 
 def start_run():

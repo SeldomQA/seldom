@@ -4,42 +4,26 @@
 
 有时自动化测试用例的运行需要一些前置&后置步骤，seldom提供了相应的方法。
 
-__start & end__
+seldom重写了unittest的`fixture`，所以，请使用seldom的`fixture`，对应表格。
 
-针对每条用例的fixture，可以放到`start()/end()`方法中。
+| unittest           | seldom           | 说明            |
+|--------------------|------------------|---------------|
+| setUpClass(cls)    | start_class(cls) | 测试类开始执行。      |
+| tearDownClass(cls) | end_class(cls)   | 测试类结束执行。      |
+| setUp(self)        | start(self)      | 测试方法（用例）开始执行。 |
+| tearDown(self)     | end(self)        | 测试方法（用例）结束执行。 |
+
+__示例__
+
+针对每条测试类/测试用例的fixture使用示例。
 
 ```python
+# test_fixture.py
 import seldom
 
 
 class TestCase(seldom.TestCase):
 
-    def start(self):
-        print("一条测试用例开始")
-
-    def end(self):
-        print("一条测试结果")
-
-    def test_search_seldom(self):
-        self.open("https://www.baidu.com")
-        self.type_enter(id_="kw", text="seldom")
-
-    def test_search_poium(self):
-        self.open("https://www.baidu.com")
-        self.type_enter(id_="kw", text="poium")
-
-```
-
-__start_class & end_class__
-
-针对每个测试类的fixture，可以放到`start_class()/end_class()`方法中。
-
-```python
-import seldom
-
-
-class TestCase(seldom.TestCase):
-    
     @classmethod
     def start_class(cls):
         print("测试类开始执行")
@@ -48,17 +32,40 @@ class TestCase(seldom.TestCase):
     def end_class(cls):
         print("测试类结束执行")
 
-    def test_search_seldom(self):
-        self.open("https://www.baidu.com")
-        self.type_enter(id_="kw", text="seldom", clear=True)
+    def start(self):
+        print("一条测试用例开始")
 
-    def test_search_poium(self):
-        self.open("https://www.baidu.com")
-        self.type_enter(id_="kw", text="poium", clear=True)
+    def end(self):
+        print("一条测试结果")
 
+    def test_case_one(self):
+        ...
+
+    def test_case_two(self):
+        ...
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True)
 ```
 
-> 警告：不要把用例的操作步骤写到fixture方法中! 因为它不属于某条用例的一部分，一旦里面的操作步骤运行失败，测试报告都不会生成。
+> 警告：不要把用例的操作步骤写到`start_class/end_class`中! 因为它不属于某条用例的一部分，一旦里面的操作步骤运行失败，会影响用例的执行。
+
+__运行结果__
+
+```shell
+> python test_fixture.py
+...
+测试类开始执行
+test_case_one (zzz_case.TestCase.test_case_one) ... 一条测试用例开始
+一条测试结果
+ok
+test_case_two (zzz_case.TestCase.test_case_two) ... 一条测试用例开始
+一条测试结果
+ok
+测试类结束执行
+...
+```
 
 ### 跳过测试
 
@@ -66,26 +73,41 @@ seldom 提供了跳过用例的装饰用于跳过暂时不执行的用例。
 
 __装饰器__
 
-* skip: 无条件地跳过一个测试。
-* skip_if： 如果条件为真，则跳过测试。
-* skip_unless: 跳过一个测试，除非条件为真。
-* expected_failure: 预期测试用例会失败。
+* `seldom.skip()`：无条件地跳过一个测试。
+* `seldom.skip_if()`： 如果条件为真，则跳过测试。
+* `seldom.skip_unless()`： 跳过一个测试，除非条件为真。
+* `seldom.expected_failure()`： 预期测试用例会失败。
+* `self.skipTest()`： 根据条件跳过测试。
 
 __使用方法__
 
 ```python
+# test_skip.py
 import seldom
 
-@seldom.skip()  # 跳过测试类
-class YouTest(seldom.TestCase):
 
-    @seldom.skip()  # 跳过测试用例
+@seldom.skip(reason="跳过类")
+class SkipTest(seldom.TestCase):
+
     def test_case(self):
         ...
 
 
+class YouTest(seldom.TestCase):
+
+    @seldom.skip(reason="跳过用例")
+    def test_skip_case(self):
+        ...
+
+    def test_if_skip(self):
+        login = False
+        if login is False:
+            self.skipTest(reason="登录失败，跳过后续执行")
+
+
 if __name__ == '__main__':
-    seldom.main()
+    seldom.main(debug=True)
+
 ```
 
 ### 重复执行
@@ -94,11 +116,11 @@ if __name__ == '__main__':
 
 ```python
 import seldom
-from seldom import rerun 
+from seldom import rerun
 
 
 class TestCase(seldom.TestCase):
-    
+
     @rerun(100)
     def test_search_seldom(self):
         self.open("https://www.baidu.com")
@@ -106,7 +128,8 @@ class TestCase(seldom.TestCase):
 
 ```
 
-通过`@rerun()` 装饰 `test_searchseldom()` 可以执行 100 次，统计结果仍为1条用例，如果想统计为 100 条用例，请使用`@data()` 装饰器。
+通过`@rerun()` 装饰 `test_searchseldom()` 可以执行 100 次，统计结果仍为1条用例，如果想统计为 100 条用例，请使用`@data()`
+装饰器。
 
 ### 随机测试数据
 
@@ -137,7 +160,6 @@ if __name__ == '__main__':
 
 ```python
 from seldom.testdata import *
-
 
 # 随机一个名字
 print("名字：", first_name())
@@ -282,6 +304,7 @@ class TestDepend(seldom.TestCase):
     def test_003(self):
         print("test_003")
 
+
 if __name__ == '__main__':
     seldom.main(debug=True)
 ```
@@ -295,6 +318,7 @@ if __name__ == '__main__':
 ```python
 import seldom
 from seldom import if_depend
+
 
 class TestIfDepend(seldom.TestCase):
     Test001 = True
@@ -334,7 +358,7 @@ class DataDriverTest(seldom.TestCase):
         ("Second", "selenium"),
         ("Third", "unittest"),
     ])
-    @depend("test_001") # 依赖 test_001 的结果
+    @depend("test_001")  # 依赖 test_001 的结果
     def test_002(self, name, keyword):
         """
         Used tuple test data
@@ -353,7 +377,6 @@ if __name__ == '__main__':
 1. 被依赖的用例不能用 @data() 装饰器，否则就是一组用例了，只能指定单个用例。
 2. `@depend()` 要放到 `@data()` 下面使用。
 
-
 ### 用例分类标签
 
 > 在 seldom 2.4.0 版本实现了该功能。
@@ -370,19 +393,19 @@ class MyTest(seldom.TestCase):
 
     @label("base")
     def test_label_base(self):
-        self.assertEqual(1+1, 2)
+        self.assertEqual(1 + 1, 2)
 
     @label("slow")
     def test_label_slow(self):
         self.assertEqual(1, 2)
 
     def test_no_label(self):
-        self.assertEqual(2+3, 5)
+        self.assertEqual(2 + 3, 5)
 
 
 if __name__ == '__main__':
     # seldom.main(debug=True, whitelist=["base"])  # whitelist
-    seldom.main(debug=True, blacklist=["slow"])    # blacklist
+    seldom.main(debug=True, blacklist=["slow"])  # blacklist
 ```
 
 如果只运行标签为`base`的用例，设置白名单（whitelist）。
@@ -441,6 +464,7 @@ __SMTP()类__
 - `ssl`: `True` 使用 `SMTP_SSL()`，`False` 使用 `SMTP()`，两种方式应对不同的邮箱服务。
 
 __sendmail()方法__
+
 - `subject`: 邮件标题，默认:`Seldom Test Report`。
 - `to`: 添加收件人，支持多个收件人: `["aa@mail.com", "bb@mail.com"]`。
 - `attachments`: 设置附件，默认发送 HTML 测试报告。
@@ -483,7 +507,6 @@ __参数说明:__
 - `at_mobiles`: 发送通知钉钉中要@人的手机号列表，如：[137xxx, 188xxx]。
 - `is_at_all`: 是否@所有人，默认为 False, 设为 True 则会@所有人。
 
-
 ### seldom日志
 
 > 在 seldom 2.9.0 版本提供了日志的配置能力。
@@ -521,7 +544,6 @@ log.warning("this warning info.")
 from seldom.logging import log_cfg
 from seldom.logging import log
 
-
 log_cfg.set_level(colorlog=False)  # 关闭日志颜色
 log.trace("this is trace info.")
 # ...
@@ -532,7 +554,6 @@ log.trace("this is trace info.")
 ```python
 from seldom.logging import log_cfg
 from seldom.logging import log
-
 
 # 定义日志格式
 format = "<green>{time:YYYY-MM-DD HH:mm:ss}</> {file} |<level> {level} | {message}</level>"
@@ -554,12 +575,12 @@ log.error("this error info.")
 
 > log level: TRACE < DEBUG < INFO < SUCCESS < WARNING < ERROR
 
-
 ### 缓存 cache
 
 > 在 seldom 2.10.0 版本实现了该功能。
 
-实际测试过程中，往往需要需要通过cache去记录一些数据，从而减少不必要的操作。例如 登录token，很多条用例都会用到登录token，那么就可以借助缓存来暂存登录token，从而减少重复动作。
+实际测试过程中，往往需要需要通过cache去记录一些数据，从而减少不必要的操作。例如
+登录token，很多条用例都会用到登录token，那么就可以借助缓存来暂存登录token，从而减少重复动作。
 
 * cache
 
@@ -582,7 +603,6 @@ cache.set({"token": "456"})
 
 # value复杂格式设置存在的数据
 cache.set({"user": [{"name": "tom", "age": 11}]})
-
 
 # 获取所有缓存
 all_token = cache.get()
