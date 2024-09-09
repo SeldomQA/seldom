@@ -2,6 +2,26 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.9.0(2024-09-09)__
+
+* App测试。
+    * 升级`Appium-Python-Client==4.1.0`
+    * 提供`UiAutomator2Options`和`EspressoOptions`类，替换appium提供的这个两个类。
+    * 移除不再支持的API: `launch_app()`、`close_app()`、`reset()`。
+    * 增加App相关操作时的日志。
+* Web测试浏览启动重构。
+    * 支持`start/end`启动和关闭浏览器。
+    * 支持`start_class/end_class`启动和关闭浏览器。
+    * 支持`new_browser()`重新打开一个浏览器。
+    * `self.open()` 检测到没有指定浏览器，不再默认启动一个`Chrome()`浏览器。
+    * 链式API `Steps()`类添加`browser`参数。
+* `Seldom.driver`对象支持多线程。
+* `log`日志显示当前运行的线程。
+* `Cache`缓存类支持多线程。
+* 其他：移除直接依赖库：`requests`和`websocket-client`, 使用间接依赖。
+    * `XTestRunner` -> `requests`
+    * `Appium-Python-Client` -> `selenium` -> `websocket-client`
+
 __3.8.1(2024-08-20)__
 
 * App测试。
