@@ -125,7 +125,7 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
             self.browser.quit()
             Seldom.driver = None
 
-    def new_browser(self) -> SeleniumWebDriver:
+    def new_browser(self) -> WebDriver:
         """
         launch new browser
         """
