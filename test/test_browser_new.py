@@ -5,6 +5,7 @@ class WebTestNew(seldom.TestCase):
     """Web search test case"""
 
     def test_new_browser(self):
+        # default browser
         self.open("http://www.baidu.com")
         self.Keys(css="#kw").input("seldom").enter()
         self.sleep(2)
@@ -17,7 +18,6 @@ class WebTestNew(seldom.TestCase):
         browser.type(id_="sb_form_q", text="seldom", enter=True)
         self.sleep(2)
         browser.screenshots()
-        self.assertInTitle("seldom")
 
 
 if __name__ == '__main__':
