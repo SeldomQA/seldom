@@ -9,9 +9,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from seldom.logging import log
-from seldom.running.config import Seldom
+from seldom.running.config import Seldom, BrowserConfig
 from seldom.webdriver import WebElement
 from seldom.testdata import get_timestamp
+from seldom.driver import Browser
 
 __all__ = ["Steps"]
 
@@ -22,15 +23,19 @@ class Steps:
     Write test cases quickly.
     """
 
-    def __init__(self, url: str = None, desc: str = None):
-        if isinstance(Seldom.driver, SeleniumWebDriver):
-            self.browser = Seldom.driver
+    def __init__(self, browser=None, url: str = None, desc: str = None, images: list = []):
+        if browser is not None:
+            self.browser = Browser(browser, BrowserConfig.executable_path, BrowserConfig.options,
+                                   BrowserConfig.command_executor)
+            Seldom.driver = self.browser
         else:
-            self.browser = Chrome()
+            self.browser = Seldom.driver
         self.url = url
         self.element_obj = None
         self.alert_obj = None
-        log.info(f"🔖 Test Case: {desc}")
+        self.desc = desc
+        log.info(f"🔖 Test Case: {self.desc}")
+        self.images = images
 
     def open(self, url: str = None):
         """
