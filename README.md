@@ -20,7 +20,7 @@ Seldom is an automation testing framework based on unittest.
 ### Install
 
 ```shell
-pip install seldom==3.8.1
+pip install seldom==3.9.0
 ```
 
 If you want to keep up with the latest version, you can install with github repository url:
@@ -102,7 +102,7 @@ myweb/
 
 3、运行项目：
 
-* ❌️ 在`pyCharm`中右键执行。
+* ❌️ 在`PyCharm`中右键执行。
 
 * ✔️ 通过命令行工具执行。
 
@@ -163,7 +163,7 @@ class BaiduTest(seldom.TestCase):
 
     def test_case_two(self):
         """method chaining """
-        Steps(url="https://www.baidu.com").open().find("#kw").type("seldom").find("#su").click()
+        Steps().open("https://www.baidu.com").find("#kw").type("seldom").find("#su").click()
         self.assertTitle("seldom_百度搜索")
 
 
@@ -216,10 +216,9 @@ __说明：__
 seldom 3.0 支持App测试
 
 ```python
-from appium.options.android import UiAutomator2Options
-
 import seldom
 from seldom.appium_lab.keyboard import KeyEvent
+from seldom.appium_lab.android import UiAutomator2Options
 
 
 class TestBingApp(seldom.TestCase):
