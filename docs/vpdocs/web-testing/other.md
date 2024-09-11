@@ -190,3 +190,21 @@ if __name__ == '__main__':
     }
     seldom.main(browser=browser)
 ```
+
+* 设置浏览器代理
+
+```python
+import seldom
+from selenium.webdriver import ChromeOptions
+
+if __name__ == '__main__':
+    proxy = "127.0.0.1:1080"  # 示例代理地址和端口
+
+    chrome_options = ChromeOptions()
+    chrome_options.add_argument(f"--proxy-server={proxy}")
+    browser = {
+        "browser": "chrome",
+        "options": chrome_options,
+    }
+    seldom.main(browser=browser)
+```
