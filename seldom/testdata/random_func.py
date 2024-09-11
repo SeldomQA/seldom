@@ -24,7 +24,7 @@ from seldom.testdata.random_data import (
     telecom,
 )
 
-TAOBAO_TIME = "http://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp"
+TAOBAO_TIME = "https://acs.m.taobao.com/gw/mtop.common.getTimestamp/"
 
 
 def first_name(gender: str = "", language: str = "en") -> str:
@@ -152,12 +152,12 @@ def get_int32(min_size: int = 1) -> int:
     """
     returns a 32-bit positive integer
     """
-    return random.randint(min_size, 2**31-1)
+    return random.randint(min_size, 2 ** 31 - 1)
 
 
 def get_int64(min_size=1):
     """returns up to a 64-bit positive integer"""
-    return random.randint(min_size, 2**63-1)
+    return random.randint(min_size, 2 ** 63 - 1)
 
 
 def get_float(min_size: float = None, max_size: float = None) -> float:
