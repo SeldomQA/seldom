@@ -303,6 +303,15 @@ class WebDriver:
             log.info(f"✅ input alert '{text}'.")
             return self.browser.switch_to.alert.send_keys(text)
 
+        def prompt_value(self, text: str):
+            """
+            set prompt value
+            :param text:
+            :return:
+            """
+            log.info(f"✅ Set prompt input '{text}'.")
+            return self.browser.execute_script('window.prompt = function() { return "' + text + '"; }')
+
     @property
     def alert(self) -> Alert:
         """return Alert class"""
