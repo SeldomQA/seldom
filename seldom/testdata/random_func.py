@@ -272,7 +272,7 @@ def get_birthday(as_str: bool = False, start_age: int = 18, stop_age: int = 100)
     :returns: datetime.date|string
     """
     age = random.randint(start_age, stop_age)
-    year = (datetime.datetime.utcnow() - datetime.timedelta(weeks=(age * 52))).year
+    year = (datetime.datetime.now(tz=datetime.UTC) - datetime.timedelta(weeks=(age * 52))).year
     month = random.randint(1, 12)
     if month == 2:
         day = random.randint(1, 28)
