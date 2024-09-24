@@ -329,6 +329,13 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
         log.info(f"👀 assertStatusCode -> {status_code}.")
         self.assertEqual(ResponseResult.status_code, status_code, msg=msg)
 
+    def assertStatusOk(self, msg: str = None) -> None:
+        """
+        Asserts the HTTP status code is 200
+        """
+        log.info(f"👀 assertStatusOK -> 200.")
+        self.assertEqual(ResponseResult.status_code, 200, msg=msg)
+
     def assertSchema(self, schema, response=None) -> None:
         """
         Assert JSON Schema
