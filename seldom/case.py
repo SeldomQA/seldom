@@ -84,13 +84,6 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
         self.end()
 
     @property
-    def base_url(self):
-        """
-        return base url (http)
-        """
-        return Seldom.base_url
-
-    @property
     def driver(self):
         """
         return browser driver (web)

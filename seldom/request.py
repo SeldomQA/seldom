@@ -302,6 +302,13 @@ class HttpRequest:
             log.error(f"type error --> {data}")
             return {}
 
+    @property
+    def base_url(self):
+        """
+        return base url (http)
+        """
+        return Seldom.base_url
+
 
 def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None,
                    debug: bool = False):
@@ -360,6 +367,10 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
         return wrapper
 
     return decorator
+
+
+# @check_response as @api
+api = check_response
 
 
 def retry(times: int = 3, wait: int = 1):
