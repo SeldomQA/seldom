@@ -108,12 +108,12 @@ class KeyEvent:
     def back(self):
         """go back"""
         log.info("go back")
-        self.driver.back()
+        self.driver.press_key("BACK")
 
     def home(self):
         """press home"""
         log.info("press home")
-        self.driver.home()
+        self.driver.press_key("HOME")
 
     def hide_keyboard(self, key_name=None, key=None, strategy=None):
         """
