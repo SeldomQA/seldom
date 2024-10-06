@@ -97,13 +97,25 @@ class KeyEvent:
         """
         keyboard
         :param key: keyword name
-        press_key("HOME")
+            press_key("HOME")
         """
         log.info(f'press key "{key}"')
         keycode = keycodes.get(key.upper(), 0)
         if keycode == 0:
             raise KeyError(f"The '{key}' character is not supported")
         self.driver.press_keycode(keycode)
+
+    def long_press_key(self, key: str):
+        """
+        keyboard
+        :param key: keyword name
+            press_key("HOME")
+        """
+        log.info(f'long press key "{key}"')
+        keycode = keycodes.get(key.upper(), 0)
+        if keycode == 0:
+            raise KeyError(f"The '{key}' character is not supported")
+        self.driver.long_press_keycode(keycode)
 
     def back(self):
         """go back"""
