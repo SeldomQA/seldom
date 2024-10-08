@@ -557,6 +557,13 @@ class WebDriver:
         log.info(f"✅ {web_elem.info} -> double click.")
         ActionChains(self.browser).double_click(elem).perform()
 
+    def action_chains(self) -> ActionChains:
+        """
+        return ActionChains class
+        :return:
+        """
+        return ActionChains(self.browser)
+
     def click_text(self, text: str, index: int = 0) -> None:
         """
         Click the element by the link text
