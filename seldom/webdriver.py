@@ -8,6 +8,7 @@ import time
 import warnings
 
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -16,6 +17,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from seldom.driver import Browser
 from seldom.logging import log
@@ -726,6 +729,22 @@ class WebDriver:
         """
         log.info(f"⌛️ implicitly wait: {secs}s.")
         self.browser.implicitly_wait(secs)
+
+    def is_visible(self, timeout: float = 5, **kwargs) -> bool:
+        """
+        Determine if the element is visible
+        :param timeout:
+        :param kwargs:
+        :return:
+        """
+        log.info("✅ element is visible.")
+        try:
+            wait = WebDriverWait(driver=self.browser, timeout=timeout)
+            wait.until(EC.element_to_be_clickable((next(iter(kwargs)),
+                                                   kwargs.get(next(iter(kwargs))))))
+            return True
+        except TimeoutException:
+            return False
 
     def accept_alert(self) -> None:
         """
