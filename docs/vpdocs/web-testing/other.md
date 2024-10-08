@@ -1,4 +1,4 @@
-# 更多配置
+# 浏览器启动配置
 
 selenium 在启动浏览器的时候可以做很多配置，seldom 试图简化这些配置，但是总有很多情况兼顾不到。
 
@@ -136,9 +136,7 @@ if __name__ == '__main__':
 'Pixel 2', 'Pixel XL', 'Pixel 5', 'Samsung Galaxy S8+', 'Samsung Galaxy S20 Ultra',
 'iPad Air', 'iPad Pro', 'iPad Mini'。
 
-### 更多浏览器配置
-
-* 浏览器忽略无效证书
+### 浏览器忽略无效证书
 
 ```python
 import seldom
@@ -156,11 +154,13 @@ if __name__ == '__main__':
     seldom.main(browser=browser)
 ```
 
-* 浏览器关闭沙盒模式
+### 浏览器关闭沙盒模式
 
 ```python
 import seldom
 from selenium.webdriver import ChromeOptions
+
+# ...
 
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
@@ -172,7 +172,7 @@ if __name__ == '__main__':
     seldom.main(browser=browser)
 ```
 
-* 开启实验性功能
+### 开启实验性功能
 
 chrome开启实验性功能参数 `excludeSwitches`。
 
@@ -180,6 +180,8 @@ chrome开启实验性功能参数 `excludeSwitches`。
 
 import seldom
 from selenium.webdriver import ChromeOptions
+
+# ...
 
 if __name__ == '__main__':
     chrome_options = ChromeOptions()
@@ -191,11 +193,13 @@ if __name__ == '__main__':
     seldom.main(browser=browser)
 ```
 
-* 设置浏览器代理
+### 设置浏览器代理
 
 ```python
 import seldom
 from selenium.webdriver import ChromeOptions
+
+# ...
 
 if __name__ == '__main__':
     proxy = "127.0.0.1:1080"  # 示例代理地址和端口
@@ -207,4 +211,44 @@ if __name__ == '__main__':
         "options": chrome_options,
     }
     seldom.main(browser=browser)
+```
+
+### 连接已打开浏览器
+
+* 查看浏览器安装位置
+
+```shell
+> selenium-manager.exe  --browser edge
+[2024-10-08T03:50:40.000Z INFO ] Driver path: C:\Users\xx\.cache\selenium\msedgedriver\win64\130.0.2849.13\msedgedriver.exe
+[2024-10-08T03:50:40.000Z INFO ] Browser path: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+```
+
+* 启动浏览器
+
+```shell
+msedge.exe  --remote-debugging-port=9527 --user-data-dir="D:\webdriver\edge"
+```
+
+`--remote-debugging-port`: 浏览器远程调试端口。
+
+`--user-data-dir`: 用户数据目录，创建一个空目录用于保存浏览器用户数据数据。
+
+* 启动浏览器指定端口
+
+```python
+import seldom
+from selenium.webdriver import EdgeOptions
+
+# ...
+
+if __name__ == '__main__':
+    option = EdgeOptions()
+    # 设置连接已打开浏览器
+    option.add_experimental_option("debuggerAddress", "127.0.0.1:9527")
+    browser = {
+        "browser": "edge",
+        "options": option
+    }
+    seldom.main(browser=browser)
+
 ```
