@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "seldom"
-version = "3.9.0"
+version = "3.9.1"
 description = "Seldom automation testing framework based on unittest."
 authors = ["bugmaster <fnngj@126.com>"]
 license = "Apache-2.0"
@@ -29,7 +29,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 appium-python-client = "^4.1.0"
-XTestRunner = ">=1.7.2"
+xtestrunner = "^1.8.0"
 loguru = "~0.7.0"
 openpyxl = "^3.0.3"
 pyyaml = "^6.0"

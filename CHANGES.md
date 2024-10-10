@@ -1,3 +1,25 @@
+### 3.9.1
+
+* 更新：脚手架项目模板，增加`run.py`文件。
+* 修复：生成随机数，获取在线时间接口错误。
+* 修复：`datetime.utcnow()`在Python 3.12 告警。
+* App测试：
+    * 修复`back()`、`home()`方法报错。
+    * 增加`long_press_key()`方法。
+* API测试：
+    * 增加`assertStatusOk()`断言方法，断言接口返回状态码`200`。
+    * `@check_response()`装饰器重命名`@api()`，更简洁。
+* Web测试：
+    * 增加`prompt_value()`方法，支持弹窗输入 [#166](https://github.com/SeldomQA/seldom/issues/166)。
+    * 增加`action_chains()`方法，返回Selenium的`ActionChains()`
+      类对象 [#119](https://github.com/SeldomQA/seldom/issues/119)。
+    * 增加`is_visible()`方法，检查页面元素是否可见 [#62](https://github.com/SeldomQA/seldom/issues/62)。
+    * `Pycharm`右键运行Web UI用例，抛异常提示。
+* 文档更新：
+    * 增加浏览器代理设置示例 [#31](https://github.com/SeldomQA/seldom/issues/31)。
+    * 操作已打开浏览器示例 [#174](https://github.com/SeldomQA/seldom/issues/174)。
+* 升级：`XTestRunner==1.8.0`。
+
 ### 3.9.0
 
 * App测试。
