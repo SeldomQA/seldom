@@ -56,3 +56,10 @@ class RunParamError(SeldomException):
     seldom run param error.
     """
     pass
+
+
+class RunningError(SeldomException):
+    """
+    seldom running error
+    """
+    pass
