@@ -218,16 +218,20 @@ def create_scaffold(project_name: str, project_type: str) -> None:
     data_path = current_dir / "project_temp" / "data.json"
 
     confrun_path = current_dir / "project_temp" / "confrun_web.py"
+    run_path = current_dir / "project_temp" / "run_web.py"
     sample_path = current_dir / "project_temp" / "test_web_sample.py"
     if project_type == "api":
         confrun_path = current_dir / "project_temp" / "confrun_api.py"
+        run_path = current_dir / "project_temp" / "run_api.py"
         sample_path = current_dir / "project_temp" / "test_api_sample.py"
     elif project_type == "app":
         confrun_path = current_dir / "project_temp" / "confrun_app.py"
+        run_path = current_dir / "project_temp" / "run_app.py"
         sample_path = current_dir / "project_temp" / "test_app_sample.py"
 
     test_data = data_path.read_text(encoding='utf-8')
-    run_test = confrun_path.read_text(encoding='utf-8')
+    confrun_test = confrun_path.read_text(encoding='utf-8')
+    run_test = run_path.read_text(encoding='utf-8')
     test_web_sample = sample_path.read_text(encoding='utf-8')
 
     create_folder(project_name)
@@ -237,7 +241,8 @@ def create_scaffold(project_name: str, project_type: str) -> None:
     create_file(os.path.join(project_name, "test_data", "data.json"), test_data)
     create_file(os.path.join(project_name, "test_dir", "__init__.py"))
     create_file(os.path.join(project_name, "test_dir", "test_sample.py"), test_web_sample)
-    create_file(os.path.join(project_name, "confrun.py"), run_test)
+    create_file(os.path.join(project_name, "confrun.py"), confrun_test)
+    create_file(os.path.join(project_name, "run.py"), run_test)
 
 
 def reset_case(path: str, cases: list) -> [str, list]:

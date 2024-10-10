@@ -1,5 +1,7 @@
 """
 seldom confrun.py hooks function - web auto test project
+Run:
+> seldom -p test_dir
 """
 
 

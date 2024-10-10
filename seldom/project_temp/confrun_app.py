@@ -1,7 +1,9 @@
 """
 seldom confrun.py hooks function  - app auto test project
+Run:
+> seldom -p test_dir
 """
-from appium.options.android import UiAutomator2Options
+from seldom.appium_lab.android import UiAutomator2Options
 
 
 def app_info():
