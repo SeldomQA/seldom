@@ -22,7 +22,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from seldom.driver import Browser
 from seldom.logging import log
-from seldom.logging.exceptions import NotFindElementError
+from seldom.logging.exceptions import NotFindElementError, RunningError
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.testdata import get_timestamp
 
@@ -329,7 +329,11 @@ class WebDriver:
             self.visit("https://www.baidu.com")
         """
         log.info(f"📖 {url}")
-        self.browser.get(url)
+        try:
+            self.browser.get(url)
+        except BaseException:
+            raise RunningError(
+                "❌️Muggle! Seldom running on Pycharm is not supported. You go See See: https://seldomqa.github.io/getting-started/quick_start.html")
 
     def open_electron(self, app_path: str, disable_gpu: bool = False, chromedriver_path=None) -> None:
         """

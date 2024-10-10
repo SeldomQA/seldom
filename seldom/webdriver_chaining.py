@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from seldom.logging import log
+from seldom.logging.exceptions import RunningError
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.webdriver import WebElement
 from seldom.testdata import get_timestamp
@@ -43,11 +44,15 @@ class Steps:
             open("https://www.baidu.com")
         """
         if self.url is not None:
-            log.info(f"📖 {self.url}")
+            url = self.url
+
+        log.info(f"📖 {url}")
+        try:
             self.browser.get(self.url)
-        else:
-            log.info(f"📖 {url}")
-            self.browser.get(url)
+        except AttributeError:
+            raise RunningError(
+                "Muggle! Seldom running on Pycharm is not supported. You go See See: https://seldomqa.github.io/getting-started/quick_start.html")
+
         return self
 
     def max_window(self):
