@@ -1,8 +1,8 @@
-from appium.options.android import UiAutomator2Options
 from poium import Page, Element
 
 import seldom
 from seldom.appium_lab.keyboard import KeyEvent
+from seldom.appium_lab.android import UiAutomator2Options
 
 
 class BingPage(Page):
