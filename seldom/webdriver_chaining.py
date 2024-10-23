@@ -48,7 +48,7 @@ class Steps:
 
         log.info(f"📖 {url}")
         try:
-            self.browser.get(self.url)
+            self.browser.get(url)
         except AttributeError:
             raise RunningError(
                 "Muggle! Seldom running on Pycharm is not supported. You go See See: https://seldomqa.github.io/getting-started/quick_start.html")
