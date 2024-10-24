@@ -30,11 +30,13 @@ class Action(Switch):
         log.info(f"screen resolution: {self._size}")
         return self._size
 
-    def tap(self, x: int, y: int) -> None:
+    def tap(self, x: int, y: int, pause: float = 0.1, sleep: float = 2) -> None:
         """
         Tap on the coordinates
         :param x: x coordinates
         :param y: y coordinates
+        :param pause: pause time
+        :param sleep: sleep time
         :return:
         """
         self.switch_to_app()
@@ -43,16 +45,17 @@ class Action(Switch):
         actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
         actions.w3c_actions.pointer_action.move_to_location(x, y)
         actions.w3c_actions.pointer_action.pointer_down()
-        actions.w3c_actions.pointer_action.pause(0.1)
+        actions.w3c_actions.pointer_action.pause(pause)
         actions.w3c_actions.pointer_action.release()
         actions.perform()
-        self.sleep(2)
+        self.sleep(sleep)
 
-    def swipe_up(self, times: int = 1, upper: bool = False):
+    def swipe_up(self, times: int = 1, upper: bool = False, interval_time: float = 1):
         """
         swipe up
         :param times: swipe times
         :param upper: Keyboard screen occlusion, swipe only the upper half of the area.
+        :param interval_time: interval time
         :return:
         """
         self.switch_to_app()
@@ -74,13 +77,14 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
             actions.w3c_actions.pointer_action.release()
             actions.perform()
-            self.sleep(1)
+            self.sleep(interval_time)
 
-    def swipe_down(self, times: int = 1, upper: bool = False) -> None:
+    def swipe_down(self, times: int = 1, upper: bool = False, interval_time: float = 1) -> None:
         """
         swipe down
         :param times: swipe times
         :param upper: Keyboard screen occlusion, swipe only the upper half of the area.
+        :param interval_time: interval time
         :return:
         """
         self.switch_to_app()
@@ -102,13 +106,14 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
             actions.w3c_actions.pointer_action.release()
             actions.perform()
-            self.sleep(1)
+            self.sleep(interval_time)
 
-    def swipe_left(self, times: int = 1, width_percentage: float = 0.8):
+    def swipe_left(self, times: int = 1, width_percentage: float = 0.8, interval_time: float = 1):
         """
         Swipe left
         :param times: swipe times
         :param width_percentage: Percentage of the screen width to swipe (default 80%)
+        :param interval_time: interval time
         :return:
         """
         self.switch_to_app()
@@ -127,13 +132,14 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
             actions.w3c_actions.pointer_action.release()
             actions.perform()
-            self.sleep(1)
+            self.sleep(interval_time)
 
-    def swipe_right(self, times: int = 1, width_percentage: float = 0.8):
+    def swipe_right(self, times: int = 1, width_percentage: float = 0.8, interval_time: float = 1):
         """
         Swipe right
         :param times: swipe times
         :param width_percentage: Percentage of the screen width to swipe (default 80%)
+        :param interval_time: interval time
         :return:
         """
         self.switch_to_app()
@@ -152,4 +158,4 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
             actions.w3c_actions.pointer_action.release()
             actions.perform()
-            self.sleep(1)
+            self.sleep(interval_time)
