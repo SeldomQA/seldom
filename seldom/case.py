@@ -409,5 +409,10 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
 
     @staticmethod
     def pause() -> None:
+        """
+        pause. type 'c', and press [Enter] continue run
+        Usage:
+            self.pause()
+        """
         log.info(f"⏸️ pause. type 'c', and press [Enter] continue run.")
         pdb.set_trace()
