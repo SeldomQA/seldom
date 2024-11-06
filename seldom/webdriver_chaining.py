@@ -3,6 +3,7 @@ WebDriver chaining API
 """
 import os
 import time
+import random
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
@@ -379,11 +380,13 @@ class Steps:
                 '"value" or "text" or "index" options can not be all empty.')
         return self
 
-    def sleep(self, sec: int):
+    def sleep(self, sec: [int, tuple] = 1):
         """
         Usage:
             self.sleep(seconds)
         """
+        if isinstance(sec, tuple):
+            sec = random.randint(sec[0], sec[1])
         log.info(f"💤️ sleep: {sec}s.")
         time.sleep(sec)
         return self

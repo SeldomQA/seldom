@@ -2,6 +2,7 @@
 seldom test case
 """
 import pdb
+import random
 import unittest
 from time import sleep
 from urllib.parse import unquote
@@ -399,11 +400,13 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
         self.fail(msg)
 
     @staticmethod
-    def sleep(sec: int) -> None:
+    def sleep(sec: [int, tuple] = 1) -> None:
         """
         Usage:
             self.sleep(seconds)
         """
+        if isinstance(sec, tuple):
+            sec = random.randint(sec[0], sec[1])
         log.info(f"💤️ sleep: {sec}s.")
         sleep(sec)
 
