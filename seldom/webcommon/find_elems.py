@@ -30,9 +30,13 @@ class WebElement:
         self.find_elem_info = None
         self.find_elem_warn = None
 
-    def get_elements(self, index: int = None, empty: bool = False):
+    def find(self, index: int = None, empty: bool = False, highlight: bool = False):
         """
         Return the element(s) found by the locator.
+        :param index:
+        :param empty:
+        :param highlight:
+        :return:
         """
         # Use WebDriverWait instead of time.sleep for smarter waiting
         try:
@@ -51,10 +55,15 @@ class WebElement:
 
         # Return specific element by index
         if index < len(elems):
+            # element highlight
+            if highlight is True:
+                self._highlight_element(elems[index])
+
             return elems[index]
+
         raise IndexError(f"Index {index} out of bounds for the found elements.")
 
-    def show_element(self, elem) -> None:
+    def _highlight_element(self, elem=None) -> None:
         """
         Highlight the element on the page for debugging purposes.
         :param elem: Web element to be highlighted
@@ -71,12 +80,6 @@ class WebElement:
             for style in border_styles:
                 self.browser.execute_script(style, elem)
                 time.sleep(0.2)
-
-    def _highlight_element(self, elem) -> None:
-        """
-        Helper function to apply a highlight effect on the element.
-        :param elem: Web element to be highlighted
-        """
 
     @property
     def info(self):
