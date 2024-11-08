@@ -7,7 +7,6 @@ import platform
 import time
 import warnings
 
-from appium.webdriver.common.appiumby import AppiumBy as By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
@@ -15,112 +14,18 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 from seldom.driver import Browser
 from seldom.logging import log
-from seldom.logging.exceptions import NotFindElementError, RunningError
+from seldom.logging.exceptions import RunningError
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.testdata import get_timestamp
+from seldom.webcommon.find_elems import WebElement
 
-__all__ = ["WebDriver", "WebElement"]
-
-LOCATOR_LIST = {
-    'css': By.CSS_SELECTOR,
-    'id_': By.ID,
-    'name': By.NAME,
-    'xpath': By.XPATH,
-    'link_text': By.LINK_TEXT,
-    'partial_link_text': By.PARTIAL_LINK_TEXT,
-    'tag': By.TAG_NAME,
-    'class_name': By.CLASS_NAME,
-    'ios_predicate': By.IOS_PREDICATE,
-    'ios_class_chain': By.IOS_CLASS_CHAIN,
-    'android_uiautomator': By.ANDROID_UIAUTOMATOR,
-    'android_viewtag': By.ANDROID_VIEWTAG,
-    'android_data_matcher': By.ANDROID_DATA_MATCHER,
-    'android_view_matcher': By.ANDROID_VIEW_MATCHER,
-    'accessibility_id': By.ACCESSIBILITY_ID,
-    'image': By.IMAGE,
-    'custom': By.CUSTOM,
-}
-
-
-class WebElement:
-    """web element API"""
-
-    def __init__(self, browser, **kwargs) -> None:
-        self.browser = browser
-        if not kwargs:
-            raise ValueError("Please specify a locator")
-        if len(kwargs) > 1:
-            raise ValueError("Please specify only one locator")
-
-        by, self.value = next(iter(kwargs.items()))
-
-        self.by = LOCATOR_LIST.get(by)
-        if self.by is None:
-            raise ValueError(f"The find element is not supported: {by}. ")
-        self.find_elem_info = None
-        self.find_elem_warn = None
-
-    def get_elements(self, index: int = None, empty=False):
-        """
-        Judge element positioning way, and returns the element.
-        """
-
-        for _ in range(Seldom.timeout):
-            elems = self.browser.find_elements(by=self.by, value=self.value)
-            if len(elems) >= 1:
-                self.find_elem_info = f"Find {len(elems)} element: {self.by}={self.value} "
-                break
-            time.sleep(1)
-        else:
-            self.find_elem_warn = f"❌ Find 0 element through: {self.by}={self.value}"
-
-        elem = self.browser.find_elements(self.by, self.value)
-        if len(elem) == 0 and empty is False:
-            raise NotFindElementError(self.find_elem_warn)
-
-        if len(elem) == 0 and empty is True:
-            return []
-
-        if index is None:
-            return elem
-
-        return elem[index]
-
-    def show_element(self, elem) -> None:
-        """
-        Show the elements of the operation
-        :param elem:
-        """
-        if (Seldom.app_server is not None) and (Seldom.app_info is not None):
-            return None
-        style_red = 'arguments[0].style.border="2px solid #FF0000"'
-        style_blue = 'arguments[0].style.border="2px solid #00FF00"'
-        style_null = 'arguments[0].style.border=""'
-        if Seldom.debug is True:
-            for _ in range(2):
-                self.browser.execute_script(style_red, elem)
-                time.sleep(0.2)
-                self.browser.execute_script(style_blue, elem)
-                time.sleep(0.2)
-            self.browser.execute_script(style_blue, elem)
-            time.sleep(0.2)
-            self.browser.execute_script(style_null, elem)
-
-    @property
-    def info(self):
-        """return element info"""
-        return self.find_elem_info
-
-    @property
-    def warn(self):
-        """return element warn"""
-        return self.find_elem_warn
+__all__ = ["WebDriver"]
 
 
 class WebDriver:
@@ -153,8 +58,7 @@ class WebDriver:
         def __init__(self, browser, index: int = 0, **kwargs) -> None:
             self.browser = browser
             self.web_elem = WebElement(self.browser, **kwargs)
-            self.elem = self.web_elem.get_elements(index)
-            self.web_elem.show_element(self.elem)
+            self.elem = self.web_elem.find(index, highlight=True)
 
         def input(self, text=""):
             """
@@ -431,8 +335,7 @@ class WebDriver:
             self.click(index, **kwargs)
             time.sleep(0.5)
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> input '{text}'.")
         elem.send_keys(text)
         if enter is True:
@@ -448,8 +351,7 @@ class WebDriver:
         if clear is True:
             self.clear(index, **kwargs)
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> input '{text}' and enter.")
         elem.send_keys(text)
         elem.send_keys(Keys.ENTER)
@@ -462,8 +364,7 @@ class WebDriver:
             self.clear(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> clear input.")
         elem.clear()
 
@@ -476,8 +377,7 @@ class WebDriver:
             self.click(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> click.")
         elem.click()
 
@@ -489,8 +389,7 @@ class WebDriver:
             self.slow_click(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> slow click.")
         ActionChains(self.browser).move_to_element(elem).click(elem).perform()
 
@@ -502,8 +401,7 @@ class WebDriver:
             self.right_click(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index)
         log.info(f"✅ {web_elem.info} -> right click.")
         ActionChains(self.browser).context_click(elem).perform()
 
@@ -515,8 +413,7 @@ class WebDriver:
             self.move_to_element(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index)
         log.info(f"✅ {web_elem.info} -> move to element.")
         ActionChains(self.browser).move_to_element(elem).perform()
 
@@ -528,8 +425,7 @@ class WebDriver:
             self.move_to_element(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index)
         log.info(f"✅ {web_elem.info} -> click and hold.")
         ActionChains(self.browser).click_and_hold(elem).perform()
 
@@ -544,8 +440,7 @@ class WebDriver:
          - y: Y offset to move to.
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         action = ActionChains(self.browser)
         log.info(f"✅ {web_elem.info} -> drag and drop by offset.")
         action.drag_and_drop_by_offset(elem, x, y).perform()
@@ -558,8 +453,7 @@ class WebDriver:
             self.double_click(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> double click.")
         ActionChains(self.browser).double_click(elem).perform()
 
@@ -578,8 +472,7 @@ class WebDriver:
             self.click_text("新闻")
         """
         web_elem = WebElement(self.browser, link_text=text)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> click link.")
         elem.click()
 
@@ -601,8 +494,7 @@ class WebDriver:
             driver.submit(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> submit.")
         elem.submit()
 
@@ -657,8 +549,7 @@ class WebDriver:
         if attribute is None:
             raise ValueError("attribute is not None")
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> get attribute：{attribute}.")
         return elem.get_attribute(attribute)
 
@@ -670,8 +561,7 @@ class WebDriver:
             self.get_text(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> get text: {elem.text}.")
         return elem.text
 
@@ -683,8 +573,7 @@ class WebDriver:
             self.get_display(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         result = elem.is_displayed()
         log.info(f"✅ {web_elem.info} -> element is display: {result}.")
         return result
@@ -779,8 +668,7 @@ class WebDriver:
             self.switch_to_frame(css="#el")
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> switch to frame.")
         self.browser.switch_to.frame(elem)
 
@@ -855,7 +743,7 @@ class WebDriver:
         else:
             log.info(f"📷️  element screenshot -> ({file_path}).")
             web_elem = WebElement(self.browser, **kwargs)
-            elem = web_elem.get_elements(index)
+            elem = web_elem.find(index)
             elem.screenshot(file_path)
 
     def screenshots(self, image=None) -> None:
@@ -891,7 +779,7 @@ class WebDriver:
         """
 
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
+        elem = web_elem.find(index)
         if Seldom.debug is True:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
@@ -924,8 +812,7 @@ class WebDriver:
             self.select(css="#nr", index=2)
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(0)
-        web_elem.show_element(elem)
+        elem = web_elem.find(0, highlight=True)
         log.info(f"✅ {web_elem.info} -> select option.")
         if value is not None:
             Select(elem).select_by_value(value)
@@ -1029,7 +916,7 @@ class WebDriver:
         print(len(ret))
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elems = web_elem.get_elements(empty=True)
+        elems = web_elem.find(empty=True)
         if len(elems) == 0:
             log.warning(f"{web_elem.warn}.")
         else:
@@ -1045,7 +932,7 @@ class WebDriver:
         elem.click()
         """
         web_elem = WebElement(self.browser, **kwargs)
-        elem = web_elem.get_elements(index)
+        elem = web_elem.find(index)
         log.info(f"✅ {web_elem.info}.")
         return elem
 

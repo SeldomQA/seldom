@@ -2,17 +2,20 @@
 WebDriver chaining API
 """
 import os
-import time
 import random
+import time
+
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
-from selenium.webdriver.common.action_chains import ActionChains
+
+from seldom.driver import Browser
 from seldom.logging import log
 from seldom.logging.exceptions import RunningError
 from seldom.running.config import Seldom, BrowserConfig
-from seldom.webdriver import WebElement
 from seldom.testdata import get_timestamp
-from seldom.driver import Browser
+from seldom.webcommon.find_elems import WebElement
+from seldom.webcommon.selector import selection_checker
 
 __all__ = ["Steps"]
 
@@ -31,7 +34,7 @@ class Steps:
         else:
             self.browser = Seldom.driver
         self.url = url
-        self.element_obj = None
+        self.elem = None
         self.alert_obj = None
         self.desc = desc
         log.info(f"🔖 Test Case: {self.desc}")
@@ -76,19 +79,14 @@ class Steps:
         self.browser.set_window_size(wide, high)
         return self
 
-    def find(self, css: str, index: int = 0):
+    def find(self, selector: str, index: int = 0):
         """
         find element
         """
-        if len(css) > 5 and css[:5] == "text=":
-            web_elem = WebElement(self.browser, link_text=css[5:])
-        elif len(css) > 6 and css[:6] == "text*=":
-            web_elem = WebElement(self.browser, partial_link_text=css[6:])
-        else:
-            web_elem = WebElement(self.browser, css=css)
-        self.element_obj = elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
-        log.info(f"🔍 find {web_elem.info}.")
+        by, value = selection_checker(selector)
+        web_elem = WebElement(self.browser, selector=(by, value))
+        self.elem = web_elem.find(index, highlight=True)
+        log.info(f"🔍 {web_elem.info}.")
         return self
 
     def find_text(self, text: str, index: int = 0):
@@ -99,8 +97,7 @@ class Steps:
             find_text("新闻")
         """
         web_elem = WebElement(self.browser, link_text=text)
-        self.element_obj = elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
+        self.elem = web_elem.find(index, highlight=True)
         log.info(f"🔍 find {web_elem.info} text.")
         return self
 
@@ -109,7 +106,7 @@ class Steps:
         type text.
         """
         log.info(f"✅ input '{text}'.")
-        self.element_obj.send_keys(text)
+        self.elem.send_keys(text)
         return self
 
     def click(self):
@@ -117,7 +114,7 @@ class Steps:
         click.
         """
         log.info("✅ click.")
-        self.element_obj.click()
+        self.elem.click()
         return self
 
     def clear(self):
@@ -127,7 +124,7 @@ class Steps:
             clear()
         """
         log.info("✅ clear.")
-        self.element_obj.clear()
+        self.elem.clear()
         return self
 
     def submit(self):
@@ -137,7 +134,7 @@ class Steps:
             submit()
         """
         log.info("✅ submit.")
-        self.element_obj.submit()
+        self.elem.submit()
         return self
 
     def enter(self):
@@ -147,7 +144,7 @@ class Steps:
             enter()
         """
         log.info("✅ enter.")
-        self.element_obj.send_keys(Keys.ENTER)
+        self.elem.send_keys(Keys.ENTER)
         return self
 
     def move_to_click(self):
@@ -156,9 +153,8 @@ class Steps:
         Usage:
             move_to_click()
         """
-        elem = self.element_obj
         log.info("✅ Move to the element and click.")
-        ActionChains(self.browser).move_to_element(elem).click(elem).perform()
+        ActionChains(self.browser).move_to_element(self.elem).click(self.elem).perform()
         return self
 
     def right_click(self):
@@ -168,9 +164,8 @@ class Steps:
         Usage:
             right_click()
         """
-        elem = self.element_obj
         log.info("✅ right click.")
-        ActionChains(self.browser).context_click(elem).perform()
+        ActionChains(self.browser).context_click(self.elem).perform()
         return self
 
     def move_to_element(self):
@@ -180,9 +175,8 @@ class Steps:
         Usage:
             move_to_element()
         """
-        elem = self.element_obj
         log.info("✅ move to element.")
-        ActionChains(self.browser).move_to_element(elem).perform()
+        ActionChains(self.browser).move_to_element(self.elem).perform()
         return self
 
     def click_and_hold(self):
@@ -193,9 +187,8 @@ class Steps:
             move_to_element()
         """
 
-        elem = self.element_obj
         log.info("✅ click and hold.")
-        ActionChains(self.browser).click_and_hold(elem).perform()
+        ActionChains(self.browser).click_and_hold(self.elem).perform()
         return self
 
     def double_click(self):
@@ -205,9 +198,8 @@ class Steps:
         Usage:
             double_click()
         """
-        elem = self.element_obj
         log.info("✅ double click.")
-        ActionChains(self.browser).double_click(elem).perform()
+        ActionChains(self.browser).double_click(self.elem).perform()
         return self
 
     def close(self):
@@ -280,9 +272,8 @@ class Steps:
         Usage:
             switch_to_frame()
         """
-        elem = self.element_obj
         log.info("✅  switch to frame.")
-        self.browser.switch_to.frame(elem)
+        self.browser.switch_to.frame(self.elem)
         return self
 
     def switch_to_frame_out(self):
@@ -337,14 +328,13 @@ class Steps:
             element_screenshot()
             element_screenshot(file_path='/Screenshots/foo.png')
         """
-        elem = self.element_obj
         if file_path is None:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
             file_path = os.path.join(img_dir, get_timestamp() + ".png")
         log.info(f"📷️ element screenshot -> ({file_path}).")
-        elem.screenshot(file_path)
+        self.elem.screenshot(file_path)
         return self
 
     def select(self, value: str = None, text: str = None, index: int = None):
@@ -367,14 +357,13 @@ class Steps:
             select(text='每页显示20条')
             select(index=2)
         """
-        elem = self.element_obj
         log.info("✅ select option.")
         if value is not None:
-            Select(elem).select_by_value(value)
+            Select(self.elem).select_by_value(value)
         elif text is not None:
-            Select(elem).select_by_visible_text(text)
+            Select(self.elem).select_by_visible_text(text)
         elif index is not None:
-            Select(elem).select_by_index(index)
+            Select(self.elem).select_by_index(index)
         else:
             raise ValueError(
                 '"value" or "text" or "index" options can not be all empty.')
