@@ -3,7 +3,6 @@ selenium WebDriver API
 """
 import base64
 import os
-import platform
 import time
 import warnings
 
@@ -24,6 +23,7 @@ from seldom.logging.exceptions import RunningError
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.testdata import get_timestamp
 from seldom.webcommon.find_elems import WebElement
+from seldom.webcommon.keyboard import KeysClass
 
 __all__ = ["WebDriver"]
 
@@ -47,123 +47,9 @@ class WebDriver:
         else:
             self.browser = Seldom.driver
 
-    class KeysClass:
-        """
-        Achieve keyboard shortcuts
-
-        Usage:
-            self.Keys(id_="kw").enter()
-        """
-
-        def __init__(self, browser, index: int = 0, **kwargs) -> None:
-            self.browser = browser
-            self.web_elem = WebElement(self.browser, **kwargs)
-            self.elem = self.web_elem.find(index, highlight=True)
-
-        def input(self, text=""):
-            """
-            input text
-            :param text:
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, input '{text}'.")
-            self.elem.send_keys(text)
-            return self
-
-        def enter(self):
-            """
-            enter.
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, enter.")
-            self.elem.send_keys(Keys.ENTER)
-            return self
-
-        def select_all(self):
-            """
-            select all.
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, ctrl+a.")
-            if platform.system().lower() == "darwin":
-                self.elem.send_keys(Keys.COMMAND, "a")
-            else:
-                self.elem.send_keys(Keys.CONTROL, "a")
-            return self
-
-        def cut(self):
-            """
-            cut.
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, ctrl+x.")
-            if platform.system().lower() == "darwin":
-                self.elem.send_keys(Keys.COMMAND, "x")
-            else:
-                self.elem.send_keys(Keys.CONTROL, "x")
-            return self
-
-        def copy(self):
-            """
-            copy.
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, ctrl+c.")
-            if platform.system().lower() == "darwin":
-                self.elem.send_keys(Keys.COMMAND, "c")
-            else:
-                self.elem.send_keys(Keys.CONTROL, "c")
-            return self
-
-        def paste(self):
-            """
-            paste.
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, ctrl+v.")
-            if platform.system().lower() == "darwin":
-                self.elem.send_keys(Keys.COMMAND, "v")
-            else:
-                self.elem.send_keys(Keys.CONTROL, "v")
-            return self
-
-        def backspace(self):
-            """
-            Backspace key.
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, backspace.")
-            self.elem.send_keys(Keys.BACKSPACE)
-            return self
-
-        def delete(self):
-            """
-            Delete key.
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, delete.")
-            self.elem.send_keys(Keys.DELETE)
-            return self
-
-        def tab(self):
-            """
-            Tab key.
-            """
-            log.info(f"✅ {self.web_elem.info}, tab.")
-            self.elem.send_keys(Keys.TAB)
-
-        def space(self):
-            """
-            Space key.
-            :return:
-            """
-            log.info(f"✅ {self.web_elem.info}, space.")
-            self.elem.send_keys(Keys.SPACE)
-            return self
-
-    def Keys(self, index: int = 0, **kwargs) -> KeysClass:
+    def Keys(self, selector: str = None, index: int = 0, **kwargs) -> KeysClass:
         """return KeysClass class"""
-        keys = self.KeysClass(self.browser, index=index, **kwargs)
+        keys = KeysClass(self.browser, selector=selector, index=index, **kwargs)
         return keys
 
     class Alert:
@@ -235,8 +121,8 @@ class WebDriver:
         try:
             self.browser.get(url)
         except BaseException:
-            raise RunningError(
-                "❌️Muggle! Seldom running on Pycharm is not supported. You go See See: https://seldomqa.github.io/getting-started/quick_start.html")
+            raise RunningError("""❌️Muggle! Seldom running on Pycharm is not supported.
+            You go See See: https://seldomqa.github.io/getting-started/quick_start.html""")
 
     def open_electron(self, app_path: str, disable_gpu: bool = False, chromedriver_path=None) -> None:
         """
@@ -321,7 +207,8 @@ class WebDriver:
         """
         return self.browser.get_window_size()
 
-    def type(self, text: str, clear: bool = False, enter: bool = False, click: bool = False, index: int = 0,
+    def type(self, selector: str = None, text: str = "", clear: bool = False, enter: bool = False, click: bool = False,
+             index: int = 0,
              **kwargs) -> None:
         """
         Operation input box.
@@ -330,45 +217,46 @@ class WebDriver:
             self.type(css="#el", text="selenium")
         """
         if clear is True:
-            self.clear(index, **kwargs)
+            self.clear(selector, index, **kwargs)
         if click is True:
-            self.click(index, **kwargs)
+            self.click(selector, index, **kwargs)
             time.sleep(0.5)
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> input '{text}'.")
         elem.send_keys(text)
         if enter is True:
             elem.send_keys(Keys.ENTER)
 
-    def type_enter(self, text: str, clear: bool = False, index: int = 0, **kwargs) -> None:
+    def type_enter(self, selector: str = None, text: str = "", clear: bool = False, index: int = 0, **kwargs) -> None:
         """
         Enter text and enter directly.
 
         Usage:
             self.type_enter(css="#el", text="selenium")
         """
+        warnings.warn('''use self.type(css="#el", text="selenium", enter=True)''', DeprecationWarning, stacklevel=2)
         if clear is True:
-            self.clear(index, **kwargs)
-        web_elem = WebElement(self.browser, **kwargs)
+            self.clear(selector, index, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> input '{text}' and enter.")
         elem.send_keys(text)
         elem.send_keys(Keys.ENTER)
 
-    def clear(self, index: int = 0, **kwargs) -> None:
+    def clear(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Clear the contents of the input box.
 
         Usage:
             self.clear(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> clear input.")
         elem.clear()
 
-    def click(self, index: int = 0, **kwargs) -> None:
+    def click(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         It can click any text / image can be clicked
         Connection, check box, radio buttons, and even drop-down box etc.
@@ -376,60 +264,60 @@ class WebDriver:
         Usage:
             self.click(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> click.")
         elem.click()
 
-    def slow_click(self, index: int = 0, **kwargs) -> None:
+    def slow_click(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Moving the mouse to the middle of an element. and click element.
 
         Usage:
             self.slow_click(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> slow click.")
         ActionChains(self.browser).move_to_element(elem).click(elem).perform()
 
-    def right_click(self, index: int = 0, **kwargs) -> None:
+    def right_click(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Right click element.
 
         Usage:
             self.right_click(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index)
         log.info(f"✅ {web_elem.info} -> right click.")
         ActionChains(self.browser).context_click(elem).perform()
 
-    def move_to_element(self, index: int = 0, **kwargs) -> None:
+    def move_to_element(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Mouse over the element.
 
         Usage:
             self.move_to_element(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index)
         log.info(f"✅ {web_elem.info} -> move to element.")
         ActionChains(self.browser).move_to_element(elem).perform()
 
-    def click_and_hold(self, index: int = 0, **kwargs) -> None:
+    def click_and_hold(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Mouse over the element.
 
         Usage:
             self.move_to_element(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index)
         log.info(f"✅ {web_elem.info} -> click and hold.")
         ActionChains(self.browser).click_and_hold(elem).perform()
 
-    def drag_and_drop_by_offset(self, index: int = 0, x: int = 0, y: int = 0, **kwargs) -> None:
+    def drag_and_drop_by_offset(self, selector: str = None, index: int = 0, x: int = 0, y: int = 0, **kwargs) -> None:
         """
         Holds down the left mouse button on the source element,
            then moves to the target offset and releases the mouse button.
@@ -439,20 +327,20 @@ class WebDriver:
          - x: X offset to move to.
          - y: Y offset to move to.
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         action = ActionChains(self.browser)
         log.info(f"✅ {web_elem.info} -> drag and drop by offset.")
         action.drag_and_drop_by_offset(elem, x, y).perform()
 
-    def double_click(self, index: int = 0, **kwargs) -> None:
+    def double_click(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Double click element.
 
         Usage:
             self.double_click(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> double click.")
         ActionChains(self.browser).double_click(elem).perform()
@@ -486,14 +374,14 @@ class WebDriver:
         if isinstance(self.browser, SeleniumWebDriver) is True:
             self.browser.close()
 
-    def submit(self, index: int = 0, **kwargs) -> None:
+    def submit(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Submit the specified form.
 
         Usage:
             driver.submit(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> submit.")
         elem.submit()
@@ -539,7 +427,7 @@ class WebDriver:
         self.execute_script(scroll_life)
         self.execute_script(scroll_top)
 
-    def get_attribute(self, attribute=None, index: int = 0, **kwargs) -> str:
+    def get_attribute(self, selector: str = None, attribute=None, index: int = 0, **kwargs) -> str:
         """
         Gets the value of an element attribute.
 
@@ -548,31 +436,31 @@ class WebDriver:
         """
         if attribute is None:
             raise ValueError("attribute is not None")
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> get attribute：{attribute}.")
         return elem.get_attribute(attribute)
 
-    def get_text(self, index: int = 0, **kwargs) -> str:
+    def get_text(self, selector: str = None, index: int = 0, **kwargs) -> str:
         """
         Get element text information.
 
         Usage:
             self.get_text(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> get text: {elem.text}.")
         return elem.text
 
-    def get_display(self, index: int = 0, **kwargs) -> bool:
+    def get_display(self, selector: str = None, index: int = 0, **kwargs) -> bool:
         """
         Gets the element to display,The return result is true or false.
 
         Usage:
             self.get_display(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         result = elem.is_displayed()
         log.info(f"✅ {web_elem.info} -> element is display: {result}.")
@@ -660,14 +548,14 @@ class WebDriver:
         log.info("✅ dismiss alert.")
         self.browser.switch_to.alert.dismiss()
 
-    def switch_to_frame(self, index: int = 0, **kwargs) -> None:
+    def switch_to_frame(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Switch to the specified frame.
 
         Usage:
             self.switch_to_frame(css="#el")
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index, highlight=True)
         log.info(f"✅ {web_elem.info} -> switch to frame.")
         self.browser.switch_to.frame(elem)
@@ -721,7 +609,7 @@ class WebDriver:
         log.info("✅ switch to new window.")
         self.browser.switch_to.new_window(type_hint=type_hint)
 
-    def save_screenshot(self, file_path: str = None, index: int = 0, **kwargs) -> None:
+    def save_screenshot(self, file_path: str = None, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Saves a screenshots of the current window to a PNG image file.
 
@@ -742,7 +630,7 @@ class WebDriver:
             self.browser.save_screenshot(file_path)
         else:
             log.info(f"📷️  element screenshot -> ({file_path}).")
-            web_elem = WebElement(self.browser, **kwargs)
+            web_elem = WebElement(self.browser, selector=selector, **kwargs)
             elem = web_elem.find(index)
             elem.screenshot(file_path)
 
@@ -769,7 +657,7 @@ class WebDriver:
             log.info("📷️  screenshot -> HTML report.")
             self.images.append(self.browser.get_screenshot_as_base64())
 
-    def element_screenshot(self, index: int = 0, **kwargs) -> None:
+    def element_screenshot(self, selector: str = None, index: int = 0, **kwargs) -> None:
         """
         Saves an element screenshot of the element to HTML report.
 
@@ -778,7 +666,7 @@ class WebDriver:
             self.element_screenshot(css="#id", index=0)
         """
 
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index)
         if Seldom.debug is True:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
@@ -791,7 +679,7 @@ class WebDriver:
             log.info("📷️ element screenshot -> HTML Report.")
             self.images.append(elem.screenshot_as_base64)
 
-    def select(self, value: str = None, text: str = None, index: int = None, **kwargs) -> None:
+    def select(self, selector: str = None, value: str = None, text: str = None, index: int = None, **kwargs) -> None:
         """
         Constructor. A check is made that the given element is, indeed, a SELECT tag. If it is not,
         then an UnexpectedTagNameException is thrown.
@@ -811,7 +699,7 @@ class WebDriver:
             self.select(css="#nr", text='每页显示20条')
             self.select(css="#nr", index=2)
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(0, highlight=True)
         log.info(f"✅ {web_elem.info} -> select option.")
         if value is not None:
@@ -907,7 +795,7 @@ class WebDriver:
         else:
             log.warning("No elements were found.")
 
-    def get_elements(self, **kwargs):
+    def get_elements(self, selector: str = None, **kwargs):
         """
         Get a set of elements
 
@@ -915,7 +803,7 @@ class WebDriver:
         ret = self.get_elements(css="#el")
         print(len(ret))
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elems = web_elem.find(empty=True)
         if len(elems) == 0:
             log.warning(f"{web_elem.warn}.")
@@ -923,7 +811,7 @@ class WebDriver:
             log.info(f"✅ {web_elem.info}.")
         return elems
 
-    def get_element(self, index: int = 0, **kwargs):
+    def get_element(self, selector: str = None, index: int = 0, **kwargs):
         """
         Get a set of elements
 
@@ -931,7 +819,7 @@ class WebDriver:
         elem = self.get_element(index=1, css="#el")
         elem.click()
         """
-        web_elem = WebElement(self.browser, **kwargs)
+        web_elem = WebElement(self.browser, selector=selector, **kwargs)
         elem = web_elem.find(index)
         log.info(f"✅ {web_elem.info}.")
         return elem
