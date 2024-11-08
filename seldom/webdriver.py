@@ -7,13 +7,12 @@ import platform
 import time
 import warnings
 
-from appium.webdriver.common.appiumby import AppiumBy
+from appium.webdriver.common.appiumby import AppiumBy as By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.support.select import Select
@@ -37,15 +36,15 @@ LOCATOR_LIST = {
     'partial_link_text': By.PARTIAL_LINK_TEXT,
     'tag': By.TAG_NAME,
     'class_name': By.CLASS_NAME,
-    'ios_predicate': AppiumBy.IOS_PREDICATE,
-    'ios_class_chain': AppiumBy.IOS_CLASS_CHAIN,
-    'android_uiautomator': AppiumBy.ANDROID_UIAUTOMATOR,
-    'android_viewtag': AppiumBy.ANDROID_VIEWTAG,
-    'android_data_matcher': AppiumBy.ANDROID_DATA_MATCHER,
-    'android_view_matcher': AppiumBy.ANDROID_VIEW_MATCHER,
-    'accessibility_id': AppiumBy.ACCESSIBILITY_ID,
-    'image': AppiumBy.IMAGE,
-    'custom': AppiumBy.CUSTOM,
+    'ios_predicate': By.IOS_PREDICATE,
+    'ios_class_chain': By.IOS_CLASS_CHAIN,
+    'android_uiautomator': By.ANDROID_UIAUTOMATOR,
+    'android_viewtag': By.ANDROID_VIEWTAG,
+    'android_data_matcher': By.ANDROID_DATA_MATCHER,
+    'android_view_matcher': By.ANDROID_VIEW_MATCHER,
+    'accessibility_id': By.ACCESSIBILITY_ID,
+    'image': By.IMAGE,
+    'custom': By.CUSTOM,
 }
 
 
