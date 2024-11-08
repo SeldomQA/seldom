@@ -15,7 +15,6 @@ from seldom.logging.exceptions import RunningError
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.testdata import get_timestamp
 from seldom.webcommon.find_elems import WebElement
-from seldom.webcommon.selector import selection_checker
 
 __all__ = ["Steps"]
 
@@ -83,8 +82,7 @@ class Steps:
         """
         find element
         """
-        by, value = selection_checker(selector)
-        web_elem = WebElement(self.browser, selector=(by, value))
+        web_elem = WebElement(self.browser, selector=selector)
         self.elem = web_elem.find(index, highlight=True)
         log.info(f"🔍 {web_elem.info}.")
         return self

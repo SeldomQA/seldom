@@ -7,15 +7,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from seldom.logging.exceptions import NotFindElementError
 from seldom.running.config import Seldom
 from seldom.webcommon.locators import LOCATOR_LIST
+from seldom.webcommon.selector import selection_checker
 
 
 class WebElement:
     """Web Element API"""
 
-    def __init__(self, browser, selector: tuple = None, **kwargs) -> None:
+    def __init__(self, browser, selector: str = None, **kwargs) -> None:
         self.browser = browser
-        if selector:
-            self.by, self.value = selector
+        if selector is not None:
+            self.by, self.value = selection_checker(selector)
         else:
             if not kwargs:
                 raise ValueError("Please specify a locator.")
