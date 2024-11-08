@@ -8,7 +8,7 @@ import json
 import click
 from pathlib import Path
 import seldom
-from seldom import Seldom
+from seldom.running.config import Seldom
 from seldom import SeldomTestLoader
 from seldom import TestMainExtend
 from seldom.logging import log, log_cfg

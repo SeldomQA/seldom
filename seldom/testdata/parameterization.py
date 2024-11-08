@@ -10,7 +10,7 @@ from pathlib import Path
 
 import requests
 
-from seldom import Seldom
+from seldom.running.config import Seldom
 from seldom.extend_lib import parameterized_class
 from seldom.extend_lib.parameterized import delete_patches_if_need
 from seldom.extend_lib.parameterized import inspect

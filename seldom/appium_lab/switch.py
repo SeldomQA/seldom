@@ -4,7 +4,7 @@ switch app context
 import time
 
 from seldom.logging import log
-from seldom import Seldom
+from seldom.running.config import Seldom
 
 
 class Switch:
