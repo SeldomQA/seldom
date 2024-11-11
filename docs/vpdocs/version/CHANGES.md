@@ -2,6 +2,17 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.10.0(2024-11-11)__
+
+* 重要：所有app/web元素定位支持`selector`模式，详细查看文档。
+* 更新：`sleep()`增加默认值1s，也支持随机休眠范围：`self.seep((1, 3))`。
+* 更新： `appium_lab`模块的 `Action()` 类下面的方法支持自定义休眠时间、间隔时间等。
+* 修复：`Steps()`类的 `open()` 方法默认传url报错 [#241](https://github.com/SeldomQA/seldom/issues/241)。
+* 告警：`type_enter()`添加移除警告，推荐使用`type()`。
+* 文档：
+    * 修改playwright使用示例。
+    * 增加pyAutoGUI使用示例。
+
 __3.9.1(2024-10-10)__
 
 * 更新：脚手架项目模板，增加`run.py`文件。
