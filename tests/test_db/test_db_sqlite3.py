@@ -14,7 +14,7 @@ class SQLite3Test(unittest.TestCase):
 
     def setUp(self) -> None:
         """"初始化DB连接"""
-        db_path = file.join(file.dir, "data", "db.sqlite3")
+        db_path = file.join(file.dir_dir, "data", "db.sqlite3")
         self.db = SQLiteDB(db_path)
         self.db.insert(table="api_user", data={"name": "test", "age": 11})
 
