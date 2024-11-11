@@ -2,6 +2,7 @@
 selenium locators
 """
 import seldom
+from seldom import Steps
 
 
 class TestForm(seldom.TestCase):
@@ -33,6 +34,20 @@ class TestForm(seldom.TestCase):
         self.open(self.test_url)
         self.click("text*=se.com")
         self.open(self.test_url)
+
+    def test_step(self):
+        """chaining find"""
+        s = Steps()
+        s.open(self.test_url).find("id=myTextarea").clear().type("id") \
+            .find("name=textareaName").clear().type("name") \
+            .find("name=textareaName").clear().type("name") \
+            .find("class=textareaClass").clear().type("class name") \
+            .find("#myTextarea").clear().type("css") \
+            .find("//textarea[@id='myTextarea']").clear().type("xpath") \
+            .find("text=seleniumbase.com").click() \
+            .open(self.test_url) \
+            .find("text*=se.com").click() \
+            .open(self.test_url)
 
 
 if __name__ == '__main__':
