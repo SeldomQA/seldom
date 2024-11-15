@@ -10,23 +10,29 @@ Seldom is an automation testing framework based on unittest.
 
 ### Features
 
-- [x] web/app/api全功能测试框架
-- [x] 提供脚手架快速创建自动化项目
-- [x] 集成`XTestRunner`测试报告，现代美观
-- [x] 提供丰富的断言
-- [x] 提供强大的`数据驱动`
-- [x] 平台化支持
+⭐ web/app/api全功能测试框架
+
+⭐ 提供脚手架快速创建自动化项目
+
+⭐ 集成`XTestRunner`测试报告，现代美观
+
+⭐ 提供丰富的断言
+
+⭐ 提供强大的`数据驱动`
+
+⭐ 平台化支持
 
 ### Install
 
 ```shell
-pip install seldom==3.9.0
+pip install seldom
 ```
 
-If you want to keep up with the latest version, you can install with github repository url:
+If you want to keep up with the latest version, you can install with GitHub/Gitee repository url:
 
 ```shell
 > pip install -U git+https://github.com/SeldomQA/seldom.git@master
+> pip install -U git+https://gitee.com/fnngj/seldom.git@master
 ```
 
 ### 🤖 Quick Start
