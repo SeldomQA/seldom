@@ -278,6 +278,14 @@ https://github.com/defnngj/seldom-api-testing
 
 ## 微信（WeChat）
 
+> 相关书籍推荐， 基于 SeldomQA 相关开源项目，虫师 编著。
+
+<p>
+  <a href="https://item.jd.com/10124939676219.html">
+    <img alt="京东链接" src="book.jpg" style="width: 220px; margin-right: 140px;" />
+  </a>
+</p>
+
 > 欢迎添加微信，交流和反馈问题。
 
 <div style="display: flex;justify-content: space-between;width: 100%">
