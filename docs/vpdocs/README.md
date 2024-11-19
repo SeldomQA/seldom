@@ -1,7 +1,7 @@
 ---
 home: true
 heroText: Seldom
-heroImage: /logo.jpeg
+heroImage: /image/book.jpg
 actions:
   - text: 快速上手→
     link: /getting-started/quick_start/
