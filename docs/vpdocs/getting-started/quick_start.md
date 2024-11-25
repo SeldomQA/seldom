@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
 1. 创建测试类`YouTest`并继承`seldom.TestCase`类。
 2. 创建测试方法`test_case`, 必须以`test`开头。
-3. `seldom.mian()`是框架运行的入口方法，接下来详细介绍。
+3. `seldom.main()`是框架运行的入口方法，接下来详细介绍。
 
 ### `main()` 方法
 
