@@ -3,88 +3,79 @@ An XPath for JSON
 help: https://goessner.net/articles/JsonPath/
 GitHub: https://gist.github.com/drewr/783585
 """
-from __future__ import print_function
+from __future__ import annotations
 
 import re
 import sys
+from typing import Any, List, Union, Dict, Callable
 from seldom.logging import log
 
 __all__ = ['jsonpath']
 
-# For python3 portability
-if sys.version_info[0] == 3:
-    xrange = range
 
-
-def normalize(x):
+def normalize(x: str) -> str:
     """normalize the path expression; outside jsonpath to allow testing"""
-    subx = []
+    subx: List[str] = []
 
-    # replace index/filter expressions with placeholders
-    # Python anonymous functions (lambdas) are cryptic, hard to debug
-    def f1(m):
-        n = len(subx)  # before append
+    def f1(m: re.Match) -> str:
+        n = len(subx)
         g1 = m.group(1)
         subx.append(g1)
-        ret = "[#%d]" % n
-        return ret
+        return f"[#{n}]"
 
     x = re.sub(r"[\['](\??\(.*?\))[\]']", f1, x)
-
-    # added the negative lookbehind -krhodes
     x = re.sub(r"'?(?<!@)\.'?|\['?", ";", x)
-
     x = re.sub(r";;;|;;", ";..;", x)
-
     x = re.sub(r";$|'?\]|'$", "", x)
 
-    # put expressions back
-    def f2(m):
-        g1 = m.group(1)
-        return subx[int(g1)]
+    def f2(m: re.Match) -> str:
+        return subx[int(m.group(1))]
 
     x = re.sub(r"#([0-9]+)", f2, x)
-
     return x
 
 
-def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
+def jsonpath(
+        obj: Union[Dict, List],
+        expr: str,
+        result_type: str = 'VALUE',
+        debug: int = 0,
+        use_eval: bool = True
+) -> Union[List[Any], bool]:
     """
     traverse JSON object using jsonpath expr, returning values or paths
     """
+    result: List[Any] = []
 
-    def s(x, y):
+    def s(x: Union[str, int], y: str) -> str:
         """concatenate path elements"""
-        return str(x) + ';' + str(y)
+        return f"{x};{y}"
 
-    def isint(x):
+    def isint(x: str) -> bool:
         """check if argument represents a decimal integer"""
         return x.isdigit()
 
-    def as_path(path):
+    def as_path(path: str) -> str:
         """convert internal path representation to
            "full bracket notation" for PATH output"""
         p = '$'
         for piece in path.split(';')[1:]:
-            # make a guess on how to index
-            # XXX need to apply \ quoting on '!!
             if isint(piece):
-                p += "[%s]" % piece
+                p += f"[{piece}]"
             else:
-                p += "['%s']" % piece
+                p += f"['{piece}']"
         return p
 
-    def store(path, object):
+    def store(path: str, object: Any) -> str:
         if result_type == 'VALUE':
             result.append(object)
-        elif result_type == 'IPATH':  # Index format path (Python ext)
-            # return list of list of indices -- can be used w/o "eval" or split
+        elif result_type == 'IPATH':
             result.append(path.split(';')[1:])
         else:  # PATH
             result.append(as_path(path))
         return path
 
-    def trace(expr, obj, path):
+    def trace(expr: str, obj: Any, path: str) -> None:
         if debug:
             log.debug(f"trace {expr} / {path}")
         if expr:
@@ -94,7 +85,7 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
             if debug:
                 log.debug(f"\t {loc} {type(obj)}")
             if loc == "*":
-                def f03(key, loc, expr, obj, path):
+                def f03(key: str, loc: str, expr: str, obj: Any, path: str) -> None:
                     if debug > 1:
                         log.debug(f"\tf03 {key} {loc} {expr} {path}")
                     trace(s(key, expr), obj, path)
@@ -103,7 +94,7 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
             elif loc == "..":
                 trace(x, obj, path)
 
-                def f04(key, loc, expr, obj, path):
+                def f04(key: str, loc: str, expr: str, obj: Any, path: str) -> None:
                     if debug > 1:
                         log.debug(f"\tf04 {key} {loc} {expr} {path}")
                     if isinstance(obj, dict):
@@ -116,7 +107,7 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
                 walk(loc, x, obj, path, f04)
             elif loc == "!":
                 # Perl jsonpath extension: return keys
-                def f06(key, loc, expr, obj, path):
+                def f06(key: str, loc: str, expr: str, obj: Any, path: str) -> None:
                     if isinstance(obj, dict):
                         trace(expr, key, path)
 
@@ -143,7 +134,7 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
                     if debug > 1:
                         log.debug(f"filter {loc}")
 
-                    def f05(key, loc, expr, obj, path):
+                    def f05(key: str, loc: str, expr: str, obj: Any, path: str) -> None:
                         if debug > 1:
                             log.debug(f"f05 {key} {loc} {expr} {path}")
                         if isinstance(obj, dict):
@@ -160,12 +151,12 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
                 m = re.match(r'(-?[0-9]*):(-?[0-9]*):?(-?[0-9]*)$', loc)
                 if m:
                     if isinstance(obj, (dict, list)):
-                        def max(x, y):
+                        def max(x: int, y: int) -> int:
                             if x > y:
                                 return x
                             return y
 
-                        def min(x, y):
+                        def min(x: int, y: int) -> int:
                             if x < y:
                                 return x
                             return y
@@ -189,7 +180,7 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
                         else:
                             end = min(objlen, end)
 
-                        for i in xrange(start, end, step):
+                        for i in range(start, end, step):
                             trace(s(i, x), obj, path)
                     return
 
@@ -203,15 +194,15 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
         else:
             store(path, obj)
 
-    def walk(loc, expr, obj, path, funct):
+    def walk(loc: str, expr: str, obj: Any, path: str, funct: Callable) -> None:
         if isinstance(obj, list):
-            for i in xrange(0, len(obj)):
+            for i in range(0, len(obj)):
                 funct(i, loc, expr, obj, path)
         elif isinstance(obj, dict):
             for key in obj:
                 funct(key, loc, expr, obj, path)
 
-    def evalx(loc, obj):
+    def evalx(loc: str, obj: Any) -> Any:
         """eval expression"""
 
         if debug:
@@ -225,27 +216,27 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
 
         # replace !@.name with 'name' not in obj
         # XXX handle !@.name.name.name....
-        def notvar(m):
-            return "'%s' not in __obj" % m.group(1)
+        def notvar(m: re.Match) -> str:
+            return f"'{m.group(1)}' not in __obj"
 
         loc = re.sub(r"!@\.([a-zA-Z@_0-9-]*)", notvar, loc)
 
         # replace @.name.... with __obj['name']....
         # handle @.name[.name...].length
-        def varmatch(m):
-            def brackets(elts):
+        def varmatch(m: re.Match) -> str:
+            def brackets(elts: List[str]) -> str:
                 ret = "__obj"
                 for e in elts:
                     if isint(e):
-                        ret += "[%s]" % e  # ain't necessarily so
+                        ret += f"[{e}]"
                     else:
-                        ret += "['%s']" % e  # XXX beware quotes!!!!
+                        ret += f"['{e}']"
                 return ret
 
             g1 = m.group(1)
             elts = g1.split('.')
             if elts[-1] == "length":
-                return "len(%s)" % brackets(elts[1:-1])
+                return f"len({brackets(elts[1:-1])})"
             return brackets(elts[1:])
 
         loc = re.sub(r'(?<!\\)(@\.[a-zA-Z@_.0-9]+)', varmatch, loc)
@@ -274,21 +265,18 @@ def jsonpath(obj, expr, result_type='VALUE', debug=0, use_eval=True):
         return v
 
     # body of jsonpath()
-
-    # Get caller globals so eval can pick up user functions!!!
     caller_globals = sys._getframe(1).f_globals
-    result = []
-    if expr and obj:
-        cleaned_expr = normalize(expr)
-        if cleaned_expr.startswith("$;"):
-            cleaned_expr = cleaned_expr[2:]
 
-        # XXX wrap this in a try??
-        trace(cleaned_expr, obj, '$')
+    if not (expr and obj):
+        return False
 
-        if len(result) > 0:
-            return result
-    return False
+    cleaned_expr = normalize(expr)
+    if cleaned_expr.startswith("$;"):
+        cleaned_expr = cleaned_expr[2:]
+
+    trace(cleaned_expr, obj, '$')
+
+    return result if result else False
 
 
 if __name__ == '__main__':
@@ -297,29 +285,27 @@ if __name__ == '__main__':
     except ImportError:
         import simplejson as json
 
-    import sys
-
-    # XXX take options for output format, output file, debug level
-
-    if len(sys.argv) < 3 or len(sys.argv) > 4:
+    if len(sys.argv) not in (3, 4):
         sys.stdout.write("Usage: jsonpath.py FILE PATH [OUTPUT_TYPE]\n")
         sys.exit(1)
 
-    object = json.load(open(sys.argv[1]))
-    path = sys.argv[2]
-    format = 'VALUE'
+    try:
+        with open(sys.argv[1]) as f:
+            object = json.load(f)
+    except Exception as e:
+        log.error(f"Error loading JSON file: {e}")
+        sys.exit(1)
 
-    if len(sys.argv) > 3:
-        # XXX verify?
-        format = sys.argv[3]
+    path = sys.argv[2]
+    format = sys.argv[3] if len(sys.argv) > 3 else 'VALUE'
 
     value = jsonpath(object, path, format, debug=2)
 
     if not value:
         sys.exit(1)
 
-    f = sys.stdout
-    json.dump(value, f, sort_keys=True, indent=1)
-    f.write("\n")
+    with sys.stdout as f:
+        json.dump(value, f, sort_keys=True, indent=1)
+        f.write("\n")
 
     sys.exit(0)
