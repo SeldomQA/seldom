@@ -25,6 +25,7 @@ from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.config import base_url as base_url_func
 from seldom.running.config import driver as driver_func
 from seldom.running.loader_extend import seldomTestLoader
+from seldom.running.loader_hook import loader
 
 INIT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "__init__.py")
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
@@ -132,6 +133,7 @@ class TestMain:
         setattr(builtins, 'driver', driver_func)
 
         # ----- Global open browser -----
+        loader("start_run")
         self.open_browser()
         if self.case is not None:
             self.TestSuits = seldomTestLoader.loadTestsFromName(self.case)
@@ -187,6 +189,7 @@ class TestMain:
 
             # ----- Close browser globally -----
             self.close_browser()
+            loader("end_run")
 
     def run(self, suits) -> None:
         """
@@ -428,6 +431,7 @@ class TestMainExtend(TestMain):
 
         self.run(suit)
         self.close_browser()
+        loader("end_run")
 
 
 main = TestMain
