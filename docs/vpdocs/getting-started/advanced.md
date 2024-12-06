@@ -6,14 +6,16 @@
 
 seldom重写了unittest的`fixture`，所以，请使用seldom的`fixture`，对应表格。
 
-| unittest           | seldom           | 说明            |
-|--------------------|------------------|---------------|
-| setUpClass(cls)    | start_class(cls) | 测试类开始执行。      |
-| tearDownClass(cls) | end_class(cls)   | 测试类结束执行。      |
-| setUp(self)        | start(self)      | 测试方法（用例）开始执行。 |
-| tearDown(self)     | end(self)        | 测试方法（用例）结束执行。 |
+| unittest           | seldom           | 说明                          |
+|--------------------|------------------|-----------------------------|
+| setUpClass(cls)    | start_class(cls) | 测试类开始执行。                    |
+| tearDownClass(cls) | end_class(cls)   | 测试类结束执行。                    |
+| setUp(self)        | start(self)      | 测试方法（用例）开始执行。               |
+| tearDown(self)     | end(self)        | 测试方法（用例）结束执行。               |
+| -                  | start_run()      | `confrun.py`文件配置，整个用例开始前运行。 |
+| -                  | end_run()        | `confrun.py`文件配置，整个用例结束后运行。 |
 
-__示例__
+__示例1__
 
 针对每条测试类/测试用例的fixture使用示例。
 
@@ -65,6 +67,78 @@ test_case_two (zzz_case.TestCase.test_case_two) ... 一条测试用例开始
 ok
 测试类结束执行
 ...
+```
+
+__示例2__
+
+有时候我们需要整个测试`开始前`或`结束后`完成一些工作，可以通过下面的方式配置。
+
+* 目录结构
+
+```
+mypro/
+├── test_dir/
+│   ├── __init__.py
+│   ├── test_sample.py
+├── confrun.py
+└── run.py
+```
+
+* `confrun.py` 配置前后置动作
+
+```python
+from seldom.logging import log
+from seldom.utils import cache
+
+
+def start_run():
+    """
+    Test the hook function before running
+    """
+    log.info("start_run")
+    cache.set({"token": "token123"})
+
+
+def end_run():
+    """
+    Test the hook function after running
+    """
+    log.info("end_run")
+    cache.clear("token")
+```
+
+> 示例中用于添加和清除 cache, 根据实际需求你可以加上任何动作。
+
+* `run.py` 执行用例
+
+```python
+import seldom
+
+if __name__ == '__main__':
+    seldom.main(path="./test_dir")
+```
+
+* 运行结果
+
+```shell
+> python _run.py
+...
+
+2024-12-06 17:55:04 | INFO     | confrun.py | MainThread | start_run   # confrun.py 所有用例前的动作
+2024-12-06 17:55:04 | INFO     | cache.py | MainThread | 💾 Set cache data: token = token123
+
+2024-12-06 17:55:04 | INFO     | runner.py | MainThread | TestLoader: ./test_dir
+
+XTestRunner Running tests...
+
+----------------------------------------------------------------------
+2024-12-06 17:55:04 | INFO     | cache.py | MainThread | 💾 Get cache data: token = token123
+Generating HTML reports...
+.12024-12-06 17:55:04 | SUCCESS  | runner.py | MainThread | generated html file: file:///D:\github\seldomQA\seldom\reports\2024_12_06_17_55_03_result.html
+2024-12-06 17:55:04 | SUCCESS  | runner.py | MainThread | generated log file: file:///D:\github\seldomQA\seldom\reports\seldom_log.log
+
+2024-12-06 17:55:04 | INFO     | confrun.py | MainThread | end_run  # confrun.py 所有用例后的动作
+2024-12-06 17:55:04 | INFO     | cache.py | MainThread | 💾 Clear cache data: token
 ```
 
 ### 跳过测试
