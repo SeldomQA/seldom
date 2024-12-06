@@ -121,16 +121,14 @@ if __name__ == '__main__':
 * 运行结果
 
 ```shell
-> python _run.py
+> python run.py
 ...
 
 2024-12-06 17:55:04 | INFO     | confrun.py | MainThread | start_run   # confrun.py 所有用例前的动作
 2024-12-06 17:55:04 | INFO     | cache.py | MainThread | 💾 Set cache data: token = token123
 
 2024-12-06 17:55:04 | INFO     | runner.py | MainThread | TestLoader: ./test_dir
-
 XTestRunner Running tests...
-
 ----------------------------------------------------------------------
 2024-12-06 17:55:04 | INFO     | cache.py | MainThread | 💾 Get cache data: token = token123
 Generating HTML reports...
