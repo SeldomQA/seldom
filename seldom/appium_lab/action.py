@@ -159,3 +159,15 @@ class Action(Switch):
             actions.w3c_actions.pointer_action.release()
             actions.perform()
             self.sleep(interval_time)
+
+    def drag_from_to(self, x_start, y_start, x_end, y_end):
+        """从a坐标拖到b坐标"""
+
+        actions = ActionChains(self.driver)
+        actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+        actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
+        actions.w3c_actions.pointer_action.pointer_down()
+        actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
+        actions.w3c_actions.pointer_action.release()
+        actions.perform()
+        self.sleep(1)
