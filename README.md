@@ -281,7 +281,7 @@ https://github.com/defnngj/seldom-api-testing
 > 相关书籍推荐， 基于 SeldomQA 相关开源项目，虫师 编著。
 
 <p>
-  <a href="https://item.jd.com/10124939676219.html">
+  <a href="https://item.jd.com/14859108.html">
     <img alt="京东链接" src="book.jpg" style="width: 220px; margin-right: 140px;" />
   </a>
 </p>
