@@ -30,6 +30,18 @@ class Action(Switch):
         log.info(f"screen resolution: {self._size}")
         return self._size
 
+    def _perform_action(self, x_start: int, y_start: int, x_end: int, y_end: int):
+        """
+        General method to perform actions.
+        """
+        actions = ActionChains(self.driver)
+        actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+        actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
+        actions.w3c_actions.pointer_action.pointer_down()
+        actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
+        actions.w3c_actions.pointer_action.release()
+        actions.perform()
+
     def tap(self, x: int, y: int, pause: float = 0.1, sleep: float = 2) -> None:
         """
         Tap on the coordinates
@@ -70,13 +82,7 @@ class Action(Switch):
         y_end = int((self.height / 3) * 1)
 
         for _ in range(times):
-            actions = ActionChains(self.driver)
-            actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-            actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
-            actions.w3c_actions.pointer_action.pointer_down()
-            actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
-            actions.w3c_actions.pointer_action.release()
-            actions.perform()
+            self._perform_action(x_start, x_end, y_start, y_end)
             self.sleep(interval_time)
 
     def swipe_down(self, times: int = 1, upper: bool = False, interval_time: float = 1) -> None:
@@ -99,13 +105,7 @@ class Action(Switch):
         y_end = int((self.height / 3) * 2)
 
         for _ in range(times):
-            actions = ActionChains(self.driver)
-            actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-            actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
-            actions.w3c_actions.pointer_action.pointer_down()
-            actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
-            actions.w3c_actions.pointer_action.release()
-            actions.perform()
+            self._perform_action(x_start, x_end, y_start, y_end)
             self.sleep(interval_time)
 
     def swipe_left(self, times: int = 1, width_percentage: float = 0.8, interval_time: float = 1):
@@ -125,13 +125,7 @@ class Action(Switch):
         y_end = int(self.height / 2)
 
         for _ in range(times):
-            actions = ActionChains(self.driver)
-            actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-            actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
-            actions.w3c_actions.pointer_action.pointer_down()
-            actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
-            actions.w3c_actions.pointer_action.release()
-            actions.perform()
+            self._perform_action(x_start, x_end, y_start, y_end)
             self.sleep(interval_time)
 
     def swipe_right(self, times: int = 1, width_percentage: float = 0.8, interval_time: float = 1):
@@ -151,23 +145,18 @@ class Action(Switch):
         y_end = int(self.height / 2)
 
         for _ in range(times):
-            actions = ActionChains(self.driver)
-            actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-            actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
-            actions.w3c_actions.pointer_action.pointer_down()
-            actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
-            actions.w3c_actions.pointer_action.release()
-            actions.perform()
+            self._perform_action(x_start, x_end, y_start, y_end)
             self.sleep(interval_time)
 
-    def drag_from_to(self, x_start, y_start, x_end, y_end):
-        """从a坐标拖到b坐标"""
-
-        actions = ActionChains(self.driver)
-        actions.w3c_actions = ActionBuilder(self.driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-        actions.w3c_actions.pointer_action.move_to_location(x_start, y_start)
-        actions.w3c_actions.pointer_action.pointer_down()
-        actions.w3c_actions.pointer_action.move_to_location(x_end, y_end)
-        actions.w3c_actions.pointer_action.release()
-        actions.perform()
-        self.sleep(1)
+    def drag_from_to(self, x_start: int, y_start: int, x_end: int, y_end: int, interval_time: float = 1):
+        """
+        The x coordinates slide to the y coordinates
+        :param x_start:
+        :param y_start:
+        :param x_end:
+        :param y_end:
+        :param interval_time:
+        :return:
+        """
+        self._perform_action(x_start, x_end, y_start, y_end)
+        self.sleep(interval_time)
