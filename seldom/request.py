@@ -119,6 +119,14 @@ def mock_url(url: str) -> str:
     return replace_url
 
 
+def check_proxies() -> [dict, None]:
+    """
+    check http proxies
+    """
+    configs = loader("proxies") if loader("proxies") is not None else None
+    return configs
+
+
 class HttpRequest:
     """seldom http request class"""
 
@@ -127,6 +135,8 @@ class HttpRequest:
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
+        if kwargs.get('proxies', None) is None:
+            kwargs["proxies"] = check_proxies()
         return requests.get(url, params=params, timeout=Seldom.timeout, **kwargs)
 
     @request
@@ -134,6 +144,8 @@ class HttpRequest:
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
+        if kwargs.get("proxies", None) is None:
+            kwargs["proxies"] = check_proxies()
         return requests.post(url, data=data, json=json, timeout=Seldom.timeout, **kwargs)
 
     @request
@@ -141,6 +153,8 @@ class HttpRequest:
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
+        if kwargs.get("proxies", None) is None:
+            kwargs["proxies"] = check_proxies()
         return requests.put(url, data=data, timeout=Seldom.timeout, **kwargs)
 
     @request
@@ -148,6 +162,8 @@ class HttpRequest:
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
+        if kwargs.get("proxies", None) is None:
+            kwargs["proxies"] = check_proxies()
         return requests.delete(url, timeout=Seldom.timeout, **kwargs)
 
     @request
@@ -155,6 +171,8 @@ class HttpRequest:
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
         url = mock_url(url)
+        if kwargs.get("proxies", None) is None:
+            kwargs["proxies"] = check_proxies()
         return requests.patch(url, data=data, timeout=Seldom.timeout, **kwargs)
 
     @property
@@ -227,6 +245,8 @@ class HttpRequest:
             if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
             url = mock_url(url)
+            if kwargs.get("proxies", None) is None:
+                kwargs["proxies"] = check_proxies()
             kwargs.setdefault('allow_redirects', True)
             return self.request('GET', url, **kwargs)
 
@@ -244,6 +264,8 @@ class HttpRequest:
             if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
             url = mock_url(url)
+            if kwargs.get("proxies", None) is None:
+                kwargs["proxies"] = check_proxies()
             return self.request('POST', url, data=data, json=json, **kwargs)
 
         @request
@@ -259,6 +281,8 @@ class HttpRequest:
             if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
             url = mock_url(url)
+            if kwargs.get("proxies", None) is None:
+                kwargs["proxies"] = check_proxies()
             return self.request('PUT', url, data=data, **kwargs)
 
         @request
@@ -272,6 +296,8 @@ class HttpRequest:
             if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
             url = mock_url(url)
+            if kwargs.get("proxies", None) is None:
+                kwargs["proxies"] = check_proxies()
             return self.request('DELETE', url, **kwargs)
 
     @staticmethod
