@@ -54,7 +54,8 @@ __说明__
     },
     "method": {
       "name": "test_get_method",
-      "doc": "\n        test get request\n        "
+      "doc": "\n        test get request\n        ",
+      "label": null
     }
   },
   {
@@ -65,7 +66,8 @@ __说明__
     },
     "method": {
       "name": "test_post_method",
-      "doc": "\n        test post request\n        "
+      "doc": "\n        test post request\n        ",
+      "label": null
     }
   },
   {
@@ -76,7 +78,8 @@ __说明__
     },
     "method": {
       "name": "test_baidu_0",
-      "doc": "used parameterized test [with name=1, search_key='seldom']\n        :param name: case name\n        :param search_key: search keyword\n        "
+      "doc": "used parameterized test [with name=1, search_key='seldom']\n        :param name: case name\n        :param search_key: search keyword\n        ",
+      "label": null
     }
   },
   {
@@ -87,7 +90,8 @@ __说明__
     },
     "method": {
       "name": "test_baidu_1",
-      "doc": "used parameterized test [with name=2, search_key='selenium']\n        :param name: case name\n        :param search_key: search keyword\n        "
+      "doc": "used parameterized test [with name=2, search_key='selenium']\n        :param name: case name\n        :param search_key: search keyword\n        ",
+      "label": null
     }
   },
   {
@@ -98,7 +102,8 @@ __说明__
     },
     "method": {
       "name": "test_baidu_2",
-      "doc": "used parameterized test [with name=3, search_key='unittest']\n        :param name: case name\n        :param search_key: search keyword\n        "
+      "doc": "used parameterized test [with name=3, search_key='unittest']\n        :param name: case name\n        :param search_key: search keyword\n        ",
+      "label": null
     }
   },
   {
@@ -109,7 +114,8 @@ __说明__
     },
     "method": {
       "name": "test_case",
-      "doc": "a simple test case "
+      "doc": "a simple test case ",
+      "label": null
     }
   }
 ]
@@ -119,7 +125,9 @@ __说明__
 
 * file: 获取类的文件名，包含目录名。
 * class: 测试类的名字`name` 和 描述`doc`。
-* method: 测试方法的名字`name` 和 描述`doc`。
+* method: 测试方法的名字`name` 和 描述`doc`, `label`。
+
+> 注明：seldom==3.11.0 版本测试方法增加`label`字段。
 
 ### 执行用例信息
 
@@ -140,7 +148,8 @@ if __name__ == '__main__':
             },
             "method": {
                 "name": "test_case",
-                "doc": "a simple test case "
+                "doc": "a simple test case ",
+                "label": ""
             }
         }
     ]
