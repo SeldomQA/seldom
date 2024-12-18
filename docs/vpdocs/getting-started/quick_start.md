@@ -245,10 +245,12 @@ def failfast():
 
 | seldom.main() （参数） | confrun.py  (函数) | 类型   | 说明                                                   |
 |--------------------|------------------|------|------------------------------------------------------|
-| path               | N/A              | 通用   | 指定测试目录或文件， 与`case`参数互斥。                              |
-| case               | N/A              | 通用   | 指定测试用例， 与`path`参数互斥。                                 |
+| path               | -                | 通用   | 指定测试目录或文件， 与`case`参数互斥。                              |
+| case               | -                | 通用   | 指定测试用例， 与`path`参数互斥。                                 |
 | browser            | browser()        | Web  | 指定web测试运行的浏览器。                                       |
 | base_url           | base_url()       | HTTP | 指定HTTP接口测试的基本URL。                                    |
+| -                  | mock_url()       | HTTP | 配置HTTP接口 mock URL。                                   |
+| -                  | proxies()        | HTTP | 配置HTTP接口proxies代理。                                   |
 | app_info           | app_info()       | App  | app 启动信息，参考appium `desired_capabilities`配置， app测试。   |
 | app_server         | app_server()     | App  | appium server 启动地址（默认 http://127.0.0.1:4723）， app测试。 |
 | report             | report()         | 通用   | 自定义测试报告的名称，例如`result.html/result.xml`。               |
@@ -261,8 +263,7 @@ def failfast():
 | timeout            | timeout()        | 通用   | 设置自动化全局超时时间，默认`10`秒。作用于元素定位、断言等。                     |
 | whitelist          | whitelist()      | 通用   | 用例标签（label）设置白名单。                                    |
 | blacklist          | blacklist()      | 通用   | 用例标签（label）设置黑名单。                                    |
-| open               | N/A              | 通用   | 是否使用浏览器自动打开测试报告，默认`True`。                            |
-| N/A                | mock_url()       | HTTP | 定义mock URL 映射。                                       |
+| open               | -                | 通用   | 是否使用浏览器自动打开测试报告，默认`True`。                            |
 
 ### 运行测试
 
