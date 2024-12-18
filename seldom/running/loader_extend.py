@@ -13,7 +13,7 @@ class SeldomTestLoader(TestLoader):
     """
     testNamePatterns = None
     collectCaseInfo = False  # Switch of collecting use case information
-    collectCaseList = []     # List of use case information
+    collectCaseList = []  # List of use case information
 
     def getTestCaseNames(self, testCaseClass):
         """Return a sorted sequence of method names found within testCaseClass
@@ -28,6 +28,12 @@ class SeldomTestLoader(TestLoader):
             if not attrname.startswith(self.testMethodPrefix):
                 return False
             testFunc = getattr(testCaseClass, attrname)
+            testLabels = getattr(testFunc, '_labels', set())
+            if testLabels:
+                label_str = next(iter(testLabels))
+            else:
+                label_str = None
+
             if not callable(testFunc):
                 return False
 
@@ -42,13 +48,14 @@ class SeldomTestLoader(TestLoader):
                     },
                     "method": {
                         "name": attrname,
-                        "doc": testFunc.__doc__
+                        "doc": testFunc.__doc__,
+                        "label": label_str
                     }
                 }
                 self.collectCaseList.append(case_info)
 
             return self.testNamePatterns is None or \
-                   any(fnmatchcase(fullName, pattern) for pattern in self.testNamePatterns)
+                any(fnmatchcase(fullName, pattern) for pattern in self.testNamePatterns)
 
         testFnNames = list(filter(shouldIncludeMethod, dir(testCaseClass)))
         if self.sortTestMethodsUsing:
@@ -119,7 +126,7 @@ class SeldomTestLoader(TestLoader):
                 top_part = start_dir.split('.')[0]
                 try:
                     start_dir = os.path.abspath(
-                       os.path.dirname((the_module.__file__)))
+                        os.path.dirname((the_module.__file__)))
                 except AttributeError:
                     # look for namespace packages
                     try:
@@ -133,11 +140,11 @@ class SeldomTestLoader(TestLoader):
 
                             for path in the_module.__path__:
                                 if (not set_implicit_top and
-                                    not path.startswith(top_level_dir)):
+                                        not path.startswith(top_level_dir)):
                                     continue
                                 self._top_level_dir = \
                                     (path.split(the_module.__name__
-                                         .replace(".", os.path.sep))[0])
+                                                .replace(".", os.path.sep))[0])
                                 tests.extend(self._find_tests(path,
                                                               pattern,
                                                               namespace=True))
@@ -153,7 +160,7 @@ class SeldomTestLoader(TestLoader):
                 if set_implicit_top:
                     if not is_namespace:
                         self._top_level_dir = \
-                           self._get_directory_containing_module(top_part)
+                            self._get_directory_containing_module(top_part)
                         sys.path.remove(top_level_dir)
                     else:
                         sys.path.remove(top_level_dir)
