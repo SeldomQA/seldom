@@ -23,7 +23,7 @@ appium支持扩展，通过扩展来增强appium定位元素的能力。
 * 启动Appium server时指定使用OCR插件。
 
 ```shell
-> appium server --address '127.0.0.1' -p 4723  --use-plugins=iamges
+> appium server --address '127.0.0.1' -p 4723  --use-plugins=images
 ```
 
 * 目录结构
@@ -125,44 +125,98 @@ if __name__ == '__main__':
 {
   "words": [
     {
-      "text": "mEngine", "confidence": 88.47775268554688,
-      "bbox": {"x0": 86, "y0": 509, "x1": 308, "y1": 560}
+      "text": "mEngine",
+      "confidence": 88.47775268554688,
+      "bbox": {
+        "x0": 86,
+        "y0": 509,
+        "x1": 308,
+        "y1": 560
+      }
     },
     {
-      "text": "Flyme", "confidence": 91.3454818725586,
-       "bbox": {"x0": 316, "y0": 1132, "x1": 420, "y1": 1172}
-      },
+      "text": "Flyme",
+      "confidence": 91.3454818725586,
+      "bbox": {
+        "x0": 316,
+        "y0": 1132,
+        "x1": 420,
+        "y1": 1172
+      }
+    },
     {
-      "text": "A9", "confidence": 34.86248779296875,
-      "bbox": {"x0": 1017, "y0": 2565, "x1": 1078, "y1": 2595}
+      "text": "A9",
+      "confidence": 34.86248779296875,
+      "bbox": {
+        "x0": 1017,
+        "y0": 2565,
+        "x1": 1078,
+        "y1": 2595
+      }
     }
   ],
   "lines": [
     {
-      "text": "mEngine BY Ni0vEh 1 Bl\n\n", "confidence": 21.003677368164062,
-     "bbox": {"x0": 86, "y0": 500, "x1": 674, "y1": 560}
+      "text": "mEngine BY Ni0vEh 1 Bl\n\n",
+      "confidence": 21.003677368164062,
+      "bbox": {
+        "x0": 86,
+        "y0": 500,
+        "x1": 674,
+        "y1": 560
+      }
     },
     {
-      "text": "Flyme\n\n", "confidence": 91.3454818725586,
-     "bbox": {"x0": 316, "y0": 1132, "x1": 420, "y1": 1172}
+      "text": "Flyme\n\n",
+      "confidence": 91.3454818725586,
+      "bbox": {
+        "x0": 316,
+        "y0": 1132,
+        "x1": 420,
+        "y1": 1172
+      }
     },
     {
-      "text": "A9\n", "confidence": 34.86248779296875,
-      "bbox": {"x0": 1017, "y0": 2565, "x1": 1078, "y1": 2595}
+      "text": "A9\n",
+      "confidence": 34.86248779296875,
+      "bbox": {
+        "x0": 1017,
+        "y0": 2565,
+        "x1": 1078,
+        "y1": 2595
+      }
     }
   ],
   "blocks": [
     {
-      "text": "mEngine BY Ni0vEh 1 Bl\n\n", "confidence": 21.003677368164062,
-       "bbox": {"x0": 86, "y0": 500, "x1": 674, "y1": 560}
-      },
-    {
-      "text": "Flyme\n\n", "confidence": 91.3454818725586,
-      "bbox": {"x0": 316, "y0": 1132, "x1": 420, "y1": 1172}
+      "text": "mEngine BY Ni0vEh 1 Bl\n\n",
+      "confidence": 21.003677368164062,
+      "bbox": {
+        "x0": 86,
+        "y0": 500,
+        "x1": 674,
+        "y1": 560
+      }
     },
     {
-      "text": "A9\n", "confidence": 34.86248779296875, 
-      "bbox": {"x0": 1017, "y0": 2565, "x1": 1078, "y1": 2595}
+      "text": "Flyme\n\n",
+      "confidence": 91.3454818725586,
+      "bbox": {
+        "x0": 316,
+        "y0": 1132,
+        "x1": 420,
+        "y1": 1172
+      }
+    },
+    {
+      "text": "A9\n",
+      "confidence": 34.86248779296875,
+      "bbox": {
+        "x0": 1017,
+        "y0": 2565,
+        "x1": 1078,
+        "y1": 2595
+      }
     }
   ]
 }

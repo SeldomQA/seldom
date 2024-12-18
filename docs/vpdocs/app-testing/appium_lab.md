@@ -92,6 +92,35 @@ if __name__ == '__main__':
     ...
 ```
 
+* 启动appium server
+
+```python
+from seldom.appium_lab.appium_service import AppiumService
+
+if __name__ == '__main__':
+    # 启动 Appium Server
+    app_ser = AppiumService(
+        addr="127.0.0.1",
+        port="4723",
+        use_plugins="images",
+        args=["--allow-cors", "--tmp", "C:\Windows\Temp"])
+    app_ser.start_service()
+```
+
+参数说明：
+
+* `addr`: appium server 地址, 默认： `127.0.0.1`
+* `port`: appium server 端口， 默认：`4723`
+* `log`: 设置 appium server 日志， 默认：`appium_server_1734493548.log`
+* `use_plugins`: 设置使用的插件，默认None，不使用。
+* `args`: 支持添加更多的参数，例如 `args=["--allow-cors", "--tmp", "C:\Windows\Temp"]`
+
+启动日志：
+
+```shell
+2024-12-18 11:52:54 | INFO     | appium_service.py | MainThread | 🚀 launch appium server: ['--address', '127.0.0.1', '--port', '4723', '--log', 'D:\\github\\seldomQA\\seldom\\seldom\\appium_lab\\appium_server_1734493974.log', '--use-plugins', 'iamges,ocr', '--allow-cors']
+```
+
 `AppiumLab` 类中分以下几类操作:
 
 __Action__
@@ -112,6 +141,8 @@ appium_lab.swipe_down()
 appium_lab.swipe_left()
 # 右划
 appium_lab.swipe_right()
+# 从x坐标滑动到y坐标
+appium_lab.drag_from_to()
 ```
 
 __Switch__
@@ -211,10 +242,6 @@ class TestApp(seldom.TestCase):
         self.install_app("/app/path/xxx.apk")
         # 删除app
         self.remove_app("app_id")
-        # 启动app
-        self.launch_app()
-        # 关闭app
-        self.close_app()
         # 如果app正在运行，终止运行
         self.terminate_app("app_id")
         # 如果app未运行，则激活它或者在后台运行
@@ -225,8 +252,6 @@ class TestApp(seldom.TestCase):
         # 从指定的设备返回应用程序字符串语言
         language, string = self.app_strings()
         print(language, string)
-        # 启动起app
-        self.reset()
         # 点击图片
         self.click_image("/you/path/xxx.png")
 
