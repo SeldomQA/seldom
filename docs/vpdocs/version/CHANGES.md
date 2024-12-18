@@ -2,6 +2,16 @@
 
 ### seldom 3.x <Badge type="tip" text="v3" vertical="top" />
 
+__3.11.0(2024-12-19)__
+
+* 功能：平台化用例执行，`seldom.main()`支持加载`confrun.py`中的 `start_run()/end_run()`。
+* 功能：平台化用例解析，识别用例标签`label`。
+* HTTP测试：通过`confrun.py`支持`proxies()`配置全局的请求代理。
+* App测试：
+    * appium_lab 增加 `drag_from_to()`方法，支持坐标位滑动。感谢@guweifan
+    * appium_lab 增加`AppiumService`类，支持启动appium server。感谢@guweifan
+* 优化：`jsonpath.py`的代码。
+
 __3.10.0(2024-11-11)__
 
 * 重要：所有app/web元素定位支持`selector`模式，详细查看文档。
