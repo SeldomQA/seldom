@@ -37,7 +37,10 @@ class TestRequest(seldom.TestCase):
         self.url = "http://httpbin.org/post"
 
     def test_case(self):
-        headers = {"User-Agent": "python-requests/2.25.0", "Accept-Encoding": "gzip, deflate", "Accept": "application/json", "Connection": "keep-alive", "Host": "httpbin.org", "Content-Length": "36", "Origin": "http://httpbin.org", "Content-Type": "application/json", "Cookie": "lang=zh"}
+        headers = {"User-Agent": "python-requests/2.25.0", "Accept-Encoding": "gzip, deflate",
+                   "Accept": "application/json", "Connection": "keep-alive", "Host": "httpbin.org",
+                   "Content-Length": "36", "Origin": "http://httpbin.org", "Content-Type": "application/json",
+                   "Cookie": "lang=zh"}
         cookies = {"lang": "zh"}
         self.post(self.url, json={"key1": "value1", "key2": "value2"}, headers=headers, cookies=cookies)
         self.assertStatusCode(200)
@@ -67,8 +70,8 @@ seldom 提供了`swagger` 转 `case` 的命令。 使用 `seldom -s2c` 命令。
 import seldom
 
 
-class TestRequest(seldom.TestCase): 
-    
+class TestRequest(seldom.TestCase):
+
     def test_pet_petId_uploadImage_api_post(self):
         url = f"https://petstore.swagger.io/pet/{petId}/uploadImage"
         params = {}
@@ -89,7 +92,6 @@ class TestRequest(seldom.TestCase):
 ```
 
 需要注意的是，转换的seldom自动化测试用例有一些`变量`，需要用户根据实际情况进行定义。
-
 
 ### 请求转 cURL
 
@@ -154,6 +156,7 @@ curl -X PUT  -H 'Content-Type: application/json' -H 'token: 123' -d '{"key": "va
 ```python
 import seldom
 
+
 class TestRespData(seldom.TestCase):
 
     def test_data_dependency(self):
@@ -177,12 +180,12 @@ seldom提供了`self.response`用于记录上个接口返回的结果，直接�
 
 ```python
 # common.py
-from seldom.request import check_response 
+from seldom.request import check_response
 from seldom.request import HttpRequest
 
 
 class Common(HttpRequest):
-    
+
     @check_response(
         describe="获取登录用户名",
         status_code=200,
@@ -241,12 +244,11 @@ if __name__ == '__main__':
 
 __参数说明：__
 
-  * `describe` : 封装方法描述。
-  * `status_code`: 判断接口返回的 HTTP 状态码，默认`200`。
-  * `ret`: 提取接口返回的字段，参考`jmespath` 提取规则。
-  * `check`: 检查接口返回的字段。参考`jmespath` 提取规则。
-  * `debug`: 开启`debug`，打印更多信息。
-
+* `describe`: 封装方法描述。
+* `status_code`: 判断接口返回的 HTTP 状态码，默认`200`。
+* `ret`: 提取接口返回的字段，参考`jmespath` 提取规则。
+* `check`: 检查接口返回的字段。参考`jmespath` 提取规则。
+* `debug`: 开启`debug`，打印更多信息。
 
 2. 引用公共模块
 
@@ -298,7 +300,6 @@ if __name__ == '__main__':
 ```
 
 用法非常简单，你只需要在每个接口之前调用一次`登录`， `self.s`对象就记录下了登录状态，通过`self.s` 再去调用其他接口就不需要登录。
-
 
 ### 提取接口返回数据
 
@@ -371,10 +372,13 @@ class TestAPI(seldom.TestCase):
         print(f"jsonpath3 --> {jsonpath3}")
         print(f"jsonpath4 --> {jsonpath4}")
         print(f"jsonpath5 --> {jsonpath5}")
+
+
 ...
 ```
 
 说明：
+
 * `response`: 保存接口返回的数据，可以直接以，字典列表的方式提取。
 * `jmespath()`: 根据 JMESPath 语法规则，默认提取接口返回的数据，也可指定`resposne`数据提取。
 * `jsonpath()`: 根据 JsonPath 语法规则，默认提取接口返回的数据, `index`指定下标，也可指定`resposne`数据提取。
@@ -416,7 +420,8 @@ jsonpath5 --> basketball
 
 ### genson
 
-通过 `assertSchema()` 断言时需要写JSON Schema，但是这个写起来需要学习成本，seldom集成了[GenSON](https://github.com/wolverdude/GenSON) ,可以帮你自动生成。
+通过 `assertSchema()` 断言时需要写JSON
+Schema，但是这个写起来需要学习成本，seldom集成了[GenSON](https://github.com/wolverdude/GenSON) ,可以帮你自动生成。
 
 * 例子
 
@@ -431,10 +436,10 @@ class TestAPI(seldom.TestCase):
         payload = {"hobby": ["basketball", "swim"], "name": "tom", "age": "18"}
         self.get("/get", params=payload)
         print("response \n", self.response)
-        
+
         schema = genson(self.response)
         print("json Schema \n", schema)
-        
+
         self.assertSchema(schema)
 ```
 
@@ -455,16 +460,13 @@ json Schema
 
 seldom 运行允许通过`confrun.py`文件中`mock_url()` 配置mock URL映射。
 
-* confrun.py
-
-配置要映射的mock URL。
+* `confrun.py` 配置要映射的mock URL。
 
 ```python
-...
 
 def mock_url():
     """
-
+    mock url
     :return:
     """
     config = {
@@ -515,10 +517,66 @@ if __name__ == '__main__':
 2023-07-30 14:47:08 | INFO     | case.py | 👀 assertStatusCode -> 200.
 ```
 
-通过日志可以看到 `http://httpbin.org/get` 替换成为 `http://127.0.0.1:8000/api/data` 执行。 当你不想mock的时候只需要修改 mock_url() 即可，对于用例来说无影响。
+通过日志可以看到 `http://httpbin.org/get` 替换成为 `http://127.0.0.1:8000/api/data` 执行。 当你不想mock的时候只需要修改
+mock_url() 即可，对于用例来说无影响。
+
+### 配置`proxies`代理
+
+> seldom 3.11.0
+
+__单个方法设置代理__
+
+seldom 支持在每个请求方法中设置代理。
+
+```shell
+import seldom
 
 
+class TestHttpAssert(seldom.TestCase):
 
+    def test_assert_json(self):
+        """
+        test assertJSON
+        """
+        payload = {"name": "tom", "hobby": ["basketball", "swim"]}
+        proxies = {
+            "https": "http://localhost:1080",
+            "http": "http://localhost:1080",
+        }
+        self.get("/get", params=payload, proxies=proxies)
+```
+
+__全局设置代理__
+
+当我们要所有用例都使用代理时，每个方法都单独设置就很麻烦了，可以使用`confrun.py`全局设置。
+
+* 目录结构
+
+```shell
+├───reports
+├───test_data
+├───test_dir
+│   ├───...
+├───confrun.py # 配置文件
+└───run.py
+```
+
+* `confrun.py` 配置要映射的mock URL。
+
+```python
+
+def proxies():
+    """
+    http proxies
+    """
+    proxies_conf = {
+        "https": "http://localhost:1080",
+        "http": "http://localhost:1080",
+    }
+    return proxies_conf
+```
+
+通过`run.py`文件全局运行测试，这里的代理配置将作用于所有请求方法。
 
 ### @retry装饰器
 
