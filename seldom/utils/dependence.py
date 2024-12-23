@@ -19,7 +19,10 @@ def dependent_func(func_obj: Callable, key_name: Text = None, *out_args, **out_k
         @wraps(func)
         def wrapper(*args, **kwargs):
             func_name = func.__name__
-            depend_func_name = func_obj.__name__
+            if isinstance(func_obj, staticmethod):
+                depend_func_name = func_obj.__func__.__name__
+            else:
+                depend_func_name = func_obj.__name__
 
             key = key_name
             if key_name is None:
@@ -48,6 +51,9 @@ def _call_dependence(dependent_api: Callable or Text, func_name: Text, *args, **
     :param kwargs:
     :return:
     """
+    if isinstance(dependent_api, staticmethod):
+        dependent_api = dependent_api.__func__
+
     depend_func_name = dependent_api.__name__
     log.info(f"🔗 <{func_name}> depends on <{depend_func_name}>, execute.")
     res = dependent_api(*args, **kwargs)
