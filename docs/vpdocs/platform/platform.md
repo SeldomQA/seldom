@@ -163,7 +163,7 @@ if __name__ == '__main__':
 * `TestMainExtend(path="./test_dir")` : 其中`path`指定从哪个目录查找用例集合。
 * `run_cases(cases)`: 运行用例。
 
-### 接入平台比读
+### 接入平台必读
 
 如果你只是使用seldom框架编写用例，那么代码只要框架能运行即可，如果要接入seldom-platform平台，那么需要注意一下几点。
 

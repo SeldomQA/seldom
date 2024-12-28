@@ -332,9 +332,9 @@ mypro/
 .
 └── test_data
     ├── develop
-    │   └── test_data.json
+    │   └── test_data.json
     ├── product
-    │   └── test_data.json
+    │   └── test_data.json
     └── test
         └── test_data.json
 ```
@@ -344,11 +344,11 @@ mypro/
 ```shell
 .
 ├── develop
-│   └── test_data
-│       └── test_data.json
+│   └── test_data
+│       └── test_data.json
 ├── product
-│   └── test_data
-│       └── test_data.json
+│       └── test_data
+│         └── test_data.json
 └── test
     └── test_data
         └── test_data.json
@@ -359,7 +359,6 @@ mypro/
 ```python
 import seldom
 from seldom import file_data
-from seldom import Seldom
 
 
 class MyTest(seldom.TestCase):
@@ -378,16 +377,38 @@ class MyTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    Seldom.env = "product"  # test/develop/product 设置当前环境
-    seldom.main(debug=True)
+    # test/develop/product 设置当前环境
+    seldom.main(debug=True, env="product")
 ```
 
-`Seldom.env` 默认为`None`，当设置了环境，`@file_data()` 会带上环境的目录名，例如:
+`env` 默认为`None`，当设置了`环境变量`，`@file_data()`会带上`环境变量`的目录名，例如:
 
 * `test_data.json` 查找的文件为 `product/test_data.json`
 * `test_data/test_data.json` 查找的文件为 `product/test_data/test_data.json`
 
-> `Seldom.env` 可以随意命名，但最好遵循一定的规范:`test/develop/product`。你还可以利用`Seldom.env`变量本地创建更多的配置。
+> * `env` 可以随意命名，但最好遵循一定的规范，例如`test/develop/product`用于区分不同的环境。
+> * 我们还可以利用`env`环境变量实现更多的配置，下面的示例。
+
+```python
+import seldom
+from seldom import Seldom
+
+
+class MyTest(seldom.TestCase):
+
+    def test_env(self):
+        if Seldom.env == "product":
+            username = "admin"
+        elif Seldom.env == "develop":
+            username = "guest"
+        else:
+            username = "tom"
+        ...
+
+
+if __name__ == '__main__':
+    seldom.main(debug=True, env="product")
+```
 
 ### @api_data()方法
 
