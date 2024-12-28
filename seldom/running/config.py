@@ -71,6 +71,11 @@ def driver():
     return Seldom.driver
 
 
+def env():
+    """return env"""
+    return Seldom.env
+
+
 class FileRunningConfig:
     """
     file runner config

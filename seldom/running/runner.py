@@ -24,6 +24,7 @@ from seldom.running.DebugTestRunner import DebugTestRunner
 from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.config import base_url as base_url_func
 from seldom.running.config import driver as driver_func
+from seldom.running.config import env as env_func
 from seldom.running.loader_extend import seldomTestLoader
 from seldom.running.loader_hook import loader
 
@@ -58,7 +59,7 @@ class TestMain:
             base_url: str = None,
             debug: bool = False,
             timeout: int = 10,
-            app_server=None,
+            app_server: str = None,
             app_info=None,
             report: str = None,
             title: str = "Seldom Test Report",
@@ -72,6 +73,7 @@ class TestMain:
             auto: bool = True,
             extensions: Optional = None,
             failfast: bool = False,
+            env: str = None
     ):
         """
         runner test case
@@ -116,6 +118,7 @@ class TestMain:
         Seldom.app_server = app_server
         Seldom.app_info = app_info
         Seldom.extensions = extensions
+        Seldom.env = env
 
         if failfast is True and debug is False:
             raise RunParamError("failfast cannot be true, setting `debug=True`")
@@ -131,6 +134,7 @@ class TestMain:
         Seldom.base_url = base_url
         setattr(builtins, 'base_url', base_url_func)
         setattr(builtins, 'driver', driver_func)
+        setattr(builtins, 'env', env_func)
 
         # ----- Global open browser -----
         loader("start_run")
@@ -288,7 +292,7 @@ class TestMainExtend(TestMain):
             tester: str = "Anonymous",
             description: str = "Test case execution",
             rerun: int = 0,
-            language="en",
+            language: str = "en",
             whitelist: list = [],
             blacklist: list = [],
             extensions=None,
