@@ -1,6 +1,6 @@
 [GitHub](https://github.com/SeldomQA/seldom) | [Gitee](https://gitee.com/fnngj/seldom) |
 
-![](seldom_logo.jpg)
+![](./images/seldom_logo.jpg)
 
 [![PyPI version](https://badge.fury.io/py/seldom.svg)](https://badge.fury.io/py/seldom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/seldom)
 
@@ -143,7 +143,7 @@ myweb/
 
 你可以到 `mypro\reports\` 目录查看测试报告。
 
-![test report](./test_report.png)
+![test report](./images/test_report.png)
 
 ## 🔬 Demo
 
@@ -282,14 +282,14 @@ https://github.com/defnngj/seldom-api-testing
 
 <p>
   <a href="https://item.jd.com/14859108.html">
-    <img alt="京东链接" src="book.jpg" style="width: 220px; margin-right: 140px;" />
+    <img alt="京东链接" src="./images/book.jpg" style="width: 220px; margin-right: 140px;" />
   </a>
 </p>
 
 > 欢迎添加微信，交流和反馈问题。
 
 <div style="display: flex;justify-content: space-between;width: 100%">
-    <p><img alt="微信" src="wechat.jpg" style="width: 200px;height: 100%" ></p>
+    <p><img alt="微信" src="./images/wechat.jpg" style="width: 200px;height: 100%" ></p>
 </div>
 
 ### Star History
