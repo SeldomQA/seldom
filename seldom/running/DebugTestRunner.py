@@ -3,6 +3,7 @@ Run tests in debug mode
 """
 import unittest
 import functools
+from seldom.utils.benchmark import benchmark
 
 
 class DebugTestRunner(unittest.TextTestRunner):
@@ -54,6 +55,7 @@ class DebugTestRunner(unittest.TextTestRunner):
                 @functools.wraps(test_method)
                 def skip_wrapper(*args, **kwargs):
                     raise unittest.SkipTest('label exclusion')
+
                 skip_wrapper.__unittest_skip__ = True
                 if len(self.whitelist) >= 1:
                     skip_wrapper.__unittest_skip_why__ = f'label whitelist {self.whitelist}'
@@ -64,4 +66,8 @@ class DebugTestRunner(unittest.TextTestRunner):
             suite.addTest(test)
 
         # Resume normal TextTestRunner function with the new test suite
-        super(DebugTestRunner, self).run(suite)
+        result = super(DebugTestRunner, self).run(suite)
+
+        benchmark.report()
+
+        return result
