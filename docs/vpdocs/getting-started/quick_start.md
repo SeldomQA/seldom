@@ -54,31 +54,35 @@ if __name__ == '__main__':
                 blacklist=[],
                 open=True,
                 extensions=None,
-                failfast=False
+                failfast=False,
+                env="test",
+                benchmark=False
                 )
 ```
 
 __参数说明__
 
-* path : 指定测试目录或文件， 与`case`参数互斥。`seldom > 3.7.0 支持 list 传多个目录或文件`。
-* case : 指定测试用例， 与`path`参数互斥。
-* browser : 指定浏览器（"chrome"、"firefox" 等）， Web测试。
-* base_url : 设置全局的基本URL， HTTP测试。
-* app_info : app 启动信息，参考`desired_capabilities`配置， app测试。
-* app_server : appium server 启动地址（默认 http://127.0.0.1:4723）， app测试。
-* report : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`。
-* title : 指定测试报告标题。
-* tester : 指定测试人员, 默认`Anonymous`。
-* description : 指定测试报告描述。
-* debug : debug模式，设置为True不生成测试HTML测试，默认为`False`。
-* rerun : 设置失败重新运行次数，默认为 `0`。
-* language : 设置HTML报告中英文，默认`en`, 中文`zh-CN`。
-* timeout : 设置超时时间，默认`10`秒。
-* whitelist :  用例标签（label）设置白名单。
-* blacklist :  用例标签（label）设置黑名单。
-* open :  是否使用浏览器自动打开测试报告，默认`True`。
-* extensions: 加载扩展，appium使用。
-* failfast: 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。
+* `path` : 指定测试目录或文件， 与`case`参数互斥。`seldom > 3.7.0 支持 list 传多个目录或文件`。
+* `case` : 指定测试用例， 与`path`参数互斥。
+* `browser` : 指定浏览器（"chrome"、"firefox" 等）， Web测试。
+* `base_url` : 设置全局的基本URL， HTTP测试。
+* `app_info` : app 启动信息，参考`desired_capabilities`配置， app测试。
+* `app_server` : appium server 启动地址（默认 http://127.0.0.1:4723）， app测试。
+* `report` : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`。
+* `title` : 指定测试报告标题。
+* `tester` : 指定测试人员, 默认`Anonymous`。
+* `description` : 指定测试报告描述。
+* `debug` : debug模式，设置为True不生成测试HTML测试，默认为`False`。
+* `rerun` : 设置失败重新运行次数，默认为 `0`。
+* `language` : 设置HTML报告中英文，默认`en`, 中文`zh-CN`。
+* `timeout` : 设置超时时间，默认`10`秒。
+* `whitelist` :  用例标签（label）设置白名单。
+* `blacklist` :  用例标签（label）设置黑名单。
+* `open` :  是否使用浏览器自动打开测试报告，默认`True`。
+* `extensions`: 加载扩展，appium使用。
+* `failfast`: 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。
+* `env`: 设置运行环境变量。
+* `benchmark`: 是否进行基准测试。
 
 ### `confrun.py` 配置文件
 
@@ -264,6 +268,10 @@ def failfast():
 | whitelist          | whitelist()      | 通用   | 用例标签（label）设置白名单。                                    |
 | blacklist          | blacklist()      | 通用   | 用例标签（label）设置黑名单。                                    |
 | open               | -                | 通用   | 是否使用浏览器自动打开测试报告，默认`True`。                            |
+| extensions         | -                | App  | 加载扩展，appium使用。                                       |
+| failfast           | -                | 通用   | 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。                  |
+| env                | -                | 通用   | 设置运行环境变量。                                            |
+| benchmark          | -                | 通用   | 是否进行基准测试。                                            |
 
 ### 运行测试
 

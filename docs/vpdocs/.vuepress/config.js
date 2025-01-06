@@ -82,6 +82,7 @@ module.exports = {
         children: [
           "/more-ability/db_operation",
           "/more-ability/test_library",
+          "/more-ability/benchmark",
         ],
       },
       "/platform/platform",
