@@ -41,6 +41,7 @@ class Seldom:
     extensions = None
     env = None
     api_data_url = None
+    benchmark = False
 
 
 Seldom = Seldom()

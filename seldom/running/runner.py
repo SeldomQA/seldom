@@ -73,7 +73,8 @@ class TestMain:
             auto: bool = True,
             extensions: Optional = None,
             failfast: bool = False,
-            env: str = None
+            env: str = None,
+            benchmark: bool = False
     ):
         """
         runner test case
@@ -97,6 +98,8 @@ class TestMain:
         :param auto:
         :param extensions:
         :parma failfast: only support debug=True
+        :parma env:
+        :parma benchmark:
         :return:
         """
         print(SELDOM_STR)
@@ -135,6 +138,10 @@ class TestMain:
         setattr(builtins, 'base_url', base_url_func)
         setattr(builtins, 'driver', driver_func)
         setattr(builtins, 'env', env_func)
+
+        if benchmark is True:
+            self.debug = True
+            Seldom.benchmark = True
 
         # ----- Global open browser -----
         loader("start_run")

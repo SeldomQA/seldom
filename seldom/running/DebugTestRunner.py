@@ -4,6 +4,7 @@ Run tests in debug mode
 import unittest
 import functools
 from seldom.utils.benchmark import benchmark
+from seldom.running.config import Seldom
 
 
 class DebugTestRunner(unittest.TextTestRunner):
@@ -66,8 +67,11 @@ class DebugTestRunner(unittest.TextTestRunner):
             suite.addTest(test)
 
         # Resume normal TextTestRunner function with the new test suite
-        result = super(DebugTestRunner, self).run(suite)
+        if Seldom.benchmark is True:
+            result = super(DebugTestRunner, self).run(suite)
 
-        benchmark.report()
+            benchmark.report()
 
-        return result
+            return result
+        
+        super(DebugTestRunner, self).run(suite)
