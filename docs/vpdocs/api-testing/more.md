@@ -647,3 +647,112 @@ requests.exceptions.MissingSchema: Invalid URL '/error': No scheme supplied. Per
 ```
 
 从运行结果可以看到，调用接口重试了2次，如果仍然错误，抛出异常。
+
+## 加密工具
+
+> seldom > 3.11.0
+
+在进行接口测试的时候，经常设计参数的加密，例如：`MD5`、`AES`等。Seldom 框架提供完整的加密解密功能，支持以下功能：
+
+* 哈希算法
+    * MD5
+    * SHA1/SHA224/SHA256/SHA384/SHA512
+    * HMAC
+* 对称加密
+    * AES (CBC/ECB/CFB/OFB/CTR)
+    * DES
+    * 3DES
+* 非对称加密
+    * RSA
+* 编码转换
+    * Base16/Base32/Base64/Base85
+    * URL编码
+    * HTML编码
+
+__示例__
+
+```python
+import unittest
+
+# 导入待测试的模块
+from seldom.utils.encrypt import (
+    CipherMode,
+    HashUtil,
+    AESUtil,
+    EncodeUtil,
+)
+
+
+class TestHashUtil(unittest.TestCase):
+    """测试 HashUtil 类"""
+
+    def test_md5(self):
+        text = "hello world"
+        expected = "5eb63bbbe01eeed093cb22bb8f5acdc3"
+        self.assertEqual(HashUtil.md5(text), expected)
+
+    def test_sha256(self):
+        text = "hello world"
+        expected = "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+        self.assertEqual(HashUtil.sha256(text), expected)
+
+
+class TestAESUtil(unittest.TestCase):
+    """测试 AESUtil 类"""
+
+    def test_encrypt_decrypt_cbc(self):
+        key = "mysecretkey"
+        text = "hello world"
+        encrypted = AESUtil.encrypt(key, text, mode=CipherMode.CBC)
+        decrypted = AESUtil.decrypt(key, encrypted, mode=CipherMode.CBC)
+        self.assertEqual(decrypted, text)
+
+
+class TestEncodeUtil(unittest.TestCase):
+    """测试 EncodeUtil 类"""
+
+    def test_base64_encode_decode(self):
+        text = "hello world"
+        encoded = EncodeUtil.base64_encode(text)
+        decoded = EncodeUtil.base64_decode(encoded)
+        self.assertEqual(decoded, text)
+
+    def test_url_encode_decode(self):
+        text = "hello world"
+        encoded = EncodeUtil.url_encode(text)
+        decoded = EncodeUtil.url_decode(encoded)
+        self.assertEqual(decoded, text)
+
+    def test_html_encode_decode(self):
+        text = "<html>hello world</html>"
+        encoded = EncodeUtil.html_encode(text)
+        decoded = EncodeUtil.html_decode(encoded)
+        self.assertEqual(decoded, text)
+
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+同时`示例`看到，我们可以非常低成本的使用各种加解密算法。
+
+__运行结果__
+
+```shell
+> python .\test_encrypt.py
+2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [encrypt] method, generated data: jUTwE9UV8c/00d9Kl9UOhdTOoOwWYSVOJ7io72MtWeE=
+2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [decrypt] method, generated data: hello world
+.2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [base64_encode] method, generated data: aGVsbG8gd29ybGQ=
+2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [base64_decode] method, generated data: hello world
+.2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [html_encode] method, generated data: &lt;html&gt;hello world&lt;/html&gt;
+2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [html_decode] method, generated data: <html>hello world</html>
+.2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [url_encode] method, generated data: hello%20world
+2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [url_decode] method, generated data: hello world
+.2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [md5] method, generated data: 5eb63bbbe01eeed093cb22bb8f5acdc3
+.2025-01-07 18:20:12 | INFO     | encrypt.py | MainThread | ✅ [sha256] method, generated data: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+.
+----------------------------------------------------------------------
+Ran 6 tests in 0.005s
+
+OK
+```
