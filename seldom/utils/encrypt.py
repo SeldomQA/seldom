@@ -522,35 +522,12 @@ class EncodeUtil:
         return base64.b85decode(text).decode(encoding)
 
 
-class RandomUtil:
-    """Random Number Utility Class"""
-
-    @staticmethod
-    @encrypt_handler
-    def random_bytes(length: int) -> bytes:
-        """Generate random bytes of specified length"""
-        return get_random_bytes(length)
-
-    @staticmethod
-    @encrypt_handler
-    def random_str(length: int) -> str:
-        """Generate random string of specified length"""
-        return base64.b64encode(get_random_bytes(length)).decode()[:length]
-
-    @staticmethod
-    @encrypt_handler
-    def uuid4() -> str:
-        """Generate UUID4"""
-        return str(uuid.uuid4())
-
-
 class EncryptUtil:
     """Encryption Utility Class"""
 
     # Create static instances
     hash = HashUtil()
     encode = EncodeUtil()
-    random = RandomUtil()
 
     @staticmethod
     def aes() -> Type[AESUtil]:

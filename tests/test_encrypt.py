@@ -9,8 +9,6 @@ from seldom.utils.encrypt import (
     TripleDESUtil,
     RSAUtil,
     EncodeUtil,
-    RandomUtil,
-    EncryptUtil,
     encrypt_util
 )
 
@@ -136,24 +134,6 @@ class TestEncodeUtil(unittest.TestCase):
         self.assertEqual(decoded, text)
 
 
-class TestRandomUtil(unittest.TestCase):
-    """测试 RandomUtil 类"""
-
-    def test_random_bytes(self):
-        length = 16
-        random_bytes = RandomUtil.random_bytes(length)
-        self.assertEqual(len(random_bytes), length)
-
-    def test_random_str(self):
-        length = 10
-        random_str = RandomUtil.random_str(length)
-        self.assertEqual(len(random_str), length)
-
-    def test_uuid4(self):
-        uuid_str = RandomUtil.uuid4()
-        self.assertEqual(len(uuid_str), 36)
-
-
 class TestEncryptUtil(unittest.TestCase):
     """测试 EncryptUtil 类"""
 
@@ -162,9 +142,6 @@ class TestEncryptUtil(unittest.TestCase):
 
     def test_encode_util(self):
         self.assertIsInstance(encrypt_util.encode, EncodeUtil)
-
-    def test_random_util(self):
-        self.assertIsInstance(encrypt_util.random, RandomUtil)
 
     def test_aes_util(self):
         self.assertEqual(encrypt_util.aes(), AESUtil)
