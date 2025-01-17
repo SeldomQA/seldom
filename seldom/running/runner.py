@@ -25,6 +25,7 @@ from seldom.running.config import Seldom, BrowserConfig
 from seldom.running.config import base_url as base_url_func
 from seldom.running.config import driver as driver_func
 from seldom.running.config import env as env_func
+from seldom.running.config import report_local_style
 from seldom.running.loader_extend import seldomTestLoader
 from seldom.running.loader_hook import loader
 
@@ -224,8 +225,9 @@ class TestMain:
                                            blacklist=self.blacklist, whitelist=self.whitelist)
                     runner.run(suits)
                 else:
+                    is_local = report_local_style()
                     runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester,
-                                            description=self.description,
+                                            description=self.description, local_style=is_local,
                                             rerun=self.rerun, logger=log_cfg,
                                             language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
                     runner.run(suits)

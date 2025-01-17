@@ -1,7 +1,9 @@
 """
 Seldom configuration file
 """
+import logging
 import threading
+import requests
 
 
 class Seldom:
@@ -82,3 +84,19 @@ class FileRunningConfig:
     file runner config
     """
     api_excel_file_name = None
+
+
+def report_local_style() -> bool:
+    """
+    Check report with local style
+    :return:
+    """
+    try:
+        resp = requests.get("https://telegraph-image-cq2.pages.dev")
+        if resp.status_code != 200:
+            return True
+        else:
+            return False
+    except BaseException as msg:
+        logging.debug(msg)
+        return True
