@@ -17,7 +17,7 @@ class BaiduTest(seldom.TestCase):
         """
         百度搜索
         """
-        Steps(desc="百度搜索").open("http://www.baidu.com",).find("#kw").type("seldom").find("#su").click()
+        Steps(desc="百度搜索").open("http://www.baidu.com").find("#kw").type("seldom").find("#su").click()
         self.assertInTitle("seldom")
 
     def test_search_two(self):
@@ -29,12 +29,12 @@ class BaiduTest(seldom.TestCase):
         s.find("#kw").type("seldom").enter()
         self.assertInTitle("seldom")
 
+
 if __name__ == '__main__':
     seldom.main(browser="gc", tester="虫师")
 ```
 
 用例像链条一样将整个测试过程串联起来，当然，如果你讨厌换行符`\`，也可以将用例分成多次调用，总之，只要你愿意，可以将所有步骤都串联起来。
-
 
 ```python
 import seldom
@@ -45,14 +45,14 @@ class BaiduTest(seldom.TestCase):
 
     def test_search_setting(self):
         """百度搜索设置"""
-        Steps(url="http://www.baidu.com", desc="百度搜索设置")\
-            .open()\
-            .find("#s-usersetting-top").click()\
-            .find("#s-user-setting-menu > div > a.setpref").click().sleep(2)\
-            .find('[data-tabid="advanced"]').click().sleep(2)\
-            .find("#q5_1").click().sleep(2)\
-            .find('[data-tabid="general"]').click().sleep(2)\
-            .find_text("保存设置").click()\
+        Steps(url="http://www.baidu.com", desc="百度搜索设置")
+            .open()
+            .find("#s-usersetting-top").click()
+            .find("#s-user-setting-menu > div > a.setpref").click().sleep(2)
+            .find('[data-tabid="advanced"]').click().sleep(2)
+            .find("#q5_1").click().sleep(2)
+            .find('[data-tabid="general"]').click().sleep(2)
+            .find_text("保存设置").click()
             .alert().accept()
 
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     seldom.main(browser="gc", tester="虫师")
 ```
 
-### Steps 类 
+### Steps 类
 
 `Steps` 类所提供的API 大部分和`Webidrver` 类保持一致，但考虑掉到链式的特点，命名上更体现`动作`。
 
@@ -83,7 +83,7 @@ c.find_text("新闻")
 
 * find(): 只支持CSS定位，这几乎是最强大的定位方法了。 新的测试库`cypress`、`playwright` 默认也都是CSS定位。
     * `text=` 用来定位文本，相当于`find_text()`。
-    * `test*=` 用例模糊定位文本。 
+    * `test*=` 用例模糊定位文本。
 
 * find_text(): 用于定位文本。
 
@@ -93,34 +93,35 @@ __操作方法__
 import seldom
 from seldom import Steps
 
+
 class TestCase(seldom.TestCase):
 
     def test_chaining_api(self):
-        Steps(desc="chaining api")\
-            .open("https://www.baidu.com")\
-            .max_window()\
-            .set_window(800, 600)\
-            .find("css").clear()\
-            .find("css").type("seldom")\
-            .find("css").enter()\
-            .find("css").submit()\
-            .find("css").click()\
-            .find("css").double_click()\
-            .find("css").move_to_click()\
-            .find("css").click_and_hold()\
-            .find("css").switch_to_frame()\
-            .find("css").select(value="")\
-            .find("css").select(text="每页显示20条")\
-            .find("css").select(index=2)\
-            .switch_to_frame_out()\
-            .switch_to_window(1)\
-            .refresh()\
-            .alert().accept()\
-            .alert().dismiss()\
-            .screenshots()\
-            .element_screenshot()\
-            .sleep(1)\
-            .close()\
+        Steps(desc="chaining api")
+            .open("https://www.baidu.com")
+            .max_window()
+            .set_window(800, 600)
+            .find("css").clear()
+            .find("css").type("seldom")
+            .find("css").enter()
+            .find("css").submit()
+            .find("css").click()
+            .find("css").double_click()
+            .find("css").move_to_click()
+            .find("css").click_and_hold()
+            .find("css").switch_to_frame()
+            .find("css").select(value="")
+            .find("css").select(text="每页显示20条")
+            .find("css").select(index=2)
+            .switch_to_frame_out()
+            .switch_to_window(1)
+            .refresh()
+            .alert().accept()
+            .alert().dismiss()
+            .screenshots()
+            .element_screenshot()
+            .sleep(1)
+            .close()
             .quit()
 
 ```
@@ -129,3 +130,39 @@ class TestCase(seldom.TestCase):
 
 2. `accept()/dismiss()` 是基于alert的操作。
 
+### 控制浏览器启动和关闭
+
+seldom 默认通过`seldom.main(browser="edge")`全局设置浏览器的启动和关闭，一般我们不需要关心浏览器的启动和关闭。
+
+> seldom 3.9.0 支持手动控制浏览器的驱动和关闭。
+
+* 每个用例启动和关闭浏览器。
+
+```python
+import seldom
+from seldom import Steps
+
+
+class WebTestChaining(seldom.TestCase):
+    """test chaining API"""
+
+    def start(self):
+        self.step = Steps(browser="edge")
+
+    def end(self):
+        self.step.quit()
+
+    def test_baidu(self):
+        """test baidu search"""
+        self.step.open("https://www.baidu.com").find("#kw").type("seldom").find("#su").click().sleep(2)
+        self.assertInTitle("seldom")
+
+    def test_bing(self):
+        """test bing search"""
+        self.step.open("https://www.bing.com").find("#sb_form_q").type("seldomqa").submit().sleep(2)
+        self.assertInTitle("seldomqa")
+
+
+if __name__ == '__main__':
+    seldom.main()
+```

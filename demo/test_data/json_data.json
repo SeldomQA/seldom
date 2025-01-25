@@ -5,10 +5,12 @@
   ],
   "login":[
     {
+      "scene": "tom用户登录",
       "username": "Tom",
       "password": "tom123"
     },
     {
+      "scene": "jerry用户登录",
       "username": "Jerry",
       "password": "jerry123"
     }

@@ -1,31 +1,43 @@
-# coding=utf-8
+"""
+WebDriver chaining API
+"""
 import os
+import random
 import time
-from selenium.webdriver import Chrome
-from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
+
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
-from selenium.webdriver.common.action_chains import ActionChains
+
+from seldom.driver import Browser
 from seldom.logging import log
-from seldom.running.config import Seldom
-from selenium.webdriver.chrome.service import Service as cService
-from seldom.utils.webdriver_manager_extend import ChromeDriverManager
-from seldom.webdriver import WebElement
+from seldom.logging.exceptions import RunningError
+from seldom.running.config import Seldom, BrowserConfig
+from seldom.testdata import get_timestamp
+from seldom.webcommon.find_elems import WebElement
 
 __all__ = ["Steps"]
 
 
-class Steps(object):
+class Steps:
     """
-    Webdriver Basic method chaining
+    WebDriver Basic method chaining
     Write test cases quickly.
     """
 
-    def __init__(self, url: str = None, desc: str = None):
+    def __init__(self, browser=None, url: str = None, desc: str = None, images: list = []):
+        if browser is not None:
+            self.browser = Browser(browser, BrowserConfig.executable_path, BrowserConfig.options,
+                                   BrowserConfig.command_executor)
+            Seldom.driver = self.browser
+        else:
+            self.browser = Seldom.driver
         self.url = url
-        self.element_obj = None
+        self.elem = None
         self.alert_obj = None
-        log.info("🔖 Test Case: {}".format(desc))
+        self.desc = desc
+        log.info(f"🔖 Test Case: {self.desc}")
+        self.images = images
 
     def open(self, url: str = None):
         """
@@ -34,14 +46,16 @@ class Steps(object):
         Usage:
             open("https://www.baidu.com")
         """
-        if isinstance(Seldom.driver, SeleniumWebDriver) is False:
-            Seldom.driver = Chrome(service=cService(ChromeDriverManager().install()))
         if self.url is not None:
-            log.info("📖 {}".format(self.url))
-            Seldom.driver.get(self.url)
-        else:
-            log.info("📖 {}".format(url))
-            Seldom.driver.get(url)
+            url = self.url
+
+        log.info(f"📖 {url}")
+        try:
+            self.browser.get(url)
+        except AttributeError:
+            raise RunningError(
+                "Muggle! Seldom running on Pycharm is not supported. You go See See: https://seldomqa.github.io/getting-started/quick_start.html")
+
         return self
 
     def max_window(self):
@@ -51,7 +65,7 @@ class Steps(object):
         Usage:
             max_window()
         """
-        Seldom.driver.maximize_window()
+        self.browser.maximize_window()
         return self
 
     def set_window(self, wide: int = 0, high: int = 0):
@@ -61,22 +75,16 @@ class Steps(object):
         Usage:
             .set_window(wide,high)
         """
-        Seldom.driver.set_window_size(wide, high)
+        self.browser.set_window_size(wide, high)
         return self
 
-    def find(self, css: str, index: int = 0):
+    def find(self, selector: str, index: int = 0):
         """
         find element
         """
-        if len(css) > 5 and css[:5] == "text=":
-            web_elem = WebElement(link_text=css[5:])
-        elif len(css) > 6 and css[:6] == "text*=":
-            web_elem = WebElement(partial_link_text=css[6:])
-        else:
-            web_elem = WebElement(css=css)
-        self.element_obj = elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
-        log.info("🔍 find {info}.".format(info=web_elem.info))
+        web_elem = WebElement(self.browser, selector=selector)
+        self.elem = web_elem.find(index, highlight=True)
+        log.info(f"🔍 {web_elem.info}.")
         return self
 
     def find_text(self, text: str, index: int = 0):
@@ -86,10 +94,9 @@ class Steps(object):
         Usage:
             find_text("新闻")
         """
-        web_elem = WebElement(link_text=text)
-        self.element_obj = elem = web_elem.get_elements(index)
-        web_elem.show_element(elem)
-        log.info("🔍 find {} text.".format(web_elem.info))
+        web_elem = WebElement(self.browser, link_text=text)
+        self.elem = web_elem.find(index, highlight=True)
+        log.info(f"🔍 find {web_elem.info} text.")
         return self
 
     def type(self, text):
@@ -97,7 +104,7 @@ class Steps(object):
         type text.
         """
         log.info(f"✅ input '{text}'.")
-        self.element_obj.send_keys(text)
+        self.elem.send_keys(text)
         return self
 
     def click(self):
@@ -105,7 +112,7 @@ class Steps(object):
         click.
         """
         log.info("✅ click.")
-        self.element_obj.click()
+        self.elem.click()
         return self
 
     def clear(self):
@@ -115,7 +122,7 @@ class Steps(object):
             clear()
         """
         log.info("✅ clear.")
-        self.element_obj.clear()
+        self.elem.clear()
         return self
 
     def submit(self):
@@ -125,7 +132,7 @@ class Steps(object):
             submit()
         """
         log.info("✅ submit.")
-        self.element_obj.submit()
+        self.elem.submit()
         return self
 
     def enter(self):
@@ -135,7 +142,7 @@ class Steps(object):
             enter()
         """
         log.info("✅ enter.")
-        self.element_obj.send_keys(Keys.ENTER)
+        self.elem.send_keys(Keys.ENTER)
         return self
 
     def move_to_click(self):
@@ -144,9 +151,8 @@ class Steps(object):
         Usage:
             move_to_click()
         """
-        elem = self.element_obj
         log.info("✅ Move to the element and click.")
-        ActionChains(Seldom.driver).move_to_element(elem).click(elem).perform()
+        ActionChains(self.browser).move_to_element(self.elem).click(self.elem).perform()
         return self
 
     def right_click(self):
@@ -156,9 +162,8 @@ class Steps(object):
         Usage:
             right_click()
         """
-        elem = self.element_obj
         log.info("✅ right click.")
-        ActionChains(Seldom.driver).context_click(elem).perform()
+        ActionChains(self.browser).context_click(self.elem).perform()
         return self
 
     def move_to_element(self):
@@ -168,9 +173,8 @@ class Steps(object):
         Usage:
             move_to_element()
         """
-        elem = self.element_obj
         log.info("✅ move to element.")
-        ActionChains(Seldom.driver).move_to_element(elem).perform()
+        ActionChains(self.browser).move_to_element(self.elem).perform()
         return self
 
     def click_and_hold(self):
@@ -181,9 +185,8 @@ class Steps(object):
             move_to_element()
         """
 
-        elem = self.element_obj
         log.info("✅ click and hold.")
-        ActionChains(Seldom.driver).click_and_hold(elem).perform()
+        ActionChains(self.browser).click_and_hold(self.elem).perform()
         return self
 
     def double_click(self):
@@ -193,9 +196,8 @@ class Steps(object):
         Usage:
             double_click()
         """
-        elem = self.element_obj
         log.info("✅ double click.")
-        ActionChains(Seldom.driver).double_click(elem).perform()
+        ActionChains(self.browser).double_click(self.elem).perform()
         return self
 
     def close(self):
@@ -205,7 +207,7 @@ class Steps(object):
         Usage:
             close()
         """
-        Seldom.driver.close()
+        self.browser.close()
         return self
 
     def quit(self):
@@ -215,7 +217,7 @@ class Steps(object):
         Usage:
             quit()
         """
-        Seldom.driver.quit()
+        self.browser.quit()
         return self
 
     def refresh(self):
@@ -226,7 +228,7 @@ class Steps(object):
             refresh()
         """
         log.info("🔄️ refresh page.")
-        Seldom.driver.refresh()
+        self.browser.refresh()
         return self
 
     def alert(self):
@@ -236,7 +238,7 @@ class Steps(object):
             alert()
         """
         log.info("🔍 alert.")
-        self.alert_obj = Seldom.driver.switch_to.alert
+        self.alert_obj = self.browser.switch_to.alert
         return self
 
     def accept(self):
@@ -258,7 +260,7 @@ class Steps(object):
             alert().dismiss()
         """
         log.info("✅ dismiss alert.")
-        Seldom.driver.switch_to.alert.dismiss()
+        self.browser.switch_to.alert.dismiss()
         return self
 
     def switch_to_frame(self):
@@ -268,9 +270,8 @@ class Steps(object):
         Usage:
             switch_to_frame()
         """
-        elem = self.element_obj
         log.info("✅  switch to frame.")
-        Seldom.driver.switch_to.frame(elem)
+        self.browser.switch_to.frame(self.elem)
         return self
 
     def switch_to_frame_out(self):
@@ -282,7 +283,7 @@ class Steps(object):
             switch_to_frame_out()
         """
         log.info("✅ switch to frame out.")
-        Seldom.driver.switch_to.default_content()
+        self.browser.switch_to.default_content()
         return self
 
     def switch_to_window(self, window: int):
@@ -295,9 +296,9 @@ class Steps(object):
         :Usage:
             switch_to_window(1)
         """
-        log.info("✅ switch to the {} window.".format(str(window)))
-        all_handles = Seldom.driver.window_handles
-        Seldom.driver.switch_to.window(all_handles[window])
+        log.info(f"✅ switch to the {window} window.")
+        all_handles = self.browser.window_handles
+        self.browser.switch_to.window(all_handles[window])
         return self
 
     def screenshots(self, file_path: str = None):
@@ -312,27 +313,26 @@ class Steps(object):
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
-            file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
+            file_path = os.path.join(img_dir, get_timestamp() + ".png")
         log.info(f"📷️  screenshot -> ({file_path}).")
-        Seldom.driver.save_screenshot(file_path)
+        self.browser.save_screenshot(file_path)
         return self
 
     def element_screenshot(self, file_path: str = None):
         """
-        Saves a element screenshot of the element to a PNG image file.
+        Saves the element screenshot of the element to a PNG image file.
 
         Usage:
             element_screenshot()
             element_screenshot(file_path='/Screenshots/foo.png')
         """
-        elem = self.element_obj
         if file_path is None:
             img_dir = os.path.join(os.getcwd(), "reports", "images")
             if os.path.exists(img_dir) is False:
                 os.mkdir(img_dir)
-            file_path = os.path.join(img_dir, str(time.time()).split(".")[0] + ".png")
+            file_path = os.path.join(img_dir, get_timestamp() + ".png")
         log.info(f"📷️ element screenshot -> ({file_path}).")
-        elem.screenshot(file_path)
+        self.elem.screenshot(file_path)
         return self
 
     def select(self, value: str = None, text: str = None, index: int = None):
@@ -355,24 +355,25 @@ class Steps(object):
             select(text='每页显示20条')
             select(index=2)
         """
-        elem = self.element_obj
         log.info("✅ select option.")
         if value is not None:
-            Select(elem).select_by_value(value)
+            Select(self.elem).select_by_value(value)
         elif text is not None:
-            Select(elem).select_by_visible_text(text)
+            Select(self.elem).select_by_visible_text(text)
         elif index is not None:
-            Select(elem).select_by_index(index)
+            Select(self.elem).select_by_index(index)
         else:
             raise ValueError(
                 '"value" or "text" or "index" options can not be all empty.')
         return self
 
-    def sleep(self, sec: int):
+    def sleep(self, sec: [int, tuple] = 1):
         """
         Usage:
             self.sleep(seconds)
         """
-        log.info("💤️ sleep: {}s.".format(str(sec)))
+        if isinstance(sec, tuple):
+            sec = random.randint(sec[0], sec[1])
+        log.info(f"💤️ sleep: {sec}s.")
         time.sleep(sec)
         return self

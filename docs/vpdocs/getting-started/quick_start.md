@@ -24,8 +24,7 @@ if __name__ == '__main__':
 
 1. 创建测试类`YouTest`并继承`seldom.TestCase`类。
 2. 创建测试方法`test_case`, 必须以`test`开头。
-3. `seldom.mian()`是框架运行的入口方法，接下来详细介绍。
-
+3. `seldom.main()`是框架运行的入口方法，接下来详细介绍。
 
 ### `main()` 方法
 
@@ -37,113 +36,278 @@ import seldom
 # ...
 
 if __name__ == '__main__':
-
     seldom.main(path="./",
+                case="test_file.MyClassTest.test_case",
                 browser="chrome",
                 base_url=None,
+                debug=False,
+                timeout=10,
+                app_server=None,
+                app_info=None,
                 report=None,
                 title="百度测试用例",
                 tester="虫师",
                 description="测试环境:chrome",
-                debug=False,
                 rerun=0,
-                save_last_run=False,
                 language="en",
-                timeout=None,
                 whitelist=[],
                 blacklist=[],
-                open=True
-    )
+                open=True,
+                extensions=None,
+                failfast=False,
+                env="test",
+                benchmark=False
+                )
 ```
 
 __参数说明__
 
+* `path` : 指定测试目录或文件， 与`case`参数互斥。`seldom > 3.7.0 支持 list 传多个目录或文件`。
+* `case` : 指定测试用例， 与`path`参数互斥。
+* `browser` : 指定浏览器（"chrome"、"firefox" 等）， Web测试。
+* `base_url` : 设置全局的基本URL， HTTP测试。
+* `app_info` : app 启动信息，参考`desired_capabilities`配置， app测试。
+* `app_server` : appium server 启动地址（默认 http://127.0.0.1:4723）， app测试。
+* `report` : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`。
+* `title` : 指定测试报告标题。
+* `tester` : 指定测试人员, 默认`Anonymous`。
+* `description` : 指定测试报告描述。
+* `debug` : debug模式，设置为True不生成测试HTML测试，默认为`False`。
+* `rerun` : 设置失败重新运行次数，默认为 `0`。
+* `language` : 设置HTML报告中英文，默认`en`, 中文`zh-CN`。
+* `timeout` : 设置超时时间，默认`10`秒。
+* `whitelist` :  用例标签（label）设置白名单。
+* `blacklist` :  用例标签（label）设置黑名单。
+* `open` :  是否使用浏览器自动打开测试报告，默认`True`。
+* `extensions`: 加载扩展，appium使用。
+* `failfast`: 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。
+* `env`: 设置运行环境变量。
+* `benchmark`: 是否进行基准测试。
 
-* path : 指定测试目录或文件， 与`case`参数互斥。
-* case : 指定测试用例， 与`path`参数互斥。
-* browser : 针对Web UI测试需要指定浏览器（"chrome"、"firefox" 等）。
-* base_url : 针对HTTP接口测试的参数，设置全局的URL。
-* report : 自定义测试报告的名称，默认格式为`2020_04_04_11_55_20_result.html`。
-* title : 指定测试报告标题。
-* tester : 指定测试人员, 默认`Anonymous`。
-* description : 指定测试报告描述。
-* debug : debug模式，设置为True不生成测试HTML测试，默认为`False`。
-* rerun : 设置失败重新运行次数，默认为 `0`。
-* save_last_run : 设置只保存最后一次的结果，默认为`False`。
-* language : 设置HTML报告中英文，默认`en`, 中文`zh-CN`。
-* timeout : 设置超时时间，默认`10`秒。
-* whitelist :  用例标签（label）设置白名单。
-* blacklist :  用例标签（label）设置黑名单。
-* open :  是否使用浏览器自动打开测试报告，默认`True`。
+### `confrun.py` 配置文件
+
+> seldom 3.1.0 提供过了 `confrun.py` 用于配置运行环境。 配置函数与 `seldom.main()` 的参数一致。
+
+在这个文件中可以定义运行相关的钩子函数。
+
+```py
+"""
+seldom confrun.py hooks function
+"""
+from seldom.appium_lab.android import UiAutomator2Options
+
+
+def start_run():
+    """
+    Test the hook function before running
+    """
+    ...
+
+
+def end_run():
+    """
+    Test the hook function after running
+    """
+    ...
+
+
+def browser():
+    """
+    Web UI test:
+    browser: gc(google chrome)/ff(firefox)/edge/ie/safari
+    """
+    return "gc"
+
+
+def base_url():
+    """
+    http test
+    api base url
+    """
+    return "http://httpbin.org"
+
+
+def app_info():
+    """
+    app UI test
+    appium app config
+    """
+    capabilities = {
+        "automationName": "UiAutomator2",
+        "platformName": "Android",
+        "appPackage": "com.meizu.flyme.flymebbs",
+        "appActivity": "com.meizu.myplus.ui.splash.SplashActivity",
+        "noReset": True,
+    }
+    options = UiAutomator2Options().load_capabilities(capabilities)
+    return options
+
+
+def app_server():
+    """
+    app UI test
+    appium server/desktop address
+    """
+    return "http://127.0.0.1:4723"
+
+
+def debug():
+    """
+    debug mod
+    """
+    return False
+
+
+def rerun():
+    """
+    error/failure rerun times
+    """
+    return 0
+
+
+def report():
+    """
+    setting report path
+    Used:
+    return "d://mypro/result.html"
+    return "d://mypro/result.xml"
+    """
+    return None
+
+
+def timeout():
+    """
+    setting timeout
+    """
+    return 10
+
+
+def title():
+    """
+    setting report title
+    """
+    return "seldom test report"
+
+
+def tester():
+    """
+    setting report tester
+    """
+    return "bugmaster"
+
+
+def description():
+    """
+    setting report description
+    """
+    return ["windows", "jenkins"]
+
+
+def language():
+    """
+    setting report language
+    return "en"
+    return "zh-CN"
+    """
+    return "en"
+
+
+def whitelist():
+    """test label white list"""
+    return []
+
+
+def blacklist():
+    """test label black list"""
+    return []
+
+
+def mock_url():
+    """
+    Replace the fixed url with the mock url
+    :return:
+    """
+    config = {
+        "http://httpbin.org/get": "http://127.0.0.1:8000/api/data",
+    }
+    return config
+
+
+def failfast():
+    """Use case exe failed to stop, only support debug=True"""
+    return False
+
+```
+
+以上配置根据需求自动化项目类型配置，相互可能冲突的钩子函数：
+
+* Web UI测试: `browser()`
+* http 接口测试: `base_url()`
+* app UI测试: `app_info()`, `app_server()`
+
+参数表格：
+
+| seldom.main() （参数） | confrun.py  (函数) | 类型   | 说明                                                   |
+|--------------------|------------------|------|------------------------------------------------------|
+| path               | -                | 通用   | 指定测试目录或文件， 与`case`参数互斥。                              |
+| case               | -                | 通用   | 指定测试用例， 与`path`参数互斥。                                 |
+| browser            | browser()        | Web  | 指定web测试运行的浏览器。                                       |
+| base_url           | base_url()       | HTTP | 指定HTTP接口测试的基本URL。                                    |
+| -                  | mock_url()       | HTTP | 配置HTTP接口 mock URL。                                   |
+| -                  | proxies()        | HTTP | 配置HTTP接口proxies代理。                                   |
+| app_info           | app_info()       | App  | app 启动信息，参考appium `desired_capabilities`配置， app测试。   |
+| app_server         | app_server()     | App  | appium server 启动地址（默认 http://127.0.0.1:4723）， app测试。 |
+| report             | report()         | 通用   | 自定义测试报告的名称，例如`result.html/result.xml`。               |
+| title              | title()          | 通用   | 指定HTML报告标题。                                          |
+| tester             | tester()         | 通用   | 指定HTML报告测试人员。                                        |
+| description        | description()    | 通用   | 指定HTML报告描述。                                          |
+| language           | language()       | 通用   | 设置HTML报告中英文，默认`en`, 中文`zh-CN`。                       |
+| debug              | debug()          | 通用   | debug模式，设置为True不生成测试HTML测试，默认为`False`。               |
+| rerun              | rerun()          | 通用   | 设置失败重新运行次数。                                          |
+| timeout            | timeout()        | 通用   | 设置自动化全局超时时间，默认`10`秒。作用于元素定位、断言等。                     |
+| whitelist          | whitelist()      | 通用   | 用例标签（label）设置白名单。                                    |
+| blacklist          | blacklist()      | 通用   | 用例标签（label）设置黑名单。                                    |
+| open               | -                | 通用   | 是否使用浏览器自动打开测试报告，默认`True`。                            |
+| extensions         | -                | App  | 加载扩展，appium使用。                                       |
+| failfast           | -                | 通用   | 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。                  |
+| env                | -                | 通用   | 设置运行环境变量。                                            |
+| benchmark          | -                | 通用   | 是否进行基准测试。                                            |
 
 ### 运行测试
 
-> seldom 强烈建议通过命令行工具执行
+seldom 的运行有三种方式：
 
-1. 运行当前文件中的用例
+* `main()` 方法：在`.py` 文件中使用`seldom.main()` 方法。
+* `seldom` 命令：通过`sedom` 命令指定要运行的目录&文件&类&方法。
+* ~~`pycharm`右键执行：这种方式无法读取到配置，有严重缺陷。~~
 
-创建 `test_sample.py` 文件，在要文件中使用`main()`方法，如下：
+> 强烈建议使用前两种！！
+
+__1. `main()`方法运行测试__
+
+* 目录结构
+
+```
+mypro/
+├── test_dir/
+│   ├── __init__.py
+│   ├── test_sample.py
+└── run.py  # 运行配置文件
+```
+
+创建 `test_sample.py` 文件，在测试文件中使用`main()`方法，如下：
 
 ```py
 # test_sample.py
 import seldom
+from seldom import data
 
 
 class YouTest(seldom.TestCase):
 
     def test_case(self):
         """a simple test case """
-        self.assertEqual(1+1, 2)
-
-
-if __name__ == '__main__':
-    seldom.main()  # 默认运行当前文件中的用例
-```
-
-`main()`方法默认运行当前文件中的所有用例。
-
-```shell
-> python test_sample.py      # 通过python命令运行
-> seldom -r test_sample.py   # 通过seldom命令运行
-```
-
-2. 指定运行目录、文件
-
-可以通过`path`参数指定要运行的目录或文件。
-
-```py
-# run.py
-import seldom
-
-seldom.main(path="./")  # 指定当前文件所在目录下面的用例。
-seldom.main(path="./test_dir/")  # 指定当前目录下面的test_dir/ 目录下面的用例。
-seldom.main(path="./test_dir/test_sample.py")  # 指定测试文件中的用例。
-seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")  # 指定文件的绝对路径。
-```
-
-* 运行文件
-
-```shell
-> python run.py
-```
-
-3. 指定单个类、方法执行
-
-可以通过`case`参数指定要运行文件、类和方法。
-
-> 注：如果指定了`case`参数，那么`path`参数将无效。
-
-```python
-# test_sample.py
-import seldom
-from seldom import data
-
-
-class TestCase(seldom.TestCase):
-
-    def test_case(self):
-        """ sample case """
-        pass
+        self.assertEqual(1 + 1, 2)
 
     @data([
         ("case1", "seldom"),
@@ -155,48 +319,81 @@ class TestCase(seldom.TestCase):
 
 
 if __name__ == '__main__':
+    # 运行当前文件中的用例
+    seldom.main()  # 默认运行当前文件中所有用例
     seldom.main(case="test_sample")  # 指定当前文件
-    seldom.main(case="test_sample.TestCase")  # 指定测试类
-    seldom.main(case="test_sample.TestCase.test_case")  # 指定测试用例
+    seldom.main(case="test_sample.YouTest")  # 指定测试类
+    seldom.main(case="test_sample.YouTest.test_case")  # 指定测试用例
 
     # 使用参数化的用例
-    seldom.main(case="test_sample.TestCase.test_ddt")  # 错误用法
-    seldom.main(case="test_sample.TestCase.test_ddt_0_case1")  # 正确用例
+    seldom.main(case="test_sample.YouTest.test_ddt")  # 错误用法
+    seldom.main(case="test_sample.YouTest.test_ddt_0")  # 正确用法，0表示第一条数据用例
 ```
 
-* 运行文件
+创建 `run.py` 文件，用于全局的指定要运行的用例。
+
+```python
+import seldom
+
+if __name__ == '__main__':
+    # 指定运行其他目录&文件
+    seldom.main(path="./")  # 指定当前文件所在目录下面的用例。
+    seldom.main(path="./test_dir/")  # 指定当前目录下面的test_dir/ 目录下面的用例。
+    seldom.main(path="./test_dir/test_sample.py")  # 指定测试文件中的用例。
+    seldom.main(path="D:/seldom_sample/test_dir/test_sample.py")  # 指定文件的绝对路径。
+
+```
+
+`seldom.main()` 提供哪些参数，请参考前面的文档。
+
+* 运行测试文件
 
 ```shell
-> python test_sample.py
+> cd mypro/  # 进入项目根目录
+> python ./test_dir/test_sample.py      # 运行指定测试文件
+> python run.py      # 运行run.py文件
 ```
 
-4. seldom命令指定单个类、方法
+__2. seldom命令执行__
+
+* 目录结构
+
+```
+mypro/
+├── test_dir/
+│   ├── __init__.py
+│   ├── test_sample.py
+└── confrun.py  # 运行配置文件
+```
+
+`seldom -p`命令指定目录和文件。
 
 `seldom -m`命令可以提供更细粒度的运行。
 
 ```shell
-> seldom -m test_sample # 运行 test_sample.py 文件
-> seldom -m test_sample.SampleTest # 运行 SampleTest 测试类
-> seldom -m test_sample.SampleTest.test_case # 运行 test_case 测试方法
+> cd mypro/  # 进入项目根目录
+> seldom -p test_dir  # 运行目录
+> seldom -p test_dir/test_sample.py  # 运行文件
+> seldom -m test_dir.test_sample       # 运行文件
+> seldom -m test_dir.test_sample.YouTest # 运行 SampleTest 测试类
+> seldom -m test_dir.test_sample.YouTest.test_case # 运行 test_case 测试方法
 ```
 
-> seldom命令指定类、方法有两个问题：
-> 1. 不支持poium，如果要使用，必须手动给`Seldom.driver` 赋值浏览器驱动。
-> 2. 如果是Web UI自动化测试，无法自动关闭浏览器，需要手动关闭浏览器`self.close()`
+运行相关的配置，可以在`confrun.py` 文件中配置。
 
+__3. 在pyCharm中运行测试__
 
-### 在pycharm中运行测试
+> 强烈不建议这种方式，除非你的测试用例没有任何依赖。
 
-1. 配置测试用例通过 unittest 运行。
+步骤一：配置测试用例通过 unittest 运行。
 
 ![](/image/pycharm.png)
 
-2. 在文件中选择测试类或用例执行。
+步骤二：在文件中选择测试类或用例执行。
 
-![](/image/pycharm_run_case.png) 
+![](/image/pycharm_run_case.png)
 
 > 警告：运行用例打开的浏览器，需要手动关闭， seldom不做用例关闭操作。
-
 
 ### 失败重跑
 
@@ -209,24 +406,22 @@ import seldom
 
 class YouTest(seldom.TestCase):
 
-  
     def test_error(self):
         """error case"""
         self.assertEqual(a, 2)
 
     def test_fail(self):
         """fail case """
-        self.assertEqual(1+1, 3)
+        self.assertEqual(1 + 1, 3)
 
 
 if __name__ == '__main__':
-    seldom.main(rerun=3, save_last_run=False)
+    seldom.main(rerun=3)
 ```
 
 参数说明：
 
 * rerun: 指定重跑的次数，默认为 `0`。
-* save_last_run: 设置是否只保存最后一次运行结果，默认为`False`。
 
 运行日志：
 
@@ -238,13 +433,12 @@ if __name__ == '__main__':
    ________  / /___/ /___  ____ ____
   / ___/ _ \/ / __  / __ \/ __ ` ___/
  (__  )  __/ / /_/ / /_/ / / / / / /
-/____/\___/_/\__,_/\____/_/ /_/ /_/  v2.x.x
+/____/\___/_/\__,_/\____/_/ /_/ /_/  v3.x.x
 -----------------------------------------
                              @itest.info
 
 
 
-.\test_sample.py
 
 XTestRunner Running tests...
 
@@ -285,7 +479,6 @@ mypro/
 
 ![](/image/report.png)
 
-
 __debug模式__
 
 如果不想每次运行都生成HTML报告，可以打开`debug`模式。
@@ -297,7 +490,6 @@ seldom.main(debug=True)
 ```
 
 __定义测试报告__
-
 
 ```py
 import seldom
@@ -321,5 +513,84 @@ __XML测试报告__
 import seldom
 
 seldom.main(report="report.xml")
+```
+
+### 多线程运行
+
+多线程无疑可以缩短用例的运行时间，一般由两种方式实现。
+
+1. 设置线程数，交由框架去分配用例，或按照测试用例、测试类、测试模块分配给线程执行。
+
+* 优点：简单，例如 pytest-xdist ，只需要指定 `线程数` 即可。
+* 缺点：无法控制用例的拆分粒度，如果在设计用例时，不同的用例有依赖，刚好被分到的不同的线程，那么必定导致用例失败。
+
+2. 自己分好线程，分别调用框架执行。
+
+* 优点：手动划分线程，可以按照目录、文件、甚至测试类或方法 拆分线程。
+* 缺点：首先会比较麻烦，而且多个线程的执行结果无法很好的合并到一起。
+
+seldom 推荐第二种方法，把线程的划分方式交给用户，无疑是更灵活的方法。至于报告的合并统计就每有什么好办法了。
+
+* 用例维度使用多线程。
+
+```python
+import seldom
+from seldom.extend_lib import threads
+
+
+class MyTest(seldom.TestCase):
+
+    def test_baidu(self):
+        self.open("https://www.baidu.com")
+        self.sleep(3)
+
+    def test_bing(self):
+        self.open("https://www.bing.com")
+        self.sleep(4)
+
+
+@threads(2)  # !!!核心!!!! 设置线程数
+def run_case(case: str, browser: str):
+    """
+    根据传入的case执行用例
+    """
+    seldom.main(case=case, browser=browser, debug=True)
+
+
+if __name__ == "__main__":
+    # 将两条用例拆分，分别用不同的浏览器执行
+    cases = {
+        "test_thread_case.MyTest.test_baidu": "chrome",
+        "test_thread_case.MyTest.test_bing": "edge"
+    }
+
+    for key, value in cases.items():
+        run_case(key, value)
+```
+
+* 目录或文件维度使用多线程。
+
+```python
+import seldom
+from seldom.extend_lib import threads
+
+
+@threads(3)  # !!!核心!!!! 设置线程数
+def run_case(path: str):
+    """
+    根据传入的path执行用例
+    """
+    seldom.main(path=path, debug=True)
+
+
+if __name__ == "__main__":
+    # 定义3个测试文件，分别丢给3个线程执行。
+    paths = [
+        "./test_dir/more_case/test_case1.py",
+        "./test_dir/more_case/test_case2.py",
+        "./test_dir/more_case/test_case3.py"
+    ]
+    for p in paths:
+        run_case(p)
 ```
 

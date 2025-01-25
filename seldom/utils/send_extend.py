@@ -1,13 +1,22 @@
+"""
+send message file
+"""
 import os
-from XTestRunner import SMTP as XSMTP
+
 from XTestRunner import DingTalk as XDingTalk
+from XTestRunner import FeiShu as XFeiShu
+from XTestRunner import SMTP as XSMTP
+from XTestRunner import Weinxin as XWeinxin
+from XTestRunner.config import RunResult as XRunResult
+
 from seldom.running.config import BrowserConfig
 from seldom.utils import file
 
 
 class SMTP(XSMTP):
+    """send email class"""
 
-    def sendmail(self, to, subject=None, attachments=None, delete=False):
+    def sendmail(self, to: [str, list], subject: str = None, attachments: str = None, delete: bool = False) -> None:
         """
         seldom send email
         :param to:
@@ -25,11 +34,29 @@ class SMTP(XSMTP):
             file.remove(BrowserConfig.REPORT_PATH)
             is_exist = os.path.isfile(BrowserConfig.LOG_PATH)
             if is_exist is True:
-                with open(BrowserConfig.LOG_PATH, "r+") as f:
-                    f.truncate(0)
+                with open(BrowserConfig.LOG_PATH, "r+", encoding="utf-8") as log_file:
+                    log_file.truncate(0)
 
 
 class DingTalk(XDingTalk):
     """
     send dingtalk, Inherit XTestRunner DingTalk Class
+    """
+
+
+class FeiShu(XFeiShu):
+    """
+    send FeiShu, Inherit XTestRunner FeiShu Class
+    """
+
+
+class Weinxin(XWeinxin):
+    """
+    send weixin, Inherit XTestRunner weixin Class
+    """
+
+
+class RunResult(XRunResult):
+    """
+    XTestRunner Test run results
     """

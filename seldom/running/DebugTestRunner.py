@@ -1,9 +1,14 @@
-import re
+"""
+Run tests in debug mode
+"""
 import unittest
 import functools
+from seldom.utils.benchmark import benchmark
+from seldom.running.config import Seldom
 
 
 class DebugTestRunner(unittest.TextTestRunner):
+    """Debug test runner"""
 
     def __init__(self, *args, **kwargs):
         """
@@ -51,6 +56,7 @@ class DebugTestRunner(unittest.TextTestRunner):
                 @functools.wraps(test_method)
                 def skip_wrapper(*args, **kwargs):
                     raise unittest.SkipTest('label exclusion')
+
                 skip_wrapper.__unittest_skip__ = True
                 if len(self.whitelist) >= 1:
                     skip_wrapper.__unittest_skip_why__ = f'label whitelist {self.whitelist}'
@@ -61,37 +67,11 @@ class DebugTestRunner(unittest.TextTestRunner):
             suite.addTest(test)
 
         # Resume normal TextTestRunner function with the new test suite
+        if Seldom.benchmark is True:
+            result = super(DebugTestRunner, self).run(suite)
+
+            benchmark.report()
+
+            return result
+        
         super(DebugTestRunner, self).run(suite)
-
-
-if __name__ == '__main__':
-    import argparse
-
-    # ---- create commandline parser
-    parser = argparse.ArgumentParser(description='Find and run cqparts tests.')
-
-    def label_list(value):
-        return re.split(r'\W+', value)
-
-    parser.add_argument('-w', '--whitelist', dest='whitelist',
-                        type=label_list, default=[],
-                        help="list of labels to test (skip all others)")
-    parser.add_argument('-b', '--blacklist', dest='blacklist',
-                        type=label_list, default=[],
-                        help="list of labels to skip")
-
-    args = parser.parse_args()
-
-    # ---- Discover and run tests
-
-    # Discover Tests
-    loader = unittest.TestLoader()
-    tests = loader.discover('.', pattern='test_*.py')
-
-    # Run tests
-    testRunner = DebugTestRunner(
-        blacklist=args.blacklist,
-        whitelist=args.whitelist,
-        verbosity=2,
-    )
-    testRunner.run(tests)

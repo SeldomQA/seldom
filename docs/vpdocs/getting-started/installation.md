@@ -23,18 +23,17 @@ seldom的安装非常简单。
 随着seldom 加入更多的功能，seldom不得不依赖其他的开源库。你可以在 requirements.txt 文件里面看到这些依赖。
 
 ```shell
-selenium>=4.0.0
-XTestRunner>=1.4.2
-parameterized==0.8.1
-loguru==0.6.0
+Appium-Python-Client>=4.1.0
+XTestRunner>=1.7.2
+loguru>=0.7.0
 openpyxl>=3.0.3
-pyyaml>=5.1
-requests>=2.22.0
-jsonschema>=3.2.0
+pyyaml>=6.0
+jsonschema>=4.10.0
 jmespath>=0.10.0
-webdriver-manager==3.7.0
 pymysql>=1.0.0
 genson==1.2.2
+click~=8.1.3
+python-dateutil==2.8.2
 ```
 
 先通过 `pip` 命令安装这些依赖库，可以加快seldom的安装。
@@ -51,14 +50,13 @@ genson==1.2.2
 > pip show seldom
 
 Name: seldom
-Version: 2.xx.xx
-Summary: WebUI/HTTP automation testing framework based on unittest.
-Home-page: https://github.com/seldomQA/seldom/
+Version: 3.x.x
+Summary: Seldom automation testing framework based on unittest.
+Home-page: https://seldomqa.github.io
 Author: bugmaster
 Author-email: fnngj@126.com
-License: BSD
-Location: c:\python38\lib\site-packages
-Requires: genson, jmespath, jsonschema, loguru, openpyxl, parameterized, pymysql, pyyaml, requests, selenium, webdriver-manager, XTestRunner
+License: Apache-2.0
+Location: C:\Python311\Lib\site-packages
+Requires:  Appium-Python-Client, click, genson, jmespath, jsonschema, loguru, openpyxl, pymysql, python-dateutil, pyyaml, requests, websocket-client, XTestRunner
 Required-by:
-
 ```

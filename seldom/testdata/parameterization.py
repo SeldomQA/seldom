@@ -1,46 +1,52 @@
-import os
+"""
+test data driver function
+"""
 import inspect as sys_inspect
+import itertools
+import os
 import warnings
-import requests
 from functools import wraps
-from parameterized.parameterized import inspect
-from parameterized.parameterized import parameterized
-from parameterized.parameterized import skip_on_empty_helper
-from parameterized.parameterized import reapply_patches_if_need
-from parameterized.parameterized import delete_patches_if_need
-from parameterized.parameterized import parameterized_argument_value_pairs
-from parameterized.parameterized import short_repr
-from parameterized.parameterized import to_text
-from parameterized import parameterized_class
-from seldom.testdata import conversion
-from seldom.logging.exceptions import FileTypeError
-from seldom.testdata.conversion import _check_data
-from seldom.utils import jmespath as utils_jmespath
-from seldom import Seldom
+from pathlib import Path
 
+import requests
+
+from seldom.running.config import Seldom
+from seldom.extend_lib import parameterized_class
+from seldom.extend_lib.parameterized import delete_patches_if_need
+from seldom.extend_lib.parameterized import inspect
+from seldom.extend_lib.parameterized import parameterized
+from seldom.extend_lib.parameterized import parameterized_argument_value_pairs
+from seldom.extend_lib.parameterized import reapply_patches_if_need
+from seldom.extend_lib.parameterized import short_repr
+from seldom.extend_lib.parameterized import skip_on_empty_helper
+from seldom.extend_lib.parameterized import to_text
+from seldom.logging import log
+from seldom.logging.exceptions import FileTypeError
+from seldom.testdata import conversion
+from seldom.utils import jmespath as utils_jmespath
 
 __all__ = [
     "file_data", "api_data", "data", "data_class"
 ]
 
 
-def _find_file_path(file_dir, file_name):
+def _search_file_path(file_name: str, file_dir: Path) -> str:
     """
     find file path
-    :param file_dir:
     :param file_name:
+    :param file_dir:
     """
-    file_path = None
-    find_dir = os.path.dirname(os.path.dirname(file_dir))
+    file_path = ""
+    find_root_dir = file_dir.parent.parent
 
-    for root, dirs, files in os.walk(find_dir, topdown=False):
-        for f in files:
+    for root, _, files in os.walk(find_root_dir, topdown=False):
+        for file in files:
             if Seldom.env is not None:
-                if root.endswith(Seldom.env) and f == file_name:
+                if root.endswith(Seldom.env) and file == file_name:
                     file_path = os.path.join(root, file_name)
                     break
             else:
-                if f == file_name:
+                if file == file_name:
                     file_path = os.path.join(root, file_name)
                     break
         else:
@@ -50,20 +56,20 @@ def _find_file_path(file_dir, file_name):
     return file_path
 
 
-def _find_env_file_path(file_dir, file_part_path):
+def _search_env_file_path(file_dir: Path, file_part_path: str) -> str:
     """
-    find environment file path
+    find environment file path, Seldom.env != None
     :param file_dir:
     :param file_part_path:
     """
-    file_path = None
-    find_dir = os.path.dirname(file_dir)
+    file_path = ""
+    find_root_dir = file_dir.parent
     file_name = file_part_path.split("/")[-1]
     file_part = os.path.join(Seldom.env, file_part_path[:-len(file_name) - 1])
 
-    for root, dirs, files in os.walk(find_dir, topdown=False):
-        for f in files:
-            if root.endswith(file_part) and f == file_name:
+    for root, _, files in os.walk(find_root_dir, topdown=False):
+        for file in files:
+            if root.endswith(file_part) and file == file_name:
                 file_path = os.path.join(root, file_name)
                 break
         else:
@@ -73,53 +79,42 @@ def _find_env_file_path(file_dir, file_part_path):
     return file_path
 
 
-def find_file(file: str, file_dir: str):
+def find_file(file: str, file_dir: Path) -> str:
     """
     find file
     :param file:
     :param file_dir:
     """
     if os.path.isfile(file) is True:
-        file_path = file
-    elif "/" in file or "\\" in file:
+        return file
+
+    if "/" in file or "\\" in file:
+        file = file.replace("\\", "/")
+
         if Seldom.env is not None:
-            file_path = _find_env_file_path(file_dir=file_dir, file_part_path=file)
-            if file_path is None:
-                return None
+            file_path = _search_env_file_path(file_dir=file_dir, file_part_path=file)
+            return file_path
         else:
-            file = file.replace("\\", "/")
-            current_dir = os.path.join(file_dir, file)
-            parent_dir = os.path.join(os.path.dirname(file_dir), file)
-            parent_dir_dir = os.path.join(os.path.dirname(os.path.dirname(file_dir)), file)
-            parent_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file_dir))), file)
-            parent_dir_dir_dir_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))), file)
-
-            if os.path.isfile(current_dir) is True:
-                file_path = current_dir
-            elif os.path.isfile(parent_dir) is True:
-                file_path = parent_dir
-            elif os.path.isfile(parent_dir_dir) is True:
-                file_path = parent_dir_dir
-            elif os.path.isfile(parent_dir_dir_dir) is True:
-                file_path = parent_dir_dir_dir
-            elif os.path.isfile(parent_dir_dir_dir_dir) is True:
-                file_path = parent_dir_dir_dir_dir
+            # Starting at file_dir, search up the 5 levels of parent directories
+            for _ in range(5):
+                current_dir = os.path.join(file_dir, file)
+                if os.path.isfile(current_dir):
+                    return current_dir
+                file_dir = file_dir.parent  # Move up to the parent directory
             else:
-                return None
+                return ""
     else:
-        file_path = _find_file_path(file_dir=file_dir, file_name=file)
-        if file_path is None:
-            return None
-
-    return file_path
+        file_path = _search_file_path(file_dir=file_dir, file_name=file)
+        return file_path
 
 
-def file_data(file, line=1, sheet="Sheet1", key=None):
+def file_data(file: str, line: int = 1, sheet: str = "Sheet1", key: str = None, end_line: int = None):
     """
     Support file parameterization.
 
     :param file: file name
-    :param line:  Line number of an Excel/CSV file
+    :param line: Start line number of an Excel/CSV file
+    :param end_line:  End line number of an Excel/CSV file
     :param sheet: Excel sheet name
     :param key: Key name of an YAML/JSON file
 
@@ -143,32 +138,40 @@ def file_data(file, line=1, sheet="Sheet1", key=None):
 
     stack_t = sys_inspect.stack()
     ins = sys_inspect.getframeinfo(stack_t[1][0])
-    file_dir = os.path.dirname(os.path.abspath(ins.filename))
+    file_dir = Path(ins.filename).resolve().parent
+
+    if Seldom.env is not None:
+        log.info(f"env: '{Seldom.env}', find data file: '{file}'")
+    else:
+        log.info(f"find data file: {file}")
 
     file_path = find_file(file, file_dir)
-    if file_path is None:
+    if file_path == "":
+        if Seldom.env is not None:
+            raise FileExistsError(f"No '{Seldom.env}/{file}' data file found.")
         raise FileExistsError(f"No '{file}' data file found.")
 
     suffix = file.split(".")[-1]
     if suffix == "csv":
-        data_list = conversion.csv_to_list(file_path, line=line)
+        data_list = conversion.csv_to_list(file_path, line=line, end_line=end_line)
     elif suffix == "xlsx":
-        data_list = conversion.excel_to_list(file_path, sheet=sheet, line=line)
+        data_list = conversion.excel_to_list(file_path, sheet=sheet, line=line, end_line=end_line)
     elif suffix == "json":
         data_list = conversion.json_to_list(file_path, key=key)
     elif suffix == "yaml":
         data_list = conversion.yaml_to_list(file_path, key=key)
     else:
-        raise FileTypeError("Your file is not supported: {}".format(file))
+        raise FileTypeError(f"Your file is not supported: {file}")
 
     return data(data_list)
 
 
-def api_data(url: str = None, params: dict = None, ret: str = None):
+def api_data(url: str = None, params: dict = None, headers: dict = None, ret: str = None):
     """
     Support api data parameterization.
     :param url:
     :param params:
+    :param headers:
     :param ret:
     :return:
     """
@@ -177,24 +180,22 @@ def api_data(url: str = None, params: dict = None, ret: str = None):
         raise ValueError("url is not None")
 
     url = url if url is not None else Seldom.api_data_url
-    resp = requests.get(url, params=params).json()
+    resp = requests.get(url, params=params, headers=headers).json()
 
     if ret is not None:
         data_ = utils_jmespath(resp, ret)
         if data_ is None:
             raise ValueError(f"Error - return {ret} is None in {resp}")
-        elif isinstance(data_, list) is False:
+        if isinstance(data_, list) is False:
             raise TypeError(f"Error - {data_} is not list")
-        else:
-            return data(data_)
-    else:
-        if isinstance(resp, list) is False:
-            raise TypeError(f"Error - {resp} is not list")
-        else:
-            return data(resp)
+        return data(data_)
+
+    if isinstance(resp, list) is False:
+        raise TypeError(f"Error - {resp} is not list")
+    return data(resp)
 
 
-def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
+def data(input, name_func=None, doc_func=None, skip_on_empty=False, cartesian=False, **legacy):
     """ A "brute force" method of parameterizing test cases. Creates new
         test cases and injects them into the namespace that the wrapped
         function is being defined in. Useful for parameterizing tests in
@@ -209,7 +210,10 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
         ... 'test_add1_foo_0': <function ...> ...
         >>
         """
-    input = _check_data(input)
+    if cartesian is True:
+        input = cartesian_product(input)
+
+    input = conversion.check_data(input)
 
     if "testcase_func_name" in legacy:
         warnings.warn("testcase_func_name= is deprecated; use name_func=",
@@ -260,11 +264,11 @@ def data(input, name_func=None, doc_func=None, skip_on_empty=False, **legacy):
     return parameterized_expand_wrapper
 
 
-def data_class(attrs, input_values):
+def data_class(attrs, input_values=None, class_name_func=None):
     """
     Parameterizes a test class by setting attributes on the class.
     """
-    return parameterized_class(attrs, input_values)
+    return parameterized_class(attrs, input_values=input_values, class_name_func=class_name_func)
 
 
 def default_name_func(func, num, p):
@@ -272,7 +276,7 @@ def default_name_func(func, num, p):
     return test function name
     """
     base_name = func.__name__
-    name_suffix = "_%s" %(num, )
+    name_suffix = f"_{num}"
 
     if len(p.args) > 0 and isinstance(p.args[0], str):
         # name_suffix += "_" + parameterized.to_safe_name(p.args[0])
@@ -291,7 +295,7 @@ def default_doc_func(func, num, p):
     first_args_with_values = [all_args_with_values[0]]
 
     # Assumes that the function passed is a bound method.
-    descs = ["%s=%s" %(n, short_repr(v)) for n, v in first_args_with_values]
+    descs = ["%s=%s" % (n, short_repr(v)) for n, v in first_args_with_values]
 
     # The documentation might be a multiline string, so split it
     # and just work with the first string, ignoring the period
@@ -301,8 +305,18 @@ def default_doc_func(func, num, p):
     if first.endswith("."):
         suffix = "."
         first = first[:-1]
-    args = "%s[%s]" %(len(first) and " " or "", ", ".join(descs))
+    args = "%s[%s]" % (len(first) and " " or "", ", ".join(descs))
     return "".join(
         to_text(x)
         for x in [first.rstrip(), args, suffix, nl, rest]
     )
+
+
+def cartesian_product(arr) -> list:
+    """
+    Cartesian product
+    :param arr: Two-dimensional list
+    return:
+    """
+    cp = list(itertools.product(*arr))
+    return cp

@@ -28,9 +28,8 @@ from .skip import *
 from .driver import *
 from .testdata.parameterization import *
 
-
 __author__ = "bugmaster"
 
-__version__ = "2.10.6"
+__version__ = "3.12.0"
 
-__description__ = "WebUI/HTTP automation testing framework based on unittest."
+__description__ = "Seldom is an automation testing framework based on unittest."

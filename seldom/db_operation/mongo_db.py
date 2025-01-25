@@ -1,12 +1,16 @@
+"""
+Mongo DB API
+"""
 try:
     from pymongo import MongoClient
-except ModuleNotFoundError:
+except ModuleNotFoundError as e:
     raise ModuleNotFoundError("Please install the library. https://github.com/mongodb/mongo-python-driver")
 
 
 class MongoDB:
+    """Mongo DB table API"""
 
-    def __new__(cls, host, port, db):
+    def __new__(cls, host: str, port: int, db: str):
         """
         Connect the mongodb database
         """
@@ -21,5 +25,3 @@ if __name__ == '__main__':
     print("collection list: ", col)
     data = mongo_db.project.find_one()
     print("table one data:", data)
-
-

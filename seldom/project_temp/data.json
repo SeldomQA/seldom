@@ -1,0 +1,28 @@
+{
+  "bing": [
+    [
+      "case1",
+      "seldom"
+    ],
+    [
+      "case2",
+      "poium"
+    ],
+    [
+      "case3",
+      "XTestRunner"
+    ]
+  ],
+  "api": [
+    {
+      "case": "case1",
+      "id": 1,
+      "name": "tom"
+    },
+    {
+      "case": "case2",
+      "id": 2,
+      "name": "jack"
+    }
+  ]
+}

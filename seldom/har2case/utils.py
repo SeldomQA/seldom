@@ -1,7 +1,10 @@
+"""
+har to case utils
+"""
 import io
 import sys
 import json
-import logging
+from seldom.logging import log
 
 
 def load_har_log_entries(file_path):
@@ -24,12 +27,12 @@ def load_har_log_entries(file_path):
             ]
 
     """
-    with io.open(file_path, "r+", encoding="utf-8-sig") as f:
+    with io.open(file_path, "r+", encoding="utf-8-sig") as file:
         try:
-            content_json = json.loads(f.read())
+            content_json = json.loads(file.read())
             return content_json["log"]["entries"]
         except (KeyError, TypeError):
-            logging.error("HAR file content error: {}".format(file_path))
+            log.error(f"HAR file content error: {file_path}")
             sys.exit(1)
 
 

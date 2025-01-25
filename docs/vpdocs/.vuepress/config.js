@@ -1,28 +1,38 @@
+import { searchPlugin } from '@vuepress/plugin-search'
+import { backToTopPlugin } from '@vuepress/plugin-back-to-top'
+import { defaultTheme } from "@vuepress/theme-default"
+
+
 module.exports = {
   title: "seldom文档",
-  description: "基于unittest 的 Web UI/HTTP自动化测试框架。",
+  description: "seldom 是基于unittest 的自动化测试框架。",
   base: "/",
-  plugins: [
+  head: [
     [
-      "@vuepress/plugin-search",
-      {
-        locales: {
-          "/": {
-            placeholder: "Search",
-          },
-          "/zh/": {
-            placeholder: "搜索",
-          },
-        },
-         isSearchable: (page) => page.path !== '/',
-      },
-    ],
+      'link', { rel: 'icon', href: '/logo.jpeg' }
+    ]
   ],
-  themeConfig: {
+  plugins: [
+    searchPlugin({
+      locales: {
+        '/': {
+          placeholder: 'Search',
+        },
+        '/zh/': {
+          placeholder: '搜索',
+        },
+      },
+    }),
+    backToTopPlugin(),
+  ],
+  theme: defaultTheme({
     repo: "SeldomQA/seldom",
     docsBranch: "vuepress-docs/docs/vpdocs",
     logo: "/logo.jpeg",
-    navbar: [{ text: "指南", link: "/introduce" }],
+    navbar: [
+        { text: "介绍", link: "/introduce" },
+        { text: "安装", link: "/getting-started/installation" },
+    ],
     sidebar: [
       "/introduce",
       {
@@ -33,6 +43,8 @@ module.exports = {
           "/getting-started/quick_start",
           "/getting-started/advanced",
           "/getting-started/data_driver",
+          "/getting-started/dependent_func",
+          "/getting-started/seldom_cli",
         ],
       },
       {
@@ -41,7 +53,17 @@ module.exports = {
           "/web-testing/browser_driver",
           "/web-testing/seldom_api",
           "/web-testing/chaining",
+          "/web-testing/page_object",
           "/web-testing/other",
+        ],
+      },
+      {
+        text: "App UI 测试",
+        children: [
+          "/app-testing/start",
+          "/app-testing/appium_lab",
+          "/app-testing/page_object",
+          "/app-testing/extensions",
         ],
       },
       {
@@ -49,15 +71,25 @@ module.exports = {
         children: [
           "/api-testing/start",
           "/api-testing/assert",
+          "/api-testing/api_object",
           "/api-testing/more",
+          "/api-testing/api_case",
+          "/api-testing/webscocket",
         ],
       },
-      "/db/db_operation",
+      {
+        text: "更多能力",
+        children: [
+          "/more-ability/db_operation",
+          "/more-ability/test_library",
+          "/more-ability/benchmark",
+        ],
+      },
       "/platform/platform",
       "/version/CHANGES",
     ],
     editLinks: true,
     editLinkText: "在 GitHub 上编辑此页",
     lastUpdated: "上次更新",
-  },
+  })
 };

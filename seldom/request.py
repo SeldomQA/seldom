@@ -1,13 +1,26 @@
+"""
+seldom requests
+"""
+import ast
+import time
 import json
-import warnings
 from typing import Any
+from functools import wraps
 import requests
 from seldom.running.config import Seldom
+from seldom.running.loader_hook import loader
 from seldom.logging import log
-from seldom.utils import jsonpath as utils_jsonpath
 from seldom.utils import jmespath as utils_jmespath
+from seldom.extend_lib import jsonpath as lib_jsonpath
+from seldom.extend_lib import to_curl
 
 IMG = ["jpg", "jpeg", "gif", "bmp", "webp"]
+
+
+class ResponseResult:
+    status_code = 200
+    response = None
+    request = None
 
 
 def formatting(msg):
@@ -18,15 +31,14 @@ def formatting(msg):
 
 
 def request(func):
-
     def wrapper(*args, **kwargs):
         func_name = func.__name__
-        log.info('\n-------------- Request -----------------[🚀]')
+        log.info('-------------- [📤] Request -----------------')
         try:
             url = list(args)[1]
         except IndexError:
             url = kwargs.get("url", "")
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
 
         img_file = False
@@ -34,35 +46,39 @@ def request(func):
         if file_type in IMG:
             img_file = True
 
-        log.info("[method]: {m}      [url]: {u} ".format(m=func_name.upper(), u=url))
-        auth = kwargs.get("auth", "")
-        headers = kwargs.get("headers", "")
-        cookies = kwargs.get("cookies", "")
-        params = kwargs.get("params", "")
-        data = kwargs.get("data", "")
-        json_ = kwargs.get("json", "")
-        if auth != "":
-            log.debug(f"[auth]:\n {auth}")
-        if headers != "":
-            log.debug(f"[headers]:\n {formatting(headers)}")
-        if cookies != "":
-            log.debug(f"[cookies]:\n {formatting(cookies)}")
-        if params != "":
-            log.debug(f"[params]:\n {formatting(params)}")
-        if data != "":
-            log.debug(f"[data]:\n {formatting(data)}")
-        if json_ != "":
-            log.debug(f"[json]:\n {formatting(json_)}")
+        log.info(f"[method]: {func_name.upper()}      [url]: {url} ")
+        auth = kwargs.get("auth", None)
+        headers = kwargs.get("headers", None)
+        cookies = kwargs.get("cookies", None)
+        params = kwargs.get("params", None)
+        data = kwargs.get("data", None)
+        json_ = kwargs.get("json", None)
+        files = kwargs.get("files", None)
+        if auth is not None:
+            log.debug(f"[auth]:\n{auth}")
+        if headers is not None:
+            log.debug(f"[headers]:\n{formatting(headers)}")
+        if cookies is not None:
+            log.debug(f"[cookies]:\n{formatting(cookies)}")
+        if params is not None:
+            log.debug(f"[params]:\n{formatting(params)}")
+        if data is not None:
+            log.debug(f"[data]:\n{formatting(data)}")
+        if json_ is not None:
+            log.debug(f"[json]:\n{formatting(json_)}")
+        if files is not None:
+            log.debug(f"[files]:\n{files}")
 
         # running function
         r = func(*args, **kwargs)
 
+        ResponseResult.request = r.request
         ResponseResult.status_code = r.status_code
-        log.info("-------------- Response ----------------[🛬️]")
+        log.info("-------------- [📨] Response ----------------")
         if ResponseResult.status_code == 200 or ResponseResult.status_code == 304:
-            log.info("successful with status {}".format(str(ResponseResult.status_code)))
+            log.info(f"successful with status {ResponseResult.status_code}")
         else:
-            log.warning("unsuccessful with status {}".format(str(ResponseResult.status_code)))
+            log.warning(f"unsuccessful with status {ResponseResult.status_code}")
         resp_time = r.elapsed.total_seconds()
         try:
             resp = r.json()
@@ -70,12 +86,13 @@ def request(func):
             log.debug(f"[response]:\n {formatting(resp)}")
             ResponseResult.response = resp
         except BaseException as msg:
-            log.debug(f"[warning]: failed to convert res to json, try to convert to text")
+            log.debug("[warning]: failed to convert res to json, try to convert to text")
             log.trace(f"[warning]: {msg}")
             if img_file is True:
                 log.debug(f"[type]: {file_type}      [time]: {resp_time}")
                 ResponseResult.response = r.content
             else:
+                r.encoding = 'utf-8'
                 log.debug(f"[type]: text      [time]: {resp_time}")
                 log.debug(f"[response]:\n {r.text}")
                 ResponseResult.response = r.text
@@ -85,42 +102,84 @@ def request(func):
     return wrapper
 
 
-class ResponseResult:
-    status_code = 200
-    response = None
+def mock_url(url: str) -> str:
+    """
+    If the mock hook is set, replace it with the mock url
+    :param url:
+    """
+    configs = loader("mock_url") if loader("mock_url") is not None else None
+    if configs is None:
+        return url
+
+    replace_url = configs.get(url, "")
+    if replace_url == "":
+        return url
+
+    log.debug(f"mock url: {replace_url}")
+    return replace_url
 
 
-class HttpRequest(object):
+def check_proxies() -> [dict, None]:
+    """
+    check http proxies
+    """
+    configs = loader("proxies") if loader("proxies") is not None else None
+    return configs
+
+
+class HttpRequest:
+    """seldom http request class"""
 
     @request
     def get(self, url, params=None, **kwargs):
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        return requests.get(url, params=params, **kwargs)
+        url = mock_url(url)
+        if kwargs.get('proxies', None) is None:
+            kwargs["proxies"] = check_proxies()
+        return requests.get(url, params=params, timeout=Seldom.timeout, **kwargs)
 
     @request
     def post(self, url, data=None, json=None, **kwargs):
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        return requests.post(url, data=data, json=json, **kwargs)
+        url = mock_url(url)
+        if kwargs.get("proxies", None) is None:
+            kwargs["proxies"] = check_proxies()
+        return requests.post(url, data=data, json=json, timeout=Seldom.timeout, **kwargs)
 
     @request
     def put(self, url, data=None, **kwargs):
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        return requests.put(url, data=data, **kwargs)
+        url = mock_url(url)
+        if kwargs.get("proxies", None) is None:
+            kwargs["proxies"] = check_proxies()
+        return requests.put(url, data=data, timeout=Seldom.timeout, **kwargs)
 
     @request
     def delete(self, url, **kwargs):
-        if (Seldom.base_url is not None) and ("http" not in url):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
             url = Seldom.base_url + url
-        return requests.delete(url, **kwargs)
+        url = mock_url(url)
+        if kwargs.get("proxies", None) is None:
+            kwargs["proxies"] = check_proxies()
+        return requests.delete(url, timeout=Seldom.timeout, **kwargs)
+
+    @request
+    def patch(self, url, data=None, **kwargs):
+        if (Seldom.base_url is not None) and (url.startswith("http") is False):
+            url = Seldom.base_url + url
+        url = mock_url(url)
+        if kwargs.get("proxies", None) is None:
+            kwargs["proxies"] = check_proxies()
+        return requests.patch(url, data=data, timeout=Seldom.timeout, **kwargs)
 
     @property
-    def response(self) -> dict:
+    def response(self) -> Any:
         """
-        Returns the result of the response
-        :return: response
+        Returns the result of the response.
+        :return:
         """
         return ResponseResult.response
 
@@ -135,7 +194,7 @@ class HttpRequest(object):
         if response is None:
             response = ResponseResult.response
 
-        ret = utils_jsonpath(response, expr)
+        ret = lib_jsonpath(response, expr)
         if index is not None:
             ret = ret[index]
         return ret
@@ -160,23 +219,19 @@ class HttpRequest(object):
         """
         return ResponseResult.status_code
 
-    def jresponse(self, expr, j="json") -> any:
+    @staticmethod
+    def curl(request=None, compressed: bool = False, verify: bool = True) -> str:
         """
-        param j: json or jmes
-        jsonpath
-        doc: https://goessner.net/articles/JsonPath/
-        jmespath
-        doc: https://jmespath.org/
+        requests to cURL command
+        :param request: request object
+        :param compressed:
+        :param verify:
+        :return:
         """
-        warnings.warn("use self.responses() instead", DeprecationWarning, stacklevel=2)
-        if j == "json":
-            ret = utils_jsonpath(ResponseResult.response, expr)
-        elif j == "jmes":
-            ret = utils_jmespath(ResponseResult.response, expr)
-        else:
-            raise ValueError("j is 'json' or 'jmes'.")
-        log.debug(f"[jresponse]:\n {str(ret)}")
-        return ret
+        if request is None:
+            return to_curl(ResponseResult.request, compressed, verify)
+
+        return to_curl(request, compressed, verify)
 
     class Session(requests.Session):
 
@@ -187,8 +242,11 @@ class HttpRequest(object):
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
             """
-            if (Seldom.base_url is not None) and ("http" not in url):
+            if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
+            url = mock_url(url)
+            if kwargs.get("proxies", None) is None:
+                kwargs["proxies"] = check_proxies()
             kwargs.setdefault('allow_redirects', True)
             return self.request('GET', url, **kwargs)
 
@@ -203,8 +261,11 @@ class HttpRequest(object):
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
             """
-            if (Seldom.base_url is not None) and ("http" not in url):
+            if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
+            url = mock_url(url)
+            if kwargs.get("proxies", None) is None:
+                kwargs["proxies"] = check_proxies()
             return self.request('POST', url, data=data, json=json, **kwargs)
 
         @request
@@ -217,8 +278,11 @@ class HttpRequest(object):
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
             """
-            if (Seldom.base_url is not None) and ("http" not in url):
+            if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
+            url = mock_url(url)
+            if kwargs.get("proxies", None) is None:
+                kwargs["proxies"] = check_proxies()
             return self.request('PUT', url, data=data, **kwargs)
 
         @request
@@ -229,12 +293,51 @@ class HttpRequest(object):
             :param \*\*kwargs: Optional arguments that ``request`` takes.
             :rtype: requests.Response
             """
-            if (Seldom.base_url is not None) and ("http" not in url):
+            if (Seldom.base_url is not None) and (url.startswith("http") is False):
                 url = Seldom.base_url + url
+            url = mock_url(url)
+            if kwargs.get("proxies", None) is None:
+                kwargs["proxies"] = check_proxies()
             return self.request('DELETE', url, **kwargs)
 
+    @staticmethod
+    def json_to_dict(data: str, replace_quotes: bool = True) -> dict:
+        """
+        json to dict
+        :param data: json data.
+        :param replace_quotes: whether to replace single quotes.
+        """
+        if isinstance(data, dict):
+            return data
+        elif isinstance(data, str):
+            try:
+                data_dict = ast.literal_eval(data)
+            except ValueError:
+                try:
+                    if replace_quotes:
+                        data = data.replace('\'', '\"')
+                    data_dict = json.loads(data)
+                except json.decoder.JSONDecodeError:
+                    log.error(f"json to dict error. --> {data}")
+                    return {}
+                else:
+                    return data_dict
+            else:
+                return data_dict
+        else:
+            log.error(f"type error --> {data}")
+            return {}
 
-def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None, debug: bool = False):
+    @property
+    def base_url(self):
+        """
+        return base url (http)
+        """
+        return Seldom.base_url
+
+
+def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None,
+                   debug: bool = False):
     """
     checkout response data
     :param describe: interface describe
@@ -244,7 +347,9 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
     :param debug: debug Ture/False
     :return:
     """
+
     def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             func_name = func.__name__
             if debug is True:
@@ -282,8 +387,39 @@ def check_response(describe: str = "", status_code: int = 200, ret: str = None, 
                 if data is None:
                     log.error(f"Execute {func_name} - return {ret} is None")
                 return data
-            else:
-                return r.json()
+
+            return r.json()
+
+        return wrapper
+
+    return decorator
+
+
+# @check_response as @api
+api = check_response
+
+
+def retry(times: int = 3, wait: int = 1):
+    """
+    retry the decorator
+    :param: times: times of retries
+    :wait: retry interval, Default（s）
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            attempts = 0
+            while attempts < times:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    log.warning(
+                        f"""Attempt to execute <{func.__name__}> failed with error: '{e}'. Attempting retry number {attempts + 1}...""")
+                    time.sleep(wait)
+                    attempts += 1
+
+            return func(*args, **kwargs)
 
         return wrapper
 
