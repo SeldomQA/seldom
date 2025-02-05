@@ -229,7 +229,7 @@ class TestMain:
                     runner.run(suits)
                 else:
                     is_local = report_local_style()
-                    runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester,
+                    runner = HTMLTestRunner(stream=fp, title=self.title + " For " + self.device, tester=self.tester,
                                             description=self.description, local_style=is_local,
                                             rerun=self.rerun, logger=log_cfg,
                                             language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)
