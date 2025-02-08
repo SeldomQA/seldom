@@ -91,6 +91,13 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
         """
         return Seldom.driver
 
+    @property
+    def device(self):
+        """
+        return uiautomator2 driver (app)
+        """
+        return Seldom.device
+    
     def browser(self, name: str) -> None:
         """
         launch browser.

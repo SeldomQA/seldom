@@ -75,7 +75,8 @@ class TestMain:
             extensions: Optional = None,
             failfast: bool = False,
             env: str = None,
-            benchmark: bool = False
+            benchmark: bool = False,
+            device: str = None
     ):
         """
         runner test case
@@ -101,6 +102,7 @@ class TestMain:
         :parma failfast: only support debug=True
         :parma env:
         :parma benchmark:
+        :parma device:
         :return:
         """
         print(SELDOM_STR)
@@ -119,6 +121,7 @@ class TestMain:
         self.open = open
         self.auto = auto
         self.failfast = failfast
+        self.device = device
         Seldom.app_server = app_server
         Seldom.app_info = app_info
         Seldom.extensions = extensions
@@ -226,7 +229,7 @@ class TestMain:
                     runner.run(suits)
                 else:
                     is_local = report_local_style()
-                    runner = HTMLTestRunner(stream=fp, title=self.title, tester=self.tester,
+                    runner = HTMLTestRunner(stream=fp, title=self.title + " For " + self.device, tester=self.tester,
                                             description=self.description, local_style=is_local,
                                             rerun=self.rerun, logger=log_cfg,
                                             language=self.language, blacklist=self.blacklist, whitelist=self.whitelist)

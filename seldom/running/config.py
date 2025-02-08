@@ -33,7 +33,18 @@ class Seldom:
     @base_url.setter
     def base_url(self, value):
         self._thread_local.base_url = value
+    
+    @property
+    def device(self):
+        """
+        Android base device
+        """
+        return getattr(self._thread_local, 'device', None)
 
+    @device.setter
+    def device(self, value):
+        self._thread_local.device = value
+    
     timeout = 10
     debug = False
     compare_url = None
