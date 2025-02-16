@@ -126,6 +126,7 @@ class TestMain:
         Seldom.app_info = app_info
         Seldom.extensions = extensions
         Seldom.env = env
+        Seldom.device = device
 
         if failfast is True and debug is False:
             raise RunParamError("failfast cannot be true, setting `debug=True`")
