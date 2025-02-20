@@ -127,7 +127,7 @@ class AppDriver(WebDriver):
             class for more details.
         """
         log.info(f"📱 query app state: {app_id}")
-        return self.application.query_app_state(app_id=app_id)
+        return self.browser.query_app_state(app_id=app_id)
 
     def app_strings(self, language: str = None, string_file: str = None) -> Dict[str, str]:
         """Returns the application strings from the device for the specified
