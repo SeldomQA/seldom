@@ -1,4 +1,5 @@
 import os
+import time
 
 
 def get_device_info(device: str) -> dict:
@@ -33,6 +34,33 @@ def get_devices() -> dict:
     return devices
 
 
+def launch_app(package_name: str = None) -> None:
+    """
+    launch App by adb command.
+    :param package_name:
+    :return:
+    """
+    try:
+        os.popen(f"adb shell monkey -p {package_name} -c android.intent.category.LAUNCHER 1")
+    except Exception as e:
+        print(f"launch app {package_name} error: {e}")
+
+
+def close_app(package_name: str = None) -> None:
+    """
+    close App by adb command.
+    :param package_name:
+    :return:
+    """
+    try:
+        os.popen(f"adb shell am force-stop {package_name}")
+    except Exception as e:
+        print(f"close app {package_name} error: {e}")
+
+
 if __name__ == '__main__':
     a = get_devices()
     print(a)
+    launch_app("com.microsoft.bing")
+    time.sleep(3)
+    close_app("com.microsoft.bing")
