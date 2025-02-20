@@ -27,8 +27,8 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0"
-appium-python-client = "^4.1.0"
+python = ">=3.9,<4.0"
+appium-python-client = "^4.5.0"
 xtestrunner = ">=1.8.4"
 loguru = "~0.7.0"
 openpyxl = "^3.0.3"
