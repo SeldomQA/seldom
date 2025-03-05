@@ -20,6 +20,7 @@ from seldom.logging import log
 from seldom.logging.exceptions import NotFindElementError
 from seldom.utils import diff_json, AssertInfo, jmespath
 from seldom.request import HttpRequest, ResponseResult, formatting
+from seldom.extend_lib.base_assert import log_assertions
 
 
 class TestCase(unittest.TestCase, AppDriver, HttpRequest):
@@ -97,7 +98,7 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
         return uiautomator2 driver (app)
         """
         return Seldom.device
-    
+
     def browser(self, name: str) -> None:
         """
         launch browser.
@@ -426,3 +427,71 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
         """
         log.info(f"⏸️ pause. type 'c', and press [Enter] continue run.")
         pdb.set_trace()
+
+    @log_assertions
+    def assertEqual(self, first, second, msg=None):
+        super().assertEqual(first, second, msg)
+
+    @log_assertions
+    def assertNotEqual(self, first, second, msg=None):
+        super().assertNotEqual(first, second, msg)
+
+    @log_assertions
+    def assertTrue(self, expr, msg=None):
+        super().assertTrue(expr, msg)
+
+    @log_assertions
+    def assertFalse(self, expr, msg=None):
+        super().assertFalse(expr, msg)
+
+    @log_assertions
+    def assertIn(self, member, container, msg=None):
+        super().assertIn(member, container, msg)
+
+    @log_assertions
+    def assertNotIn(self, member, container, msg=None):
+        super().assertNotIn(member, container, msg)
+
+    @log_assertions
+    def assertIsInstance(self, obj, cls, msg=None):
+        super().assertIsInstance(obj, cls, msg)
+
+    @log_assertions
+    def assertNotIsInstance(self, obj, cls, msg=None):
+        super().assertNotIsInstance(obj, cls, msg)
+
+    @log_assertions
+    def assertRegex(self, text, regex, msg=None):
+        super().assertRegex(text, regex, msg)
+
+    @log_assertions
+    def assertNotRegex(self, text, regex, msg=None):
+        super().assertNotRegex(text, regex, msg)
+
+    @log_assertions
+    def assertAlmostEqual(self, first, second, places=None, msg=None, delta=None):
+        super().assertAlmostEqual(first, second, places, msg, delta)
+
+    @log_assertions
+    def assertNotAlmostEqual(self, first, second, places=None, msg=None, delta=None):
+        super().assertNotAlmostEqual(first, second, places, msg, delta)
+
+    @log_assertions
+    def assertGreater(self, a, b, msg=None):
+        super().assertGreater(a, b, msg)
+
+    @log_assertions
+    def assertGreaterEqual(self, a, b, msg=None):
+        super().assertGreaterEqual(a, b, msg)
+
+    @log_assertions
+    def assertLess(self, a, b, msg=None):
+        super().assertLess(a, b, msg)
+
+    @log_assertions
+    def assertLessEqual(self, a, b, msg=None):
+        super().assertLessEqual(a, b, msg)
+
+    @log_assertions
+    def assertCountEqual(self, a, b, msg=None):
+        super().assertCountEqual(a, b, msg)
