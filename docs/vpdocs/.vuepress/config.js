@@ -1,37 +1,30 @@
+import { defineUserConfig } from 'vuepress'
+import { viteBundler } from '@vuepress/bundler-vite'
+import { defaultTheme } from '@vuepress/theme-default'
 import { searchPlugin } from '@vuepress/plugin-search'
-import { backToTopPlugin } from '@vuepress/plugin-back-to-top'
-import { defaultTheme } from "@vuepress/theme-default"
 
-
-module.exports = {
+export default defineUserConfig({
   title: "seldom文档",
   description: "seldom 是基于unittest 的自动化测试框架。",
   base: "/",
   head: [
-    [
-      'link', { rel: 'icon', href: '/logo.jpeg' }
-    ]
+    ['link', { rel: 'icon', href: '/logo.jpeg' }]
   ],
+  bundler: viteBundler({
+    viteOptions: {},
+  }),
   plugins: [
-    searchPlugin({
-      locales: {
-        '/': {
-          placeholder: 'Search',
-        },
-        '/zh/': {
-          placeholder: '搜索',
-        },
-      },
+   searchPlugin({
+      // 配置项
     }),
-    backToTopPlugin(),
   ],
   theme: defaultTheme({
     repo: "SeldomQA/seldom",
     docsBranch: "vuepress-docs/docs/vpdocs",
     logo: "/logo.jpeg",
     navbar: [
-        { text: "介绍", link: "/introduce" },
-        { text: "安装", link: "/getting-started/installation" },
+      { text: "介绍", link: "/introduce" },
+      { text: "安装", link: "/getting-started/installation" },
     ],
     sidebar: [
       "/introduce",
@@ -91,5 +84,5 @@ module.exports = {
     editLinks: true,
     editLinkText: "在 GitHub 上编辑此页",
     lastUpdated: "上次更新",
-  })
-};
+  }),
+})
