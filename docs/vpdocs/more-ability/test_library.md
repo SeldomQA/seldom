@@ -112,7 +112,7 @@ class MyAppTest(seldom.TestCase):
         # 停止app
         self.d.app_stop("com.meizu.mzbbs")
 
-    def test_app(self, user):
+    def test_app(self):
         """ 使用 uiautomator2 """
         # 搜索
         self.d(resourceId="com.meizu.flyme.flymebbs:id/nw").click()
@@ -191,3 +191,68 @@ class TestPyAutoGUINote(seldom.TestCase):
 if __name__ == '__main__':
     seldom.main()
 ```
+
+### 使用auto-wing
+
+AI在自动化领域已经得到相关的应用，出现了不少项目（`browser-use`、`Midscene.js`
+等）。auto-wing是一款基于LLM的自动化工具。可以很好的整合到seldom框架中使用。
+
+GitHub地址: https://github.com/SeldomQA/auto-wing
+
+* pip安装auto-wing
+
+```shell
+> pip install autowing
+```
+
+* 配置大模型 `API_key`
+
+在脚本目录下创建`.env`文件，配置LLM的`API_key`， 支持多模型：`openai`、`deepseek`、`qwen` 和 `doubao`。这里以 `deepseek`为例。
+
+```env
+.env
+AUTOWING_MODEL_PROVIDER=deepseek
+DEEPSEEK_API_KEY=sk-abdefghijklmnopqrstwvwxyz0123456789
+```
+
+* 使用例子
+
+```python
+import seldom
+from seldom import Seldom
+from autowing.selenium.fixture import create_fixture
+from dotenv import load_dotenv
+
+
+class TestBingSearch(seldom.TestCase):
+
+    @classmethod
+    def start_class(cls):
+        # load .env file
+        load_dotenv()
+        # Create AI fixture
+        ai_fixture = create_fixture()
+        cls.ai = ai_fixture(Seldom.driver)
+
+    def test_bing_search(self):
+        """
+        Test Bing search functionality using AI-driven automation.
+        """
+        self.open("https://cn.bing.com")
+
+        self.ai.ai_action('搜索输入框输入"playwright"关键字，并回车')
+        self.sleep(3)
+
+        items = self.ai.ai_query('string[], 搜索结果列表中包含"playwright"相关的标题')
+
+        self.assertGreater(len(items), 1)
+
+        self.assertTrue(
+            self.ai.ai_assert('检查搜索结果列表第一条标题是否包含"playwright"字符串')
+        )
+
+
+if __name__ == '__main__':
+    seldom.main(browser="edge", debug=True)
+```
+
