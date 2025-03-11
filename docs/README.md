@@ -35,23 +35,18 @@ docs/
 ## 如何贡献文档
 
 1. clone 本项目
-
-```bash
-git clone https://github.com/SeldomQA/seldom.git
-```
+    ```bash
+    git clone https://github.com/SeldomQA/seldom.git
+    ```
 
 2. 进入到文档目录&启动项目
-
-```bash
-cd docs
-
-npm install yarn -g
-
-yarn install
-
-yarn run dev
-```
-
-3. 编辑相关文档（推荐编辑 vpdocs 目录下的文档，该目录的文档也是 seldom 的主要文档）
-
-4. push 到 vuepress-docs 分支
+    ```bash
+    cd docs
+        
+    npm install
+    
+    npm run dev
+   
+    npm run build
+    ```
+3. 编辑相关文档（编辑 vpdocs 目录下的文档）
