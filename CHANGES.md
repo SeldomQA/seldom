@@ -1,3 +1,14 @@
+### 3.13.0
+
+* 功能：unittest所有基础断言增加日志， 例如：`assertEqual()`、`assertIn()`...。
+* 功能：增加`adb`操作：`get_devices`、`launch_app`、`close_app`。
+* 功能：`seldom.main()`增加`device`参数，用于存储设备ID。感谢@ThickBull
+* 修复bug: appium提供的`query_app_state()`执行报错。
+* 文档：增加`auto-wing` AI库使用示例。
+* 文档：修复官方文档左侧菜单无法显示的问题。
+* 升级`Appium-Python-Client==4.5.0`。
+* 支持 `python 3.9 ~ 3.13` 版本。
+
 ### 3.12.0
 
 * 功能：支持基准测试功能。
