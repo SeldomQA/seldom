@@ -57,6 +57,7 @@ export default defineUserConfig({
           "/app-testing/appium_lab",
           "/app-testing/page_object",
           "/app-testing/extensions",
+          "/app-testing/adb_lib",
         ],
       },
       {

@@ -1,6 +1,6 @@
-# 开始使用
+# HTTP测试
 
-### 前言
+## 优势
 
 seldom 非常适合个人接口自动化项目，它有以下优势。
 
@@ -17,16 +17,16 @@ seldom 非常适合个人接口自动化项目，它有以下优势。
 
 Seldom 完全兼容 [Requests](https://docs.python-requests.org/en/master/) API 如下:
 
-| seldom          | requests            |
-|-----------------|---------------------|
-| self.get()      | requests.get()      |
-| self.post()     | requests.post()     |
-| self.put()      | requests.put()      |
-| self.delete()   | requests.delete()   |
-| self.patch()    | requests.patch()    |
-| self.session()  | requests.session()  |
+| seldom         | requests           |
+|----------------|--------------------|
+| self.get()     | requests.get()     |
+| self.post()    | requests.post()    |
+| self.put()     | requests.put()     |
+| self.delete()  | requests.delete()  |
+| self.patch()   | requests.patch()   |
+| self.session() | requests.session() |
 
-### Seldom VS Request+unittest
+## Seldom VS Request+unittest
 
 * unittest + requests 接口自动化示例：
 
@@ -68,8 +68,7 @@ if __name__ == '__main__':
 
 主要简化点在，接口的返回数据的处理。当然，seldom真正的优势在断言、日志和报告。
 
-
-### 运行测试
+* 运行日志
 
 打开debug模式`seldom.run(debug=True)` 运行上面的用例。
 

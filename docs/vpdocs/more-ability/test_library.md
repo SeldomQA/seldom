@@ -97,6 +97,7 @@ pip install uiautomator2
 
 ```python
 import seldom
+from seldom.extend_lib.adb import get_devices
 import uiautomator2 as u2
 
 
@@ -104,27 +105,25 @@ class MyAppTest(seldom.TestCase):
 
     def start(self):
         # 链接设备
-        self.d = u2.connect('192.168.31.234')
+        self.d = u2.connect(self.device)
         # 启动App
-        self.d.app_start("com.meizu.mzbbs")
+        self.d.app_start("com.microsoft.bing")
 
     def end(self):
         # 停止app
-        self.d.app_stop("com.meizu.mzbbs")
+        self.d.app_stop("com.microsoft.bing")
 
-    def test_app(self):
+    def test_bing_app(self):
         """ 使用 uiautomator2 """
-        # 搜索
-        self.d(resourceId="com.meizu.flyme.flymebbs:id/nw").click()
-        # 输入关键字
-        self.d(resourceId="com.meizu.flyme.flymebbs:id/nw").set_text("flyme")
-        # 搜索按钮
-        self.d(resourceId="com.meizu.flyme.flymebbs:id/o1").click()
-        self.sleep(2)
+        self.d(resourceId="com.microsoft.bing:id/sa_hp_header_search_box").click()
+        self.d(resourceId="com.microsoft.bing:id/input_container").set_text("seldomQA")
+        self.d(resourceId="com.microsoft.bing:id/input_container").center()
+        # ....
 
 
 if __name__ == '__main__':
-    seldom.main(debug=True)
+    devices = get_devices()
+    seldom.main(debug=True, device=devices[0][0])
 ```
 
 ### 使用pyAutoGUI
