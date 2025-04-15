@@ -268,6 +268,10 @@ __说明：__
 
 ### 项目实例
 
+B站实战视频：
+
+https://www.bilibili.com/video/BV1QHQVYoEHC
+
 基于seldom的web UI自动化项目：
 
 https://github.com/SeldomQA/seldom-web-testing
