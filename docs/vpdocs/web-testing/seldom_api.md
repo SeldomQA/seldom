@@ -50,7 +50,7 @@ self.click("text*=hao")
 | selenium        | link_text            | link_text="文字链接"            | "text=文字链接"               |
 | selenium        | partial_link_text    | partial_link_text="文字链"     | "text~=文字链"               |
 | selenium/appium | xpath                | xpath="//*[@id='11']"       | "//*[@id='11']"           |
-| selenium        | css                  | cas="input#id"              | "input#id"                |
+| selenium        | css                  | css="input#id"              | "input#id"                |
 | appium          | ios_predicate        | ios_predicate = "xx"        | "ios_predicate=xx"        |
 | appium          | ios_class_chain      | ios_class_chain = "xx"      | "ios_predicate=xx"        |
 | appium          | android_uiautomator  | android_uiautomator = "xx"  | "android_uiautomator=xx"  |

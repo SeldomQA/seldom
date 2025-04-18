@@ -97,7 +97,7 @@ pip install uiautomator2
 
 ```python
 import seldom
-from seldom.extend_lib.adb import get_devices
+from seldom.utils.adbutils import ADBUtils
 import uiautomator2 as u2
 
 
@@ -122,7 +122,8 @@ class MyAppTest(seldom.TestCase):
 
 
 if __name__ == '__main__':
-    devices = get_devices()
+    adb = ADBUtils()
+    devices = adb.refresh_devices()
     seldom.main(debug=True, device=devices[0][0])
 ```
 
