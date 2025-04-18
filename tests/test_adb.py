@@ -28,7 +28,7 @@ class ADBUtilsTest(unittest.TestCase):
 
     def test_app_info(self):
         # 获取信息
-        app_info = self.adb.get_foreground_app_info()
+        app_info = self.adb.get_app_info()
         for info in app_info:
             print(info['package'], info["activity"])
 

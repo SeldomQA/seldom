@@ -134,7 +134,7 @@ class ADBUtils:
             log.error(f"Failed to close app {package_name}: {e}")
             return False
 
-    def get_foreground_app_info(self, device_id: Optional[str] = None) -> dict:
+    def get_app_info(self, device_id: Optional[str] = None) -> dict:
         """
         Enhanced foreground app detection with precise window dump parsing
         Returns: {
