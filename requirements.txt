@@ -1,4 +1,4 @@
-Appium-Python-Client>=4.1.0
+Appium-Python-Client>=5.1.0
 XTestRunner>=1.8.0
 loguru~=0.7.0
 openpyxl>=3.0.3
