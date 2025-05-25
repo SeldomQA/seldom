@@ -111,6 +111,24 @@ self.assertElement(css="#kw")
 self.assertNotElement(css="#kwasdfasdfa")
 ```
 
+__断言截图__
+
+* 安装 pillow
+
+```shell
+pip install pillow
+```
+
+```python
+# 断言截图
+self.assertScreenshot(tolerance=0)
+```
+
+> 说明：
+> tolerance： 允许比较的像素差，默认是0
+> 第一次运行在 `reports\screenshots\`目录下生成`xx_base.png`基础图片，第二次运行生成`xx_diff.png` 图片进行对比。如果
+`xx_base.png` 基础图片错误，请手动删除并重新运行。
+
 ### WebDriver API
 
 seldom简化了selenium中的API，使操作Web页面更加简单。
