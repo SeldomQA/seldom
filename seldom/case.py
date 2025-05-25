@@ -3,6 +3,7 @@ seldom test case
 """
 import pdb
 import random
+import inspect
 import unittest
 from time import sleep
 from urllib.parse import unquote
@@ -323,6 +324,21 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
         Seldom.timeout = timeout_backups
 
         self.assertFalse(elem, msg=msg)
+
+    def assertScreenshot(self, tolerance: int = 0, msg: str = None):
+        """
+        Asserts if the element does not exist.
+
+        Usage:
+        self.assertScreenshot()
+        """
+        from seldom.utils.match_image import assert_screenshot
+
+        log.info(f"👀 assertScreenshot.")
+        stack_t = inspect.stack()
+        ret = assert_screenshot(Seldom.driver, tolerance, stack_t)
+        if isinstance(ret, bool):
+            self.assertTrue(ret, msg=msg)
 
     def assertStatusCode(self, status_code: int, msg: str = None) -> None:
         """
