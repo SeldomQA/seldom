@@ -1,6 +1,7 @@
 """
 seldom requests
 """
+import os
 import ast
 import time
 import json
@@ -334,6 +335,39 @@ class HttpRequest:
         return base url (http)
         """
         return Seldom.base_url
+
+    @staticmethod
+    def save_response(response: requests.Response, filename: str = None):
+        """
+        save response.
+        :param response:
+        :param filename:
+        :return:
+        """
+        # Determine content type
+        content_type = response.headers.get('Content-Type', '').lower()
+
+        data = response.text
+        ext = '.txt'
+        if 'application/json' in content_type or response.text.strip().startswith('{'):
+            try:
+                data = response.json()
+                ext = '.json'
+            except requests.exceptions.JSONDecodeError:
+                pass
+
+        if filename is None:
+            timestamp = int(time.time() * 1000)
+            filename = f"response_{timestamp}{ext}"
+        else:
+            root, _ = os.path.splitext(filename)
+            filename = f"{root}{ext}"
+
+        # Save file
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4) if ext == '.json' else f.write(data)
+
+        return filename
 
 
 def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None,
