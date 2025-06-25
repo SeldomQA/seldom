@@ -9,7 +9,7 @@ from seldom.db_operation.base_db import SQLBase
 
 class PostgresDB(SQLBase):
 
-    def __init__(self, host: str, port: int, database: str, user: str, password: str):
+    def __init__(self, host: str, port: int, database: str, user: str, password: str, charset: str = 'utf8'):
         """
         Connect to Postgres database
         :param host:
@@ -17,8 +17,10 @@ class PostgresDB(SQLBase):
         :param database:
         :param  user:
         :param password:
+        :param charset: (default 'utf8')
         """
         self.connection = psycopg2.connect(host=host, port=port, database=database, user=user, password=password)
+        self.connection.set_client_encoding(charset)
         self.connection.autocommit = True
 
     def close(self):
