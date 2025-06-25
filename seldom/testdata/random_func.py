@@ -9,6 +9,7 @@ import random
 import hashlib
 import datetime
 import requests
+import string
 from dateutil.relativedelta import relativedelta
 
 from seldom.testdata.random_data import (
@@ -92,6 +93,27 @@ def username(name: str = "", language: str = "en") -> str:
         return name
 
     raise ValueError(f"{language} language is not supported")
+
+
+def password(length: int = 12) -> str:
+    """
+    Generate a random password containing uppercase, lowercase, digits, and special characters.
+    :param length: Length of the password (minimum 4)
+    :return: Random password string
+    """
+    if length < 4:
+        raise ValueError("Password length must be at least 4 to include all character types.")
+    chars = [
+        random.choice(string.ascii_lowercase),
+        random.choice(string.ascii_uppercase),
+        random.choice(string.digits),
+        random.choice('!@#$%^&*()-_=+[]{}|;:,.<>?')
+    ]
+    if length > 4:
+        all_chars = string.ascii_letters + string.digits + '!@#$%^&*()-_=+[]{}|;:,.<>?'
+        chars += random.choices(all_chars, k=length - 4)
+    random.shuffle(chars)
+    return ''.join(chars)
 
 
 def get_email(name: str = "") -> str:
@@ -180,14 +202,36 @@ def get_float(min_size: float = None, max_size: float = None) -> float:
 def get_digits(count: int) -> str:
     """
     return a string value that contains count digits
-    :param count: int, how many digits you want, so if you pass in 4, you would get
-        4 digits
+    :param count: int, how many digits you want, so if you pass in 4, you would get 4 digits
     :returns: string, this returns a string because the digits might start with
         zero
     """
     max_size = int("9" * count)
     ret = "{{:0>{}}}".format(count).format(get_int(0, max_size))
     return ret
+
+
+def get_string(length: int = 8) -> str:
+    """
+    Generate a random string of specified length.
+    :param length: Length of the string
+    :return: Random string
+    """
+    chars = string.ascii_letters + string.digits
+    return ''.join(random.choices(chars, k=length))
+
+
+def get_number(length: int = 8) -> int:
+    """
+    Generate a random number of specified length.
+    :param length: Length of the number
+    :returns: random number
+    """
+    if length < 1:
+        raise ValueError("count must be >= 1")
+    min_value = 10 ** (length - 1) if length > 1 else 0
+    max_value = 10 ** length - 1
+    return random.randint(min_value, max_value)
 
 
 def yes(specifier=0) -> int:
@@ -330,7 +374,7 @@ def get_future_datetime(now=None, strftime=False) -> datetime:
 
 def get_now_datetime(strftime=False) -> [str, datetime]:
     """
-    Get date time, default to current day。
+    Get date time, default to current day.
     :return:
     """
     date_time = datetime.datetime.now()
@@ -361,7 +405,7 @@ def get_future_time() -> datetime:
 
 def get_date(day=None) -> str:
     """
-    Get date, default to current day。
+    Get date, default to current day.
     :return:
     """
     if day is None:
@@ -449,7 +493,7 @@ def online_timestamp() -> str:
 
 def online_now_datetime() -> [str, datetime]:
     """
-    Get online date time, default to current day。
+    Get online date time, default to current day.
     :return:
     """
     ts = online_timestamp()
