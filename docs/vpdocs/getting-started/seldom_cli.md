@@ -68,18 +68,9 @@ C:\Python311\Scripts\seldom.exe
 - `-P/--project`
 
 ```shell
-> seldom -P mypro
-2022-09-03 11:22:25 cli.py | INFO | Start to create new test project: mypro
-2022-09-03 11:22:25 cli.py | INFO | CWD: D:\github\seldom
-
-2022-09-03 11:22:25 cli.py | INFO | created folder: mypro
-2022-09-03 11:22:25 cli.py | INFO | created folder: mypro\test_dir
-2022-09-03 11:22:25 cli.py | INFO | created folder: mypro\reports
-2022-09-03 11:22:25 cli.py | INFO | created folder: mypro\test_data
-2022-09-03 11:22:25 cli.py | INFO | created file: mypro\test_data\data.json
-2022-09-03 11:22:25 cli.py | INFO | created file: mypro\test_dir\test_web_sample.py
-2022-09-03 11:22:25 cli.py | INFO | created file: mypro\test_dir\test_api_sample.py
-2022-09-03 11:22:25 cli.py | INFO | created file: mypro\run.py
+> seldom --project-api myapi  # API automation test project.
+> seldom --project-app myapp  # or App automation test project.
+> seldom --project-web myweb  # or Web automation test project.
 ```
 
 ### 生成接口自动化用例
