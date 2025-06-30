@@ -1,6 +1,6 @@
 # 数据库操作
 
-seldom 支持sqlite3、MySQL、SQL Server、MongoDB、PostgreSQL数据库操作。
+seldom 支持sqlite3、MySQL、SQL Server、MongoDB、PostgreSQL等数据库操作。
 
 | sqlite3              | MySQL                | SQL Server           | PostgreSQL           | 
 |----------------------|----------------------|----------------------|----------------------|
@@ -15,6 +15,20 @@ seldom 支持sqlite3、MySQL、SQL Server、MongoDB、PostgreSQL数据库操作�
 | init_table()         | init_table()         | init_table()         | init_table()         |
 | close()              | close()              | close()              | close()              |
 
+为了减少seldom框架的依赖库，默认只安装了`MySQL`数据库依赖，其他数据库你可以根据自己的需求进行单独安装。
+
+```shell
+> pip show pymongo[optional]
+> pip install pymssql[optional]
+> pip install psycopg2[optional]
+```
+
+MongoDB: https://github.com/mongodb/mongo-python-driver
+
+SQL Server: https://github.com/pymssql/pymssql
+
+PostgreSQL: https://github.com/psycopg/psycopg2
+
 ### 连接数据库
 
 __连接sqlit3数据库__
@@ -27,14 +41,6 @@ db = SQLiteDB(r"D:\learnAPI\db.sqlite3")
 
 __连接MySQL数据库__
 
-1. 安装pymysql驱动
-
-```shell
-> pip install pymysql
-```
-
-2. 链接
-
 ```py
 from seldom.db_operation import MySQLDB
 
@@ -45,15 +51,7 @@ db = MySQLDB(host="127.0.0.1",
              database="db_name")
 ```
 
-__连接SQL Server数据库（需要）__
-
-1. 安装pymssql驱动
-
-```shell
-> pip install pymssql
-```
-
-2. 链接
+__连接SQL Server数据库__
 
 ```py
 from seldom.db_operation.mssql_db import MSSQLDB
@@ -62,6 +60,18 @@ db = MSSQLDB(server="127.0.0.1",
              user="SA",
              password="tc@123",
              database="TestDB")
+```
+
+__连接PostgresSQL数据库__
+
+```py
+from seldom.db_operation.postgres_db import PostgresDB
+
+db = PostgresDB(host="localhost",
+                port=3306,
+                user="dev",
+                password="808801",
+                database="db_user")
 ```
 
 ### 操作方法
@@ -173,15 +183,8 @@ db.close()
 
 ## MongoDB
 
-MongoDB 是一个基于分布式文件存储的数据库，属于非关系型数据库，与关系型数据库得操作有着较大得差异，它本身支持字典传参，所以，seldom 只简单封装了数据库连接。
-
-* 安装pymongo
-
-https://github.com/mongodb/mongo-python-driver
-
-```shell
-> pip show pymongo
-```
+MongoDB 是一个基于分布式文件存储的数据库，属于非关系型数据库，与关系型数据库得操作有着较大得差异，它本身支持字典传参，所以，seldom
+只简单封装了数据库连接。
 
 * 连接MongoDB
 
