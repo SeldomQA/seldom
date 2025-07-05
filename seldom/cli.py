@@ -191,6 +191,8 @@ def main(project_api, project_app, project_web, clear_cache, path, collect, leve
         loader("end_run")
         return 0
 
+    return 0
+
 
 def create_scaffold(project_name: str, project_type: str) -> None:
     """
@@ -245,7 +247,7 @@ def create_scaffold(project_name: str, project_type: str) -> None:
     create_file(os.path.join(project_name, "run.py"), run_test)
 
 
-def reset_case(path: str, cases: list) -> [str, list]:
+def reset_case(path: str, cases: list) -> tuple[str, list]:
     """
     Reset the use case data
     :param path: case base path
