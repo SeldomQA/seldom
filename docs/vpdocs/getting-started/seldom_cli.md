@@ -8,42 +8,43 @@
 
 ```shell
 > seldom --help
-Usage: seldom [OPTIONS]
-
-  seldom CLI.
-
-Options:
-  --version                       Show version.
-  --project-api TEXT              Create an API automation test project.
-  --project-app TEXT              Create an App automation test project.
-  --project-web TEXT              Create an Web automation test project.
-  -cc, --clear-cache BOOLEAN      Clear all caches of seldom.
-  -p, --path TEXT                 Run test case file path.
-  -c, --collect BOOLEAN           Collect project test cases. Need the
-                                  `--path`.
-  -l, --level [data|method]       Parse the level of use cases. Need the
-                                  --path.
-  -j, --case-json TEXT            Test case files. Need the `--path`.
-  -e, --env TEXT                  Set the Seldom run environment `Seldom.env`.
-  -b, --browser [chrome|firefox|ie|edge|safari]
-                                  The browser that runs the Web UI automation
-                                  tests. Need the `--path`.
-  -u, --base-url TEXT             The base-url that runs the HTTP automation
-                                  tests. Need the `--path`.
-  -d, --debug BOOLEAN             Debug mode. Need the `--path`.
-  -rr, --rerun INTEGER            The number of times a use case failed to run
-                                  again. Need the `--path`.
-  -r, --report TEXT               Set the test report for output. Need the
-                                  `--path`.
-  -m, --mod TEXT                  Run tests modules, classes or even
-                                  individual test methods from the command
-                                  line.
-  -ll, --log-level [TRACE|DEBUG|INFO|SUCCESS|WARNING|ERROR]
-                                  Set the log level.
-  -h2c, --har2case TEXT           HAR file converts an seldom test case.
-  -s2c, --swagger2case TEXT       Swagger file converts an seldom test case.
-  --api-excel TEXT                Run the api test cases in the excel file.
-  --help                          Show this message and exit.
+Usage: seldom [OPTIONS]                                                                                                    
+                                                                                                                            
+ seldom CLI.                                                                                                                                                                                                                                      
+                                                                                                                            
+╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --version             -v                 Show version.                                                                   │
+│ --project-api         -api      TEXT     Create a project of API type. [default: None]                                   │
+│ --project-app         -app      TEXT     Create a project of App type [default: None]                                    │
+│ --project-web         -web      TEXT     Create a project of Web type [default: None]                                    │
+│ --clear-cache         -cc                Clear all caches of seldom.                                                     │
+│ --log-level           -ll       TEXT     Set the log level [TRACE |DEBUG | INFO | SUCCESS | WARNING | ERROR].            │
+│                                          [default: None]                                                                 │
+│ --mod                 -m        TEXT     Run tests modules, classes or even individual test methods from the command     │
+│                                          line.                                                                           │
+│                                          [default: None]                                                                 │
+│ --path                -p        TEXT     Run test case file path. [default: None]                                        │
+│ --env                 -e        TEXT     Set the Seldom run environment `Seldom.env`. [default: None]                    │
+│ --browser             -b        TEXT     The browser that runs the Web UI automation tests [chrome | edge | firefox |    │
+│                                          chromium]. Need the --path.                                                     │
+│                                          [default: None]                                                                 │
+│ --base-url            -u        TEXT     The base-url that runs the HTTP automation tests. Need the --path.              │
+│                                          [default: None]                                                                 │
+│ --debug               -d                 Debug mode. Need the --path/--mod.                                              │
+│ --rerun               -rr       INTEGER  The number of times a use case failed to run again. Need the --path.            │
+│                                          [default: 0]                                                                    │
+│ --report              -r        TEXT     Set the test report for output. Need the --path. [default: None]                │
+│ --collect             -c                 Collect project test cases. Need the --path.                                    │
+│ --level               -l        TEXT     Parse the level of use cases [data | case]. Need the --path. [default: data]    │
+│ --case-json           -j        TEXT     Test case files. Need the --path. [default: None]                               │
+│ --har2case            -h2c      TEXT     HAR file converts an seldom test case. [default: None]                          │
+│ --swagger2case        -s2c      TEXT     Swagger file converts an seldom test case. [default: None]                      │
+│ --api-excel                     TEXT     Run the api test cases in the excel file. [default: None]                       │
+│ --install-completion                     Install completion for the current shell.                                       │
+│ --show-completion                        Show completion for the current shell, to copy it or customize the              │
+│                                          installation.                                                                   │
+│ --help                                   Show this message and exit.                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 如果无法使用`seldom` 命令。
@@ -102,18 +103,18 @@ C:\Python311\Scripts\seldom.exe
 * `-m\--mod`
 
 ```shell
-> seldom -m test_first_demo            # 文件名，不要.py后缀
-> seldom -m test_first_demo.BingTest   # 文件名.类名
-> seldom -m test_first_demo.BingTest.test_case  # 文件名.类名.方法名
+> seldom -m test_dir                             # 目录名
+> seldom -m test_dir.test_sample                 # 目录名.文件名，不要.py后缀
+> seldom -m test_dir.test_sample.SampleTest      # 目录名.文件名.类名
+> seldom -m test_dir.test_sample.SampleTest.test_case  # 目录名.文件名.类名.方法名
 ```
 
 ### 调试模式
 
-* ` -d, --debug/ -nd, --no-debug`
+* ` -d, --debug`
 
 ```shell
-> seldom -p test_first_demo.py -d   # 开启debug模式
-> seldom -p test_first_demo.py -nd   # 关闭debug模式
+> seldom -p test_sample.py -d   # 开启debug模式（默认不指定-d关闭）
 ```
 
 ### 运行浏览器
@@ -121,10 +122,10 @@ C:\Python311\Scripts\seldom.exe
 * `-b/--browser`
 
 ```shell
-> seldom -p test_first_demo.py -b firefox  # firefox浏览器
+> seldom -p test_sample.py -b firefox  # firefox浏览器
 ```
 
-> 支持`[chrome|firefox|ie|edge]` 浏览器。
+> 支持`[chrome|chrimium|firefox|edge]` 浏览器。
 
 ### 运行URL
 
@@ -181,8 +182,8 @@ save them to D:\github\seldom\demo\case.json
 
 * 说明：
     - `-p/--path`: 指定收集用例的目录：`test_dir`。
-    - `-c, --collect / -nc, --no-collect`: 是否收集用例, 默认`false`。
-    - `-l/--level`: 是否收集用例级别: `data/method`。
+    - `-c, --collect`: 指定收集用例, 默认`False`。
+    - `-l/--level`: 指定收集用例级别: `data/method`。
     - `-j/--case-json`: 收集用例保存文件: `case.json`。
 
 ### 运行收集测试用例
@@ -199,7 +200,7 @@ save them to D:\github\seldom\demo\case.json
 ### 清除所有缓存
 
 ```shell
-> seldom --clear-cache true
+> seldom --clear-cache
 ```
 
 * 说明：默认清空seldom所有缓存，即`cache.clear()`
