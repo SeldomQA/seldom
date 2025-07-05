@@ -319,7 +319,7 @@ class TestMainExtend(TestMain):
         super().__init__(path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
                          app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
                          description=description, rerun=rerun, language=language,
-                         whitelist=whitelist, blacklist=blacklist, open=False, auto=False, extensions=extensions)
+                         whitelist=whitelist, blacklist=blacklist, open_report=False, auto=False, extensions=extensions)
 
     def collect_cases(self, json: bool = False, level: str = "data", warning: bool = False) -> Any:
         """
