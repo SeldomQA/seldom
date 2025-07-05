@@ -9,7 +9,7 @@ import os
 import re
 import unittest
 import webbrowser
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Union
 
 from XTestRunner import HTMLTestRunner
 from XTestRunner import XMLTestRunner
@@ -54,9 +54,9 @@ class TestMain:
 
     def __init__(
             self,
-            path: [str, list] = None,
+            path: Union[str, list, None] = None,
             case: str = None,
-            browser: [str or dict] = None,
+            browser: Union[str, dict, None] = None,
             base_url: str = None,
             debug: bool = False,
             timeout: int = 10,
@@ -65,12 +65,12 @@ class TestMain:
             report: str = None,
             title: str = "Seldom Test Report",
             tester: str = "Anonymous",
-            description: [str or list] = "Test case execution",
+            description: Union[str, dict] = "Test case execution",
             rerun: int = 0,
             language: str = "en",
-            whitelist: list = [],
-            blacklist: list = [],
-            open: bool = True,
+            whitelist: list = None,
+            blacklist: list = None,
+            open_report: bool = True,
             auto: bool = True,
             extensions: Optional = None,
             failfast: bool = False,
@@ -96,7 +96,7 @@ class TestMain:
         :param language:
         :param whitelist:
         :param blacklist:
-        :param open:
+        :param open_report:
         :param auto:
         :param extensions:
         :parma failfast: only support debug=True
@@ -116,9 +116,9 @@ class TestMain:
         self.debug = debug
         self.rerun = rerun
         self.language = language
-        self.whitelist = whitelist
-        self.blacklist = blacklist
-        self.open = open
+        self.whitelist = whitelist if whitelist is not None else []
+        self.blacklist = blacklist if blacklist is not None else []
+        self.open_report = open_report
         self.auto = auto
         self.failfast = failfast
         self.device = device
@@ -240,7 +240,7 @@ class TestMain:
 
             log.success(f"generated html file: file:///{report_path}")
             log.success(f"generated log file: file:///{BrowserConfig.LOG_PATH}")
-            if self.open is True:
+            if self.open_report is True:
                 webbrowser.open_new(f"file:///{report_path}")
         else:
             runner = DebugTestRunner(
@@ -295,8 +295,8 @@ class TestMainExtend(TestMain):
 
     def __init__(
             self,
-            path: str = None,
-            browser: [str or dict] = None,
+            path: Union[str, list, None] = None,
+            browser: Union[str, dict, None] = None,
             base_url: str = None,
             debug: bool = False,
             timeout: int = 10,
@@ -308,8 +308,8 @@ class TestMainExtend(TestMain):
             description: str = "Test case execution",
             rerun: int = 0,
             language: str = "en",
-            whitelist: list = [],
-            blacklist: list = [],
+            whitelist: list = None,
+            blacklist: list = None,
             extensions=None,
     ):
 
