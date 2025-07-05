@@ -5,8 +5,10 @@ import os
 import sys
 import ssl
 import json
-import click
+import typer
 from pathlib import Path
+from typing import Optional, Literal
+
 import seldom
 from seldom.running.config import Seldom
 from seldom import SeldomTestLoader
@@ -20,6 +22,8 @@ from seldom.running.loader_hook import loader
 from seldom.running.config import FileRunningConfig
 from seldom import __version__
 
+app = typer.Typer(help="seldom CLI.")
+
 PY3 = sys.version_info[0] == 3
 
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -29,40 +33,43 @@ current_file = Path(__file__).resolve()
 current_dir = current_file.parent
 
 
-@click.command()
-@click.version_option(version=__version__, help="Show version.")
-@click.option("--project-api", help="Create an API automation test project.")
-@click.option("--project-app", help="Create an App automation test project.")
-@click.option("--project-web", help="Create an Web automation test project.")
-@click.option('-cc', "--clear-cache", default=False, help="Clear all caches of seldom.")
-@click.option("-p", "--path", help="Run test case file path.")
-@click.option("-c/-nc", "--collect/--no-collect", default=False, help="Collect project test cases. Need the `--path`.")
-@click.option("-l", "--level", default="data",
-              type=click.Choice(['data', 'method']),
-              help="Parse the level of use cases. Need the --path.")
-@click.option("-j", "--case-json", default=None, help="Test case files. Need the `--path`.")
-@click.option("-e", "--env", default=None, help="Set the Seldom run environment `Seldom.env`.")
-@click.option("-b", "--browser", default=None,
-              type=click.Choice(['chrome', 'firefox', 'ie', 'edge', 'safari']),
-              help="The browser that runs the Web UI automation tests. Need the `--path`.")
-@click.option("-u", "--base-url", default=None,
-              help="The base-url that runs the HTTP automation tests. Need the `--path`.")
-@click.option("-d/-nd", "--debug/--no-debug", default=False, help="Debug mode. Need the `--path`.")
-@click.option("-rr", "--rerun", default=0, type=int,
-              help="The number of times a use case failed to run again. Need the `--path`.")
-@click.option("-r", "--report", default=None, help="Set the test report for output. Need the `--path`.")
-@click.option("-m", "--mod", help="Run tests modules, classes or even individual test methods from the command line.")
-@click.option("-ll", "--log-level",
-              type=click.Choice(['TRACE', 'DEBUG', 'INFO', 'SUCCESS', 'WARNING', 'ERROR']),
-              help="Set the log level.")
-@click.option("-h2c", "--har2case", help="HAR file converts an seldom test case.")
-@click.option("-s2c", "--swagger2case", help="Swagger file converts an seldom test case.")
-@click.option("--api-excel", help="Run the api test cases in the excel file.")
-def main(project_api, project_app, project_web, clear_cache, path, collect, level, case_json, env, debug, browser,
-         base_url, rerun, report, mod, log_level, har2case, swagger2case, api_excel):
+@app.command()
+def main(
+        version: bool = typer.Option(None, "-v", "--version", help="Show version."),
+        project_api: str = typer.Option(None, "-api", "--project-api", help="Create a project of API type."),
+        project_app: str = typer.Option(None, "-app", "--project-app", help="Create a project of App type"),
+        project_web: str = typer.Option(None, "-web", "--project-web", help="Create a project of Web type"),
+        clear_cache: bool = typer.Option(False, "-cc", "--clear-cache", help="Clear all caches of seldom."),
+        log_level: str = typer.Option(None, "-ll", "--log-level",
+                                      help="Set the log level [TRACE |DEBUG | INFO | SUCCESS | WARNING | ERROR].",
+                                      case_sensitive=False, show_choices=True),
+        mod: str = typer.Option(None, "-m", "--mod",
+                                help="Run tests modules, classes or even individual test methods from the command line."),
+        path: str = typer.Option(None, "-p", "--path", help="Run test case file path."),
+        env: str = typer.Option(None, "-e", "--env", help="Set the Seldom run environment `Seldom.env`."),
+        browser: str = typer.Option(None, "-b", "--browser",
+                                    help="The browser that runs the Web UI automation tests [chrome | edge | firefox | chromium]. Need the --path."),
+        base_url: str = typer.Option(None, "-u", "--base-url",
+                                     help="The base-url that runs the HTTP automation tests. Need the --path."),
+        debug: bool = typer.Option(False, "-d", "--debug", help="Debug mode. Need the --path/--mod."),
+        rerun: int = typer.Option(0, "-rr", "--rerun",
+                                  help="The number of times a use case failed to run again. Need the --path."),
+        report: str = typer.Option(None, "-r", "--report", help="Set the test report for output. Need the --path."),
+        collect: bool = typer.Option(False, "-c", "--collect", help="Collect project test cases. Need the --path."),
+        level: str = typer.Option("data", "-l", "--level",
+                                  help="Parse the level of use cases [data | case]. Need the --path."),
+        case_json: str = typer.Option(None, "-j", "--case-json", help="Test case files. Need the --path."),
+        har2case: str = typer.Option(None, "-h2c", "--har2case", help="HAR file converts an seldom test case."),
+        swagger2case: str = typer.Option(None, "-s2c", "--swagger2case",
+                                         help="Swagger file converts an seldom test case."),
+        api_excel: str = typer.Option(None, help="Run the api test cases in the excel file."),
+):
     """
     seldom CLI.
     """
+    if version:
+        typer.echo(f"seldom version: {__version__}")
+        return typer.Exit()
 
     if project_api:
         create_scaffold(project_api, "api")
@@ -78,14 +85,23 @@ def main(project_api, project_app, project_web, clear_cache, path, collect, leve
         cache.clear()
 
     if log_level:
-        log_cfg.set_level(level=log_level)
+        allowed_levels = ["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR"]
+        if log_level.upper() not in allowed_levels:
+            typer.echo(f"Invalid log level: {log_level}. Choose from {allowed_levels}")
+            raise typer.Exit(code=1)
+        log_cfg.set_level(level=log_level.upper())
 
     # check hook function(confrun.py)
-    browser = loader("browser") if loader("browser") is not None else browser
-    base_url = loader("base_url") if loader("base_url") is not None else base_url
-    debug = loader("debug") if loader("debug") is not None else debug
-    rerun = loader("rerun") if loader("rerun") is not None else rerun
-    report = loader("report") if loader("report") is not None else report
+    if browser is None:
+        browser = loader("browser") if loader("browser") is not None else browser
+    if base_url is None:
+        base_url = loader("base_url") if loader("base_url") is not None else base_url
+    if debug is False:
+        debug = loader("debug") if loader("debug") is not None else debug
+    if rerun is None:
+        rerun = loader("rerun") if loader("rerun") is not None else rerun
+    if report is None:
+        report = loader("report") if loader("report") is not None else report
     timeout = loader("timeout") if loader("timeout") is not None else 10
     app_server = loader("app_server") if loader("app_server") is not None else None
     app_info = loader("app_info") if loader("app_info") is not None else None
@@ -101,10 +117,10 @@ def main(project_api, project_app, project_web, clear_cache, path, collect, leve
     if path:
         Seldom.env = env
         if collect is True and case_json is not None:
-            click.echo(f"Collect use cases for the {path} directory.")
+            typer.echo(f"Collect use cases for the {path} directory.")
 
             if os.path.isdir(path) is True:
-                click.echo(f"add env Path: {os.path.dirname(path)}.")
+                typer.echo(f"add env Path: {os.path.dirname(path)}.")
                 file.add_to_path(os.path.dirname(path))
 
             SeldomTestLoader.collectCaseInfo = True
@@ -115,21 +131,21 @@ def main(project_api, project_app, project_web, clear_cache, path, collect, leve
 
             with open(case_path, "w", encoding="utf-8") as json_file:
                 json_file.write(case_info)
-            click.echo(f"save them to {case_path}")
+            typer.echo(f"save them to {case_path}")
             return 0
 
         if collect is False and case_json is not None:
-            click.echo(f"Read the {case_json} case file to the {path} directory for execution")
+            typer.echo(f"Read the {case_json} case file to the {path} directory for execution")
 
             if os.path.exists(case_json) is False:
-                click.echo(f"The run case file {case_json} does not exist.")
+                typer.echo(f"The run case file {case_json} does not exist.")
                 return 0
 
             if os.path.isdir(path) is False:
-                click.echo(f"The run cae path {case_json} does not exist.")
+                typer.echo(f"The run cae path {case_json} does not exist.")
                 return 0
 
-            click.echo(f"add env Path: {os.path.dirname(path)}.")
+            typer.echo(f"add env Path: {os.path.dirname(path)}.")
             file.add_to_path(os.path.dirname(path))
 
             loader("start_run")
@@ -177,7 +193,7 @@ def main(project_api, project_app, project_web, clear_cache, path, collect, leve
         return 0
 
     if api_excel:
-        click.echo(f"run {api_excel} file.")
+        typer.echo(f"run {api_excel} file.")
         if Path(api_excel).exists() is False:
             raise FileNotFoundError(f"{api_excel} file does not exist")
 
@@ -273,5 +289,5 @@ def reset_case(path: str, cases: list) -> tuple[str, list]:
     return path, cases
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    app()
