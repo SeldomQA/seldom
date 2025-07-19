@@ -66,23 +66,12 @@ C:\Python311\Scripts\seldom.exe
 
 ### 创建项目
 
-- `-P/--project`
+- `-api/-app/-web/`
 
 ```shell
-> seldom --project-api myapi  # API automation test project.
-> seldom --project-app myapp  # or App automation test project.
-> seldom --project-web myweb  # or Web automation test project.
-```
-
-### 生成接口自动化用例
-
-* `-h2c/--har2case`
-
-```shell
-> seldom -h2c demo.har
-2022-09-03 11:29:29 core.py | INFO | demo.py
-2022-09-03 11:29:29 core.py | INFO | Start to generate testcase.
-2022-09-03 11:29:29 core.py | INFO | created file: D:\github\seldom\seldom\har2case\demo.py
+> seldom -api myapi  # API automation test project.
+> seldom -app myapp  # or App automation test project.
+> seldom -web myweb  # or Web automation test project.
 ```
 
 注：`har` 是fiddler 抓包工具导出的一种格式，即 `HTTPArchive`。
@@ -204,6 +193,28 @@ save them to D:\github\seldom\demo\case.json
 ```
 
 * 说明：默认清空seldom所有缓存，即`cache.clear()`
+
+
+### har转接口测试用例
+
+* `-h2c/--har2case`
+
+```shell
+> seldom -h2c demo.har
+2022-09-03 11:29:29 core.py | INFO | demo.py
+2022-09-03 11:29:29 core.py | INFO | Start to generate testcase.
+2022-09-03 11:29:29 core.py | INFO | created file: D:\github\seldom\seldom\har2case\demo.py
+```
+
+### swagger转接口测试用例
+
+* `-s2c/--swagger2case`
+
+```shell
+> seldom -s2c swagger.json
+2025-07-08 23:24:04 | INFO     | core.py | MainThread | Start to generate testcase.
+2025-07-08 23:24:04 | INFO     | core.py | MainThread | created file: D:\github\seldomQA\seldom\seldom\swagger2case\swagger.py
+```
 
 ### 执行 API（excel文件）测试用例
 
