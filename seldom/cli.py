@@ -5,10 +5,9 @@ import os
 import sys
 import ssl
 import json
-import typer
 from pathlib import Path
-from typing import Optional, Literal
 
+import typer
 import seldom
 from seldom.running.config import Seldom
 from seldom import SeldomTestLoader
