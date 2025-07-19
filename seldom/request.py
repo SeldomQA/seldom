@@ -372,9 +372,9 @@ class HttpRequest:
 
         return filename
 
-    def ip_dress(self, url: str = None) -> str:
+    def ip_address(self, url: str = None) -> str:
         """
-        request ip dress
+        request ip ip_address
         :param url:
         :return:
         """

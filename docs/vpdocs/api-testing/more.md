@@ -534,9 +534,9 @@ import seldom
 
 class TestHttpAssert(seldom.TestCase):
 
-    def test_assert_json(self):
+    def test_req_proxy(self):
         """
-        test assertJSON
+        test request proxy
         """
         payload = {"name": "tom", "hobby": ["basketball", "swim"]}
         proxies = {
@@ -577,6 +577,50 @@ def proxies():
 ```
 
 通过`run.py`文件全局运行测试，这里的代理配置将作用于所有请求方法。
+
+### 保存响应结果
+
+> seldom > 3.13
+
+有时候接口的response非常的长，终端显示不完整，那我们就可以使用`save_response()`将结果保存到文件中。
+
+```python
+import seldom
+
+
+class TestSaveResp(seldom.TestCase):
+
+    def test_save_response(self):
+        """将response保存到文件中"""
+        resp = self.get("/get")
+        self.save_response(resp)
+
+
+if __name__ == '__main__':
+    seldom.main(base_url="https://httpbin.org")
+```
+
+### 保存响应结果
+
+> seldom > 3.13
+
+当我们本地使用了host切换，需要知道当前的请求是否指向了host地址，可以使用`ip_address()`方法。
+
+```python
+import seldom
+
+
+class TestReqIP(seldom.TestCase):
+
+    def test_get_ip_address(self):
+        """检查当前请求的IP地址"""
+        self.get("/get")
+        self.ip_address()
+
+
+if __name__ == '__main__':
+    seldom.main(base_url="https://httpbin.org")
+```
 
 ### @retry装饰器
 
