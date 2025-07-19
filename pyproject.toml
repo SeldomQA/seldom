@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "seldom"
-version = "3.13.0"
+version = "3.14.0"
 description = "Seldom automation testing framework based on unittest."
 authors = ["bugmaster <fnngj@126.com>"]
 license = "Apache-2.0"
@@ -50,5 +50,5 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [[tool.poetry.source]]
-name = "tsinghua"
-url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+name = "douban"
+url = "https://pypi.doubanio.com/simple/"

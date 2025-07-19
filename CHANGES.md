@@ -1,3 +1,18 @@
+### 3.14.0
+
+* App测试
+    * 功能：增加`ADBUtils`类，支持更多`adb`操作。
+* Web测试：
+    * 增加`self.assert_screenshot()`断言图片。
+* API测试：
+    * 增加`slef.save_response()`保存响应结果到文件中。
+    * 增加`self.ip_address()`获取请求的IP地址。
+* 扩展模块重新实现`File`类。
+* 修复`seldom.main()`方法`browser`参数类型警告。
+* `typer`重写`seldom`命令行工具。
+* 增加`PostgresDB`使用文档。
+* 升级`Appium-Python-Client==5.1.0`。
+
 ### 3.13.0
 
 * 功能：unittest所有基础断言增加日志， 例如：`assertEqual()`、`assertIn()`...。
