@@ -5,8 +5,11 @@ import os
 import ast
 import time
 import json
+import socket
 from typing import Any
 from functools import wraps
+from urllib.parse import urlparse
+
 import requests
 from seldom.running.config import Seldom
 from seldom.running.loader_hook import loader
@@ -120,7 +123,7 @@ def mock_url(url: str) -> str:
     return replace_url
 
 
-def check_proxies() -> [dict, None]:
+def check_proxies() -> Any | None:
     """
     check http proxies
     """
@@ -368,6 +371,20 @@ class HttpRequest:
             json.dump(data, f, ensure_ascii=False, indent=4) if ext == '.json' else f.write(data)
 
         return filename
+
+    def ip_dress(self, url: str = None) -> str:
+        """
+        request ip dress
+        :param url:
+        :return:
+        """
+        if url is None:
+            url = self.base_url
+        parsed_url = urlparse(url)
+        domain = parsed_url.netloc
+        ip_address = socket.gethostbyname(domain)
+        log.info(f"🌐 IP address: {ip_address}")
+        return ip_address
 
 
 def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None,
