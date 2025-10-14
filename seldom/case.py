@@ -424,7 +424,7 @@ class TestCase(unittest.TestCase, AppDriver, HttpRequest):
         self.fail(msg)
 
     @staticmethod
-    def sleep(sec: [int, tuple] = 1) -> None:
+    def sleep(sec: int | tuple = 1) -> None:
         """
         Usage:
             self.sleep(seconds)
