@@ -13,7 +13,7 @@ class SampleTest(seldom.TestCase):
 
 class DDTTest(seldom.TestCase):
 
-    @file_data(file="../data.json", key="bing")
+    @file_data(file="data.json", key="bing")
     def test_data_driver(self, _, keyword):
         """ data driver case """
         self.open("https://cn.bing.com")
