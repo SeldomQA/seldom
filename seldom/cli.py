@@ -223,28 +223,18 @@ def create_scaffold(project_name: str, project_type: str) -> None:
     def create_folder(path):
         """create folder"""
         os.makedirs(path)
-        log.info(f"created folder: {path}")
+        log.info(f"📁 created folder: {path}")
 
     def create_file(path, file_content=""):
         """create file"""
         with open(path, 'w', encoding="utf-8") as py_file:
             py_file.write(file_content)
-        msg = f"created file: {path}"
-        log.info(msg)
+        log.info(f"📄 created file: {path}")
 
     data_path = current_dir / "project_temp" / "data.json"
-
-    confrun_path = current_dir / "project_temp" / "confrun_web.py"
-    run_path = current_dir / "project_temp" / "run_web.py"
-    sample_path = current_dir / "project_temp" / "test_web_sample.py"
-    if project_type == "api":
-        confrun_path = current_dir / "project_temp" / "confrun_api.py"
-        run_path = current_dir / "project_temp" / "run_api.py"
-        sample_path = current_dir / "project_temp" / "test_api_sample.py"
-    elif project_type == "app":
-        confrun_path = current_dir / "project_temp" / "confrun_app.py"
-        run_path = current_dir / "project_temp" / "run_app.py"
-        sample_path = current_dir / "project_temp" / "test_app_sample.py"
+    confrun_path = current_dir / "project_temp" / project_type / "confrun.py"
+    run_path = current_dir / "project_temp" / project_type / "run.py"
+    sample_path = current_dir / "project_temp" / project_type / "test_sample.py"
 
     test_data = data_path.read_text(encoding='utf-8')
     confrun_test = confrun_path.read_text(encoding='utf-8')
@@ -260,6 +250,8 @@ def create_scaffold(project_name: str, project_type: str) -> None:
     create_file(os.path.join(project_name, "test_dir", "test_sample.py"), test_web_sample)
     create_file(os.path.join(project_name, "confrun.py"), confrun_test)
     create_file(os.path.join(project_name, "run.py"), run_test)
+    log.info(f"🎉 Project '{project_name}' created successfully.")
+    log.info(f"👉 Go to the project folder and run 'python run.py' to start testing.")
 
 
 def reset_case(path: str, cases: list) -> tuple[str, list]:

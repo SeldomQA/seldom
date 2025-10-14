@@ -28,7 +28,7 @@ class TestRequest(seldom.TestCase):
 
 class TestDDT(seldom.TestCase):
 
-    @file_data(file="data.json", key="api")
+    @file_data(file="../data.json", key="api")
     def test_get_method(self, _, id_, name):
         """test ddt case"""
         payload = {'key1': id_, 'key2': name}
