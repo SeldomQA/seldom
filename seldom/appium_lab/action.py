@@ -148,12 +148,12 @@ class Action(Switch):
             self._perform_action(x_start, x_end, y_start, y_end)
             self.sleep(interval_time)
 
-    def drag_from_to(self, x_start: int, y_start: int, x_end: int, y_end: int, interval_time: float = 1):
+    def drag_from_to(self, x_start: int, x_end: int, y_start: int, y_end: int, interval_time: float = 1):
         """
         The x coordinates slide to the y coordinates
         :param x_start:
-        :param y_start:
         :param x_end:
+        :param y_start:
         :param y_end:
         :param interval_time:
         :return:
