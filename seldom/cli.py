@@ -1,35 +1,64 @@
 """
 seldom CLI
 """
+import json
 import os
 import sys
-import ssl
-import json
 from pathlib import Path
 
 import typer
-import seldom
-from seldom.running.config import Seldom
-from seldom import SeldomTestLoader
-from seldom import TestMainExtend
-from seldom.logging import log, log_cfg
-from seldom.utils import file
-from seldom.utils import cache
-from seldom.har2case.core import HarParser
-from seldom.swagger2case.core import SwaggerParser
-from seldom.running.loader_hook import loader
-from seldom.running.config import FileRunningConfig
-from seldom import __version__
 
+# Import only the absolute minimum at module level
 app = typer.Typer(help="seldom CLI.")
-
-PY3 = sys.version_info[0] == 3
-
-ssl._create_default_https_context = ssl._create_unverified_context
 
 # Current file and directory
 current_file = Path(__file__).resolve()
 current_dir = current_file.parent
+
+
+# Functions for lazy importing common modules
+def _import_seldom_core():
+    """Lazy import of seldom core modules"""
+    import ssl
+    # Set ssl context
+    ssl._create_default_https_context = ssl._create_unverified_context
+
+    import seldom
+    from seldom.running.config import Seldom
+    from seldom import SeldomTestLoader, TestMainExtend
+    from seldom.logging import log, log_cfg
+    from seldom.utils import file, cache
+    from seldom.running.loader_hook import loader
+
+    return {
+        'seldom': seldom,
+        'Seldom': Seldom,
+        'SeldomTestLoader': SeldomTestLoader,
+        'TestMainExtend': TestMainExtend,
+        'log': log,
+        'log_cfg': log_cfg,
+        'file': file,
+        'cache': cache,
+        'loader': loader
+    }
+
+
+def _import_har_parser():
+    """Lazy import of HarParser"""
+    from seldom.har2case.core import HarParser
+    return HarParser
+
+
+def _import_swagger_parser():
+    """Lazy import of SwaggerParser"""
+    from seldom.swagger2case.core import SwaggerParser
+    return SwaggerParser
+
+
+def _import_file_running_config():
+    """Lazy import of FileRunningConfig"""
+    from seldom.running.config import FileRunningConfig
+    return FileRunningConfig
 
 
 @app.command()
@@ -66,18 +95,44 @@ def main(
     """
     seldom CLI.
     """
+    # For simple commands (like --help and --version), return directly without importing any modules
     if version:
+        from seldom import __version__
         typer.echo(f"seldom version: {__version__}")
         return typer.Exit()
 
+    # Check if this is a --help call or no arguments provided (will trigger help)
+    if len(sys.argv) <= 2 or (len(sys.argv) == 3 and (sys.argv[2] in ['--help', '-h'])):
+        # Return 0 to let Typer display help message without importing anything
+        return 0
+
+    # Import modules only when core functionality commands are needed
+    core_commands = [project_api, project_app, project_web, clear_cache, log_level, path, mod, har2case, swagger2case,
+                     api_excel]
+    if any(core_commands):
+        # Import core modules
+        core = _import_seldom_core()
+        log = core['log']
+        log_cfg = core['log_cfg']
+        cache = core['cache']
+        file = core['file']
+        loader = core['loader']
+        seldom = core['seldom']
+        Seldom = core['Seldom']
+        SeldomTestLoader = core['SeldomTestLoader']
+        TestMainExtend = core['TestMainExtend']
+    else:
+        # If no commands are specified, Typer will automatically display help information
+        return 0
+
     if project_api:
-        create_scaffold(project_api, "api")
+        create_scaffold(project_api, "api", log)
         return 0
     if project_app:
-        create_scaffold(project_app, "app")
+        create_scaffold(project_app, "app", log)
         return 0
     if project_web:
-        create_scaffold(project_web, "web")
+        create_scaffold(project_web, "web", log)
         return 0
 
     if clear_cache:
@@ -119,7 +174,7 @@ def main(
             typer.echo(f"Collect use cases for the {path} directory.")
 
             if os.path.isdir(path) is True:
-                typer.echo(f"add env Path: {os.path.dirname(path)}.")
+                typer.echo(f"Add Env Path: {os.path.dirname(path)}.")
                 file.add_to_path(os.path.dirname(path))
 
             SeldomTestLoader.collectCaseInfo = True
@@ -130,21 +185,21 @@ def main(
 
             with open(case_path, "w", encoding="utf-8") as json_file:
                 json_file.write(case_info)
-            typer.echo(f"save them to {case_path}")
+            typer.echo(f"Save them to {case_path}")
             return 0
 
         if collect is False and case_json is not None:
-            typer.echo(f"Read the {case_json} case file to the {path} directory for execution")
+            typer.echo(f"Read the {case_json} case file for execution in the {path} directory")
 
             if os.path.exists(case_json) is False:
                 typer.echo(f"The run case file {case_json} does not exist.")
                 return 0
 
             if os.path.isdir(path) is False:
-                typer.echo(f"The run cae path {case_json} does not exist.")
+                typer.echo(f"The run case path {path} does not exist.")
                 return 0
 
-            typer.echo(f"add env Path: {os.path.dirname(path)}.")
+            typer.echo(f"Add Env Path: {os.path.dirname(path)}.")
             file.add_to_path(os.path.dirname(path))
 
             loader("start_run")
@@ -182,20 +237,23 @@ def main(
         return 0
 
     if har2case:
+        HarParser = _import_har_parser()
         har_parser = HarParser(har2case)
         har_parser.gen_testcase()
         return 0
 
     if swagger2case:
+        SwaggerParser = _import_swagger_parser()
         sp = SwaggerParser(swagger=swagger2case)
         sp.gen_testcase()
         return 0
 
     if api_excel:
-        typer.echo(f"run {api_excel} file.")
+        typer.echo(f"Run {api_excel} file.")
         if Path(api_excel).exists() is False:
             raise FileNotFoundError(f"{api_excel} file does not exist")
 
+        FileRunningConfig = _import_file_running_config()
         FileRunningConfig.api_excel_file_name = api_excel
         script_path = file.join(file.dir, "file_runner", "api_excel.py")
         loader("start_run")
@@ -209,7 +267,7 @@ def main(
     return 0
 
 
-def create_scaffold(project_name: str, project_type: str) -> None:
+def create_scaffold(project_name: str, project_type: str, log) -> None:
     """
     create scaffold with specified project name.
     """
@@ -221,15 +279,15 @@ def create_scaffold(project_name: str, project_type: str) -> None:
     log.info(f"CWD: {os.getcwd()}\n")
 
     def create_folder(path):
-        """create folder"""
+        """Create folder"""
         os.makedirs(path)
-        log.info(f"📁 created folder: {path}")
+        log.info(f"📁 Created folder: {path}")
 
     def create_file(path, file_content=""):
-        """create file"""
+        """Create file"""
         with open(path, 'w', encoding="utf-8") as py_file:
             py_file.write(file_content)
-        log.info(f"📄 created file: {path}")
+        log.info(f"📄 Created file: {path}")
 
     data_path = current_dir / "project_temp" / "data.json"
     confrun_path = current_dir / "project_temp" / project_type / "confrun.py"
