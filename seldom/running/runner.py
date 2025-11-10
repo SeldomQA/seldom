@@ -9,7 +9,7 @@ import os
 import re
 import unittest
 import webbrowser
-from typing import Dict, List, Any, Optional, Union
+from typing import Dict, List, Any
 
 from XTestRunner import HTMLTestRunner
 from XTestRunner import XMLTestRunner
@@ -54,29 +54,29 @@ class TestMain:
 
     def __init__(
             self,
-            path: Union[str, list, None] = None,
-            case: str = None,
-            browser: Union[str, dict, None] = None,
-            base_url: str = None,
+            path: str | list[str] | None = None,
+            case: str | None = None,
+            browser: str | dict[str, Any] | None = None,
+            base_url: str | None = None,
             debug: bool = False,
             timeout: int = 10,
-            app_server: str = None,
-            app_info=None,
-            report: str = None,
+            app_server: str | None = None,
+            app_info: dict[str, Any] | None = None,
+            report: str | None = None,
             title: str = "Seldom Test Report",
             tester: str = "Anonymous",
-            description: Union[str, dict] = "Test case execution",
+            description: str | list[str] = "Test case execution",
             rerun: int = 0,
             language: str = "en",
-            whitelist: list = None,
-            blacklist: list = None,
+            whitelist: list[str] | None = None,
+            blacklist: list[str] | None = None,
             open_report: bool = True,
             auto: bool = True,
-            extensions: Optional = None,
+            extensions: list[str] | dict[str, Any] | None = None,
             failfast: bool = False,
-            env: str = None,
+            env: str | None = None,
             benchmark: bool = False,
-            device: str = None
+            device: str | None = None,
     ):
         """
         runner test case
@@ -295,8 +295,8 @@ class TestMainExtend(TestMain):
 
     def __init__(
             self,
-            path: Union[str, list, None] = None,
-            browser: Union[str, dict, None] = None,
+            path: str | list[str] | None = None,
+            browser: str | dict[str, Any] | None = None,
             base_url: str = None,
             debug: bool = False,
             timeout: int = 10,
