@@ -7,7 +7,7 @@ class WebTestNew(seldom.TestCase):
     def test_new_browser(self):
         # default browser
         self.open("http://www.baidu.com")
-        self.Keys(css="#kw").input("seldom").enter()
+        self.Keys(css="#chat-textarea").input("seldom").enter()
         self.sleep(2)
         self.screenshots()
         self.assertInTitle("seldom")

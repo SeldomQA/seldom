@@ -12,7 +12,7 @@ class WebTestOne(seldom.TestCase):
 
     def test_baidu(self):
         self.open("http://www.baidu.com")
-        self.Keys(css="#kw").input("seldom").enter()
+        self.Keys(css="#chat-textarea").input("seldom").enter()
         self.sleep(2)
         self.screenshots()
         self.assertInTitle("seldom")
@@ -30,7 +30,7 @@ class WebTestTwo(seldom.TestCase):
 
     @classmethod
     def start_class(cls):
-        cls.browser(cls, "gc")
+        cls.browser(cls, "edge")
 
     @classmethod
     def end_class(cls):
@@ -38,7 +38,7 @@ class WebTestTwo(seldom.TestCase):
 
     def test_baidu(self):
         self.open("http://www.baidu.com")
-        self.Keys(css="#kw").input("seldom").enter()
+        self.Keys(css="#chat-textarea").input("seldom").enter()
         self.sleep(2)
         self.screenshots()
         self.assertInTitle("seldom")
