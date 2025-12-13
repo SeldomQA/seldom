@@ -24,6 +24,7 @@ from seldom.running.config import Seldom, BrowserConfig
 from seldom.testdata import get_timestamp
 from seldom.webcommon.find_elems import WebElement
 from seldom.webcommon.keyboard import KeysClass
+from seldom.webcommon.locators import LOCATOR_LIST
 
 __all__ = ["WebDriver"]
 
@@ -518,10 +519,12 @@ class WebDriver:
         :return:
         """
         log.info("✅ element is visible.")
+        key, value = next(iter(kwargs.items()))
+        locator = (LOCATOR_LIST[key], value)
         try:
-            wait = WebDriverWait(driver=self.browser, timeout=timeout)
-            wait.until(EC.element_to_be_clickable((next(iter(kwargs)),
-                                                   kwargs.get(next(iter(kwargs))))))
+            WebDriverWait(driver=self.browser, timeout=timeout).until(
+                EC.visibility_of_element_located(locator)
+            )
             return True
         except TimeoutException:
             return False
