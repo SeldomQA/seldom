@@ -26,7 +26,7 @@ from seldom.testdata import conversion
 from seldom.utils import jmespath as utils_jmespath
 
 __all__ = [
-    "file_data", "api_data", "data", "data_class"
+    "file_data", "api_data", "data", "data_class", "find_file"
 ]
 
 
