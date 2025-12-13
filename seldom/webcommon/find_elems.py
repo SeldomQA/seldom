@@ -72,15 +72,18 @@ class WebElement:
         if Seldom.app_server is not None and Seldom.app_info is not None:
             return None  # Skip highlighting if app info is unavailable
 
+        border_styles = []
         if Seldom.debug:
             border_styles = [
                 'arguments[0].style.border="3px solid #FF0000"',
                 'arguments[0].style.border="3px solid #00FF00"',
                 'arguments[0].style.border=""'
             ]
-            for style in border_styles:
-                self.browser.execute_script(style, elem)
-                time.sleep(0.2)
+        for style in border_styles:
+            self.browser.execute_script(style, elem)
+            time.sleep(0.2)
+
+        return None
 
     @property
     def info(self):
