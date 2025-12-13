@@ -134,6 +134,13 @@ def check_proxies() -> Any | None:
 class HttpRequest:
     """seldom http request class"""
 
+    def __init__(self, base_url=None, *args, **kwargs):
+        self.base_url = base_url
+        if self.base_url is not None:
+            Seldom.base_url = self.base_url
+        self.args = args
+        self.kwargs = kwargs
+
     @request
     def get(self, url, params=None, **kwargs):
         if (Seldom.base_url is not None) and (url.startswith("http") is False):
@@ -385,6 +392,10 @@ class HttpRequest:
         ip_address = socket.gethostbyname(domain)
         log.info(f"🌐 IP address: {ip_address}")
         return ip_address
+
+    @base_url.setter
+    def base_url(self, value):
+        self._base_url = value
 
 
 def check_response(describe: str = "", status_code: int = 200, ret: str = None, check: dict = None,
