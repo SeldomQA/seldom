@@ -1,3 +1,14 @@
+### 3.14.1
+
+* 修复：脚手架：web示例错误。
+* 修复：App API `drag_from_to()` 参数顺序错误。#262
+* 修复：Web API `is_visible()` 执行报错。 #264
+* 优化：`seldom.main()` 参数类型警告。
+* 优化：`seldom` 命令，提升性能。
+* 支持：python 3.14 测试通过。
+* 新增：`HttpRequest` 增加`__init__()` 支持初始化`base_url`参数。
+* 新增：提供`resource_file()` 加载 GraphQL 和 JSON 文件。
+
 ### 3.14.0
 
 * App测试
