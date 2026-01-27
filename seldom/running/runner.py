@@ -410,6 +410,7 @@ class TestMainExtend(TestMain):
         :param data: test case list
         :return:
         """
+        loader("start_run")
         if isinstance(data, list) is False:
             raise TypeError("Use cases must be lists.")
 
