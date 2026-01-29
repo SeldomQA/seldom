@@ -21,7 +21,8 @@ def log_assertions(func):
         if args:
             args_to_log = args[1:]
 
-        log.info(f"👀 {func.__name__}  -> {args_to_log}")
+        if func.__name__ != "assertIsInstance":
+            log.info(f"👀 {func.__name__}  -> {args_to_log}")
         result = func(*args, **kwargs)
         return result
 

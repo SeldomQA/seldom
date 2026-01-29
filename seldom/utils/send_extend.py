@@ -16,7 +16,7 @@ from seldom.utils import file
 class SMTP(XSMTP):
     """send email class"""
 
-    def sendmail(self, to: [str, list], subject: str = None, attachments: str = None, delete: bool = False) -> None:
+    def sendmail(self, to: str | list[str], subject: str = None, attachments: str = None, delete: bool = False) -> None:
         """
         seldom send email
         :param to:
