@@ -2,11 +2,11 @@
 name = "seldom"
 version = "3.14.1"
 description = "Seldom automation testing framework based on unittest."
-authors = [{ name = "bugmaster", email = "fnngj@126.com" }]
+authors = [{ name = "bugmaster", email = "defnngj@gmail.com" }]
 license = { file = "LICENSE" }
 readme = "README.md"
 requires-python = ">=3.9,<4.0"
-keywords = ["seldom", "selenium", "appium", "requests"]
+keywords = ["seldom", "selenium", "appium", "requests", "unittest"]
 classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: MacOS :: MacOS X",
@@ -22,8 +22,8 @@ classifiers = [
     "Topic :: Software Development :: Testing",
 ]
 dependencies = [
-    "appium-python-client>=5.1.0,<6.0.0",
-    "xtestrunner>=1.8.5",
+    "appium-python-client>=5.2.0,<6.0.0",
+    "xtestrunner>=1.8.6",
     "loguru~=0.7.0",
     "openpyxl>=3.0.3,<4.0.0",
     "pyyaml>=6.0,<7.0",
@@ -31,7 +31,7 @@ dependencies = [
     "jmespath>=0.10.0,<1.0.0",
     "pymysql>=1.0.0,<2.0.0",
     "genson~=1.2.2",
-    "typer>=0.16.0,<1.0.0",
+    "typer>=0.24.0,<1.0.0",
     "python-dateutil~=2.8.2",
     "pycryptodome>=3.21.0,<4.0.0"
 ]
