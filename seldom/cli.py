@@ -185,6 +185,7 @@ def main(
 
             with open(case_path, "w", encoding="utf-8") as json_file:
                 json_file.write(case_info)
+            loader("end_run")
             typer.echo(f"Save them to {case_path}")
             return 0
 
@@ -202,7 +203,6 @@ def main(
             typer.echo(f"Add Env Path: {os.path.dirname(path)}.")
             file.add_to_path(os.path.dirname(path))
 
-            # loader("start_run")
             with open(case_json, encoding="utf-8") as json_file:
                 case = json.load(json_file)
                 path, case = reset_case(path, case)
@@ -212,28 +212,23 @@ def main(
                     description=description, rerun=rerun, language=language,
                     whitelist=whitelist, blacklist=blacklist, extensions=extensions)
                 main_extend.run_cases(case)
-            # loader("end_run")
             return 0
 
-        # loader("start_run")
         seldom.main(
             path=path, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
             app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language,
             whitelist=whitelist, blacklist=blacklist, extensions=extensions, failfast=failfast)
-        # loader("end_run")
         return 0
 
     if mod:
         file_dir = os.getcwd()
         sys.path.insert(0, file_dir)
-        # loader("start_run")
         seldom.main(
             case=mod, browser=browser, base_url=base_url, debug=debug, timeout=timeout,
             app_server=app_server, app_info=app_info, report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language,
             whitelist=whitelist, blacklist=blacklist, extensions=extensions, failfast=failfast)
-        # loader("end_run")
         return 0
 
     if har2case:
@@ -256,12 +251,10 @@ def main(
         FileRunningConfig = _import_file_running_config()
         FileRunningConfig.api_excel_file_name = api_excel
         script_path = file.join(file.dir, "file_runner", "api_excel.py")
-        # loader("start_run")
         seldom.main(
             path=script_path, base_url=base_url, debug=debug, timeout=timeout,
             report=report, title=title, tester=tester,
             description=description, rerun=rerun, language=language, failfast=failfast)
-        # loader("end_run")
         return 0
 
     return 0
