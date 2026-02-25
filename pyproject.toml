@@ -1,6 +1,6 @@
 [project]
 name = "seldom"
-version = "3.14.1"
+version = "3.14.2"
 description = "Seldom automation testing framework based on unittest."
 authors = [{ name = "bugmaster", email = "defnngj@gmail.com" }]
 license = { file = "LICENSE" }
