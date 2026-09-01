@@ -11,14 +11,13 @@ seldom 支持定位如下，包括selenium/appium。
 | 类型              | 定位                   | **kwargs                    |
 |-----------------|----------------------|-----------------------------|
 | selenium/appium | id                   | id_="id"                    |
-| selenium        | mame                 | name="name"                 |
+| selenium        | name                 | name="name"                 |
 | selenium/appium | class                | class_name="class"          |
 | selenium        | tag                  | tag="input"                 |
 | selenium        | link_text            | link_text="文字链接"            |
 | selenium        | partial_link_text    | partial_link_text="文字链"     |
 | selenium/appium | xpath                | xpath="//*[@id='11']"       |
-| selenium        | css                  | cass="input#id"             |
-| appium          | ios_uiautomation     | ios_uiautomation = "xx"     |
+| selenium        | css                  | css="input#id"              |
 | appium          | ios_predicate        | ios_predicate = "xx"        |
 | appium          | ios_class_chain      | ios_class_chain = "xx"      |
 | appium          | android_uiautomator  | android_uiautomator = "xx"  |
@@ -250,8 +249,8 @@ class TestApp(seldom.TestCase):
         state = self.query_app_state("app_id")
         print(state)
         # 从指定的设备返回应用程序字符串语言
-        language, string = self.app_strings()
-        print(language, string)
+        strings = self.app_strings()
+        print(strings)
         # 点击图片
         self.click_image("/you/path/xxx.png")
 

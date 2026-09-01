@@ -44,7 +44,7 @@ self.click("text*=hao")
 | 类型              | 定位                   | **kwargs                    | selector                  |
 |-----------------|----------------------|-----------------------------|---------------------------|
 | selenium/appium | id                   | id_="id"                    | "id=id"                   |
-| selenium        | mame                 | name="name"                 | "name=name"               |
+| selenium        | name                 | name="name"                 | "name=name"               |
 | selenium/appium | class                | class_name="class"          | "class=class"             |
 | selenium        | tag                  | tag="input"                 | "tag=input"               |
 | selenium        | link_text            | link_text="文字链接"            | "text=文字链接"               |
@@ -52,11 +52,11 @@ self.click("text*=hao")
 | selenium/appium | xpath                | xpath="//*[@id='11']"       | "//*[@id='11']"           |
 | selenium        | css                  | css="input#id"              | "input#id"                |
 | appium          | ios_predicate        | ios_predicate = "xx"        | "ios_predicate=xx"        |
-| appium          | ios_class_chain      | ios_class_chain = "xx"      | "ios_predicate=xx"        |
+| appium          | ios_class_chain      | ios_class_chain = "xx"      | "ios_class_chain=xx"      |
 | appium          | android_uiautomator  | android_uiautomator = "xx"  | "android_uiautomator=xx"  |
 | appium          | android_viewtag      | android_viewtag = "xx"      | "android_viewtag=xx"      |
-| appium          | android_data_matcher | android_data_matcher = "xx" | "android_data_matcher=xx" |
-| appium          | android_view_matcher | android_view_matcher = "xx" | "android_view_matcher=xx" |
+| appium          | android_data_matcher | android_data_matcher = "xx" | "android_datamatcher=xx" |
+| appium          | android_view_matcher | android_view_matcher = "xx" | "android_viewmatcher=xx" |
 | appium          | accessibility_id     | accessibility_id = "xx"     | "accessibility_id=xx"     |
 | appium          | image                | image = "xx"                | "image=xx"                |
 | appium          | custom               | custom = "xx"               | "custom=xx"               |
@@ -244,12 +244,11 @@ class TestCase(seldom.TestCase):
         self.right_click(css="#el")
 
         # Saves a screenshots of the current window to a PNG image file.
-        self.screenshots()  # Save to HTML report
-        self.screenshots('/Screenshots/foo.png')  # Save to the specified directory
+        self.save_screenshot()  # Save to reports/images directory
+        self.save_screenshot('/Screenshots/foo.png')  # Save to the specified directory
 
         # Saves a element screenshot of the element to a PNG image file.
         self.element_screenshot(css="#id")  # Save to HTML report
-        self.element_screenshot(css="#id", file_path='/Screenshots/foo.png')  # Save to the specified directory
 
         """
         Constructor. A check is made that the given element is, indeed, a SELECT tag. If it is not,

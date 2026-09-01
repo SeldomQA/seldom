@@ -35,7 +35,7 @@ Usage: seldom [OPTIONS]
 │                                          [default: 0]                                                                    │
 │ --report              -r        TEXT     Set the test report for output. Need the --path. [default: None]                │
 │ --collect             -c                 Collect project test cases. Need the --path.                                    │
-│ --level               -l        TEXT     Parse the level of use cases [data | case]. Need the --path. [default: data]    │
+│ --level               -l        TEXT     Parse the level of use cases [data | method]. Need the --path. [default: data]  │
 │ --case-json           -j        TEXT     Test case files. Need the --path. [default: None]                               │
 │ --har2case            -h2c      TEXT     HAR file converts an seldom test case. [default: None]                          │
 │ --swagger2case        -s2c      TEXT     Swagger file converts an seldom test case. [default: None]                      │
@@ -114,7 +114,7 @@ C:\Python311\Scripts\seldom.exe
 > seldom -p test_sample.py -b firefox  # firefox浏览器
 ```
 
-> 支持`[chrome|chrimium|firefox|edge]` 浏览器。
+> 支持`[chrome|chromium|firefox|edge]` 浏览器。
 
 ### 运行URL
 

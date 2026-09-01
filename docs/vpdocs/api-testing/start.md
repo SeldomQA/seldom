@@ -24,7 +24,7 @@ Seldom 完全兼容 [Requests](https://docs.python-requests.org/en/master/) API 
 | self.put()     | requests.put()     |
 | self.delete()  | requests.delete()  |
 | self.patch()   | requests.patch()   |
-| self.session() | requests.session() |
+| self.Session() | requests.session() |
 
 ## Seldom VS Request+unittest
 

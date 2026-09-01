@@ -52,11 +52,12 @@ if __name__ == '__main__':
                 language="en",
                 whitelist=[],
                 blacklist=[],
-                open=True,
+                open_report=True,
                 extensions=None,
                 failfast=False,
                 env="test",
-                benchmark=False
+                benchmark=False,
+                device=None,
                 )
 ```
 
@@ -78,7 +79,7 @@ __参数说明__
 * `timeout` : 设置超时时间，默认`10`秒。
 * `whitelist` :  用例标签（label）设置白名单。
 * `blacklist` :  用例标签（label）设置黑名单。
-* `open` :  是否使用浏览器自动打开测试报告，默认`True`。
+* `open_report` :  是否使用浏览器自动打开测试报告，默认`True`。
 * `extensions`: 加载扩展，appium使用。
 * `failfast`: 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。
 * `env`: 设置运行环境变量。
@@ -238,6 +239,13 @@ def failfast():
     """Use case exe failed to stop, only support debug=True"""
     return False
 
+
+def device():
+    """
+    setting mobile device ID
+    """
+    return None
+
 ```
 
 以上配置根据需求自动化项目类型配置，相互可能冲突的钩子函数：
@@ -268,10 +276,11 @@ def failfast():
 | timeout            | timeout()        | 通用   | 设置自动化全局超时时间，默认`10`秒。作用于元素定位、断言等。                     |
 | whitelist          | whitelist()      | 通用   | 用例标签（label）设置白名单。                                    |
 | blacklist          | blacklist()      | 通用   | 用例标签（label）设置黑名单。                                    |
-| open               | -                | 通用   | 是否使用浏览器自动打开测试报告，默认`True`。                            |
+| open_report        | -                | 通用   | 是否使用浏览器自动打开测试报告，默认`True`。                            |
 | extensions         | -                | App  | 加载扩展，appium使用。                                       |
-| failfast           | -                | 通用   | 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。                  |
+| failfast           | failfast()       | 通用   | 当执行到失败的用例时，停止执行，仅在 `debug=True`时有效。                  |
 | env                | -                | 通用   | 设置运行环境变量。                                            |
+| device             | -                | App    | 设置移动设备ID（例如：`MDX0220413010000`）                         |
 | benchmark          | -                | 通用   | 是否进行基准测试。                                            |
 
 ### 运行测试
